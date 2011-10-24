@@ -1,0 +1,10 @@
+def build(bld):
+  bld.install_files('${HPREFIX}/database/postgresql', [
+      'connection.h',
+      ])
+  
+  bld.shlib(
+    source = 'connection.cpp statement.cpp result.cpp value.cpp',
+    target = 'pficommon_database_postgresql',
+    includes = '. ..',
+    use = 'PGSQL')

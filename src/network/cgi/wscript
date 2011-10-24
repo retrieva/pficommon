@@ -1,0 +1,57 @@
+import Options
+
+def options(opt):
+  opt.add_option('--disable-fcgi',
+                 action = 'store_true',
+                 default = False,
+                 help = 'disable fcgi')
+  
+  opt.add_option('--with-fcgi',
+                 action = 'store',
+                 default = False,
+                 help = 'specify the root directory for fcgi library')
+
+def configure(conf):
+  conf.env.BUILD_FCGI = False
+  
+  if not Options.options.disable_fcgi:
+    if Options.options.with_fcgi != False:
+      fcgi_libdir = Options.options.with_fcgi + '/lib'
+      fcgi_includedir = Options.options.with_fcgi + '/include'
+      if conf.check_cxx(lib = 'fcgi',
+                        header_name = 'fcgiapp.h',
+                        cxxflags = '-I' + fcgi_includedir,
+                        libpath = fcgi_libdir,
+                        uselib_store = 'FCGI',
+                        mandatory = False):
+        conf.env.BUILD_FCGI = True
+      else:
+        if conf.check_cxx(lib = 'fcgi',
+                          header_name = 'fcgiapp.h',
+                          uselib_store = 'FCGI',
+                          mandatory = False):
+          conf.env.BUILD_FCGI = True
+
+def build(bld):
+  bld.install_files('${HPREFIX}/network/cgi', [
+      'base.h',
+      'xhtml_cgi.h',
+      'xhtml_builder.h',
+      'inserter.h',
+      'tags.h',
+      'cgi.h',
+      'server.h',
+      ])
+
+  cgi = bld.shlib(
+    source = 'base.cpp xhtml_cgi.cpp xhtml_builder.cpp inserter.cpp cgi.cpp server.cpp util.cpp',
+    target = 'pficommon_network_cgi',
+    includes = '. ..',
+    use = 'pficommon_text pficommon_concurrent pficommon_network_http PTHREAD')
+
+  if bld.env.BUILD_FCGI:
+    bld.install_files('${HPREFIX}/network/cgi', [
+        'fcgi.h',
+        ])
+    cgi.source += ' fcgi.cpp'
+    cgi.use += ' FCGI'

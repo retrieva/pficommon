@@ -1,0 +1,59 @@
+import Options
+
+def options(opt):
+  opt.add_option('--disable-magickpp',
+                 action = 'store_true',
+                 default = False,
+                 help = 'disable magick++')
+
+def configure(conf):
+  conf.env.BUILD_MAGICKPP = False
+  if not Options.options.disable_magickpp:
+    if conf.check_cfg(path = 'Magick++-config',
+                      args = '--cppflags --libs --ldflags',
+                      package = '',
+                      uselib_store = 'MAGICKPP',
+                      mandatory = False):
+      conf.env.BUILD_MAGICKPP = True
+    
+def build(bld):
+  install_path = '${HPREFIX}/visualization'
+  
+  bld.install_files(install_path, [
+      'ppm.h',
+      'color.h',
+      ])
+  
+  v = bld.shlib(
+    source = ['empty.cpp'],
+    target = 'pficommon_visualization',
+    use =  [])
+  
+  bld.program(
+    features = 'gtest',
+    source = 'ppm_test.cpp',
+    target = 'ppm_test',
+    includes = '.',
+    use = 'pficommon_visualization pficommon_system pficommon_math')
+
+  if bld.env.BUILD_MAGICKPP:
+    bld.install_files(install_path, [
+        'magick.h',
+        ])
+
+    n = bld.path.get_bld().make_node('sample_input')
+    n.mkdir()
+
+    bld(rule = 'cp ${SRC} ${TGT}',
+        source = bld.path.ant_glob('sample_input/*'),
+        target = n)
+    
+    bld.program(
+      features = 'gtest',
+      source = 'magick_test.cpp',
+      target = 'magick_test',
+      includes = '.',
+      use = 'pficommon_visualization')
+    
+    v.source.append('magick.cpp')
+    v.use.append('MAGICKPP')

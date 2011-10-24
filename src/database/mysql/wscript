@@ -1,0 +1,10 @@
+def build(bld):
+  bld.install_files('${HPREFIX}/database/mysql', [
+      'connection.h'
+      ])
+
+  bld.shlib(
+    source = 'connection.cpp statement.cpp value.cpp',
+    target = 'pficommon_database_mysql',
+    includes = '. ..',
+    use = 'pficommon_concurrent MYSQL')

@@ -1,0 +1,24 @@
+def build(bld):
+  bld.install_files('${HPREFIX}/network/mprpc', [
+      'argument.h',
+      'caller.h',
+      'exception.h',
+      'invoker.h',
+      'message.h',
+      'object_stream.h',
+      'rpc_client.h',
+      'rpc_server.h',
+      'rpc_stream.h',
+      'socket.h',
+      ])
+
+  bld.shlib(
+    source = [
+      'object_stream.cpp',
+      'rpc_client.cpp',
+      'rpc_server.cpp',
+      'rpc_stream.cpp',
+      'socket.cpp'
+      ],
+    target = 'pficommon_network_mprpc',
+    use = 'pficommon_concurrent pficommon_network_base MSGPACK')

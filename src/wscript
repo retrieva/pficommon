@@ -1,0 +1,42 @@
+
+subdirs = [
+  'lang',
+  'concurrent',
+  'network',
+  'system',
+  'data',
+  'database',
+  'math',
+  'text',
+  'visualization',
+  'util'
+  ]
+
+def options(opt):
+  opt.recurse('database')
+  opt.recurse('network')
+  opt.recurse('visualization')
+
+def configure(conf):
+  conf.check_cxx(lib = 'pthread')
+
+  conf.recurse(subdirs)
+
+def build(bld):
+  b = bld.shlib(
+    source = 'empty.cpp',
+    target = 'pficommon',
+    use = [
+      'pficommon_concurrent',
+      'pficommon_data',
+      'pficommon_database',
+      'pficommon_lang',
+      'pficommon_math',
+      'pficommon_network',
+      'pficommon_system',
+      'pficommon_text',
+      'pficommon_util',
+      'pficommon_visualization',
+      ])
+
+  bld.recurse(subdirs)

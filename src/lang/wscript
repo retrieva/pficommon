@@ -1,0 +1,29 @@
+def configure(conf):
+  pass
+
+def build(bld):
+  bld.install_files('${HPREFIX}/lang', [
+      'cast.h',
+      'bind.h', 'bind_mf.h', 'bind_template.h',
+      'mem_fn.h', 'mem_fn_def.h', 'mem_fn_cc.h', 'mem_fn_tmpl.h',
+      'function.h', 'function_def.h',
+      'noncopyable.h',
+      'ref.h',
+      'safe_bool.h',
+      'scoped_ptr.h',
+      'shared_ptr.h',
+      'singleton.h',
+      'exception.h',
+      'any.h',
+      'util.h'
+      ])
+
+  bld.shlib(
+    source = 'empty.cpp',
+    target = 'pficommon_lang')
+
+  bld.program(
+    features = 'gtest',
+    source = 'bind_test.cpp',
+    target = 'bind_test',
+    includes = '.')

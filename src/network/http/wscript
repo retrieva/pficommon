@@ -1,0 +1,17 @@
+def options(opt):
+  pass
+
+def configure(conf):
+  pass
+
+def build(bld):
+  bld.install_files('${HPREFIX}/network/http', [
+      'base.h',
+      'stream.h',
+      ])
+
+  bld.shlib(
+    source = 'base.cpp',
+    target = 'pficommon_network_http',
+    includes = '. ..',
+    use = 'pficommon_network_base')

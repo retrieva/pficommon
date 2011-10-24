@@ -1,0 +1,307 @@
+// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// 
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// 
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+// 
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+// 
+//     * Neither the name of Preferred Infrastructure nor the names of other
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+#pragma once
+
+#include "../../data/serialization.h"
+
+#include "exception.h"
+
+namespace pfi{
+namespace network{
+namespace rpc{
+
+class invoker_base{
+public:
+  virtual ~invoker_base(){}
+  virtual void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa)=0;
+};
+
+#define DO_INVOKE(ARGS, ...)						\
+  if (!(ia ARGS)) throw rpc_error("cannot recv argument");		\
+  R ret=f(__VA_ARGS__);							\
+  std::string ok("OK"); oa << ok;					\
+  oa << ret;								\
+  oa.flush();								\
+  if (!oa) throw rpc_error("cannot send return value");
+
+template <class R>
+class invoker0 : public invoker_base{
+public:
+  typedef pfi::lang::function<R()> func_type;
+  invoker0(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    R ret=f();
+    std::string ok("OK"); oa << ok;
+    oa << ret;
+    oa.flush();
+    if (!oa) throw rpc_error("cannot send return value");
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1>
+class invoker1 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1)> func_type;
+  invoker1(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    DO_INVOKE(>>a1, a1);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2>
+class invoker2 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2)> func_type;
+  invoker2(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    DO_INVOKE(>>a1>>a2, a1,a2);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2, class A3>
+class invoker3 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2,A3)> func_type;
+  invoker3(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    A3 a3;
+    DO_INVOKE(>>a1>>a2>>a3, a1,a2,a3);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2, class A3, class A4>
+class invoker4 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2,A3,A4)> func_type;
+  invoker4(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    A3 a3;
+    A4 a4;
+    DO_INVOKE(>>a1>>a2>>a3>>a4, a1,a2,a3,a4);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2, class A3, class A4, class A5>
+class invoker5 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2,A3,A4,A5)> func_type;
+  invoker5(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    A3 a3;
+    A4 a4;
+    A5 a5;
+    DO_INVOKE(>>a1>>a2>>a3>>a4>>a5, a1,a2,a3,a4,a5);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6>
+class invoker6 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2,A3,A4,A5,A6)> func_type;
+  invoker6(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    A3 a3;
+    A4 a4;
+    A5 a5;
+    A6 a6;
+    DO_INVOKE(>>a1>>a2>>a3>>a4>>a5>>a6, a1,a2,a3,a4,a5,a6);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
+class invoker7 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2,A3,A4,A5,A6,A7)> func_type;
+  invoker7(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    A3 a3;
+    A4 a4;
+    A5 a5;
+    A6 a6;
+    A7 a7;
+    DO_INVOKE(>>a1>>a2>>a3>>a4>>a5>>a6>>a7, a1,a2,a3,a4,a5,a6,a7);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
+class invoker8 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2,A3,A4,A5,A6,A7,A8)> func_type;
+  invoker8(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    A3 a3;
+    A4 a4;
+    A5 a5;
+    A6 a6;
+    A7 a7;
+    A8 a8;
+    DO_INVOKE(>>a1>>a2>>a3>>a4>>a5>>a6>>a7>>a8, a1,a2,a3,a4,a5,a6,a7,a8);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+class invoker9 : public invoker_base{
+public:
+  typedef pfi::lang::function<R(A1,A2,A3,A4,A5,A6,A7,A8,A9)> func_type;
+  invoker9(const func_type &f):f(f){}
+
+  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+    A1 a1;
+    A2 a2;
+    A3 a3;
+    A4 a4;
+    A5 a5;
+    A6 a6;
+    A7 a7;
+    A8 a8;
+    A9 a9;
+    DO_INVOKE(>>a1>>a2>>a3>>a4>>a5>>a6>>a7>>a8>>a9, a1,a2,a3,a4,a5,a6,a7,a8,a9);
+  }
+
+private:
+  func_type f;
+};
+
+template <class R>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R()> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker0<R>(f));
+}
+
+template <class R, class A1>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker1<R,A1>(f));
+}
+
+template <class R, class A1, class A2>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker2<R,A1,A2>(f));
+}
+
+template <class R, class A1, class A2, class A3>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2,A3)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker3<R,A1,A2,A3>(f));
+}
+
+template <class R, class A1, class A2, class A3, class A4>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2,A3,A4)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker4<R,A1,A2,A3,A4>(f));
+}
+
+template <class R, class A1, class A2, class A3, class A4, class A5>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2,A3,A4,A5)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker5<R,A1,A2,A3,A4,A5>(f));
+}
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2,A3,A4,A5,A6)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker6<R,A1,A2,A3,A4,A5,A6>(f));
+}
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2,A3,A4,A5,A6,A7)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker7<R,A1,A2,A3,A4,A5,A6,A7>(f));
+}
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2,A3,A4,A5,A6,A7,A8)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker8<R,A1,A2,A3,A4,A5,A6,A7,A8>(f));
+}
+
+template <class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+pfi::lang::shared_ptr<invoker_base> make_invoker(const pfi::lang::function<R(A1,A2,A3,A4,A5,A6,A7,A8,A9)> &f)
+{
+  return pfi::lang::shared_ptr<invoker_base>(new invoker9<R,A1,A2,A3,A4,A5,A6,A7,A8,A9>(f));
+}
+
+} // rpc
+} // network
+} // pfi

@@ -1,0 +1,45 @@
+def configure(conf):
+  pass
+
+def build(bld):
+  bld.install_files('${HPREFIX}/system', [
+      'endian_util.h',
+      'time_util.h',
+      'file.h',
+      'syscall.h',
+      'mmapper.h',
+      'sysstat.h',
+      'barrier.h',
+      ])
+
+  bld.shlib(
+    source = [
+      'endian_util.cpp',
+      'time_util.cpp',
+      'file.cpp',
+      'syscall.cpp',
+      'sysstat.cpp',
+      'mmapper.cpp'],
+    target = 'pficommon_system',
+    includes = '.')
+
+  bld.program(
+    features = 'gtest',
+    source = 'time_util_test.cpp',
+    target = 'time_util_test',
+    includes = '.',
+    use = 'pficommon_system')
+
+  bld.program(
+    features = 'gtest',
+    source = 'mmapper_test.cpp',
+    target = 'mmapper_test',
+    includes = '.',
+    use = 'pficommon_system')
+
+  bld.program(
+    features = 'gtest',
+    source = 'sysstat.cpp',
+    target = 'sysstat_test',
+    includes = '.',
+    use = 'pficommon_system')

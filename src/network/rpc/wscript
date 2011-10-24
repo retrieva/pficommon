@@ -1,0 +1,20 @@
+def options(opt):
+  pass
+
+def configure(conf):
+  pass
+
+def build(bld):
+  bld.install_files('${HPREFIX}/network/rpc', [
+      'base.h',
+      'exception.h',
+      'caller.h',
+      'invoker.h',
+      'reflect.h',
+      ])
+
+  bld.shlib(
+    source = 'base.cpp',
+    target = 'pficommon_network_rpc',
+    includes = '. ..',
+    use = 'pficommon_network_base pficommon_concurrent pficommon_system')

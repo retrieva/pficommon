@@ -1,0 +1,91 @@
+import Options
+
+subdirs = 'http cgi rpc'
+
+def options(opt):
+  opt.add_option('--disable-mprpc',
+                 action = 'store_true',
+                 default = False,
+                 help = 'disable mprpc')
+  
+  opt.add_option('--with-msgpack',
+                 action = 'store',
+                 default = False,
+                 help = 'specify the root directory for msgpack library')
+  
+  opt.recurse(subdirs)
+
+def configure(conf):
+  conf.env.BUILD_MPRPC = False
+  
+  if not Options.options.disable_mprpc:
+    if Options.options.with_msgpack != False:
+      msgpack_libdir = Options.options.with_msgpack + '/lib'
+      msgpack_includedir = Options.options.with_msgpack + '/include'
+      if conf.check_cxx(lib = 'msgpack',
+                        header_name = 'msgpack.hpp',
+                        cxxflags = '-I' + msgpack_includedir,
+                        libpath = msgpack_libdir,
+                        uselib_store = 'MSGPACK',
+                        mandatory = False):
+        conf.env.BUILD_MPRPC = True
+    else:
+      if conf.check_cxx(lib = 'msgpack',
+                        header_name = 'msgpack.hpp',
+                        uselib_store = 'MSGPACK',
+                        mandatory = False):
+        conf.env.BUILD_MPRPC = True
+
+  conf.recurse(subdirs)
+
+def build(bld):
+  bld.recurse(subdirs)
+  
+  bld.install_files('${HPREFIX}/network', [
+      'socket.h',
+      'iostream.h',
+      'ipv4.h',
+      'dns.h',
+      'uri.h',
+      'http.h',
+      'cgi.h',
+      'rpc.h',
+      ])
+
+  bld.shlib(
+    source = 'socket.cpp ipv4.cpp dns.cpp uri.cpp',
+    target = 'pficommon_network_base',
+    includes = '.',
+    use = 'pficommon_concurrent')
+  
+  pfin = bld.shlib(
+    source = '',
+    target = 'pficommon_network',
+    use = [
+      'pficommon_network_base',
+      'pficommon_network_http',
+      'pficommon_network_cgi',
+      'pficommon_network_rpc'])
+  
+  bld.program(
+    features = 'gtest',
+    source = 'rpc_test.cpp',
+    target = 'rpc_test',
+    includes = '. rpc',
+    use = 'pficommon_network pficommon_system pficommon_data')
+
+  if bld.env.BUILD_MPRPC:
+    bld.recurse('mprpc')
+    
+    bld.install_files('${HPREFIX}/network', [
+        'mprpc.h',
+        ])
+    
+    pfin.use.append('pficommon_network_mprpc')
+    
+    bld.program(
+      features = 'gtest',
+      source = 'mprpc_test.cpp',
+      target = 'mprpc_test',
+      includes = '. mprpc',
+      use = 'pficommon_network pficommon_system pficommon_data')

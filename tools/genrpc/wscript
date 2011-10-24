@@ -1,0 +1,20 @@
+def options(opt):
+  pass
+
+def configure(conf):
+  pass
+
+def build(bld):
+  bld.program(
+    source = 'main.cpp',
+    includes = '.',
+    target = 'genrpc',
+    use = 'pficommon')
+  
+  bld.install_files('${PREFIX}/share/pficommon', [
+      'genrpc_template.cpp',
+      'genrpc_extract_names.cpp',
+      'gen_null.h',
+      'gen_php.h',
+      'gen_hs.h',
+      'pfi_rpc.php'])
