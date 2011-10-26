@@ -1,0 +1,113 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.5.2. pfi::network::dns &mdash; pficommon v1.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
+    <link rel="up" title="3.5. pfi::network" href="../network.html" />
+    <link rel="next" title="3.5.3. pfi::network::http" href="http.html" />
+    <link rel="prev" title="3.5.1. pfi::network::cgi" href="cgi.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>pficommon v1.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.5.2. pfi::network::dns</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="cgi.html">3.5.1. pfi::network::cgi</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="http.html">3.5.3. pfi::network::http</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pfi-network-dns">
+<h1>3.5.2. pfi::network::dns<a class="headerlink" href="#pfi-network-dns" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.5.2.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>DNSリゾルバ。</p>
+</div>
+<div class="section" id="id2">
+<h2>3.5.2.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dns-resolver">
+<h3>3.5.2.2.1. dns_resolverクラス<a class="headerlink" href="#dns-resolver" title="Permalink to this headline">¶</a></h3>
+<p>DNS解決をするクラス。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">vector</span><span class="o">&lt;</span><span class="n">ipv4_address</span><span class="o">&gt;</span> <span class="n">dns_resolver</span><span class="o">::</span><span class="n">resolve</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">host</span><span class="p">,</span> <span class="n">uint16_t</span> <span class="n">port</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>dns_resolverが持つ唯一のメソッド。
+DNSの解決をする。返り値はIPV4アドレスのリスト。</p>
+</div>
+<div class="section" id="normal-dns-resolver">
+<h3>3.5.2.2.2. normal_dns_resolverクラス<a class="headerlink" href="#normal-dns-resolver" title="Permalink to this headline">¶</a></h3>
+<p>毎回問い合わせる普通のリゾルバ。
+socket_streamクラスのデフォルトのリゾルバである。</p>
+</div>
+<div class="section" id="cached-dns-resolver">
+<h3>3.5.2.2.3. cached_dns_resolverクラス<a class="headerlink" href="#cached-dns-resolver" title="Permalink to this headline">¶</a></h3>
+<p>キャッシュ付きリゾルバ。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">cached_dns_resolver</span><span class="o">::</span><span class="n">cached_dns_resolver</span><span class="p">(</span><span class="kt">int</span> <span class="n">max_size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">expire_second</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>保持する最大のエントリ数と、保持する最長の時間を指定して
+キャッシュ付きリゾルバを作る。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">cached_dns_resolver</span><span class="o">::</span><span class="n">clear_cache</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>キャッシュしているものを全部捨てる。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">cached_dns_resolver</span><span class="o">::</span><span class="n">delete_cache</span><span class="p">(</span><span class="k">const</span> <span class="n">strig</span> <span class="o">&amp;</span><span class="n">host</span><span class="p">,</span> <span class="n">uint16_t</span> <span class="n">port</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>特定のエントリのキャッシュを消去する。</p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="cgi.html">3.5.1. pfi::network::cgi</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="http.html">3.5.3. pfi::network::http</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

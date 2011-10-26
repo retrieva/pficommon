@@ -1,0 +1,108 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.3.1. pfi::lang::bind &mdash; pficommon v1.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
+    <link rel="up" title="3.3. pfi::lang" href="../lang.html" />
+    <link rel="next" title="3.3.2. pfi::lang::cast" href="cast.html" />
+    <link rel="prev" title="3.3. pfi::lang" href="../lang.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>pficommon v1.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.1. pfi::lang::bind</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="../lang.html">3.3. pfi::lang</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cast.html">3.3.2. pfi::lang::cast</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pfi-lang-bind">
+<h1>3.3.1. pfi::lang::bind<a class="headerlink" href="#pfi-lang-bind" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.3.1.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>stlには、bind1st, bind2ndという、2引数関数の1つめ、2つめを固定した関数オブジェクトを返す関数があるが、
+不便なのと、2引数以外に使えないのは良くないので、
+これを任意の数の引き数、さらには引数の順番も任意にして超一般化したものがbindである。</p>
+</div>
+<div class="section" id="id2">
+<h2>3.3.1.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>1引数目に関数オブジェクトを指定する。
+2引数目以降に実引数もしくはプレースホルダを指定する。
+プレースホルダは_1, _2, .. _9の名前で定義されており、
+それぞれ1引数目、2引数目、...に対応している。
+1引数目に指定した関数の引数の数とちょうど同じだけ
+実引数もしくはプレースホルダを指定しなければならない。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">sub</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">){</span> <span class="k">return</span> <span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">=</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cmp</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">_2</span><span class="p">);</span> <span class="c1">// 1引数目を10に固定</span>
+  <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">f</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// -10</span>
+
+  <span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">g</span><span class="o">=</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cmp</span><span class="p">,</span> <span class="n">_1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span> <span class="c1">// 2引数目を10に固定</span>
+  <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">g</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 10</span>
+
+  <span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">h</span><span class="o">=</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cmp</span><span class="p">,</span> <span class="n">_2</span><span class="p">,</span> <span class="n">_1</span><span class="p">);</span> <span class="c1">// 引数の順番を入れ替え</span>
+  <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">h</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 10</span>
+
+  <span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">i</span><span class="o">=</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cmp</span><span class="p">,</span> <span class="n">_1</span><span class="p">,</span> <span class="n">_1</span><span class="p">);</span> <span class="c1">// 両方に第一引数を渡す</span>
+  <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="../lang.html">3.3. pfi::lang</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cast.html">3.3.2. pfi::lang::cast</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.3.4. pfi::lang::mem_fn &mdash; pficommon v1.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
+    <link rel="up" title="3.3. pfi::lang" href="../lang.html" />
+    <link rel="next" title="3.3.5. pfi::lang::noncopyable" href="noncopyable.html" />
+    <link rel="prev" title="3.3.3. pfi::lang::function" href="function.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>pficommon v1.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.4. pfi::lang::mem_fn</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="function.html">3.3.3. pfi::lang::function</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="noncopyable.html">3.3.5. pfi::lang::noncopyable</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pfi-lang-mem-fn">
+<h1>3.3.4. pfi::lang::mem_fn<a class="headerlink" href="#pfi-lang-mem-fn" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.3.4.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>stlには、メンバ関数を関数化するための
+mem_fun、mem_fun_ref、mem_fun1、mem_fun1_ref
+さらにそれぞれのconst版、
+const_mem_fun、const_mem_fun_ref、const_mem_fun1、const_mem_fun1_ref
+があるが、煩雑極まりないのと、2引数以上のメンバ関数を扱えるようにするために、
+これをまとめて、さらに一般化したものがmem_fnである。</p>
+</div>
+<div class="section" id="id2">
+<h2>3.3.4.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++"><div class="highlight"><pre><span class="k">class</span> <span class="nc">foo</span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="kt">int</span> <span class="n">hoge</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">n</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">int</span> <span class="n">moge</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="k">const</span><span class="p">{</span>
+    <span class="k">return</span> <span class="n">n</span><span class="o">*</span><span class="mi">3</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>このようなクラスがあったとき、</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">foo</span> <span class="n">a</span><span class="p">;</span>
+
+<span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="n">foo</span><span class="o">&amp;</span><span class="p">,</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">ff</span><span class="o">=</span><span class="n">mem_fn</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">::</span><span class="n">hoge</span><span class="p">);</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">ff</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">444</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="k">const</span> <span class="n">foo</span><span class="o">*</span><span class="p">,</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">fg</span><span class="o">=</span><span class="n">mem_fn</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">::</span><span class="n">moge</span><span class="p">);</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">fg</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="mi">444</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>このようにメンバ関数を関数オブジェクト化することができる。</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="function.html">3.3.3. pfi::lang::function</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="noncopyable.html">3.3.5. pfi::lang::noncopyable</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

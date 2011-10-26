@@ -1,0 +1,122 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.3. pfi::lang &mdash; pficommon v1.3.0 documentation</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="pficommon v1.3.0 documentation" href="index.html" />
+    <link rel="up" title="3. コンポーネント" href="components.html" />
+    <link rel="next" title="3.3.1. pfi::lang::bind" href="lang/bind.html" />
+    <link rel="prev" title="3.2.4. pfi::data::serialization" href="data/serialization.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>pficommon v1.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3. pfi::lang</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="data/serialization.html">3.2.4. pfi::data::serialization</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="lang/bind.html">3.3.1. pfi::lang::bind</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pfi-lang">
+<h1>3.3. pfi::lang<a class="headerlink" href="#pfi-lang" title="Permalink to this headline">¶</a></h1>
+<p>C++を書きやすくする類のライブラリ。 ほぼBoostの再実装。</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lang/bind.html">3.3.1. pfi::lang::bind</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/bind.html#id1">3.3.1.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/bind.html#id2">3.3.1.2. 使い方</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lang/cast.html">3.3.2. pfi::lang::cast</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/cast.html#id1">3.3.2.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/cast.html#lexical-cast">3.3.2.2. lexical_cast</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lang/function.html">3.3.3. pfi::lang::function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/function.html#id1">3.3.3.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/function.html#id2">3.3.3.2. 使い方</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lang/mem_fn.html">3.3.4. pfi::lang::mem_fn</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/mem_fn.html#id1">3.3.4.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/mem_fn.html#id2">3.3.4.2. 使い方</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lang/noncopyable.html">3.3.5. pfi::lang::noncopyable</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/noncopyable.html#id1">3.3.5.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/noncopyable.html#id2">3.3.5.2. 使い方</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/noncopyable.html#id3">3.3.5.3. サンプルコード</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lang/safe_bool.html">3.3.6. pfi::lang::safe_bool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/safe_bool.html#id1">3.3.6.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/safe_bool.html#id2">3.3.6.2. 使い方</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/safe_bool.html#operator-bool">3.3.6.3. operator bool() では駄目な理由</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lang/scoped_ptr.html">3.3.7. pfi::lang::scoped_ptr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/scoped_ptr.html#id1">3.3.7.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/scoped_ptr.html#id2">3.3.7.2. 使い方</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lang/shared_ptr.html">3.3.8. pfi::lang::shared_ptr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lang/shared_ptr.html#id1">3.3.8.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/shared_ptr.html#id2">3.3.8.2. 基本的な使い方</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="data/serialization.html">3.2.4. pfi::data::serialization</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="lang/bind.html">3.3.1. pfi::lang::bind</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

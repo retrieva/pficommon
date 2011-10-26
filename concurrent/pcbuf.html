@@ -1,0 +1,143 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.1.5. pfi::concurrent::pcbuf &mdash; pficommon v1.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
+    <link rel="up" title="3.1. pfi::concurrent" href="../concurrent.html" />
+    <link rel="next" title="3.1.6. pfi::concurrent::qsem" href="qsem.html" />
+    <link rel="prev" title="3.1.4. pfi::concurrent::mvar" href="mvar.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>pficommon v1.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.1.5. pfi::concurrent::pcbuf</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="mvar.html">3.1.4. pfi::concurrent::mvar</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="qsem.html">3.1.6. pfi::concurrent::qsem</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pfi-concurrent-pcbuf">
+<h1>3.1.5. pfi::concurrent::pcbuf<a class="headerlink" href="#pfi-concurrent-pcbuf" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.1.5.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Producer-Consumer Buffer。作成時に容量の上限の指定ができ、タイムアウト付きのpush/popができるのが特徴である。</p>
+</div>
+<div class="section" id="id2">
+<h2>3.1.5.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++"><div class="highlight"><pre><span class="k">explicit</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">pcbuf</span><span class="p">(</span><span class="n">size_t</span> <span class="n">capacity</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>容量の上限を指定して空のキューを作る。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="kt">void</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">push</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>キューにvalueを追加する。
+キューが満杯なら空きができるまで待つ。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="kt">bool</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">push</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">,</span> <span class="kt">double</span> <span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>キューにvalueを追加する。
+キューが満杯のときは、タイムアウト付き(タイムアウト時間はsecond秒)で空きができるのを待つ。
+キューに要素を追加できたときはtrueを、そうでない(タイムアウト)ならfalseを返す。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="kt">void</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">pop</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>キューから取り出してvalueに入れる。
+キューが空なら追加されるまで待つ。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="kt">bool</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">pop</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">,</span> <span class="kt">double</span> <span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>キューから取り出してvalueに入れる。
+キューが空のときは、タイムアウト付き(タイムアウト時間はsecond秒)で要素が追加されるのを待つ。
+キューから要素を取り出せたときはtrueを、そうでない(タイムアウト)ならfalseを返す。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="kt">void</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>キューを空にする。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">size_t</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span>
+</pre></div>
+</div>
+<p>キューに格納している要素の数を返す。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">size_t</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">capacity</span><span class="p">()</span> <span class="k">const</span>
+</pre></div>
+</div>
+<p>キューに格納できる要素の最大数を返す。</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="kt">bool</span> <span class="n">pcbuf</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">empty</span><span class="p">()</span> <span class="k">const</span>
+</pre></div>
+</div>
+<p>キューに格納している要素の数が0であるならtrueを、そうでないないならfalseを返す。</p>
+</div>
+<div class="section" id="id3">
+<h2>3.1.5.3. サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">pcbuf</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span> <span class="c1">// int型を7個まで格納できるキューを作る</span>
+
+<span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// 2をキューに追加する</span>
+
+<span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
+<span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">v</span><span class="p">);</span> <span class="c1">// 2をキューから取り出してvに入れる。</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span> <span class="p">{</span> <span class="c1">// 3をキューに追加する(タイムアウトは0.1秒に設定)</span>
+  <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;push timeout&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span> <span class="p">{</span> <span class="c1">// 3をキューから取り出してvに入れる(タイムアウトは0.5秒に設定)</span>
+  <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;pop timeout&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="mvar.html">3.1.4. pfi::concurrent::mvar</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="qsem.html">3.1.6. pfi::concurrent::qsem</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.3.5. pfi::lang::noncopyable &mdash; pficommon v1.3.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
+    <link rel="up" title="3.3. pfi::lang" href="../lang.html" />
+    <link rel="next" title="3.3.6. pfi::lang::safe_bool" href="safe_bool.html" />
+    <link rel="prev" title="3.3.4. pfi::lang::mem_fn" href="mem_fn.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>pficommon v1.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.5. pfi::lang::noncopyable</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="mem_fn.html">3.3.4. pfi::lang::mem_fn</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="safe_bool.html">3.3.6. pfi::lang::safe_bool</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pfi-lang-noncopyable">
+<h1>3.3.5. pfi::lang::noncopyable<a class="headerlink" href="#pfi-lang-noncopyable" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.3.5.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>コピー不可なクラスを作るシンプルな方法を提供する。</p>
+</div>
+<div class="section" id="id2">
+<h2>3.3.5.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++"><div class="highlight"><pre><span class="k">class</span> <span class="nc">noncopyable</span>
+</pre></div>
+</div>
+<p>このクラスを、private継承してクラスを作る。</p>
+</div>
+<div class="section" id="id3">
+<h2>3.3.5.3. サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++"><div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="n">noncopyable</span><span class="p">{</span> <span class="c1">// private継承させる</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+  <span class="n">a</span><span class="o">=</span><span class="n">b</span><span class="p">;</span> <span class="c1">// compile error!</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="mem_fn.html">3.3.4. pfi::lang::mem_fn</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="safe_bool.html">3.3.6. pfi::lang::safe_bool</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
