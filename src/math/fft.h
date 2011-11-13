@@ -128,7 +128,7 @@ inline void fft2d_wrap(Iterator a, Iterator b, size_t pitch, int flip)
   transpose(a, b, t.begin(), w);
 
   for (size_t x=0; x<w; x++)
-    fft_wrap(a+x*h, a+x*h+h, flip);
+    fft_wrap(t.begin() + x*h, t.begin() + (x+1)*h, flip);
 
   transpose(t.begin(), t.end(), a, h);
 }
