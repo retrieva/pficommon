@@ -149,3 +149,25 @@ TEST(fft, fft2d)
     }
   }
 }
+
+TEST(fft, fft2d_matrix)
+{
+  int const m = 32, n = 64;
+  double const pi = std::acos(-1);
+  std::vector<std::vector<std::complex<double> > > a(m, std::vector<std::complex<double> >(n));
+  for (int i = 0; i < m; ++i)
+    for (int j = 0; j < n; ++j)
+      a[i][j] = std::cos(2*pi * i / m) * std::cos(2*pi * j / n);
+
+  pfi::math::fft2d(a);
+
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      if ((i == 1 || i == m-1) && (j == 1 || j == n-1))
+        EXPECT_NEAR(m*n / 4, a[i][j].real(), 1e-5);
+      else
+        EXPECT_NEAR(0, a[i][j].real(), 1e-5);
+      EXPECT_NEAR(0, a[i][j].imag(), 1e-5);
+    }
+  }
+}
