@@ -25,12 +25,12 @@ def configure(conf):
                         uselib_store = 'FCGI',
                         mandatory = False):
         conf.env.BUILD_FCGI = True
-      else:
-        if conf.check_cxx(lib = 'fcgi',
-                          header_name = 'fcgiapp.h',
-                          uselib_store = 'FCGI',
-                          mandatory = False):
-          conf.env.BUILD_FCGI = True
+    else:
+      if conf.check_cxx(lib = 'fcgi',
+                        header_name = 'fcgiapp.h',
+                        uselib_store = 'FCGI',
+                        mandatory = False):
+        conf.env.BUILD_FCGI = True
 
 def build(bld):
   bld.install_files('${HPREFIX}/network/cgi', [
