@@ -8,6 +8,7 @@ def build(bld):
   
   bld.shlib(
     source = '',
+    vnum = bld.env['VERSION'],
     target = 'pficommon_util')
   
   bld(features = 'cxx cprogram gtest',

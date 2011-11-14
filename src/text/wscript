@@ -16,6 +16,7 @@ def build(bld):
     source = 'xhtml.cpp csv.cpp json/parser.cpp',
     target = 'pficommon_text',
     includes = '. json',
+    vnum = bld.env['VERSION'],
     use = 'pficommon_data pficommon_system')
   
   bld.program(

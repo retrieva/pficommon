@@ -21,4 +21,5 @@ def build(bld):
       'socket.cpp'
       ],
     target = 'pficommon_network_mprpc',
+    vnum = bld.env['VERSION'],
     use = 'pficommon_concurrent pficommon_network_base MSGPACK')

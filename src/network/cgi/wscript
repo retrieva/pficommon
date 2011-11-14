@@ -47,6 +47,7 @@ def build(bld):
     source = 'base.cpp xhtml_cgi.cpp xhtml_builder.cpp inserter.cpp cgi.cpp server.cpp util.cpp',
     target = 'pficommon_network_cgi',
     includes = '. ..',
+    vnum = bld.env['VERSION'],
     use = 'pficommon_text pficommon_concurrent pficommon_network_http PTHREAD')
 
   if bld.env.BUILD_FCGI:

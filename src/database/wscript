@@ -44,6 +44,7 @@ def build(bld):
   t = bld.shlib(
     source = '',
     target = 'pficommon_database',
+    vnum = bld.env['VERSION'],
     use = [])
   
   if bld.env.BUILD_MYSQL:

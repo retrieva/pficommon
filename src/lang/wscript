@@ -20,6 +20,7 @@ def build(bld):
 
   bld.shlib(
     source = 'empty.cpp',
+    vnum = bld.env['VERSION'],
     target = 'pficommon_lang')
 
   bld.program(

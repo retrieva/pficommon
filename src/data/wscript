@@ -61,6 +61,7 @@ def build(bld):
       ],
     target = 'pficommon_data',
     includes = incdirs,
+    vnum = bld.env['VERSION'],
     use = 'pficommon_system')
 
   def t(src):
