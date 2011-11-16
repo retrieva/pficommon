@@ -84,7 +84,7 @@ TEST(rpc, rpc_test)
         v+='0'+(rand()%10);
       string r;
       EXPECT_NO_THROW({ r = cln.call_test_str(v); });
-      EXPECT_EQ(r.size(), 10);
+      EXPECT_EQ(r.size(), 10U);
       for (int i=0;i<10;i++)
         EXPECT_EQ(r[i], v[i]);
     }
@@ -104,7 +104,7 @@ TEST(rpc, rpc_test)
         v.push_back(rand());
       vector<int> r;
       EXPECT_NO_THROW({ r = cln.call_test_vec(v); });
-      EXPECT_EQ(r.size(), 10);
+      EXPECT_EQ(r.size(), 10U);
       for (int i=0;i<10;i++)
         EXPECT_EQ(r[i], v[i]);
     }
@@ -114,7 +114,7 @@ TEST(rpc, rpc_test)
         v[i]=rand();
       map<int, int> r;
       EXPECT_NO_THROW({ r = cln.call_test_map(v); });
-      EXPECT_EQ(r.size(), 10);
+      EXPECT_EQ(r.size(), 10U);
       for (int i=0;i<10;i++){
         EXPECT_EQ(r[i], v[i]);
       }
@@ -125,7 +125,7 @@ TEST(rpc, rpc_test)
         v.insert(i*100);
       set<int> r;
       EXPECT_NO_THROW({ r = cln.call_test_set(v); });
-      EXPECT_EQ(r.size(), 10);
+      EXPECT_EQ(r.size(), 10U);
       int cnt = 0;
       for (set<int>::iterator it=v.begin();it!=v.end();++it){
         EXPECT_EQ(*it, cnt++ * 100);

@@ -159,7 +159,7 @@ TEST(code_test, rice )
     decoder dc;
     for (int i=1;i<=255;++i) ec.rice(i,3);
     dc.attach(&ec.get_bytes()[0]);
-    for (int i=1;i<=255;++i) EXPECT_EQ(i,dc.rice(3));
+    for (int i=1;i<=255;++i) EXPECT_EQ(unsigned(i),dc.rice(3));
   }
   {
     // 2^32-255 to 2^32-1
@@ -190,7 +190,7 @@ TEST(code_test, prefix_code)
     decoder dc;
     for (int i=1;i<=255;++i) ec.prefix_code(i);
     dc.attach(&ec.get_bytes()[0]);
-    for (int i=1;i<=255;++i) EXPECT_EQ(i,dc.prefix_code());
+    for (int i=1;i<=255;++i) EXPECT_EQ(unsigned(i),dc.prefix_code());
   }
   {
     // 2^32-255 to 2^32-1

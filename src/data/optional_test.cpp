@@ -57,7 +57,7 @@ TEST(optional, arrow)
   {
     optional<string> p=o;
   }
-  EXPECT_EQ(o->length(), 4);
+  EXPECT_EQ(o->length(), 4U);
 }
 
 TEST(optional, copy)

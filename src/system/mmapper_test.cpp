@@ -59,7 +59,7 @@ TEST(mmapper_test, open_close) {
     f = fopen("test.txt", "w+");
     EXPECT_TRUE(f != NULL);
     size_t s = fwrite("12345678", 1, 8, f);
-    EXPECT_EQ(s, 8);
+    EXPECT_EQ(s, 8U);
     fclose(f);
   }
   {
@@ -67,8 +67,8 @@ TEST(mmapper_test, open_close) {
     mmapper m;
     r = m.open("test.txt");
     EXPECT_EQ(r, 0);
-    EXPECT_EQ(m.size(), 8);
-    for (int i = 0; i < m.size(); i++)
+    EXPECT_EQ(m.size(), 8U);
+    for (int i = 0; i < int(m.size()); i++)
       EXPECT_EQ(m[i], '1' + i);
     EXPECT_EQ(m.end() - m.begin(), 8);
     r = m.close();

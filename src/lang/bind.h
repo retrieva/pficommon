@@ -619,15 +619,15 @@ bind(F f, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
 
 // placeholders
 
-static _bi::arg<1> _1;
-static _bi::arg<2> _2;
-static _bi::arg<3> _3;
-static _bi::arg<4> _4;
-static _bi::arg<5> _5;
-static _bi::arg<6> _6;
-static _bi::arg<7> _7;
-static _bi::arg<8> _8;
-static _bi::arg<9> _9;
+_bi::arg<1> const _1 = {};
+_bi::arg<2> const _2 = {};
+_bi::arg<3> const _3 = {};
+_bi::arg<4> const _4 = {};
+_bi::arg<5> const _5 = {};
+_bi::arg<6> const _6 = {};
+_bi::arg<7> const _7 = {};
+_bi::arg<8> const _8 = {};
+_bi::arg<9> const _9 = {};
 
 } // lang
 } // pfi
