@@ -401,7 +401,7 @@ namespace suffix_array {
 
     int best_in_buf(int *buf){
       int cur_min_ix = -1;
-      T cur_min;
+      T cur_min = T();
       
       for(int i = 0; i < (block_access_depth << 1) + 1; ++i){
         int m = buf[i];

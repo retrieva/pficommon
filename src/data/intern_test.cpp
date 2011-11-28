@@ -61,7 +61,7 @@ TEST(intern_test, string) {
   ss.erase(unique(ss.begin(),ss.end()),ss.end());
   
   for (size_t i=0;i<ss.size();++i) EXPECT_EQ(-1,im.key2id(ss[i],false));
-  for (size_t i=0;i<ss.size();++i) EXPECT_EQ(i,im.key2id(ss[i],true));
+  for (size_t i=0;i<ss.size();++i) EXPECT_EQ(int(i),im.key2id(ss[i],true));
   for (size_t i=0;i<ss.size();++i) EXPECT_EQ(ss[i],im.id2key(i));
 }
 
@@ -103,7 +103,7 @@ TEST(intern_test, serialize) {
     binary_iarchive ia(ifs);
     ia>>im;
     EXPECT_EQ(ss.size(),im.size());
-    for (size_t i=0;i<ss.size();++i) EXPECT_EQ(i,im.key2id(ss[i],false));
+    for (size_t i=0;i<ss.size();++i) EXPECT_EQ(int(i),im.key2id(ss[i],false));
     for (size_t i=0;i<ss.size();++i) EXPECT_EQ(ss[i],im.id2key(i));
     
   }

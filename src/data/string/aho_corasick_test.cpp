@@ -67,7 +67,7 @@ TEST(aho_corasick_test, test)
 
   sort(ret.begin(), ret.end());
 
-  EXPECT_EQ(4, ret.size());
+  EXPECT_EQ(4U, ret.size());
 
   EXPECT_EQ(1, ret[0].first);
   EXPECT_EQ(8, ret[0].second);

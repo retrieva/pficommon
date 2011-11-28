@@ -115,12 +115,12 @@ bool is_standard_deviation(function<double()> f, bool expectation=true){
 
   int size=1<<22;
   vector<double> mom=moment(10,size,f);
-  double ctr=1; double err=sqrt(1.0/size);
+  double ctr=1;
   bool ret = true;
 
   ostringstream debug;
   debug << "list of moments:" << endl;
-  for(int n=0;n<mom.size();++n){
+  for(int n=0;n<int(mom.size());++n){
     double expect_moment;
     if(n%2==1){
       ctr*=n;
