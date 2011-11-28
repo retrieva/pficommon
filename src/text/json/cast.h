@@ -31,6 +31,9 @@
 
 #pragma once
 
+#include <string>
+#include <typeinfo>
+
 #include "base.h"
 
 #include "../../data/serialization.h"
@@ -41,13 +44,28 @@ namespace text{
 namespace json{
 
 template <class T>
-T json_cast(const json &v);
+T json_cast_impl(const json &v);
+
+template <class T>
+T json_cast(const json& v)
+{
+  try {
+    return json_cast_impl<T>(v);
+  } catch (std::bad_cast& e) {
+    std::string message("Failed json_cast from ");
+    message += typeid(*v.get()).name();
+    message += " to ";
+    message += typeid(T).name();
+    message += '.';
+    throw json_bad_cast<T>(message);
+  }
+}
 
 template <class T>
 T json_cast_with_default(const json &js, const T &def = T());
 
 template <>
-inline int64_t json_cast(const json &js)
+inline int64_t json_cast_impl(const json &js)
 {
   const json_integer &p=dynamic_cast<const json_integer&>(*js.get());
   return p.get();
@@ -61,7 +79,7 @@ inline int64_t json_cast_with_default(const json &js, const int64_t &def)
 }
 
 template <>
-inline int json_cast(const json &js)
+inline int json_cast_impl(const json &js)
 {
   return static_cast<int>(json_cast<int64_t>(js));
 }
@@ -73,7 +91,7 @@ inline int json_cast_with_default(const json &js, const int &def)
 }
 
 template <>
-inline double json_cast(const json &js)
+inline double json_cast_impl(const json &js)
 {
   const json_float &p=dynamic_cast<const json_float&>(*js.get());
   return p.get();
@@ -87,7 +105,7 @@ inline double json_cast_with_default(const json &js, const double &def)
 }
 
 template <>
-inline std::string json_cast(const json &js)
+inline std::string json_cast_impl(const json &js)
 {
   const json_string &p=dynamic_cast<const json_string&>(*js.get());
   return p.get();
@@ -101,7 +119,7 @@ inline std::string json_cast_with_default(const json &js, const std::string &def
 }
 
 template <>
-inline bool json_cast(const json &js)
+inline bool json_cast_impl(const json &js)
 {
   const json_bool &p=dynamic_cast<const json_bool&>(*js.get());
   return p.get();
@@ -425,7 +443,7 @@ inline void from_json_with_default(const json &js, T &v)
 }
 
 template <class T>
-T json_cast(const json &js)
+T json_cast_impl(const json &js)
 {
   T ret;
   from_json(js, ret);

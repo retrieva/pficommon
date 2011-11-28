@@ -34,6 +34,9 @@
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
+#include <sstream>
+#include <string>
+#include <typeinfo>
 #include <vector>
 #include <map>
 
@@ -43,6 +46,32 @@
 namespace pfi{
 namespace text{
 namespace json{
+
+class json_bad_cast_any : public std::bad_cast {
+public:
+  explicit json_bad_cast_any(const std::string& message)
+    : message_(message)
+  {}
+
+  ~json_bad_cast_any() throw() {}
+
+  const char* what() const throw() {
+    return message_.c_str();
+  }
+
+private:
+  std::string message_;
+};
+
+template <class T>
+class json_bad_cast : public json_bad_cast_any {
+public:
+  explicit json_bad_cast(const std::string& message)
+    : json_bad_cast_any(message)
+  {}
+
+  ~json_bad_cast() throw() {}
+};
 
 class json_value;
 
@@ -371,76 +400,98 @@ inline json::json(): val(new json_null())
 {
 }
 
-inline json &json::operator[](const std::string &name)
-{
-  json_object &p=dynamic_cast<json_object&>(*val.get());
-  return p[name];
-}
-
-inline json &json::operator[](size_t ix)
-{
-  json_array &p=dynamic_cast<json_array&>(*val.get());
-  return p[ix];
-}
-
 inline const json &json::operator[](const std::string &name) const
 {
-  const json_object &p=dynamic_cast<const json_object&>(*val.get());
-  return p[name];
+  json_object const* p = dynamic_cast<json_object const*>(val.get());
+  if (!p) {
+    throw json_bad_cast<json>("You failed to use the json as an object.");
+  }
+  return (*p)[name];
+}
+
+inline json &json::operator[](const std::string &name)
+{
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<json>("You failed to use the json as an object.");
+  return (*p)[name];
 }
 
 inline const json &json::operator[](size_t ix) const
 {
-  const json_array &p=dynamic_cast<const json_array&>(*val.get());
-  return p[ix];
+  json_array const* p = dynamic_cast<json_array const*>(val.get());
+  if (!p)
+    throw json_bad_cast<json>("You failed to use the json as an array.");
+  return (*p)[ix];
+}
+
+inline json &json::operator[](size_t ix)
+{
+  return const_cast<json&>(const_cast<json const&>(*this)[ix]);
 }
 
 inline size_t json::count(const std::string &name) const
 {
-  const json_object &p=dynamic_cast<const json_object&>(*val.get());
-  return p.count(name);
+  json_object const* p = dynamic_cast<json_object const*>(val.get());
+  if (!p)
+    throw json_bad_cast<size_t>("You failed to use the json as an object.");
+  return p->count(name);
 }
 
 inline void json::add(const std::string &name, const json &v)
 {
-  json_object &p=dynamic_cast<json_object&>(*val.get());
-  p[name]=v;
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<void>("You failed to use the json as an object.");
+  (*p)[name] = v;
 }
 
 inline void json::add(const json &v)
 {
-  json_array &p=dynamic_cast<json_array&>(*val.get());
-  p.add(v);
+  json_array* p = dynamic_cast<json_array*>(val.get());
+  if (!p)
+    throw json_bad_cast<void>("You failed to use the json as an array.");
+  p->add(v);
 }
 
 inline size_t json::size() const
 {
-  json_array &p=dynamic_cast<json_array&>(*val.get());
-  return p.size();
+  json_array* p = dynamic_cast<json_array*>(val.get());
+  if (!p)
+    throw json_bad_cast<size_t>("You failed to use the json as an array.");
+  return p->size();
 }
 
 inline json::iterator json::begin()
 {
-  json_object &p=dynamic_cast<json_object&>(*val.get());
-  return p.begin();
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<json::iterator>("You failed to use the json as an object.");
+  return p->begin();
 }
 
 inline json::const_iterator json::begin() const
 {
-  json_object &p=dynamic_cast<json_object&>(*val.get());
-  return p.begin();
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<json::const_iterator>("You failed to use the json as an object.");
+  return p->begin();
 }
 
 inline json::iterator json::end()
 {
-  json_object &p=dynamic_cast<json_object&>(*val.get());
-  return p.end();
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<json::iterator>("You failed to use the json as an object.");
+  return p->end();
 }
 
 inline json::const_iterator json::end() const
 {
-  json_object &p=dynamic_cast<json_object&>(*val.get());
-  return p.end();
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<json::const_iterator>("You failed to use the json as an object.");
+  return p->end();
 }
 
 inline void json::print(std::ostream &os, bool escape) const 
