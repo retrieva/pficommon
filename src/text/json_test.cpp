@@ -243,7 +243,9 @@ TEST(json, from_json)
   }
   {
     json j(new json_bool(false));
-    EXPECT_EQ(false, json_cast<bool>(j));
+    bool const expected = false;
+    bool const actual = json_cast<bool>(j);
+    EXPECT_EQ(expected, actual);
   }
 
   {
@@ -656,7 +658,7 @@ TEST(json, parse_multiple_jsons)
   EXPECT_NO_THROW({j=parser.parse();});
   vector<int> v;
   EXPECT_NO_THROW({v = json_cast<std::vector<int> >(j);});
-  ASSERT_EQ(3, v.size());
+  ASSERT_EQ(3U, v.size());
   EXPECT_EQ(1, v[0]);
   EXPECT_EQ(2, v[1]);
   EXPECT_EQ(3, v[2]);

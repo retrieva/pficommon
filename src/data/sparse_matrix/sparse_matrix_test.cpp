@@ -34,6 +34,7 @@
 #include "./sparse_matrix.h"
 
 #include <climits>
+#include <cstddef>
 #include <vector>
 #include <fstream>
 #include <algorithm>
@@ -93,7 +94,7 @@ TEST(sparse_matrix_test, index) {
   {
     sparse_matrix_reader smr;
     smr.open(tmp_file);
-    EXPECT_EQ(mat.size(),smr.row_num());
+    EXPECT_EQ(mat.size(),size_t(smr.row_num()));
     for (int i=0;i<(int)mat.size();++i) {
       { // get_row using vector<pair<int,unsigned char> >
 	vector<pair<int,unsigned char> > row;
