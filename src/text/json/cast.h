@@ -185,6 +185,12 @@ inline void serialize(json &js, int &n)
 }
 
 template <>
+inline void serialize(json &js, unsigned int &n)
+{
+  js=json(new json_integer(n));
+}
+
+template <>
 inline void serialize(json &js, double &d)
 {
   js=json(new json_float(d));

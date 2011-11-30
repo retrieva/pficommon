@@ -175,6 +175,12 @@ TEST(json, to_json)
     EXPECT_EQ("123", oss.str());
   }
   {
+    unsigned int n=123;
+    ostringstream oss;
+    oss<<to_json(n);
+    EXPECT_EQ("123", oss.str());
+  }
+  {
     double d=3.14;
     ostringstream oss;
     oss<<to_json(d);
