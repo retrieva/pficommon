@@ -27,3 +27,9 @@ def build(bld):
     source = 'bind_test.cpp',
     target = 'bind_test',
     includes = '.')
+
+  bld.program(
+    features = 'gtest',
+    source = 'demangle_test.cpp',
+    target = 'demangle_test',
+    includes = '.')
