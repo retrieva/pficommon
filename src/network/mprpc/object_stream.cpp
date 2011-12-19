@@ -39,6 +39,11 @@
 #include <unistd.h>
 
 #include "socket.h"
+#include "exception.h"
+#include "../../system/time_util.h"
+
+using pfi::system::time::clock_time;
+using pfi::system::time::get_clock_time;
 
 namespace pfi {
 namespace network {
@@ -58,8 +63,10 @@ object_stream::~object_stream()
 	::close(iofd);
 }
 
-int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone)
+int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone,
+			double timeout_sec)
 {
+        clock_time start = get_clock_time();
 	while(true) {
 		if(unpacker.execute()) {
 			*obj = unpacker.data();
@@ -75,6 +82,9 @@ int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone
 			rl = ::read(iofd, unpacker.buffer(), unpacker.buffer_capacity());
 			if(rl > 0) break;
 			if(rl == 0) { return -1; }
+			if(timeout_sec < (double)(get_clock_time() - start)){
+			  throw rpc_timeout_error("timeout");
+			}
 			if(errno == EINTR) { continue; }
 			if(errno == EAGAIN) { continue; }
 			return -1;

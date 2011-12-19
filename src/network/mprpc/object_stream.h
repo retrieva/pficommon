@@ -46,7 +46,8 @@ public:
 	object_stream(const std::string& host, uint16_t port);
 	~object_stream();
 
-	int read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone);
+        int read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone,
+		 double timeout_sec);
 
 	template <typename T>
 	int write(const T& v);

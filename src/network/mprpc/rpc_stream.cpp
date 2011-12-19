@@ -35,8 +35,8 @@ namespace pfi {
 namespace network {
 namespace mprpc {
 
-rpc_stream::rpc_stream(int iofd) :
-	seqid(0), os(iofd) { }
+rpc_stream::rpc_stream(int iofd, double timeout_sec) :
+        seqid(0), os(iofd), timeout_sec(timeout_sec) { }
 
 rpc_stream::~rpc_stream() { }
 
@@ -46,7 +46,7 @@ int rpc_stream::try_receive(rpc_message* msg)
 	msgpack::object obj;
 	std::auto_ptr<msgpack::zone> zone;
 
-	int ret = os.read(&obj, &zone);
+	int ret = os.read(&obj, &zone, timeout_sec);
 	if(ret <= 0) {
 		return ret;
 	}

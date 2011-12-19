@@ -42,8 +42,8 @@ namespace mprpc {
 
 class rpc_stream {
 public:
-	rpc_stream(int iofd);
-	rpc_stream(const std::string& host, uint16_t port);
+        rpc_stream(int iofd, double timeout_sec);
+        rpc_stream(const std::string& host, uint16_t port, double timeout_sec);
 	~rpc_stream();
 
 public:
@@ -64,6 +64,7 @@ public:
 private:
 	uint32_t seqid;
 	object_stream os;
+        double timeout_sec;
 };
 
 
