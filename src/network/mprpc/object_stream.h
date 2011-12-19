@@ -50,9 +50,9 @@ public:
 		 double timeout_sec);
 
 	template <typename T>
-	int write(const T& v);
+	int write(const T& v, double timeout_sec);
 
-	int write(const void* data, size_t size);
+        int write(const void* data, size_t size, double timeout_sec);
 
 private:
 	msgpack::unpacker unpacker;
@@ -60,11 +60,11 @@ private:
 };
 
 template <typename T>
-int object_stream::write(const T& v)
+int object_stream::write(const T& v, double timeout_sec)
 {
 	msgpack::sbuffer sbuf;
 	msgpack::pack(sbuf, v);
-	return write(sbuf.data(), sbuf.size());
+	return write(sbuf.data(), sbuf.size(), timeout_sec);
 }
 
 

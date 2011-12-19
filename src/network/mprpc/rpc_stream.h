@@ -73,7 +73,7 @@ bool rpc_stream::send(const std::string& name, const P& param, uint32_t* msgid)
 {
 	*msgid = seqid++;
 
-	if(!rpc_request::write(os, *msgid, name, param)) {
+	if(!rpc_request::write(os, *msgid, name, param, timeout_sec)) {
 		return false;
 	}
 
@@ -98,7 +98,7 @@ void rpc_stream::call(const std::string& name, const P& param, rpc_response* res
 template <typename R, typename E>
 bool rpc_stream::send_response(uint32_t msgid, const R& retval, const E& error)
 {
-	return rpc_response::write(os, msgid, retval, error);
+         return rpc_response::write(os, msgid, retval, error, timeout_sec);
 }
 
 

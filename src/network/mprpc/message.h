@@ -87,11 +87,11 @@ struct rpc_request {
 	}
 
 	template <typename ObjectWritable, typename P>
-	static bool write(ObjectWritable& o, uint32_t msgid, const std::string& name, const P& param)
+	static bool write(ObjectWritable& o, uint32_t msgid, const std::string& name, const P& param, double timeout_sec)
 	{
 		msgpack::type::tuple<uint8_t, uint32_t, const std::string&, const P&>
 			req(0, msgid, name, param);
-		return o.write(req);
+		return o.write(req, timeout_sec);
 	}
 
 	template <typename T>
@@ -128,11 +128,11 @@ struct rpc_response {
 	}
 
 	template <typename ObjectWritable, typename R, typename E>
-	static bool write(ObjectWritable& o, uint32_t msgid, const R& retval, const E& error)
+	static bool write(ObjectWritable& o, uint32_t msgid, const R& retval, const E& error, double timeout_sec)
 	{
 		msgpack::type::tuple<uint8_t, uint32_t, const E&, const R&>
 			res(1, msgid, error, retval);
-		return o.write(res);
+		return o.write(res, timeout_sec);
 	}
 
 	bool is_error() const
