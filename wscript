@@ -19,11 +19,18 @@ def configure(conf):
   conf.check_tool('compiler_cxx')
   conf.check_tool('unittest_gtest')
 
-  conf.env.append_unique(
-    'CXXFLAGS',
-    ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer', '-D_FORTIFY_SOURCE=1'])
+  env = conf.env
+  ver = env.CC_VERSION
+  if env.COMPILER_CXX == 'g++' and ver[0] >= 4 and ver[1] >= 6:
+    env.append_unique(
+      'CXXFLAGS',
+      ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer'])
+  else:
+    env.append_unique(
+      'CXXFLAGS',
+      ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer', '-D_FORTIFY_SOURCE=1'])
 
-  conf.env.HPREFIX = conf.env.PREFIX + '/include/pficommon'
+  env.HPREFIX = env.PREFIX + '/include/pficommon'
 
   conf.recurse(subdirs)
 
