@@ -5,3 +5,9 @@
 build/
 .lock-wafbuild
 .unittest-gtest/
+
+# GNU GLOBAL
+GPATH
+GRTAGS
+GSYMS
+GTAGS
