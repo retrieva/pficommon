@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
+#define INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
 
 #include <exception>
 
@@ -71,3 +72,4 @@ private:
 
 #define transaction(conn) \
   if (committer comm__ = committer(conn))
+#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_UTIL_H_

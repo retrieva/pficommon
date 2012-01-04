@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_NETWORK_CGI_UTIL_H_
+#define INCLUDE_GUARD_PFI_NETWORK_CGI_UTIL_H_
 
 #include <map>
 #include <string>
@@ -43,3 +44,4 @@ std::map<std::string, std::string> get_env(char **envi);
 } // cgi
 } // network
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_NETWORK_CGI_UTIL_H_

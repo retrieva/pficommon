@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_H_
+#define INCLUDE_GUARD_PFI_DATA_SERIALIZATION_H_
 
 #include "serialization/base.h"
 #include "serialization/array.h"
@@ -41,3 +42,4 @@
 #include "serialization/map.h"
 
 #include "serialization/iostream.h"
+#endif // #ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_H_

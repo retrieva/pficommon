@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_LANG_BIND_H_
+#define INCLUDE_GUARD_PFI_LANG_BIND_H_
 
 #include "mem_fn.h"
 
@@ -631,3 +632,4 @@ _bi::arg<9> const _9 = {};
 
 } // lang
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_BIND_H_

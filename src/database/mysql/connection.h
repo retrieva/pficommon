@@ -32,7 +32,8 @@
 // See also FOSS License Exception.
 // Link: http://www.mysql.com/about/legal/licensing/foss-exception/
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_CONNECTION_H_
+#define INCLUDE_GUARD_PFI_DATABASE_MYSQL_CONNECTION_H_
 
 #include <stdint.h>
 
@@ -51,3 +52,4 @@ connection *connect(const std::string &host,
 } // mysql
 } // database
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_CONNECTION_H_

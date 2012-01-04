@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATABASE_POSTGRESQL_VALUE_H_
+#define INCLUDE_GUARD_PFI_DATABASE_POSTGRESQL_VALUE_H_
 
 #include <libpq-fe.h>
 
@@ -47,3 +48,4 @@ pfi::lang::shared_ptr<std::string> sql_to_str(pfi::lang::shared_ptr<sql_value> p
 } // postgresql
 } // database
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_POSTGRESQL_VALUE_H_
