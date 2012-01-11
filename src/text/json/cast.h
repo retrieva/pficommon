@@ -65,14 +65,28 @@ template <class T>
 T json_cast_with_default(const json &js, const T &def = T());
 
 template <>
-inline int64_t json_cast_impl(const json &js)
+inline long int json_cast_impl(const json &js)
 {
   const json_integer &p=dynamic_cast<const json_integer&>(*js.get());
   return p.get();
 }
 
 template <>
-inline int64_t json_cast_with_default(const json &js, const int64_t &def)
+inline long int json_cast_with_default(const json &js, const long int &def)
+{
+  const json_integer *p=dynamic_cast<const json_integer*>(js.get());
+  return p?p->get():def;
+}
+
+template <>
+inline long long int json_cast_impl(const json &js)
+{
+  const json_integer &p=dynamic_cast<const json_integer&>(*js.get());
+  return p.get();
+}
+
+template <>
+inline long long int json_cast_with_default(const json &js, const long long int &def)
 {
   const json_integer *p=dynamic_cast<const json_integer*>(js.get());
   return p?p->get():def;

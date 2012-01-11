@@ -234,6 +234,8 @@ TEST(json, from_json)
   {
     json j(new json_integer(123));
     EXPECT_EQ(123, json_cast<int>(j));
+    EXPECT_EQ(123, json_cast<long int>(j));
+    EXPECT_EQ(123, json_cast<long long int>(j));
   }
   {
     json j(new json_float(3.14));
