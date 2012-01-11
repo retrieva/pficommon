@@ -31,24 +31,44 @@
 
 #pragma once
 
-#include "noncopyable.h"
+#include <algorithm>
+#include "safe_bool.h"
 
 namespace pfi{
 namespace lang{
 
 template <class T>
-class scoped_ptr : noncopyable{
+class scoped_ptr : public safe_bool<scoped_ptr<T> > {
 public:
-  explicit scoped_ptr(T *p) :p(p){}
-  ~scoped_ptr(){ delete p; }
+  explicit scoped_ptr(T* p = 0) : p_(p) {}
+  ~scoped_ptr(){ delete p_; }
 
-  T &operator*() const { return *get(); }
-  T *operator->() const { return get(); }
-  T *get() const { return p; }
+  bool bool_test() const { return p_; }
+
+  T& operator*() const { return *get(); }
+  T* operator->() const { return get(); }
+  T* get() const { return p_; }
+
+  void reset(T* p = 0) {
+      scoped_ptr tmp(p);
+      swap(tmp);
+  }
+  void swap(scoped_ptr<T>& p) {
+      std::swap(p_, p.p_);
+  }
 
 private:
-  T *p;
+  scoped_ptr(scoped_ptr const&);
+  scoped_ptr& operator=(scoped_ptr const&);
+
+  T* p_;
 };
+
+template <typename T>
+void swap(scoped_ptr<T>& x, scoped_ptr<T>& y)
+{
+    x.swap(y);
+}
 
 } // lang
 } // pfi
