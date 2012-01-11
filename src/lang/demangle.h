@@ -14,9 +14,7 @@ class malloced_string_holder {
 public:
     explicit malloced_string_holder(char const* s)
         : str_(s)
-    {
-        str_ = s;
-    }
+    {}
 
     ~malloced_string_holder() {
         ::std::free(static_cast<void*>(const_cast<char*>(str_)));
