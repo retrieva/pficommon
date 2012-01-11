@@ -21,6 +21,7 @@ def build(bld):
       'sysstat.cpp',
       'mmapper.cpp'],
     target = 'pficommon_system',
+    vnum = bld.env['VERSION'],
     includes = '.')
 
   bld.program(
