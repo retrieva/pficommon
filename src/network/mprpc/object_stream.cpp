@@ -39,6 +39,11 @@
 #include <unistd.h>
 
 #include "socket.h"
+#include "exception.h"
+#include "../../system/time_util.h"
+
+using pfi::system::time::clock_time;
+using pfi::system::time::get_clock_time;
 
 namespace pfi {
 namespace network {
@@ -58,8 +63,10 @@ object_stream::~object_stream()
 	::close(iofd);
 }
 
-int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone)
+int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone,
+			double timeout_sec)
 {
+        clock_time start = get_clock_time();
 	while(true) {
 		if(unpacker.execute()) {
 			*obj = unpacker.data();
@@ -76,6 +83,9 @@ int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone
 			if(rl > 0) break;
 			if(rl == 0) { return -1; }
 			if(errno == EINTR) { continue; }
+			if(timeout_sec < (double)(get_clock_time() - start)){
+			  throw rpc_timeout_error("timeout");
+			}
 			if(errno == EAGAIN) { continue; }
 			return -1;
 		}
@@ -84,10 +94,11 @@ int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone
 	}
 }
 
-int object_stream::write(const void* data, size_t size)
+int object_stream::write(const void* data, size_t size, double timeout_sec)
 {
 	const char* p = static_cast<const char*>(data);
 	const char* const pend = p + size;
+        clock_time start = get_clock_time();
 	while(p < pend) {
 		ssize_t rl = ::write(iofd, p, pend-p);
 		if(rl <= 0) {
@@ -95,6 +106,9 @@ int object_stream::write(const void* data, size_t size)
 				return -1;
 			}
 			if(errno == EINTR) { continue; }
+			if(timeout_sec < (double)(get_clock_time() - start)){
+			  throw rpc_timeout_error("timeout");
+			}
 			if(errno == EAGAIN) { continue; }
 			return -1;
 		}

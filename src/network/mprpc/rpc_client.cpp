@@ -65,7 +65,7 @@ pfi::lang::shared_ptr<rpc_stream> rpc_client::get_connection()
 			continue;
 		}
 
-		ss.reset( new rpc_stream(sock.get()) );
+		ss.reset( new rpc_stream(sock.get(), timeout_sec) );
 		sock.release();
 
 		break;

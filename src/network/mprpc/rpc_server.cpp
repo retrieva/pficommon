@@ -109,7 +109,7 @@ void rpc_server::process()
 			}
 		}
 
-		pfi::lang::shared_ptr<rpc_stream> rs(new rpc_stream(ns.get()));
+		pfi::lang::shared_ptr<rpc_stream> rs(new rpc_stream(ns.get(), timeout_sec));
 		ns.release();
 
 		while(true) {
