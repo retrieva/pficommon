@@ -7,4 +7,5 @@ def build(bld):
     source = 'connection.cpp statement.cpp value.cpp',
     target = 'pficommon_database_mysql',
     includes = '. ..',
+    vnum = bld.env['VERSION'],
     use = 'pficommon_concurrent MYSQL')

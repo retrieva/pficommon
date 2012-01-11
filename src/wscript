@@ -26,6 +26,7 @@ def build(bld):
   b = bld.shlib(
     source = 'empty.cpp',
     target = 'pficommon',
+    vnum = bld.env['VERSION'],
     use = [
       'pficommon_concurrent',
       'pficommon_data',

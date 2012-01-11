@@ -14,6 +14,7 @@ def build(bld):
   bld.shlib(
     source = 'random/mersenne_twister.cpp',
     target = 'pficommon_math',
+    vnum = bld.env['VERSION'],
     includes = '.')
   
   def t(src):

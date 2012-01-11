@@ -56,11 +56,13 @@ def build(bld):
     source = 'socket.cpp ipv4.cpp dns.cpp uri.cpp',
     target = 'pficommon_network_base',
     includes = '.',
+    vnum = bld.env['VERSION'],
     use = 'pficommon_concurrent')
   
   pfin = bld.shlib(
     source = '',
     target = 'pficommon_network',
+    vnum = bld.env['VERSION'],
     use = [
       'pficommon_network_base',
       'pficommon_network_http',

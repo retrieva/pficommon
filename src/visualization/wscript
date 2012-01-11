@@ -27,6 +27,7 @@ def build(bld):
   v = bld.shlib(
     source = ['empty.cpp'],
     target = 'pficommon_visualization',
+    vnum = bld.env['VERSION'],
     use =  [])
   
   bld.program(

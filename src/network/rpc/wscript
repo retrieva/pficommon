@@ -17,4 +17,5 @@ def build(bld):
     source = 'base.cpp',
     target = 'pficommon_network_rpc',
     includes = '. ..',
+    vnum = bld.env['VERSION'],
     use = 'pficommon_network_base pficommon_concurrent pficommon_system')

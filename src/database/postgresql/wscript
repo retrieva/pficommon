@@ -7,4 +7,5 @@ def build(bld):
     source = 'connection.cpp statement.cpp result.cpp value.cpp',
     target = 'pficommon_database_postgresql',
     includes = '. ..',
+    vnum = bld.env['VERSION'],
     use = 'PGSQL')
