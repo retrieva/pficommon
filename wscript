@@ -24,7 +24,7 @@ def configure(conf):
 
   env = conf.env
   ver = env.CC_VERSION
-  if env.COMPILER_CXX == 'g++' and ver[0] >= 4 and ver[1] >= 6:
+  if env.COMPILER_CXX == 'g++' and int(ver[0]) >= 4 and int(ver[1]) >= 6:
     env.append_unique(
       'CXXFLAGS',
       ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer'])
