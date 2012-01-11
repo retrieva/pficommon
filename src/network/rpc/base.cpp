@@ -112,9 +112,7 @@ void rpc_server::process(shared_ptr<server_socket, threading_model::multi_thread
       }
 
       int req_ver;
-      ia>>req_ver;
-
-      if (req_ver!=version){
+      if (ia >> req_ver && req_ver!=version){
 	string msg(string("VersionMismatch ")+lexical_cast<string>(version)+" "+lexical_cast<string>(req_ver));
 	oa<<msg;
 	oa.flush();

@@ -116,7 +116,7 @@
 		  << "(a" #ADD "b)" #MUL "c=" << rhs << endl;		\
       }									\
       T3 lhs2=c MUL a ADD c MUL b,rhs2=c MUL (a ADD b);			\
-      if(!EXPECT_EQ(lhs,rhs)){						\
+      if(!EXPECT_EQ(lhs2,rhs2)){						\
 	std::cerr << "distributivity broken for " << endl;		\
 	std::cerr << "a=" << a << endl;					\
 	std::cerr << "b=" << b << endl;					\
