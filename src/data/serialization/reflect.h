@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_REFLECT_H_
+#define INCLUDE_GUARD_PFI_DATA_SERIALIZATION_REFLECT_H_
 
 #include "base.h"
 
@@ -306,3 +307,4 @@ inline void serialize(reflection &ref, class_name &cn)
 #define MEMBER(x) pfi::data::serialization::named_value<typeof(x)>(#x, x).get()
 #define NAMED_MEMBER(n, x) pfi::data::serialization::named_value<typeof(x)>(n, x).get()
 #endif
+#endif // #ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_REFLECT_H_

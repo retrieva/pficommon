@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_LANG_NONCOPYABLE_H_
+#define INCLUDE_GUARD_PFI_LANG_NONCOPYABLE_H_
 
 namespace pfi{
 namespace lang{
@@ -50,3 +51,4 @@ typedef noncopyable_::noncopyable noncopyable;
 
 } // lang
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_NONCOPYABLE_H_

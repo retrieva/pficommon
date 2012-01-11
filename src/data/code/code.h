@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATA_CODE_CODE_H_
+#define INCLUDE_GUARD_PFI_DATA_CODE_CODE_H_
 
 #include <cstdio>
 #include <vector>
@@ -123,3 +124,4 @@ namespace code {
 } // code
 } // data
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATA_CODE_CODE_H_

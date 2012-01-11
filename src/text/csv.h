@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_TEXT_CSV_H_
+#define INCLUDE_GUARD_PFI_TEXT_CSV_H_
 
 #include <iterator>
 #include <vector>
@@ -238,3 +239,4 @@ void parse_csv(const std::string &str,
 
 } // text
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_TEXT_CSV_H_

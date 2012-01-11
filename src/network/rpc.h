@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_NETWORK_RPC_H_
+#define INCLUDE_GUARD_PFI_NETWORK_RPC_H_
 
 #include "rpc/base.h"
 
@@ -76,3 +77,4 @@
   }									\
   typedef _client_impl::base##_client base##_client;			\
 
+#endif // #ifndef INCLUDE_GUARD_PFI_NETWORK_RPC_H_

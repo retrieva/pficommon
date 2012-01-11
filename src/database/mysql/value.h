@@ -32,7 +32,8 @@
 // See also FOSS License Exception.
 // Link: http://www.mysql.com/about/legal/licensing/foss-exception/
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_VALUE_H_
+#define INCLUDE_GUARD_PFI_DATABASE_MYSQL_VALUE_H_
 
 #include <mysql.h>
 
@@ -50,3 +51,4 @@ void to_bind(pfi::lang::shared_ptr<sql_value> p, MYSQL_BIND &bind);
 } // postgresql
 } // database
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_VALUE_H_

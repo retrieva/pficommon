@@ -29,10 +29,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATABASE_DATABASE_H_
+#define INCLUDE_GUARD_PFI_DATABASE_DATABASE_H_
 
 #include "connection.h"
 #include "statement.h"
 #include "type.h"
 #include "util.h"
 #include "exception.h"
+#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_DATABASE_H_

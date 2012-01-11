@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_NETWORK_MPRPC_RPC_CLIENT_H_
+#define INCLUDE_GUARD_PFI_NETWORK_MPRPC_RPC_CLIENT_H_
 
 #include "../../lang/bind.h"
 #include "../../lang/function.h"
@@ -72,3 +73,4 @@ pfi::lang::function<T> rpc_client::call(const std::string &name)
 }  // namespace network
 }  // namespace pfi
 
+#endif // #ifndef INCLUDE_GUARD_PFI_NETWORK_MPRPC_RPC_CLIENT_H_

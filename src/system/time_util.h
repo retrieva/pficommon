@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_SYSTEM_TIME_UTIL_H_
+#define INCLUDE_GUARD_PFI_SYSTEM_TIME_UTIL_H_
 
 #include <stdint.h>
 
@@ -126,3 +127,4 @@ clock_time get_clock_time();
 } // time
 } // system
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_SYSTEM_TIME_UTIL_H_
