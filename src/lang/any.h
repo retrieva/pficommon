@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_LANG_ANY_H_
+#define INCLUDE_GUARD_PFI_LANG_ANY_H_
 
 #include <algorithm>
 #include <typeinfo>
@@ -125,3 +126,4 @@ const T &any_cast(const any &a)
 
 } // lang
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_ANY_H_

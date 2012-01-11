@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATA_SUFFIX_ARRAY_LCP_H_
+#define INCLUDE_GUARD_PFI_DATA_SUFFIX_ARRAY_LCP_H_
 
 #include <vector>
 #include <iterator>
@@ -70,3 +71,4 @@ namespace suffix_array {
 } // suffix_array
 } // data
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATA_SUFFIX_ARRAY_LCP_H_

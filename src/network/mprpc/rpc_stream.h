@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_NETWORK_MPRPC_RPC_STREAM_H_
+#define INCLUDE_GUARD_PFI_NETWORK_MPRPC_RPC_STREAM_H_
 
 #include "object_stream.h"
 #include "message.h"
@@ -105,3 +106,4 @@ bool rpc_stream::send_response(uint32_t msgid, const R& retval, const E& error)
 }  // namespace network
 }  // namespace pfi
 
+#endif // #ifndef INCLUDE_GUARD_PFI_NETWORK_MPRPC_RPC_STREAM_H_

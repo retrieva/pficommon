@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_MATH_RANDOM_H_
+#define INCLUDE_GUARD_PFI_MATH_RANDOM_H_
 
 #include <cmath>
 #include <vector>
@@ -172,3 +173,4 @@ bool sample_without_replacement(RAND& r, int n, int k, std::vector<int>& res) {
 } // random
 } // math
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_MATH_RANDOM_H_

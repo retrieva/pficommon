@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_LANG_SINGLETON_H_
+#define INCLUDE_GUARD_PFI_LANG_SINGLETON_H_
 
 #include "../concurrent/lock.h"
 #include "../concurrent/mutex.h"
@@ -64,3 +65,4 @@ pfi::concurrent::mutex singleton<T>::m;
 
 } // lang
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_SINGLETON_H_

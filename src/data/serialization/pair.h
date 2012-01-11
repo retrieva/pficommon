@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_PAIR_H_
+#define INCLUDE_GUARD_PFI_DATA_SERIALIZATION_PAIR_H_
 
 #include "base.h"
 
@@ -48,3 +49,4 @@ void serialize(Archive &ar, std::pair<A,B> &m)
 } // serializatin
 } // data
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_PAIR_H_

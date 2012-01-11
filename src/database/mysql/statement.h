@@ -32,7 +32,8 @@
 // See also FOSS License Exception.
 // Link: http://www.mysql.com/about/legal/licensing/foss-exception/
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_STATEMENT_H_
+#define INCLUDE_GUARD_PFI_DATABASE_MYSQL_STATEMENT_H_
 
 #include <vector>
 #include <string>
@@ -78,3 +79,4 @@ private:
 } // mysql
 } // database
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_STATEMENT_H_

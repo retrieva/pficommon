@@ -29,7 +29,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#ifndef INCLUDE_GUARD_PFI_CONCURRENT_RWMUTEX_H_
+#define INCLUDE_GUARD_PFI_CONCURRENT_RWMUTEX_H_
 
 #include <memory>
 
@@ -205,3 +206,4 @@ typedef scoped_rwlock<wlock_func> scoped_wlock;
 
 } // concurrent
 } // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_CONCURRENT_RWMUTEX_H_
