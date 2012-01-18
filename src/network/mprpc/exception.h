@@ -65,6 +65,13 @@ public:
 	~rpc_type_error() throw() {}
 };
 
+class rpc_timeout_error : public rpc_error {
+public:
+	rpc_timeout_error(const std::string& msg)
+		: rpc_error(msg){}
+	~rpc_timeout_error() throw() {}
+};
+
 class method_not_found : public rpc_error {
 public:
 	method_not_found(const std::string &name)
