@@ -7,6 +7,7 @@ out = 'build'
 import Options
 import sys
 import os
+import re
 
 subdirs = 'src tools'
 
@@ -81,14 +82,25 @@ def build(bld):
       'src/pfi-config.h',
       ])
 
+  bld.recurse(subdirs)
+  
+  ls = ''
+  for tasks in bld.get_build_iterator():
+    if tasks == []:
+      break
+    for task in tasks:
+      for out in task.outputs:
+        o = str(out)
+        if re.match(r'libpficommon.*\.so$', o):
+          ls = ls + ' -l' + o[3:-3]
+
   bld(source = 'pficommon.pc.in',
       prefix = bld.env['PREFIX'],
       exec_prefix = '${prefix}',
       libdir = bld.env['LIBDIR'],
+      libs = ls,
       includedir = '${prefix}/include',
       PACKAGE = APPNAME,
       VERSION = VERSION)
 
   bld.install_files(os.path.join(bld.env['LIBDIR'], 'pkgconfig'), 'pficommon.pc')
-  
-  bld.recurse(subdirs)
