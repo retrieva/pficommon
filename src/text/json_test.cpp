@@ -284,6 +284,94 @@ TEST(json, from_json)
   }
 }
 
+TEST(json, is)
+{
+  {
+    json j(new json_integer(123));
+    EXPECT_TRUE(is<json_value>(j));
+    EXPECT_TRUE(is<json_number>(j));
+    EXPECT_TRUE(is<json_integer>(j));
+    EXPECT_FALSE(is<json_float>(j));
+    EXPECT_FALSE(is<json_bool>(j));
+    EXPECT_FALSE(is<json_string>(j));
+    EXPECT_FALSE(is<json_array>(j));
+    EXPECT_FALSE(is<json_object>(j));
+    EXPECT_FALSE(is<json_null>(j));
+  }
+  {
+    json j(new json_float(3.14));
+    EXPECT_TRUE(is<json_value>(j));
+    EXPECT_TRUE(is<json_number>(j));
+    EXPECT_FALSE(is<json_integer>(j));
+    EXPECT_TRUE(is<json_float>(j));
+    EXPECT_FALSE(is<json_bool>(j));
+    EXPECT_FALSE(is<json_string>(j));
+    EXPECT_FALSE(is<json_array>(j));
+    EXPECT_FALSE(is<json_object>(j));
+    EXPECT_FALSE(is<json_null>(j));
+  }
+  {
+    json j(new json_string("hell, world!"));
+    EXPECT_TRUE(is<json_value>(j));
+    EXPECT_FALSE(is<json_number>(j));
+    EXPECT_FALSE(is<json_integer>(j));
+    EXPECT_FALSE(is<json_float>(j));
+    EXPECT_FALSE(is<json_bool>(j));
+    EXPECT_TRUE(is<json_string>(j));
+    EXPECT_FALSE(is<json_array>(j));
+    EXPECT_FALSE(is<json_object>(j));
+    EXPECT_FALSE(is<json_null>(j));
+  }
+  {
+    json j(new json_bool(true));
+    EXPECT_TRUE(is<json_value>(j));
+    EXPECT_FALSE(is<json_number>(j));
+    EXPECT_FALSE(is<json_integer>(j));
+    EXPECT_FALSE(is<json_float>(j));
+    EXPECT_TRUE(is<json_bool>(j));
+    EXPECT_FALSE(is<json_string>(j));
+    EXPECT_FALSE(is<json_array>(j));
+    EXPECT_FALSE(is<json_object>(j));
+    EXPECT_FALSE(is<json_null>(j));
+  }
+  {
+    json j(new json_array());
+    EXPECT_TRUE(is<json_value>(j));
+    EXPECT_FALSE(is<json_number>(j));
+    EXPECT_FALSE(is<json_integer>(j));
+    EXPECT_FALSE(is<json_float>(j));
+    EXPECT_FALSE(is<json_bool>(j));
+    EXPECT_FALSE(is<json_string>(j));
+    EXPECT_TRUE(is<json_array>(j));
+    EXPECT_FALSE(is<json_object>(j));
+    EXPECT_FALSE(is<json_null>(j));
+  }
+  {
+    json j(new json_object());
+    EXPECT_TRUE(is<json_value>(j));
+    EXPECT_FALSE(is<json_number>(j));
+    EXPECT_FALSE(is<json_integer>(j));
+    EXPECT_FALSE(is<json_float>(j));
+    EXPECT_FALSE(is<json_bool>(j));
+    EXPECT_FALSE(is<json_string>(j));
+    EXPECT_FALSE(is<json_array>(j));
+    EXPECT_TRUE(is<json_object>(j));
+    EXPECT_FALSE(is<json_null>(j));
+  }
+  {
+    json j(new json_null());
+    EXPECT_TRUE(is<json_value>(j));
+    EXPECT_FALSE(is<json_number>(j));
+    EXPECT_FALSE(is<json_integer>(j));
+    EXPECT_FALSE(is<json_float>(j));
+    EXPECT_FALSE(is<json_bool>(j));
+    EXPECT_FALSE(is<json_string>(j));
+    EXPECT_FALSE(is<json_array>(j));
+    EXPECT_FALSE(is<json_object>(j));
+    EXPECT_TRUE(is<json_null>(j));
+  }
+}
+
 TEST(json, parse)
 {
   {
