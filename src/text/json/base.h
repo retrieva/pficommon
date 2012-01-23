@@ -176,7 +176,7 @@ private:
 class json_number : public json_value{
 };
 
-class json_integer : public json_value{
+class json_integer : public json_number{
 public:
   json_integer(int64_t n) : dat(n){}
 
@@ -190,7 +190,7 @@ private:
   int64_t dat;
 };
 
-class json_float : public json_value{
+class json_float : public json_number{
 public:
   json_float(double d) : dat(d){}
 
