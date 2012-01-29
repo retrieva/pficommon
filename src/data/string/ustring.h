@@ -58,10 +58,6 @@ namespace string {
 
     ustring(const std::basic_string<uchar> &str)
       : std::basic_string<uchar>(str) {}
-
-    operator std::basic_string<uchar>() const {
-      return std::basic_string<uchar>(*this);
-    }
   };
   
   // string <-> ustring conversion
@@ -112,7 +108,7 @@ namespace string {
   template <class OutputIterator>
   void uchar_to_chars(uchar c, OutputIterator &out){
     char b;
-    if(0 <= c && c <= 0x007f){
+    if(c <= 0x007f){
       b = c;
       *out++ = b;
     }else if(0x0080 <= c && c <= 0x07ff){

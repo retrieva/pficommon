@@ -425,7 +425,7 @@ int stream_socket::buf_elem()
 
 server_socket::server_socket()
   : sock(-1)
-  , port_num(-1)
+  , port_num(~uint16_t())
   , timeout_sec(-1)
   , connected(false)
 {
