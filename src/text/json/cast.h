@@ -108,15 +108,19 @@ inline int json_cast_with_default(const json &js, const int &def)
 template <>
 inline double json_cast_impl(const json &js)
 {
-  const json_float &p=dynamic_cast<const json_float&>(*js.get());
-  return p.get();
+  const json_float *f=dynamic_cast<const json_float*>(js.get());
+  if (f) return f->get();
+  const json_integer &i=dynamic_cast<const json_integer&>(*js.get());
+  return i.get();
 }
 
 template <>
 inline double json_cast_with_default(const json &js, const double &def)
 {
-  const json_float *p=dynamic_cast<const json_float*>(js.get());
-  return p?p->get():def;
+  const json_float *f=dynamic_cast<const json_float*>(js.get());
+  if (f) return f->get();
+  const json_integer *i=dynamic_cast<const json_integer*>(js.get());
+  return i?i->get():def;
 }
 
 template <>
