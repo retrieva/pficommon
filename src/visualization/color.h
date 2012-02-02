@@ -54,7 +54,7 @@ struct rgb{
 
 
 template <class quantum>
-const bool operator==(const rgb<quantum> &a,const rgb<quantum> &x){
+bool operator==(const rgb<quantum> &a,const rgb<quantum> &x){
   return x.r==a.r && x.g==a.g && x.b==a.b;
 }
 
