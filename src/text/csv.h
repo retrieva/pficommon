@@ -94,6 +94,7 @@ private:
 
   class parser{
   public:
+    virtual ~parser() {}
     virtual bool next() = 0;
     virtual row_type &get() = 0;
     virtual const row_type &get() const = 0;
