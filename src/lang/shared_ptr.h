@@ -182,19 +182,19 @@ private:
 template <class T, class U>
 bool operator==(const shared_ptr<T> &a, const shared_ptr<U> &b)
 {
-  return reinterpret_cast<U*>(a.get())==b.get();
+  return a.get() == b.get();
 }
 
 template <class T, class U>
 bool operator!=(const shared_ptr<T> &a, const shared_ptr<U> &b)
 {
-  return reinterpret_cast<U*>(a.get())!=b.get();
+  return !(a == b);
 }
 
 template <class T, class U>
 bool operator<(const shared_ptr<T> &a, const shared_ptr<U> &b)
 {
-  return reinterpret_cast<U*>(a.get())<b.get();
+  return a.get() < b.get();
 }
 
 template <class T>
