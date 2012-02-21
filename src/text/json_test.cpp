@@ -284,6 +284,45 @@ TEST(json, from_json)
   }
 }
 
+TEST(json, size)
+{
+  {
+    json j;
+    EXPECT_THROW(j.size(), json_bad_cast<size_t>);
+  }
+  {
+    json j(new json_integer(0));
+    EXPECT_THROW(j.size(), json_bad_cast<size_t>);
+  }
+  {
+    json j(new json_float(0));
+    EXPECT_THROW(j.size(), json_bad_cast<size_t>);
+  }
+  {
+    json j(new json_bool(false));
+    EXPECT_THROW(j.size(), json_bad_cast<size_t>);
+  }
+  {
+    json j(new json_null);
+    EXPECT_THROW(j.size(), json_bad_cast<size_t>);
+  }
+  {
+    json j(new json_object);
+    EXPECT_EQ(0, j.size());
+    j["1"];
+    j["2"];
+    j["3"];
+    EXPECT_EQ(3, j.size());
+  }
+  {
+    json j(new json_array);
+    EXPECT_EQ(0, j.size());
+    j.add(json(new json_null));
+    j.add(json(new json_integer(3)));
+    EXPECT_EQ(2, j.size());
+  }
+}
+
 TEST(json, is)
 {
   {

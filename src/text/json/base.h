@@ -305,6 +305,7 @@ class json_object : public json_value{
 public:
   typedef std::map<std::string, json>::iterator iterator;
   typedef std::map<std::string, json>::const_iterator const_iterator;
+  typedef std::map<std::string, json>::size_type size_type;
   
   json_object(){}
 
@@ -332,6 +333,8 @@ public:
 
   iterator end(){ return member.end(); }
   const_iterator end() const { return member.end(); }
+
+  size_type size() const { return member.size(); }
 
   void print(std::ostream &os, bool escape) const {
     bool fst=true;
@@ -457,10 +460,13 @@ inline void json::add(const json &v)
 
 inline size_t json::size() const
 {
-  json_array* p = dynamic_cast<json_array*>(val.get());
-  if (!p)
-    throw json_bad_cast<size_t>("You failed to use the json as an array.");
-  return p->size();
+  if (json_array* p = dynamic_cast<json_array*>(val.get()))
+    return p->size();
+
+  if (json_object* p = dynamic_cast<json_object*>(val.get()))
+    return p->size();
+
+  throw json_bad_cast<size_t>("You failed to use the json as an array or an object.");
 }
 
 inline json::iterator json::begin()
