@@ -84,7 +84,7 @@ int get_sysstat(sysstat_ret& st)
 
 static double get_loadavg()
 {
-#if defined(__linux__)
+#if defined(__linux__) || defined(__FreeBSD_kernel__)
   ifstream fin("/proc/loadavg");
 
   string avg1m;
@@ -111,7 +111,7 @@ static double get_loadavg()
 
 static uint64_t get_total_memory()
 {
-#if defined(__linux__)
+#if defined(__linux__) || defined(__FreeBSD_kernel__)
   ifstream fin("/proc/meminfo");
   string s;
 
@@ -148,7 +148,7 @@ static uint64_t get_total_memory()
 
 static uint64_t get_free_memory()
 {
-#if defined(__linux__)
+#if defined(__linux__) || defined(__FreeBSD_kernel__)
   ifstream fin("/proc/meminfo");
   string s;
 

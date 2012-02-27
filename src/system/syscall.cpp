@@ -44,7 +44,7 @@ namespace syscall{
 string get_error_msg(int err)
 {
   char buf[BUF_SIZE+1];
-#if defined(__linux__) 
+#if defined(__linux__) || defined(__FreeBSD_kernel__)
   char *ret;
   ret=strerror_r(err,buf,BUF_SIZE);
   return string(ret);
