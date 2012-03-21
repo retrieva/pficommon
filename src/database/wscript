@@ -15,7 +15,10 @@ def configure(conf):
                       package = '',
                       uselib_store = 'MYSQL',
                       mandatory = False):
-      conf.env.BUILD_MYSQL = True
+      if conf.check_cxx(header_name = 'mysql.h',
+                        use = 'MYSQL',
+                        mandatory = False):
+        conf.env.BUILD_MYSQL = True
 
   conf.env.BUILD_PGSQL = False
   if not Options.options.disable_database:
