@@ -134,12 +134,13 @@ struct example2{
 };
 
 struct example3{
-  example3(): a(1), b(3.14), c("hoge"), d(true) {}
+  example3(): a(1), b(3.14), c("hoge"), d(true), e(3.14) {}
 
   int a;
   double b;
   string c;
   bool d;
+  float e;
 
   template <class Archive>
   void serialize(Archive &ar){
@@ -147,7 +148,8 @@ struct example3{
       & MEMBER(a)
       & MEMBER(b)
       & MEMBER(c)
-      & MEMBER(d);
+      & MEMBER(d)
+      & MEMBER(e);
   }
 
   bool operator==(const example3 &r) const{
@@ -155,7 +157,8 @@ struct example3{
       a==r.a &&
       b==r.b &&
       c==r.c &&
-      d==r.d;
+      d==r.d &&
+      e==r.e;
   }
 };
 
@@ -179,6 +182,19 @@ TEST(json, to_json)
     ostringstream oss;
     oss<<to_json(n);
     EXPECT_EQ("123", oss.str());
+  }
+  {
+    float f=0.25f;
+    ostringstream oss;
+    oss<<to_json(f);
+    EXPECT_EQ("0.25", oss.str());
+  }
+  {
+    float f=3.14f;
+    ostringstream oss;
+    oss<<to_json(f);
+    EXPECT_EQ("3.1400001049", oss.str());
+    // FIXME: cause of precision, it may print some fraction.
   }
   {
     double d=3.14;
@@ -239,6 +255,7 @@ TEST(json, from_json)
   }
   {
     json j(new json_float(3.14));
+    EXPECT_EQ(3.14f, json_cast<float>(j));
     EXPECT_EQ(3.14, json_cast<double>(j));
   }
   {
@@ -281,6 +298,19 @@ TEST(json, from_json)
     mm["hoge"]=3.14;
 
     EXPECT_EQ(true, (mm==json_cast<map<string, double> >(j)));
+  }
+
+  {
+    json j(new json_object());
+    j["abc"]=json(new json_float(1.23));
+    j["hoge"]=json(new json_float(3.14));
+
+    map<string, float> mm;
+    
+    mm["abc"]=1.23f;
+    mm["hoge"]=3.14f;
+
+    EXPECT_EQ(true, (mm==json_cast<map<string, float> >(j)));
   }
 }
 
@@ -586,6 +616,8 @@ TEST(json, with_default)
     EXPECT_EQ(json_cast_with_default<int>(js, 1), 1);
     EXPECT_EQ(json_cast_with_default<double>(js), 0);
     EXPECT_EQ(json_cast_with_default<double>(js, 3.14), 3.14);
+    EXPECT_EQ(json_cast_with_default<float>(js), 0);
+    EXPECT_EQ(json_cast_with_default<float>(js, 3.14), 3.14f);
     EXPECT_EQ(json_cast_with_default<string>(js), "");
     EXPECT_EQ(json_cast_with_default<string>(js, "hoge"), "hoge");
     EXPECT_EQ(json_cast_with_default<bool>(js), false);

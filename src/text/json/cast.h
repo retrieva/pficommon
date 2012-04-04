@@ -106,6 +106,24 @@ inline int json_cast_with_default(const json &js, const int &def)
 }
 
 template <>
+inline float json_cast_impl(const json &js)
+{
+  const json_float *f=dynamic_cast<const json_float*>(js.get());
+  if (f) return f->get();
+  const json_integer &i=dynamic_cast<const json_integer&>(*js.get());
+  return i.get();
+}
+
+template <>
+inline float json_cast_with_default(const json &js, const float &def)
+{
+  const json_float *f=dynamic_cast<const json_float*>(js.get());
+  if (f) return f->get();
+  const json_integer *i=dynamic_cast<const json_integer*>(js.get());
+  return i?i->get():def;
+}
+
+template <>
 inline double json_cast_impl(const json &js)
 {
   const json_float *f=dynamic_cast<const json_float*>(js.get());
@@ -207,6 +225,12 @@ template <>
 inline void serialize(json &js, unsigned int &n)
 {
   js=json(new json_integer(n));
+}
+
+template <>
+inline void serialize(json &js, float &d)
+{
+  js=json(new json_float(d));
 }
 
 template <>
@@ -354,6 +378,18 @@ template <>
 inline void serialize(json_iarchive_cast &js, double &d)
 {
   d=json_cast<double>(js.get());
+}
+
+template <>
+inline void serialize(json_iarchive_cast_with_default &js, float &d)
+{
+  d=json_cast_with_default<float>(js.get(), d);
+}
+
+template <>
+inline void serialize(json_iarchive_cast &js, float &d)
+{
+  d=json_cast<float>(js.get());
 }
 
 template <>
