@@ -193,8 +193,8 @@ TEST(json, to_json)
     float f=3.14f;
     ostringstream oss;
     oss<<to_json(f);
-    EXPECT_EQ("3.1400001049", oss.str());
-    // FIXME: cause of precision, it may print some fraction.
+    EXPECT_EQ(3.14f, lexical_cast<float>(oss.str()));
+    // MEMO: cause of precision, it may print some fraction. so it need lexical_cast
   }
   {
     double d=3.14;
