@@ -184,23 +184,16 @@ TEST(json, to_json)
     EXPECT_EQ("123", oss.str());
   }
   {
-    float f=0.25f;
-    ostringstream oss;
-    oss<<to_json(f);
-    EXPECT_EQ("0.25", oss.str());
-  }
-  {
     float f=3.14f;
     ostringstream oss;
     oss<<to_json(f);
-    EXPECT_EQ(3.14f, lexical_cast<float>(oss.str()));
-    // MEMO: cause of precision, it may print some fraction. so it need lexical_cast
+    EXPECT_FLOAT_EQ(3.14f, lexical_cast<float>(oss.str()));
   }
   {
     double d=3.14;
     ostringstream oss;
     oss<<to_json(d);
-    EXPECT_EQ("3.14", oss.str());
+    EXPECT_DOUBLE_EQ(3.14, lexical_cast<double>(oss.str()));
   }
   {
     string s="hello, sofmap world!";
@@ -255,8 +248,8 @@ TEST(json, from_json)
   }
   {
     json j(new json_float(3.14));
-    EXPECT_EQ(3.14f, json_cast<float>(j));
-    EXPECT_EQ(3.14, json_cast<double>(j));
+    EXPECT_FLOAT_EQ(3.14f, json_cast<float>(j));
+    EXPECT_DOUBLE_EQ(3.14, json_cast<double>(j));
   }
   {
     json j(new json_string("hell, world!"));
@@ -446,32 +439,32 @@ TEST(json, parse)
   {
     istringstream iss("123");
     json j;iss>>j;
-    EXPECT_EQ("123", to_string(j));
+    EXPECT_EQ(123, json_cast<int>(j));
   }
   {
     istringstream iss("1.234567e-10");
     json j;iss>>j;
-    EXPECT_EQ("1.234567e-10", to_string(j));
+    EXPECT_DOUBLE_EQ(1.234567e-10, json_cast<double>(j));
   }
   {
     istringstream iss("\"hello, \\u0022json!\\\"\"");
     json j; iss>>j;
-    EXPECT_EQ("\"hello, \\\"json!\\\"\"", to_string(j));
+    EXPECT_EQ("hello, \"json!\"", json_cast<string>(j));
   }
   {
     istringstream iss("false");
     json j;iss>>j;
-    EXPECT_EQ("false", to_string(j));
+    EXPECT_EQ(false, json_cast<bool>(j));
   }
   {
     istringstream iss("null");
     json j;iss>>j;
-    EXPECT_EQ("null", to_string(j));
+    EXPECT_TRUE(is<json_null>(j));
   }
   {
     istringstream iss("true");
     json j;iss>>j;
-    EXPECT_EQ("true", to_string(j));
+    EXPECT_EQ(true, json_cast<bool>(j));
   }
 
   {
@@ -653,10 +646,10 @@ TEST(json, with_default)
     json js;
     EXPECT_EQ(json_cast_with_default<int>(js), 0);
     EXPECT_EQ(json_cast_with_default<int>(js, 1), 1);
-    EXPECT_EQ(json_cast_with_default<double>(js), 0);
-    EXPECT_EQ(json_cast_with_default<double>(js, 3.14), 3.14);
-    EXPECT_EQ(json_cast_with_default<float>(js), 0);
-    EXPECT_EQ(json_cast_with_default<float>(js, 3.14), 3.14f);
+    EXPECT_DOUBLE_EQ(json_cast_with_default<double>(js), 0);
+    EXPECT_DOUBLE_EQ(json_cast_with_default<double>(js, 3.14), 3.14);
+    EXPECT_FLOAT_EQ(json_cast_with_default<float>(js), 0);
+    EXPECT_FLOAT_EQ(json_cast_with_default<float>(js, 3.14), 3.14f);
     EXPECT_EQ(json_cast_with_default<string>(js), "");
     EXPECT_EQ(json_cast_with_default<string>(js, "hoge"), "hoge");
     EXPECT_EQ(json_cast_with_default<bool>(js), false);
