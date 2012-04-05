@@ -108,6 +108,8 @@ public:
   void print(std::ostream &os, bool escape) const;
   void pretty(std::ostream &os, bool escape) const;
 
+  json clone() const;
+
   static const bool is_read = false;
 
 private:
@@ -122,6 +124,8 @@ public:
   virtual void pretty(std::ostream &os, int level, bool escape) const {
     print(os, escape);
   }
+
+  virtual json_value *clone() const = 0;
 };
 
 class json_array : public json_value{
@@ -169,6 +173,19 @@ public:
     os<<']';
   }
 
+  json_value* clone() const {
+    json_array* arr = new json_array();
+    try {
+      for (size_t i=0; i<dat.size(); ++i) {
+        arr->add(dat[i].clone());
+      }
+      return arr;
+    } catch(...) {
+      delete arr;
+      throw;
+    }
+  }
+
 private:
   std::vector<json> dat;
 };
@@ -186,6 +203,10 @@ public:
     os<<dat;
   }
 
+  json_value* clone() const {
+    return new json_integer(dat);
+  }
+
 private:
   int64_t dat;
 };
@@ -201,6 +222,10 @@ public:
     os<<std::setprecision(12)
       <<dat
       <<std::setprecision(prec);
+  }
+
+  json_value* clone() const {
+    return new json_float(dat);
   }
 
 private:
@@ -233,6 +258,10 @@ public:
       }
     }
     os<<'\"';
+  }
+
+  json_value* clone() const {
+    return new json_string(dat);
   }
 
 private:
@@ -367,6 +396,19 @@ public:
     os<<'}';
   }
 
+  json_value* clone() const {
+    json_object *obj = new json_object();
+    try {
+      for (const_iterator it = member.begin(); it != member.end(); ++it) {
+        obj->add(it->first, it->second.clone());
+      }
+      return obj;
+    } catch(...) {
+      delete obj;
+      throw;
+    }
+  }
+
 private:
   std::map<std::string, json> member;
 };
@@ -381,6 +423,10 @@ public:
     os<<(dat?"true":"false");
   }
 
+  json_value* clone() const {
+    return new json_bool(dat);
+  }
+
 private:
   bool dat;
 };
@@ -391,6 +437,10 @@ public:
 
   void print(std::ostream &os, bool escape) const {
     os<<"null";
+  }
+
+  json_value* clone() const {
+    return new json_null();
   }
 };
 
@@ -510,6 +560,11 @@ inline void json::pretty(std::ostream &os, bool escape) const
 {
   val->pretty(os, 0, escape);
   os<<std::endl;
+}
+
+inline json json::clone() const
+{
+  return json(val->clone());
 }
 
 template <class T>

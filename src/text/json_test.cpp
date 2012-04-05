@@ -57,40 +57,40 @@ struct example1{
       
       template <class Archive>
       void serialize(Archive &ar){
-	ar & MEMBER(Url) & MEMBER(Height) & MEMBER(Width);
+        ar & MEMBER(Url) & MEMBER(Height) & MEMBER(Width);
       }
 
       bool operator==(const tn &r){
-	return
-	  Url==r.Url &&
-	  Height==r.Height &&
-	  Width==r.Width;
+        return
+          Url==r.Url &&
+          Height==r.Height &&
+          Width==r.Width;
       }
-      
+
     } Thumbnail;
 
     vector<int> IDs;
-    
+
     template <class Archive>
-    void serialize(Archive &ar){
-      ar & MEMBER(Width) & MEMBER(Height) & MEMBER(Title) 
-	 & MEMBER(Thumbnail) & MEMBER(IDs);
-    }
+      void serialize(Archive &ar){
+        ar & MEMBER(Width) & MEMBER(Height) & MEMBER(Title) 
+          & MEMBER(Thumbnail) & MEMBER(IDs);
+      }
 
     bool operator==(const img &r){
       return
-	Width==r.Width &&
-	Height==r.Height &&
-	Title==r.Title &&
-	Thumbnail==r.Thumbnail &&
-	IDs==r.IDs;
+        Width==r.Width &&
+        Height==r.Height &&
+        Title==r.Title &&
+        Thumbnail==r.Thumbnail &&
+        IDs==r.IDs;
     }
   } Image;
 
   template <class Archive>
-  void serialize(Archive &ar){
-    ar & MEMBER(Image);
-  }
+    void serialize(Archive &ar){
+      ar & MEMBER(Image);
+    }
 
   bool operator==(const example1 &r){
     return Image==r.Image;
@@ -577,6 +577,45 @@ TEST(json, pretty)
     ss>>via_json(w);
 
     EXPECT_EQ(true, v==w);
+  }
+}
+
+TEST(json, clone)
+{
+  {
+    example1 v;
+    v.Image.Width=800;
+    v.Image.Height=600;
+    v.Image.Title="View from 15th Floor";
+    v.Image.Thumbnail.Url="http://www.example.com/image/481989943";
+    v.Image.Thumbnail.Height=125;
+    v.Image.Thumbnail.Width="100";
+    v.Image.IDs.push_back(116);
+    v.Image.IDs.push_back(943);
+    v.Image.IDs.push_back(234);
+    v.Image.IDs.push_back(38793);
+
+    json js1 = to_json(v);
+    json js2 = js1;
+    json js3 = js1.clone();
+
+    js1["Image"]["IDs"][2] = new json_integer(42);
+    js1["Image"]["IDs"].add(new json_integer(105));
+
+    EXPECT_EQ(json_cast<int>(js1["Image"]["IDs"][2]), 42);
+    EXPECT_EQ(json_cast<int>(js2["Image"]["IDs"][2]), 42);
+    EXPECT_EQ(json_cast<int>(js3["Image"]["IDs"][2]), 234);
+
+    EXPECT_EQ(js1["Image"]["IDs"].size(), 5);
+    EXPECT_EQ(js2["Image"]["IDs"].size(), 5);
+    EXPECT_EQ(js3["Image"]["IDs"].size(), 4);
+
+    json js4 = js1["Image"]["Thumbnail"];
+    json js5 = js1["Image"]["Thumbnail"].clone();
+    js1["Image"]["Thumbnail"]["Height"] = new json_integer(200);
+
+    EXPECT_EQ(json_cast<int>(js4["Height"]), 200);
+    EXPECT_EQ(json_cast<int>(js5["Height"]), 125);
   }
 }
 
