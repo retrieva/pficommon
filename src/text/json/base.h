@@ -174,11 +174,16 @@ public:
   }
 
   json_value* clone() const {
-    json_array* cloned_value = new json_array();
-    for (size_t i=0; i<dat.size(); ++i) {
-      cloned_value->add(dat[i].clone());
+    json_array* arr = new json_array();
+    try {
+      for (size_t i=0; i<dat.size(); ++i) {
+        arr->add(dat[i].clone());
+      }
+      return arr;
+    } catch(...) {
+      delete arr;
+      throw;
     }
-    return cloned_value;
   }
 
 private:
@@ -392,11 +397,16 @@ public:
   }
 
   json_value* clone() const {
-    json_object *cloned_value = new json_object();
-    for (const_iterator it = member.begin(); it != member.end(); ++it) {
-      cloned_value->add(it->first, it->second.clone());
+    json_object *obj = new json_object();
+    try {
+      for (const_iterator it = member.begin(); it != member.end(); ++it) {
+        obj->add(it->first, it->second.clone());
+      }
+      return obj;
+    } catch(...) {
+      delete obj;
+      throw;
     }
-    return cloned_value;
   }
 
 private:
