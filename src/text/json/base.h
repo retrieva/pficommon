@@ -95,6 +95,8 @@ public:
   void add(const std::string &name, const json &v);
   void add(const json &v);
 
+  json merge(json &v);
+
   size_t size() const;
 
   iterator begin();
@@ -342,6 +344,17 @@ public:
     member[name]=j;
   }
 
+  json_object *merge(json_object *obj) {
+    json_object *ret = new json_object();
+    for (iterator it = this->begin(); it != this->end(); ++it) {
+      ret->add(it->first,it->second);
+    }
+    for (iterator it = obj->begin(); it != obj->end(); ++it) {
+      ret->add(it->first,it->second);
+    }
+    return ret;
+  }
+
   json &operator[](const std::string &name){
     return member[name];
   }
@@ -506,6 +519,17 @@ inline void json::add(const json &v)
   if (!p)
     throw json_bad_cast<void>("You failed to use the json as an array.");
   p->add(v);
+}
+
+inline json json::merge(json &v)
+{
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<void>("You failed to use the json as an object.");
+  json_object* q = dynamic_cast<json_object*>(v.get());
+  if (!q)
+    throw json_bad_cast<void>("You failed to use the json as an object.");
+  return json(p->merge(q));
 }
 
 inline size_t json::size() const
