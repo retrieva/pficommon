@@ -346,6 +346,38 @@ TEST(json, size)
   }
 }
 
+TEST(json, type)
+{
+  {
+    json j(new json_integer(0));
+    EXPECT_EQ(JSON_INTEGER, j.type());
+  }
+  {
+    json j(new json_float(0));
+    EXPECT_EQ(JSON_FLOAT, j.type());
+  }
+  {
+    json j(new json_string(""));
+    EXPECT_EQ(JSON_STRING, j.type());
+  }
+  {
+    json j(new json_bool(false));
+    EXPECT_EQ(JSON_BOOL, j.type());
+  }
+  {
+    json j(new json_array());
+    EXPECT_EQ(JSON_ARRAY, j.type());
+  }
+  {
+    json j(new json_object());
+    EXPECT_EQ(JSON_OBJECT, j.type());
+  }
+  {
+    json j(new json_null());
+    EXPECT_EQ(JSON_NULL, j.type());
+  }
+}
+
 TEST(json, is)
 {
   {
