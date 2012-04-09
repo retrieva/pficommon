@@ -525,10 +525,10 @@ inline json json::merge(json &v)
 {
   json_object* p = dynamic_cast<json_object*>(val.get());
   if (!p)
-    throw json_bad_cast<void>("You failed to use the json as an object.");
+    throw json_bad_cast<json>("You failed to use the json as an object.");
   json_object* q = dynamic_cast<json_object*>(v.get());
   if (!q)
-    throw json_bad_cast<void>("You failed to use the json as an object.");
+    throw json_bad_cast<json>("You failed to use the json as an object.");
   return json(p->merge(q));
 }
 
