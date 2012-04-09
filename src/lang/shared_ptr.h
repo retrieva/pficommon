@@ -115,7 +115,7 @@ public:
   }
 
   template <class Y>
-  shared_ptr<T> &operator=(const shared_ptr<Y, TM> &r){
+  shared_ptr &operator=(const shared_ptr<Y, TM> &r){
     shared_ptr s(r);
     swap(s);
     return *this;
