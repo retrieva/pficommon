@@ -192,7 +192,7 @@ C++型との相互変換
 jsonオブジェクトとC++の型との間で自動的に相互変換ができる。
 
 * json_integer <=> int
-* json_float <=> double
+* json_float <=> double,float
 * json_string <=> string
 * json_bool <=> bool
 * json_object <=> map<string, T>
