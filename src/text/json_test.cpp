@@ -325,7 +325,7 @@ TEST(json, merge)
 
     json js4 = js1.merge(js1);
     EXPECT_EQ(42, json_cast<int>(js4["a"]));
-    EXPECT_TRUE(is<json_null>(js4["b"]));
+    EXPECT_EQ(0, js4.count("b"));
     EXPECT_EQ(std::string("string"), json_cast<std::string>(js4["c"]));
   }
 
@@ -338,20 +338,20 @@ TEST(json, merge)
     json jn(new json_null());
     json jo(new json_object()); jo.add("key", new json_string("value"));
 
-    EXPECT_THROW(ji.merge(jo), json_bad_cast<void>);
-    EXPECT_THROW(jf.merge(jo), json_bad_cast<void>);
-    EXPECT_THROW(js.merge(jo), json_bad_cast<void>);
-    EXPECT_THROW(jb.merge(jo), json_bad_cast<void>);
-    EXPECT_THROW(ja.merge(jo), json_bad_cast<void>);
-    EXPECT_THROW(jn.merge(jo), json_bad_cast<void>);
+    EXPECT_THROW(ji.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(jf.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(js.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(jb.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(ja.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(jn.merge(jo), json_bad_cast<json>);
 
-    EXPECT_THROW(jo.merge(ji), json_bad_cast<void>);
-    EXPECT_THROW(jo.merge(jf), json_bad_cast<void>);
-    EXPECT_THROW(jo.merge(js), json_bad_cast<void>);
-    EXPECT_THROW(jo.merge(jb), json_bad_cast<void>);
-    EXPECT_THROW(jo.merge(ja), json_bad_cast<void>);
-    EXPECT_THROW(jo.merge(jn), json_bad_cast<void>);
-    EXPECT_THROW(jo.merge(jn), json_bad_cast<void>);
+    EXPECT_THROW(jo.merge(ji), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jf), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(js), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jb), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(ja), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jn), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jn), json_bad_cast<json>);
 
     EXPECT_NO_THROW(jo.merge(jo));
   }
