@@ -1,5 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
-// 
+// Copyright (c)2008-2011, Preferred Infrastructure Inc.  // 
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -350,31 +349,31 @@ TEST(json, type)
 {
   {
     json j(new json_integer(0));
-    EXPECT_EQ(JSON_INTEGER, j.type());
+    EXPECT_EQ(json::JSON_INTEGER, j.type());
   }
   {
     json j(new json_float(0));
-    EXPECT_EQ(JSON_FLOAT, j.type());
+    EXPECT_EQ(json::JSON_FLOAT, j.type());
   }
   {
     json j(new json_string(""));
-    EXPECT_EQ(JSON_STRING, j.type());
+    EXPECT_EQ(json::JSON_STRING, j.type());
   }
   {
     json j(new json_bool(false));
-    EXPECT_EQ(JSON_BOOL, j.type());
+    EXPECT_EQ(json::JSON_BOOL, j.type());
   }
   {
     json j(new json_array());
-    EXPECT_EQ(JSON_ARRAY, j.type());
+    EXPECT_EQ(json::JSON_ARRAY, j.type());
   }
   {
     json j(new json_object());
-    EXPECT_EQ(JSON_OBJECT, j.type());
+    EXPECT_EQ(json::JSON_OBJECT, j.type());
   }
   {
     json j(new json_null());
-    EXPECT_EQ(JSON_NULL, j.type());
+    EXPECT_EQ(json::JSON_NULL, j.type());
   }
 }
 

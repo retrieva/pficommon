@@ -48,16 +48,6 @@ namespace pfi{
 namespace text{
 namespace json{
 
-typedef enum {
-  JSON_NULL,
-  JSON_INTEGER,
-  JSON_FLOAT,
-  JSON_BOOL,
-  JSON_STRING,
-  JSON_ARRAY,
-  JSON_OBJECT,
-} json_type_t;
-
 class json_bad_cast_any : public std::bad_cast {
 public:
   explicit json_bad_cast_any(const std::string& message)
@@ -88,6 +78,16 @@ class json_value;
 
 class json{
 public:
+  typedef enum {
+    JSON_NULL,
+    JSON_INTEGER,
+    JSON_FLOAT,
+    JSON_BOOL,
+    JSON_STRING,
+    JSON_ARRAY,
+    JSON_OBJECT,
+  } json_type_t;
+
   typedef std::map<std::string, json>::iterator iterator;
   typedef std::map<std::string, json>::const_iterator const_iterator;
 
@@ -132,7 +132,7 @@ class json_value{
 public:
   virtual ~json_value(){}
 
-  virtual json_type_t type() const = 0;
+  virtual json::json_type_t type() const = 0;
 
   virtual void print(std::ostream &os, bool escape) const = 0;
   virtual void pretty(std::ostream &os, int level, bool escape) const {
@@ -146,8 +146,8 @@ class json_array : public json_value{
 public:
   json_array(){}
 
-  json_type_t type() const {
-    return JSON_ARRAY;
+  json::json_type_t type() const {
+    return json::JSON_ARRAY;
   }
 
   size_t size() const{
@@ -215,8 +215,8 @@ class json_integer : public json_number{
 public:
   json_integer(int64_t n) : dat(n){}
 
-  json_type_t type() const {
-    return JSON_INTEGER;
+  json::json_type_t type() const {
+    return json::JSON_INTEGER;
   }
 
   int64_t get() const { return dat; }
@@ -237,8 +237,8 @@ class json_float : public json_number{
 public:
   json_float(double d) : dat(d){}
 
-  json_type_t type() const {
-    return JSON_FLOAT;
+  json::json_type_t type() const {
+    return json::JSON_FLOAT;
   }
 
   double get() const { return dat; }
@@ -262,8 +262,8 @@ class json_string : public json_value{
 public:
   json_string(const std::string &s): dat(s) {}
 
-  json_type_t type() const {
-    return JSON_STRING;
+  json::json_type_t type() const {
+    return json::JSON_STRING;
   }
 
   const std::string &get() const { return dat; }
@@ -368,8 +368,8 @@ public:
   
   json_object(){}
 
-  json_type_t type() const {
-    return JSON_OBJECT;
+  json::json_type_t type() const {
+    return json::JSON_OBJECT;
   }
 
   void add(const std::string &name, const json &j){
@@ -451,8 +451,8 @@ class json_bool : public json_value{
 public:
   json_bool(bool b): dat(b) {}
 
-  json_type_t type() const {
-    return JSON_BOOL;
+  json::json_type_t type() const {
+    return json::JSON_BOOL;
   }
 
   bool get() const { return dat; }
@@ -473,8 +473,8 @@ class json_null : public json_value{
 public:
   json_null(){}
 
-  json_type_t type() const {
-    return JSON_NULL;
+  json::json_type_t type() const {
+    return json::JSON_NULL;
   }
 
   void print(std::ostream &os, bool escape) const {
@@ -496,7 +496,7 @@ inline json::json(): val(new json_null())
 {
 }
 
-inline json_type_t json::type() const
+inline json::json_type_t json::type() const
 {
   return val->type();
 }
