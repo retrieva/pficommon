@@ -89,7 +89,7 @@ public:
     if (it!=tbl.end()) return it->second;
     if (gen==false) return -1;
     int id=tbl.size();
-    tbl.insert(make_pair(key,id));
+    tbl.insert(std::make_pair(key,id));
     lbt.push_back(key);
     return id;
   }
