@@ -32,6 +32,7 @@
 #ifndef INCLUDE_GUARD_PFI_TEXT_JSON_CAST_H_
 #define INCLUDE_GUARD_PFI_TEXT_JSON_CAST_H_
 
+#include <algorithm>
 #include <string>
 #include <typeinfo>
 
@@ -39,6 +40,7 @@
 
 #include "../../data/serialization.h"
 #include "../../data/optional.h"
+#include "../../data/unordered_map.h"
 
 namespace pfi{
 namespace text{
@@ -252,6 +254,18 @@ inline void serialize(json &js, std::map<std::string, T> &v)
   for (typename std::map<std::string, T>::iterator it=v.begin();
        it!=v.end(); it++)
     js[it->first]=to_json(it->second);
+}
+
+template <class T>
+inline void serialize(json &js, pfi::data::unordered_map<std::string, T> &v)
+{
+  json tmp(new json_object);
+  typedef typename pfi::data::unordered_map<std::string, T>::const_iterator iter_t;
+  for (iter_t it = v.begin(), end = v.end(); it != end; ++it)
+    tmp[it->first] = to_json(it->second);
+
+  using std::swap;
+  swap(js, tmp);
 }
 
 template <class T>
