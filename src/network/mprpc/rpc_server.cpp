@@ -114,7 +114,11 @@ void rpc_server::process()
 
 		while(true) {
 			rpc_message msg;
-			if(!rs->receive(&msg)) {
+			try{
+				if(!rs->receive(&msg)) {
+					break;
+				}
+			} catch (const rpc_error&e) {
 				break;
 			}
 
