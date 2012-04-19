@@ -236,6 +236,18 @@ TEST(json, to_json)
     
     EXPECT_EQ("{\"abc\":1.23,\"hoge\":3.14}", oss.str());
   }
+
+  {
+    pfi::data::unordered_map<string, double> mm;
+
+    mm["abc"]=1.23;
+    mm["hoge"]=3.14;
+
+    ostringstream oss;
+    oss<<to_json(mm);
+
+    EXPECT_EQ("{\"abc\":1.23,\"hoge\":3.14}", oss.str());
+  }
 }
 
 TEST(json, from_json)
