@@ -51,70 +51,70 @@ namespace mprpc {
 
 
 object_stream::object_stream(int iofd) :
-	iofd(iofd)
+  iofd(iofd)
 { }
 
 object_stream::object_stream(const std::string& host, uint16_t port) :
-	iofd(socket::connect_sock(host, port))
+  iofd(socket::connect_sock(host, port))
 { }
 
 object_stream::~object_stream()
 {
-	::close(iofd);
+  ::close(iofd);
 }
 
 int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone,
-			double timeout_sec)
+    double timeout_sec)
 {
-        clock_time start = get_clock_time();
-	while(true) {
-		if(unpacker.execute()) {
-			*obj = unpacker.data();
-			zone->reset( unpacker.release_zone() );
-			unpacker.reset();
-			return 1;
-		}
+  clock_time start = get_clock_time();
+  while(true) {
+    if(unpacker.execute()) {
+      *obj = unpacker.data();
+      zone->reset( unpacker.release_zone() );
+      unpacker.reset();
+      return 1;
+    }
 
-		unpacker.reserve_buffer(1024);
-	
-		ssize_t rl;
-		while(true) {
-			rl = ::read(iofd, unpacker.buffer(), unpacker.buffer_capacity());
-			if(rl > 0) break;
-			if(rl == 0) { return -1; }
-			if(errno == EINTR) { continue; }
-			if(timeout_sec < (double)(get_clock_time() - start)){
-			  throw rpc_timeout_error("timeout");
-			}
-			if(errno == EAGAIN) { continue; }
-			return -1;
-		}
-	
-		unpacker.buffer_consumed(rl);
-	}
+    unpacker.reserve_buffer(1024);
+
+    ssize_t rl;
+    while(true) {
+      rl = ::read(iofd, unpacker.buffer(), unpacker.buffer_capacity());
+      if(rl > 0) break;
+      if(rl == 0) { return -1; }
+      if(errno == EINTR) { continue; }
+      if(timeout_sec < (double)(get_clock_time() - start)){
+        throw rpc_timeout_error("timeout");
+      }
+      if(errno == EAGAIN) { continue; }
+      return -1;
+    }
+
+    unpacker.buffer_consumed(rl);
+  }
 }
 
 int object_stream::write(const void* data, size_t size, double timeout_sec)
 {
-	const char* p = static_cast<const char*>(data);
-	const char* const pend = p + size;
-        clock_time start = get_clock_time();
-	while(p < pend) {
-		ssize_t rl = ::write(iofd, p, pend-p);
-		if(rl <= 0) {
-			if(rl == 0) {
-				return -1;
-			}
-			if(errno == EINTR) { continue; }
-			if(timeout_sec < (double)(get_clock_time() - start)){
-			  throw rpc_timeout_error("timeout");
-			}
-			if(errno == EAGAIN) { continue; }
-			return -1;
-		}
-		p += rl;
-	}
-	return size;
+  const char* p = static_cast<const char*>(data);
+  const char* const pend = p + size;
+  clock_time start = get_clock_time();
+  while(p < pend) {
+    ssize_t rl = ::write(iofd, p, pend-p);
+    if(rl <= 0) {
+      if(rl == 0) {
+        return -1;
+      }
+      if(errno == EINTR) { continue; }
+      if(timeout_sec < (double)(get_clock_time() - start)){
+        throw rpc_timeout_error("timeout");
+      }
+      if(errno == EAGAIN) { continue; }
+      return -1;
+    }
+    p += rl;
+  }
+  return size;
 }
 
 

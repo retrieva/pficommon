@@ -44,48 +44,46 @@ namespace mprpc {
 
 class rpc_error : public std::exception {
 public:
-	rpc_error(const std::string &msg): msg(msg) {}
-	~rpc_error() throw() {}
-	const char *what() const throw() { return msg.c_str(); }
+  rpc_error(const std::string &msg): msg(msg) {}
+  ~rpc_error() throw() {}
+  const char *what() const throw() { return msg.c_str(); }
 private:
-	std::string msg;
+  std::string msg;
 };
 
 class rpc_io_error : public rpc_error {
 public:
-	rpc_io_error(const std::string& msg, int err)
-		: rpc_error(msg+pfi::system::syscall::get_error_msg(err)){}
-	~rpc_io_error() throw() {}
+  rpc_io_error(const std::string& msg, int err)
+    : rpc_error(msg+pfi::system::syscall::get_error_msg(err)){}
+  ~rpc_io_error() throw() {}
 };
 
 class rpc_type_error : public rpc_error {
 public:
-	rpc_type_error(const std::string& msg)
-		: rpc_error(msg){}
-	~rpc_type_error() throw() {}
+  rpc_type_error(const std::string& msg)
+    : rpc_error(msg){}
+  ~rpc_type_error() throw() {}
 };
 
 class rpc_timeout_error : public rpc_error {
 public:
-	rpc_timeout_error(const std::string& msg)
-		: rpc_error(msg){}
-	~rpc_timeout_error() throw() {}
+  rpc_timeout_error(const std::string& msg)
+    : rpc_error(msg){}
+  ~rpc_timeout_error() throw() {}
 };
 
 class method_not_found : public rpc_error {
 public:
-	method_not_found(const std::string &name)
-		: rpc_error(std::string("method \"")+
-				name+"\" is not found")
-				, name_(name){
-				}
+  method_not_found(const std::string &name)
+    : rpc_error(std::string("method \"")+name+"\" is not found"),
+      name_(name) {}
 
-	~method_not_found() throw() {}
+  ~method_not_found() throw() {}
 
-	const std::string &name() { return name_; }
+  const std::string &name() { return name_; }
 
 private:
-	std::string name_;
+  std::string name_;
 };
 
 

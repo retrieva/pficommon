@@ -62,7 +62,7 @@ class method_not_found : public rpc_error{
 public:
   method_not_found(const std::string &name)
     : rpc_error(std::string("method \"")+
-		name+"\" is not found")
+        name+"\" is not found")
     , name_(name){
   }
 
@@ -78,9 +78,9 @@ class version_mismatch : public rpc_error{
 public:
   version_mismatch(int sver, int cver)
     : rpc_error(std::string("server expected version ")+
-		pfi::lang::lexical_cast<std::string>(sver)+
-		" but client requested version "+
-		pfi::lang::lexical_cast<std::string>(cver))
+        pfi::lang::lexical_cast<std::string>(sver)+
+        " but client requested version "+
+        pfi::lang::lexical_cast<std::string>(cver))
     , sver_(sver)
     , cver_(cver){
   }

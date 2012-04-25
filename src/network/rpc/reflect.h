@@ -197,25 +197,25 @@ protected:
 } // network
 } // pfi
 
-#define REFLECT_RPC_PROC(name, ftype)				\
-  namespace _reflect{						\
-  class name : virtual public reflect_base{			\
-  public:							\
-  name(){							\
-    mem[#name]=pfi::network::rpc::extract(function<ftype>());	\
-  }								\
-  };								\
-  }								\
+#define REFLECT_RPC_PROC(name, ftype) \
+  namespace _reflect{ \
+  class name : virtual public reflect_base{ \
+  public: \
+  name(){ \
+    mem[#name]=pfi::network::rpc::extract(function<ftype>()); \
+  } \
+  }; \
+  } \
 
-#define REFLECT_RPC_GEN(version, base, ...)		\
-  namespace _reflect{					\
-  struct base##_reflect : __VA_ARGS__ {			\
-  public:						\
-  base##_reflect(){					\
-    set_name(#base);					\
-    set_version(version);				\
-  }							\
-  };							\
-  }							\
+#define REFLECT_RPC_GEN(version, base, ...) \
+  namespace _reflect{ \
+  struct base##_reflect : __VA_ARGS__ { \
+  public: \
+  base##_reflect(){ \
+    set_name(#base); \
+    set_version(version); \
+  } \
+  }; \
+  } \
   typedef _reflect::base##_reflect base##_reflect;
 #endif // #ifndef INCLUDE_GUARD_PFI_NETWORK_RPC_REFLECT_H_

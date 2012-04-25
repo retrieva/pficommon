@@ -43,63 +43,63 @@ namespace mprpc {
 
 class rpc_stream {
 public:
-        rpc_stream(int iofd, double timeout_sec);
-        rpc_stream(const std::string& host, uint16_t port, double timeout_sec);
-	~rpc_stream();
+  rpc_stream(int iofd, double timeout_sec);
+  rpc_stream(const std::string& host, uint16_t port, double timeout_sec);
+  ~rpc_stream();
 
 public:
-	template <typename P>
-	void call(const std::string& name, const P& param, rpc_response* result);
+  template <typename P>
+  void call(const std::string& name, const P& param, rpc_response* result);
 
-	template <typename P>
-	bool send(const std::string& name, const P& param, uint32_t* msgid);
+  template <typename P>
+  bool send(const std::string& name, const P& param, uint32_t* msgid);
 
-	bool join(uint32_t msgid, rpc_response* result);
+  bool join(uint32_t msgid, rpc_response* result);
 
-	int try_receive(rpc_message* msg);
-	bool receive(rpc_message* msg);
+  int try_receive(rpc_message* msg);
+  bool receive(rpc_message* msg);
 
-	template <typename R, typename E>
-	bool send_response(uint32_t msgid, const R& retval, const E& error);
+  template <typename R, typename E>
+  bool send_response(uint32_t msgid, const R& retval, const E& error);
 
 private:
-	uint32_t seqid;
-	object_stream os;
-        double timeout_sec;
+  uint32_t seqid;
+  object_stream os;
+  double timeout_sec;
 };
 
 
 template <typename P>
 bool rpc_stream::send(const std::string& name, const P& param, uint32_t* msgid)
 {
-	*msgid = seqid++;
+  *msgid = seqid++;
 
-	if(!rpc_request::write(os, *msgid, name, param, timeout_sec)) {
-		return false;
-	}
+  if(!rpc_request::write(os, *msgid, name, param, timeout_sec)) {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 
 template <typename P>
 void rpc_stream::call(const std::string& name, const P& param, rpc_response* result)
 {
-	uint32_t msgid;
-	if(!send(name, param, &msgid)) {
-		throw rpc_io_error("cannot send rpc request: ",errno);
-	}
+  uint32_t msgid;
+  if(!send(name, param, &msgid)) {
+    throw rpc_io_error("cannot send rpc request: ",errno);
+  }
 
-	if(!join(msgid, result)) {
-		throw rpc_error("cannot receive rpc result");
-	}
+  if(!join(msgid, result)) {
+    throw rpc_error("cannot receive rpc result");
+  }
 }
 
 
 template <typename R, typename E>
 bool rpc_stream::send_response(uint32_t msgid, const R& retval, const E& error)
 {
-         return rpc_response::write(os, msgid, retval, error, timeout_sec);
+  return rpc_response::write(os, msgid, retval, error, timeout_sec);
 }
 
 
