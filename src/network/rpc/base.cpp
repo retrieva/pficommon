@@ -113,10 +113,10 @@ void rpc_server::process(shared_ptr<server_socket, threading_model::multi_thread
 
       int req_ver;
       if (ia >> req_ver && req_ver!=version){
-	string msg(string("VersionMismatch ")+lexical_cast<string>(version)+" "+lexical_cast<string>(req_ver));
-	oa<<msg;
-	oa.flush();
-	break;
+        string msg(string("VersionMismatch ")+lexical_cast<string>(version)+" "+lexical_cast<string>(req_ver));
+        oa<<msg;
+        oa.flush();
+        break;
       }
 
       try{
@@ -143,15 +143,15 @@ shared_ptr<socketstream> rpc_client::get_connection()
     if (!ss || !(*ss)){
       ss=shared_ptr<socketstream>(new socketstream(host, port));
       if (!(*ss)){
-	ss.reset();
-	continue;
+        ss.reset();
+        continue;
       }
       if (!ss->socket()->set_nodelay(true)){
-	ss.reset();
-	continue;
+        ss.reset();
+        continue;
       }
     }
-    
+
     binary_iarchive ia(*ss);
     binary_oarchive oa(*ss);
     string ping(PING_MSG);

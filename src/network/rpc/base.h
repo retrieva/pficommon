@@ -69,10 +69,10 @@ public:
 
 private:
   void add(const std::string &name,
-	   pfi::lang::shared_ptr<invoker_base> invoker);
+      pfi::lang::shared_ptr<invoker_base> invoker);
 
   void process(pfi::lang::shared_ptr<server_socket,
-	       pfi::concurrent::threading_model::multi_thread> sock);
+      pfi::concurrent::threading_model::multi_thread> sock);
 
   std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
 
@@ -87,9 +87,9 @@ public:
   template <class T>
   pfi::lang::function<T> call(const std::string &name){
     return make_caller(pfi::lang::function<T>(), name,
-		       pfi::lang::bind(&rpc_client::get_connection, this),
-		       pfi::lang::bind(&rpc_client::return_connection, this, pfi::lang::_1),
-		       pfi::lang::bind(&rpc_client::get_version, this));
+        pfi::lang::bind(&rpc_client::get_connection, this),
+        pfi::lang::bind(&rpc_client::return_connection, this, pfi::lang::_1),
+        pfi::lang::bind(&rpc_client::get_version, this));
   }
 
 private:
