@@ -36,6 +36,7 @@
 #include <iostream>
 #include <cmath>
 
+#include "../lang/bind.h"
 #include "../lang/cast.h"
 #include "../data/optional.h"
 
@@ -316,6 +317,162 @@ TEST(json, from_json)
     mm["hoge"]=3.14f;
 
     EXPECT_EQ(true, (mm==json_cast<map<string, float> >(j)));
+  }
+}
+
+TEST(json, merge)
+{
+  {
+    json js1(new json_object());
+    js1["a"] = new json_integer(42);
+    js1["c"] = new json_string("string");
+
+    json js2(new json_object());
+    js2["b"] = new json_bool(true);
+    js2["c"] = new json_string("new string");
+
+    json js3 = js1.merge(js2);
+    EXPECT_EQ(42, json_cast<int>(js3["a"]));
+    EXPECT_EQ(true, json_cast<bool>(js3["b"]));
+    EXPECT_EQ(std::string("new string"), json_cast<std::string>(js3["c"]));
+
+    json js4 = js1.merge(js1);
+    EXPECT_EQ(42, json_cast<int>(js4["a"]));
+    EXPECT_EQ(0, js4.count("b"));
+    EXPECT_EQ(std::string("string"), json_cast<std::string>(js4["c"]));
+  }
+
+  {
+    json ji(new json_integer(42));
+    json jf(new json_float(3.14));
+    json js(new json_string("string"));
+    json jb(new json_bool(true));
+    json ja(new json_array()); ja.add(new json_integer(1));
+    json jn(new json_null());
+    json jo(new json_object()); jo.add("key", new json_string("value"));
+
+    EXPECT_THROW(ji.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(jf.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(js.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(jb.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(ja.merge(jo), json_bad_cast<json>);
+    EXPECT_THROW(jn.merge(jo), json_bad_cast<json>);
+
+    EXPECT_THROW(jo.merge(ji), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jf), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(js), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jb), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(ja), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jn), json_bad_cast<json>);
+    EXPECT_THROW(jo.merge(jn), json_bad_cast<json>);
+
+    EXPECT_NO_THROW(jo.merge(jo));
+  }
+
+  {
+    json js1(new json_object());
+    js1["a"] = new json_array();
+    js1["a"].add(new json_integer(1));
+    js1["a"].add(new json_integer(2));
+    js1["a"].add(new json_integer(3));
+    js1["b"] = new json_object();
+    js1["b"]["p"] = new json_integer(42);
+    js1["b"]["q"] = new json_string("string");
+    js1["b"]["r"] = new json_float(3.14);
+
+    json js2(new json_object());
+    js2["b"] = new json_object();
+    js2["b"]["x"] = new json_string("another string");
+    js2["b"]["y"] = new json_float(1.0);
+    js2["b"]["z"] = new json_bool(false);
+    js2["c"] = new json_array();
+    js2["c"].add(new json_string("one"));
+    js2["c"].add(new json_string("two"));
+    js2["c"].add(new json_string("three"));
+
+    json js3 = js1.merge(js2);
+
+    js1["a"].add(new json_integer(4));
+    js1["b"]["s"] = new json_float(1.414);
+    js2["b"]["w"] = new json_float(1.732);
+    js2["c"].add(new json_string("four"));
+
+    EXPECT_EQ(4, json_cast<int>(js3["a"][3]));
+    EXPECT_TRUE(is<json_null>(js3["b"]["s"]));
+    EXPECT_EQ(1.732, json_cast<double>(js3["b"]["w"]));
+    EXPECT_EQ("four", json_cast<std::string>(js3["c"][3]));
+  }
+}
+
+typedef json(*merge_func_type)(json,json);
+typedef json(*merge_with1_func_type)(json,json,merge_func_type);
+
+static inline json add_json_integer(json js1, json js2)
+{
+  int i1 = json_cast<int>(js1);
+  int i2 = json_cast<int>(js2);
+  return json(new json_integer(i1+i2));
+}
+
+template <typename F>
+static inline json recursive_merge_with(json js1, json js2, F f)
+{
+  if (is<json_object>(js1) && is<json_object>(js2)) {
+    // object vs object, recursive call.
+    return merge_with(js1, js2,
+                      bind((merge_with1_func_type)(&recursive_merge_with), _1, _2, (merge_func_type)(f)));
+  } else {
+    return f(js1,js2);
+  }
+}
+
+TEST(json, merge_with)
+{
+  {
+    json js1(new json_object());
+    js1["a"] = new json_integer(1);
+    js1["b"] = new json_integer(2);
+    json js2(new json_object());
+    js2["b"] = new json_integer(20);
+    js2["c"] = new json_integer(30);
+    json js3 = js1.merge_with(js2,&add_json_integer);
+    EXPECT_EQ( 1,json_cast<int>(js3["a"]));
+    EXPECT_EQ(22,json_cast<int>(js3["b"]));
+    EXPECT_EQ(30,json_cast<int>(js3["c"]));
+  }
+  {
+    cout << "XXX1" << endl;
+
+    json js1(new json_object());
+    js1["v"] = new json_integer(1);
+    js1["n"] = new json_object();
+    js1["n"]["v"] = new json_integer(2);
+    js1["n"]["n"] = new json_object();
+    js1["n"]["n"]["v"] = new json_integer(3);
+    js1["n"]["n"]["n"] = new json_object();
+    js1["n"]["n"]["n"]["v"] = new json_integer(4);
+
+    cout << "XXX2" << endl;
+
+    json js2(new json_object());
+    js2["v"] = new json_integer(10);
+    js2["n"] = new json_object();
+    js2["n"]["v"] = new json_integer(20);
+    js2["n"]["n"] = new json_object();
+    js2["n"]["n"]["v"] = new json_integer(30);
+    js2["n"]["n"]["n"] = new json_object();
+    js2["n"]["n"]["n"]["v"] = new json_integer(40);
+
+    cout << "XXX3" << endl;
+
+    json js3 = recursive_merge_with(js1, js2, (&add_json_integer));
+
+    cout << "XXX4" << endl;
+
+    EXPECT_EQ(11,json_cast<int>(js3["v"]));
+    EXPECT_EQ(22,json_cast<int>(js3["n"]["v"]));
+    EXPECT_EQ(33,json_cast<int>(js3["n"]["n"]["v"]));
+    EXPECT_EQ(44,json_cast<int>(js3["n"]["n"]["n"]["v"]));
   }
 }
 
