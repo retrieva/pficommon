@@ -58,9 +58,9 @@ std::string uri_encode(const std::string &s)
   ostringstream oss;
   for (int i=0;i<(int)s.length();i++){
     if (isalpha(s[i])||
-	s[i]=='-'||
-	s[i]=='_'||
-	s[i]=='.')
+        s[i]=='-'||
+        s[i]=='_'||
+        s[i]=='.')
       oss<<s[i];
     else if (s[i]==' ')
       oss<<'+';
@@ -285,7 +285,7 @@ bool uri::parse_scheme(const char *&p)
     return false;
 
   while(isalnum(*p)||
-	*p=='+'||*p=='-'||*p=='.')
+      *p=='+'||*p=='-'||*p=='.')
     p++;
 
   scheme_=string(org,p);
@@ -320,8 +320,8 @@ bool uri::parse_userinfo(const char *&p)
   const char *org=p;
   for (;;){
     if (is_unreserved(*p)||
-	is_sub_delims(*p)||
-	*p==':'){
+        is_sub_delims(*p)||
+        *p==':'){
       p++;
       continue;
     }
@@ -404,8 +404,8 @@ bool uri::parse_ipvfuture(const char *&p)
     return false;
 
   while(!is_unreserved(*p)&&
-	!is_sub_delims(*p)&&
-	*p!=':')
+      !is_sub_delims(*p)&&
+      *p!=':')
     p++;
 
   return true;
@@ -847,27 +847,27 @@ bool uri::is_reserved(char c)
 bool uri::is_gen_delims(char c)
 {
   return (c==':'||
-	  c=='/'||
-	  c=='?'||
-	  c=='#'||
-	  c=='['||
-	  c==']'||
-	  c=='@');
+      c=='/'||
+      c=='?'||
+      c=='#'||
+      c=='['||
+      c==']'||
+      c=='@');
 }
 
 bool uri::is_sub_delims(char c)
 {
   return (c=='!'||
-	  c=='$'||
-	  c=='&'||
-	  c=='\''||
-	  c=='('||
-	  c==')'||
-	  c=='*'||
-	  c=='+'||
-	  c==','||
-	  c==';'||
-	  c=='=');
+      c=='$'||
+      c=='&'||
+      c=='\''||
+      c=='('||
+      c==')'||
+      c=='*'||
+      c=='+'||
+      c==','||
+      c==';'||
+      c=='=');
 }
 
 ostream &operator<<(ostream &os, const uri &u)

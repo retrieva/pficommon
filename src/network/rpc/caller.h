@@ -63,22 +63,22 @@ static void gen_exception(const std::string &str)
   throw rpc_error(str);
 }
 
-#define GET_CONN				       \
-  pfi::lang::shared_ptr<socketstream> ssp=g();	       \
-  if (!ssp) throw cannot_get_connection();	       \
-  socketstream &ss=*ssp;			       \
+#define GET_CONN \
+  pfi::lang::shared_ptr<socketstream> ssp=g(); \
+  if (!ssp) throw cannot_get_connection(); \
+  socketstream &ss=*ssp; \
   if (!ss) throw cannot_get_connection();
 
-#define DO_RPC(ARG)							\
-  R ret;								\
-  int ver=v();								\
-  oa << name << ver ARG;						\
-  if (!ss) throw rpc_error("cannot send arguments");			\
-  oa.flush();								\
-  std::string result_code;						\
-  ia >> result_code;							\
-  if (result_code!="OK") gen_exception(result_code);			\
-  ia >> ret;								\
+#define DO_RPC(ARG) \
+  R ret; \
+  int ver=v(); \
+  oa << name << ver ARG; \
+  if (!ss) throw rpc_error("cannot send arguments"); \
+  oa.flush(); \
+  std::string result_code; \
+  ia >> result_code; \
+  if (result_code!="OK") gen_exception(result_code); \
+  ia >> ret; \
   if (!ss) throw rpc_error("cannot recv return value");
 
 template <class R>
@@ -87,19 +87,19 @@ public:
   caller0(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(){
     GET_CONN;
-    
+
     pfi::data::serialization::binary_iarchive ia(ss);
     pfi::data::serialization::binary_oarchive oa(ss);
 
     DO_RPC();
-    
+
     r(ssp);
     return ret;
   }
-  
+
 private:
   std::string name;
   getter g;
@@ -113,7 +113,7 @@ public:
   caller1(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1){
     GET_CONN;
 
@@ -139,7 +139,7 @@ public:
   caller2(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2){
     GET_CONN;
 
@@ -165,7 +165,7 @@ public:
   caller3(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2, A3 a3){
     GET_CONN;
 
@@ -191,7 +191,7 @@ public:
   caller4(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2, A3 a3, A4 a4){
     GET_CONN;
 
@@ -217,7 +217,7 @@ public:
   caller5(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5){
     GET_CONN;
 
@@ -243,7 +243,7 @@ public:
   caller6(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6){
     GET_CONN;
 
@@ -269,7 +269,7 @@ public:
   caller7(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7){
     GET_CONN;
 
@@ -295,7 +295,7 @@ public:
   caller8(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8){
     GET_CONN;
 
@@ -321,7 +321,7 @@ public:
   caller9(const std::string &name, getter g, returner r, versioner v)
     :name(name), g(g), r(r), v(v){
   }
-  
+
   R call(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9){
     GET_CONN;
 

@@ -47,41 +47,41 @@ namespace mprpc {
 
 class socket : pfi::lang::noncopyable {
 public:
-	socket();
-	socket(int fd);
-	~socket();
+  socket();
+  socket(int fd);
+  ~socket();
 
-	bool close();
+  bool close();
 
-	int get() { return fd; }
-	int release() { int tmp = fd; fd = -1; return tmp; }
+  int get() { return fd; }
+  int release() { int tmp = fd; fd = -1; return tmp; }
 
-	bool connect(const std::string& host, uint16_t port);
-	bool listen(uint16_t port, int backlog=4096);
+  bool connect(const std::string& host, uint16_t port);
+  bool listen(uint16_t port, int backlog=4096);
 
-	bool set_nodelay(bool on);
-	bool set_timeout(double sec);
-	bool set_recv_timeout(double sec);
-	bool set_send_timeout(double sec);
+  bool set_nodelay(bool on);
+  bool set_timeout(double sec);
+  bool set_recv_timeout(double sec);
+  bool set_send_timeout(double sec);
 
-	static int connect_sock(const std::string& host, uint16_t port);
-	static int listen_sock(uint16_t port, int backlog=4096);
+  static int connect_sock(const std::string& host, uint16_t port);
+  static int listen_sock(uint16_t port, int backlog=4096);
 
-	static bool set_nodelay_sock(int sock, bool on);
-	static bool set_timeout_sock(int sock, double sec);
-	static bool set_recv_timeout_sock(int sock, double sec);
-	static bool set_send_timeout_sock(int sock, double sec);
+  static bool set_nodelay_sock(int sock, bool on);
+  static bool set_timeout_sock(int sock, double sec);
+  static bool set_recv_timeout_sock(int sock, double sec);
+  static bool set_send_timeout_sock(int sock, double sec);
 
-	static std::vector<ipv4_address> resolve(const std::string& host, uint16_t port);
+  static std::vector<ipv4_address> resolve(const std::string& host, uint16_t port);
 
 private:
-	int fd;
+  int fd;
 
-	static bool set_timeout_sockopt(int sock, int optname, double sec);
+  static bool set_timeout_sockopt(int sock, int optname, double sec);
 
-	static pfi::lang::shared_ptr<dns_resolver,
-		pfi::concurrent::threading_model::multi_thread> resolver;
-	static pfi::concurrent::r_mutex resolver_m;
+  static pfi::lang::shared_ptr<dns_resolver,
+    pfi::concurrent::threading_model::multi_thread> resolver;
+  static pfi::concurrent::r_mutex resolver_m;
 };
 
 

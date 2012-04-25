@@ -36,57 +36,57 @@ namespace network {
 namespace mprpc {
 
 rpc_stream::rpc_stream(int iofd, double timeout_sec) :
-        seqid(0), os(iofd), timeout_sec(timeout_sec) { }
+  seqid(0), os(iofd), timeout_sec(timeout_sec) { }
 
 rpc_stream::~rpc_stream() { }
 
 
 int rpc_stream::try_receive(rpc_message* msg)
 {
-	msgpack::object obj;
-	std::auto_ptr<msgpack::zone> zone;
+  msgpack::object obj;
+  std::auto_ptr<msgpack::zone> zone;
 
-	int ret = os.read(&obj, &zone, timeout_sec);
-	if(ret <= 0) {
-		return ret;
-	}
+  int ret = os.read(&obj, &zone, timeout_sec);
+  if(ret <= 0) {
+    return ret;
+  }
 
-	try {
-		msg->reset(obj, zone);
-	} catch (msgpack::type_error&) {
-		return -1;
-	}
-	return 1;
+  try {
+    msg->reset(obj, zone);
+  } catch (msgpack::type_error&) {
+    return -1;
+  }
+  return 1;
 }
 
 bool rpc_stream::receive(rpc_message* msg)
 {
-	if(try_receive(msg) <= 0) {
-		return false;
-	}
-	return true;
+  if(try_receive(msg) <= 0) {
+    return false;
+  }
+  return true;
 }
 
 
 bool rpc_stream::join(uint32_t msgid, rpc_response* result)
 {
-	while(true) {
-		rpc_message msg;
-		if(!receive(&msg)) {
-			return false;
-		}
+  while(true) {
+    rpc_message msg;
+    if(!receive(&msg)) {
+      return false;
+    }
 
-		if(!msg.is_response()) {
-			continue;
-		}
+    if(!msg.is_response()) {
+      continue;
+    }
 
-		if(msg.msgid() != msgid) {
-			continue;
-		}
+    if(msg.msgid() != msgid) {
+      continue;
+    }
 
-		result->reset(msg);
-		return true;
-	}
+    result->reset(msg);
+    return true;
+  }
 }
 
 

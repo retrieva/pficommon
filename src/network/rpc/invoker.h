@@ -46,12 +46,12 @@ public:
   virtual void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa)=0;
 };
 
-#define DO_INVOKE(ARGS, ...)						\
-  if (!(ia ARGS)) throw rpc_error("cannot recv argument");		\
-  R ret=f(__VA_ARGS__);							\
-  std::string ok("OK"); oa << ok;					\
-  oa << ret;								\
-  oa.flush();								\
+#define DO_INVOKE(ARGS, ...) \
+  if (!(ia ARGS)) throw rpc_error("cannot recv argument"); \
+  R ret=f(__VA_ARGS__); \
+  std::string ok("OK"); oa << ok; \
+  oa << ret; \
+  oa.flush(); \
   if (!oa) throw rpc_error("cannot send return value");
 
 template <class R>

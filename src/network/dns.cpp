@@ -65,25 +65,25 @@ vector<ipv4_address> normal_dns_resolver::resolve(const string &host, uint16_t p
     hints.ai_family=PF_INET;
     hints.ai_socktype=SOCK_STREAM;
     hints.ai_protocol=0;
-    
+
     addrinfo *res=NULL;
     if (getaddrinfo(host.c_str(),
-		    lexical_cast<string>(port).c_str(),
-		    &hints,&res)!=0)
+          lexical_cast<string>(port).c_str(),
+          &hints,&res)!=0)
       return vector<ipv4_address>();
 
     for (addrinfo *p=res;p!=NULL;p=p->ai_next){
       char ips[32]; // xxx.xxx.xxx.xxx
                     // its length is less than 15+1 < 32
       if (getnameinfo(p->ai_addr,p->ai_addrlen,
-		      ips,32,
-		      NULL,0,
-		      NI_NUMERICHOST)!=0)
-	continue;
+            ips,32,
+            NULL,0,
+            NI_NUMERICHOST)!=0)
+        continue;
 
       ipv4_address ip(ips);
       if (ip!=ipv4_address::none)
-	ret.push_back(ip);
+        ret.push_back(ip);
     }
 
     freeaddrinfo(res);
@@ -111,7 +111,7 @@ private:
   int expire_second;
 
   std::map<std::pair<std::string, uint16_t>,
-	   std::pair<std::vector<ipv4_address>, time_t> > cache;
+    std::pair<std::vector<ipv4_address>, time_t> > cache;
 
   std::multiset<std::pair<time_t, std::pair<std::string, uint16_t> > > access_time;
 
@@ -186,12 +186,12 @@ vector<ipv4_address> cached_dns_resolver::impl::resolve(const string &host, uint
       access_time.erase(make_pair(cache[key].second,key));
       access_time.insert(make_pair(cur,key));
       cache[key].second=cur;
-      
+
       // is not expire
       if (cur-cache[key].second<expire_second){
-	return cache[key].first;
+        return cache[key].first;
       }
-      
+
       // expire, so delete cache
       access_time.erase(make_pair(cur,key));
       cache.erase(key);
@@ -211,7 +211,7 @@ vector<ipv4_address> cached_dns_resolver::impl::resolve(const string &host, uint
       cache.erase(del_key);
       access_time.erase(access_time.begin());
     }
-    
+
     // register to cache
     access_time.insert(make_pair(cur,key));
     cache[key]=make_pair(ret,cur);
