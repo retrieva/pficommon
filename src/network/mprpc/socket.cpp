@@ -61,6 +61,7 @@ bool socket::close()
   if(fd < 0) { return false; }
 
   int ret;
+  ::shutdown(fd, SHUT_RDWR);
   NO_INTR(ret,::close(fd));
 
   if (FAILED(ret)){

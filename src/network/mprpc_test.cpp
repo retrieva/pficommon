@@ -56,82 +56,87 @@ static set<int> test_set(const set<int>& v){ return v; }
 
 MPRPC_GEN(1, testrpc, test_str, test_pair, test_vec, test_map, test_set);
 
-static void server_thread()
+static void server_thread(testrpc_server *ser)
 {
-  testrpc_server ser(3.0);
-  ser.set_test_str(&test_str);
-  ser.set_test_pair(&test_pair);
-  ser.set_test_vec(&test_vec);
-  ser.set_test_map(&test_map);
-  ser.set_test_set(&test_set);
-  ser.serv(31241, 10);
+  ser->set_test_str(&test_str);
+  ser->set_test_pair(&test_pair);
+  ser->set_test_vec(&test_vec);
+  ser->set_test_map(&test_map);
+  ser->set_test_set(&test_set);
+  ser->serv(31241, 10);
 }
 
 TEST(mprpc, mprpc_test)
 {
-  thread t(&server_thread);
+  testrpc_server ser(3.0);
+  thread t(pfi::lang::bind(&server_thread, &ser));
   t.start();
 
   sleep(1);
 
   int times = 100;
   EXPECT_NO_THROW({ testrpc_client cln1("localhost", 31241, 3.0); });
-  testrpc_client cln("localhost", 31241, 3.0);
-  for (int t=0;t<times;t++) {
-    {
-      string v;
-      for (int i=0;i<10;i++)
-        v+='0'+(rand()%10);
-      string r;
-      EXPECT_NO_THROW({ r = cln.call_test_str(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++)
-        EXPECT_EQ(r[i], v[i]);
-    }
-    {
-      string vs;
-      for (int i=0;i<10;i++)
-        vs+='0'+(rand()%10);
-      pair<int, string> v = make_pair(rand(), vs);
-      pair<int, string> r;
-      EXPECT_NO_THROW({ r = cln.call_test_pair(v); });
-      EXPECT_EQ(r.first, v.first);
-      EXPECT_EQ(r.second, v.second);
-    }
-    {
-      vector<int> v;
-      for (int i=0;i<10;i++)
-        v.push_back(rand());
-      vector<int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_vec(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++)
-        EXPECT_EQ(r[i], v[i]);
-    }
-    {
-      map<int, int> v;
-      for (int i=0;i<10;i++)
-        v[i]=rand();
-      map<int, int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_map(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++){
-        EXPECT_EQ(r[i], v[i]);
+  {
+    testrpc_client cln("localhost", 31241, 3.0);
+    for (int t=0;t<times;t++) {
+      {
+        string v;
+        for (int i=0;i<10;i++)
+          v+='0'+(rand()%10);
+        string r;
+        EXPECT_NO_THROW({ r = cln.call_test_str(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++)
+          EXPECT_EQ(r[i], v[i]);
       }
-    }
-    {
-      set<int> v;
-      for (int i=0;i<10;i++)
-        v.insert(i*100);
-      set<int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_set(v); });
-      EXPECT_EQ(r.size(), 10U);
-      int cnt = 0;
-      for (set<int>::iterator it=v.begin();it!=v.end();++it){
-        EXPECT_EQ(*it, cnt++ * 100);
+      {
+        string vs;
+        for (int i=0;i<10;i++)
+          vs+='0'+(rand()%10);
+        pair<int, string> v = make_pair(rand(), vs);
+        pair<int, string> r;
+        EXPECT_NO_THROW({ r = cln.call_test_pair(v); });
+        EXPECT_EQ(r.first, v.first);
+        EXPECT_EQ(r.second, v.second);
+      }
+      {
+        vector<int> v;
+        for (int i=0;i<10;i++)
+          v.push_back(rand());
+        vector<int> r;
+        EXPECT_NO_THROW({ r = cln.call_test_vec(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++)
+          EXPECT_EQ(r[i], v[i]);
+      }
+      {
+        map<int, int> v;
+        for (int i=0;i<10;i++)
+          v[i]=rand();
+        map<int, int> r;
+        EXPECT_NO_THROW({ r = cln.call_test_map(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++){
+          EXPECT_EQ(r[i], v[i]);
+        }
+      }
+      {
+        set<int> v;
+        for (int i=0;i<10;i++)
+          v.insert(i*100);
+        set<int> r;
+        EXPECT_NO_THROW({ r = cln.call_test_set(v); });
+        EXPECT_EQ(r.size(), 10U);
+        int cnt = 0;
+        for (set<int>::iterator it=v.begin();it!=v.end();++it){
+          EXPECT_EQ(*it, cnt++ * 100);
+        }
       }
     }
   }
+
+  ser.stop();
+  t.join();
 }
 
 // test for struct and empty vector
@@ -145,25 +150,30 @@ struct tstruct {
 MPRPC_PROC(test_struct, tstruct(tstruct));
 MPRPC_GEN(1, test_struct_rpc, test_struct);
 static tstruct f_test_struct(tstruct t) { return t; }
-static void struct_server_thread()
+static void struct_server_thread(test_struct_rpc_server *ser)
 {
-  test_struct_rpc_server ser(3.0);
-  ser.set_test_struct(&f_test_struct);
-  ser.serv(31242, 10);
+  ser->set_test_struct(&f_test_struct);
+  ser->serv(31242, 10);
 }
 TEST(mprpc, test_struct)
 {
-  thread t(&struct_server_thread);
+  test_struct_rpc_server ser(3.0);
+  thread t(pfi::lang::bind(&struct_server_thread, &ser));
   t.start();
 
   sleep(1);
 
-  tstruct t1;
-  t1.i = 9;
-  EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31242, 3.0); });
-  test_struct_rpc_client cln("localhost", 31242, 3.0);
+  {
+    tstruct t1;
+    t1.i = 9;
+    EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31242, 3.0); });
+    test_struct_rpc_client cln("localhost", 31242, 3.0);
 
-  tstruct t2;
-  EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
-  EXPECT_EQ(t1.i, t2.i);
+    tstruct t2;
+    EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
+    EXPECT_EQ(t1.i, t2.i);
+  }
+
+  ser.stop();
+  t.join();
 }

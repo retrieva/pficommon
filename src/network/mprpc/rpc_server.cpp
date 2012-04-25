@@ -67,7 +67,9 @@ bool basic_server::create(uint16_t port, int backlog)
 
 
 rpc_server::rpc_server(double timeout_sec) :
-  timeout_sec(timeout_sec) { }
+  timeout_sec(timeout_sec),
+  serv_running(false)
+{ }
 
 rpc_server::~rpc_server() { }
 
@@ -79,6 +81,8 @@ bool rpc_server::serv(uint16_t port, int nthreads)
 
   if (!basic_server::create(port))
     return false;
+
+  serv_running = true;
 
   std::vector<shared_ptr<thread> > ths(nthreads);
   for (int i=0; i<nthreads; i++) {
@@ -94,9 +98,20 @@ bool rpc_server::serv(uint16_t port, int nthreads)
   return true;
 }
 
+bool rpc_server::running() const
+{
+  return serv_running;
+}
+
+void rpc_server::stop()
+{
+  serv_running = false;
+  close();
+}
+
 void rpc_server::process()
 {
-  while(true) {
+  while(serv_running) {
     int s;
     NO_INTR(s, ::accept(sock.get(), NULL, NULL));
     if (FAILED(s)) { continue; }
@@ -104,7 +119,7 @@ void rpc_server::process()
 
     ns.set_nodelay(true);
     if(timeout_sec > 0) {
-      if(!sock.set_timeout(timeout_sec)) {
+      if(!ns.set_timeout(timeout_sec)) {
         continue;
       }
     }
@@ -112,9 +127,13 @@ void rpc_server::process()
     pfi::lang::shared_ptr<rpc_stream> rs(new rpc_stream(ns.get(), timeout_sec));
     ns.release();
 
-    while(true) {
+    while(serv_running) {
       rpc_message msg;
-      if(!rs->receive(&msg)) {
+      try {
+        if(!rs->receive(&msg)) {
+          break;
+        }
+      } catch (const rpc_timeout_error&) {
         break;
       }
 
