@@ -38,10 +38,12 @@
 
 #include "../lang/bind.h"
 #include "../concurrent/thread.h"
+#include "../system/time_util.h"
 
 using namespace std;
 using namespace pfi::lang;
 using namespace pfi::concurrent;
+using namespace pfi::system::time;
 
 MPRPC_PROC(test_str, string(string));
 static string test_str(const string& v){ return v; }
@@ -63,6 +65,7 @@ const int kTestRPCPort = 31241;
 const int kTestStructRPCPort = 31242;
 const double kServerTimeout = 3.0;
 const double kClientTimeout = 3.0;
+const double kTestTimeout = 0.5;
 }
 
 static void server_thread(testrpc_server *ser)
@@ -145,6 +148,61 @@ TEST(mprpc, mprpc_test)
   }
 
   ser.stop();
+  t.join();
+}
+
+TEST(mprpc, mprpc_server_timeout_test)
+{
+  testrpc_server ser(kTestTimeout);
+  thread t(pfi::lang::bind(&server_thread, &ser));
+  t.start();
+
+  sleep(1);
+
+  // connect server but server disconnect by timeout
+  pfi::network::mprpc::socket sock;
+  ASSERT_TRUE(sock.connect(kLocalhost, kTestRPCPort));
+
+  clock_time start_time = get_clock_time();
+  int res;
+  EXPECT_EQ(0, ::read(sock.get(), &res, sizeof(res)));
+  EXPECT_GT((get_clock_time() - start_time), kTestTimeout);
+
+  ser.stop();
+  t.join();
+}
+
+namespace {
+void timeout_server_thread(pfi::network::mprpc::socket *server_socket)
+{
+  sleep(1);
+
+  ::accept(server_socket->get(), NULL, NULL);
+  sleep(1 + kTestTimeout);
+
+  // wait for socket shutdown listened socket
+  ::accept(server_socket->get(), NULL, NULL);
+}
+} // namespace
+
+TEST(mprpc, mprpc_client_timeout_test)
+{
+  pfi::network::mprpc::socket server_socket;
+  server_socket.listen(kTestRPCPort);
+  thread t(pfi::lang::bind(&timeout_server_thread, &server_socket));
+  t.start();
+
+  sleep(1);
+
+  EXPECT_NO_THROW({ testrpc_client cln1(kLocalhost, kTestRPCPort, kTestTimeout); });
+
+  { // connect server but client disconnect by timeout
+    testrpc_client cln(kLocalhost, kTestRPCPort, kTestTimeout);
+    string v, r;
+    EXPECT_THROW({ r = cln.call_test_str(v); }, pfi::network::mprpc::rpc_timeout_error);
+  }
+
+  server_socket.close();
   t.join();
 }
 
