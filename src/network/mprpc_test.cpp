@@ -56,6 +56,15 @@ static set<int> test_set(const set<int>& v){ return v; }
 
 MPRPC_GEN(1, testrpc, test_str, test_pair, test_vec, test_map, test_set);
 
+namespace {
+const string kLocalhost = "localhost";
+const int kServThreads = 10;
+const int kTestRPCPort = 31241;
+const int kTestStructRPCPort = 31242;
+const double kServerTimeout = 3.0;
+const double kClientTimeout = 3.0;
+}
+
 static void server_thread(testrpc_server *ser)
 {
   ser->set_test_str(&test_str);
@@ -63,21 +72,21 @@ static void server_thread(testrpc_server *ser)
   ser->set_test_vec(&test_vec);
   ser->set_test_map(&test_map);
   ser->set_test_set(&test_set);
-  ser->serv(31241, 10);
+  ser->serv(kTestRPCPort, kServThreads);
 }
 
 TEST(mprpc, mprpc_test)
 {
-  testrpc_server ser(3.0);
+  testrpc_server ser(kServerTimeout);
   thread t(pfi::lang::bind(&server_thread, &ser));
   t.start();
 
   sleep(1);
 
   int times = 100;
-  EXPECT_NO_THROW({ testrpc_client cln1("localhost", 31241, 3.0); });
+  EXPECT_NO_THROW({ testrpc_client cln1(kLocalhost, kTestRPCPort, kClientTimeout); });
   {
-    testrpc_client cln("localhost", 31241, 3.0);
+    testrpc_client cln(kLocalhost, kTestRPCPort, kClientTimeout);
     for (int t=0;t<times;t++) {
       {
         string v;
@@ -153,11 +162,12 @@ static tstruct f_test_struct(tstruct t) { return t; }
 static void struct_server_thread(test_struct_rpc_server *ser)
 {
   ser->set_test_struct(&f_test_struct);
-  ser->serv(31242, 10);
+  ser->serv(kTestStructRPCPort, kServThreads);
 }
+
 TEST(mprpc, test_struct)
 {
-  test_struct_rpc_server ser(3.0);
+  test_struct_rpc_server ser(kServerTimeout);
   thread t(pfi::lang::bind(&struct_server_thread, &ser));
   t.start();
 
@@ -166,8 +176,8 @@ TEST(mprpc, test_struct)
   {
     tstruct t1;
     t1.i = 9;
-    EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31242, 3.0); });
-    test_struct_rpc_client cln("localhost", 31242, 3.0);
+    EXPECT_NO_THROW({ test_struct_rpc_client cln1(kLocalhost, kTestStructRPCPort, kClientTimeout); });
+    test_struct_rpc_client cln(kLocalhost, kTestStructRPCPort, kClientTimeout);
 
     tstruct t2;
     EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
