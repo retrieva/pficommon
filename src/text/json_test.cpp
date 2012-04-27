@@ -441,8 +441,6 @@ TEST(json, merge_with)
     EXPECT_EQ(30,json_cast<int>(js3["c"]));
   }
   {
-    cout << "XXX1" << endl;
-
     json js1(new json_object());
     js1["v"] = new json_integer(1);
     js1["n"] = new json_object();
@@ -451,8 +449,6 @@ TEST(json, merge_with)
     js1["n"]["n"]["v"] = new json_integer(3);
     js1["n"]["n"]["n"] = new json_object();
     js1["n"]["n"]["n"]["v"] = new json_integer(4);
-
-    cout << "XXX2" << endl;
 
     json js2(new json_object());
     js2["v"] = new json_integer(10);
@@ -463,11 +459,7 @@ TEST(json, merge_with)
     js2["n"]["n"]["n"] = new json_object();
     js2["n"]["n"]["n"]["v"] = new json_integer(40);
 
-    cout << "XXX3" << endl;
-
     json js3 = recursive_merge_with(js1, js2, (&add_json_integer));
-
-    cout << "XXX4" << endl;
 
     EXPECT_EQ(11,json_cast<int>(js3["v"]));
     EXPECT_EQ(22,json_cast<int>(js3["n"]["v"]));
