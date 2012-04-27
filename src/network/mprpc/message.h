@@ -44,160 +44,160 @@ namespace mprpc {
 
 struct rpc_message {
 public:
-	rpc_message() { }
+  rpc_message() { }
 
-	rpc_message(msgpack::object obj, std::auto_ptr<msgpack::zone> z) :
-		zone(z)
-	{
-		obj.convert(&tuple);
-	}
+  rpc_message(msgpack::object obj, std::auto_ptr<msgpack::zone> z) :
+    zone(z)
+  {
+    obj.convert(&tuple);
+  }
 
-	void reset(msgpack::object obj, std::auto_ptr<msgpack::zone> z)
-	{
-		obj.convert(&tuple);
-		zone = z;
-	}
+  void reset(msgpack::object obj, std::auto_ptr<msgpack::zone> z)
+  {
+    obj.convert(&tuple);
+    zone = z;
+  }
 
-	bool is_request()   { return tuple.a0 == 0; }
-	bool is_response()  { return tuple.a0 == 1; }
+  bool is_request()   { return tuple.a0 == 0; }
+  bool is_response()  { return tuple.a0 == 1; }
 
-	uint32_t msgid() const { return tuple.a1; }
+  uint32_t msgid() const { return tuple.a1; }
 
-	msgpack::type::tuple<uint8_t, uint32_t,
-		msgpack::object, msgpack::object> tuple;
+  msgpack::type::tuple<uint8_t, uint32_t,
+    msgpack::object, msgpack::object> tuple;
 
-	std::auto_ptr<msgpack::zone> zone;
+  std::auto_ptr<msgpack::zone> zone;
 };
 
 
 struct rpc_request {
-	rpc_request(rpc_message& msg)
-	{
-		reset(msg);
-	}
+  rpc_request(rpc_message& msg)
+  {
+    reset(msg);
+  }
 
-	rpc_request()
-	{ }
+  rpc_request()
+  { }
 
-	void reset(rpc_message& msg)
-	{
-		msgid  = msg.tuple.a1;
-		         msg.tuple.a2.convert(&method);
-		param  = msg.tuple.a3;
-		zone   = msg.zone;
-	}
+  void reset(rpc_message& msg)
+  {
+    msgid  = msg.tuple.a1;
+             msg.tuple.a2.convert(&method);
+    param  = msg.tuple.a3;
+    zone   = msg.zone;
+  }
 
-	template <typename ObjectWritable, typename P>
-	static bool write(ObjectWritable& o, uint32_t msgid, const std::string& name, const P& param, double timeout_sec)
-	{
-		msgpack::type::tuple<uint8_t, uint32_t, const std::string&, const P&>
-			req(0, msgid, name, param);
-		return o.write(req, timeout_sec);
-	}
+  template <typename ObjectWritable, typename P>
+  static bool write(ObjectWritable& o, uint32_t msgid, const std::string& name, const P& param, double timeout_sec)
+  {
+    msgpack::type::tuple<uint8_t, uint32_t, const std::string&, const P&>
+      req(0, msgid, name, param);
+    return o.write(req, timeout_sec);
+  }
 
-	template <typename T>
-	bool param_as(T* to)
-	try {
-		param.convert(to);
-		return true;
-	} catch (msgpack::type_error&) {
-		return false;
-	}
+  template <typename T>
+  bool param_as(T* to)
+  try {
+    param.convert(to);
+    return true;
+  } catch (msgpack::type_error&) {
+    return false;
+  }
 
-	uint32_t msgid;
-	std::string method;
-	msgpack::object param;
-	std::auto_ptr<msgpack::zone> zone;
+  uint32_t msgid;
+  std::string method;
+  msgpack::object param;
+  std::auto_ptr<msgpack::zone> zone;
 };
 
 
 struct rpc_response {
-	rpc_response(rpc_message& msg)
-	{
-		reset(msg);
-	}
+  rpc_response(rpc_message& msg)
+  {
+    reset(msg);
+  }
 
-	rpc_response()
-	{ }
+  rpc_response()
+  { }
 
-	void reset(rpc_message& msg)
-	{
-		msgid  = msg.tuple.a1;
-		         msg.tuple.a2.convert(&error);
-		         msg.tuple.a3.convert(&result);
-		zone   = msg.zone;
-	}
+  void reset(rpc_message& msg)
+  {
+    msgid  = msg.tuple.a1;
+             msg.tuple.a2.convert(&error);
+             msg.tuple.a3.convert(&result);
+    zone   = msg.zone;
+  }
 
-	template <typename ObjectWritable, typename R, typename E>
-	static bool write(ObjectWritable& o, uint32_t msgid, const R& retval, const E& error, double timeout_sec)
-	{
-		msgpack::type::tuple<uint8_t, uint32_t, const E&, const R&>
-			res(1, msgid, error, retval);
-		return o.write(res, timeout_sec);
-	}
+  template <typename ObjectWritable, typename R, typename E>
+  static bool write(ObjectWritable& o, uint32_t msgid, const R& retval, const E& error, double timeout_sec)
+  {
+    msgpack::type::tuple<uint8_t, uint32_t, const E&, const R&>
+      res(1, msgid, error, retval);
+    return o.write(res, timeout_sec);
+  }
 
-	bool is_error() const
-	{
-		return !error.is_nil();
-	}
+  bool is_error() const
+  {
+    return !error.is_nil();
+  }
 
-	template <typename E>
-	bool error_as(E* to) const
-	try {
-		error.convert(to);
-		return true;
-	} catch (msgpack::type_error&) {
-		return false;
-	}
+  template <typename E>
+  bool error_as(E* to) const
+  try {
+    error.convert(to);
+    return true;
+  } catch (msgpack::type_error&) {
+    return false;
+  }
 
-	template <typename R>
-	bool result_as(R* to) const
-	try {
-		result.convert(to);
-		return true;
-	} catch (msgpack::type_error&) {
-		return false;
-	}
+  template <typename R>
+  bool result_as(R* to) const
+  try {
+    result.convert(to);
+    return true;
+  } catch (msgpack::type_error&) {
+    return false;
+  }
 
-	unsigned int error_code() const
-	{
-		if(error.type == msgpack::type::POSITIVE_INTEGER) {
-			return error.via.u64;
-		}
-		return 0;
-	}
+  unsigned int error_code() const
+  {
+    if(error.type == msgpack::type::POSITIVE_INTEGER) {
+      return error.via.u64;
+    }
+    return 0;
+  }
 
-	std::string error_string() const
-	{
-		return object_to_string(error);
-	}
+  std::string error_string() const
+  {
+    return object_to_string(error);
+  }
 
-	std::string result_string() const
-	{
-		return object_to_string(result);
-	}
+  std::string result_string() const
+  {
+    return object_to_string(result);
+  }
 
-	uint32_t msgid;
-	msgpack::object error;
-	msgpack::object result;
-	std::auto_ptr<msgpack::zone> zone;
+  uint32_t msgid;
+  msgpack::object error;
+  msgpack::object result;
+  std::auto_ptr<msgpack::zone> zone;
 
 private:
-	static std::string object_to_string(msgpack::object o)
-	{
-		if(o.type == msgpack::type::RAW) {
-			return std::string(o.via.raw.ptr, o.via.raw.size);
-		}
-		std::ostringstream oss;
-		oss << o;
-		return oss.str();
-	}
+  static std::string object_to_string(msgpack::object o)
+  {
+    if(o.type == msgpack::type::RAW) {
+      return std::string(o.via.raw.ptr, o.via.raw.size);
+    }
+    std::ostringstream oss;
+    oss << o;
+    return oss.str();
+  }
 };
 
 
 enum error_code {
-	METHOD_NOT_FOUND = 1,
-	TYPE_MISMATCH    = 2,
+  METHOD_NOT_FOUND = 1,
+  TYPE_MISMATCH    = 2,
 };
 
 

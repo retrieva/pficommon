@@ -44,28 +44,28 @@ namespace mprpc {
 
 class rpc_client {
 public:
-	rpc_client(const std::string &host, uint16_t port, double timeout_sec);
-	~rpc_client();
+  rpc_client(const std::string &host, uint16_t port, double timeout_sec);
+  ~rpc_client();
 
-	template <class T>
-	pfi::lang::function<T> call(const std::string &name);
+  template <class T>
+  pfi::lang::function<T> call(const std::string &name);
 
 private:
-	std::string host;
-	uint16_t port;
-	double timeout_sec;
+  std::string host;
+  uint16_t port;
+  double timeout_sec;
 
-	pfi::lang::shared_ptr<rpc_stream> ss;
-	pfi::lang::shared_ptr<rpc_stream> get_connection();
+  pfi::lang::shared_ptr<rpc_stream> ss;
+  pfi::lang::shared_ptr<rpc_stream> get_connection();
 };
 
 
 template <class T>
 pfi::lang::function<T> rpc_client::call(const std::string &name)
 {
-	return make_caller(
-			pfi::lang::function<T>(), name,
-			pfi::lang::bind(&rpc_client::get_connection, this));
+  return make_caller(
+      pfi::lang::function<T>(), name,
+      pfi::lang::bind(&rpc_client::get_connection, this));
 }
 
 

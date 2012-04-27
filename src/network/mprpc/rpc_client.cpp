@@ -39,7 +39,7 @@ namespace mprpc {
 
 
 rpc_client::rpc_client(const std::string& host, uint16_t port, double timeout_sec) :
-	host(host), port(port), timeout_sec(timeout_sec)
+  host(host), port(port), timeout_sec(timeout_sec)
 { }
 
 rpc_client::~rpc_client() { }
@@ -47,31 +47,31 @@ rpc_client::~rpc_client() { }
 
 pfi::lang::shared_ptr<rpc_stream> rpc_client::get_connection()
 {
-	if(ss) { return ss; }
+  if(ss) { return ss; }
 
-	for (int i=0; i < 2; i++){
-		socket sock;
-		if(!sock.connect(host, port)) {
-			continue;
-		}
+  for (int i=0; i < 2; i++){
+    socket sock;
+    if(!sock.connect(host, port)) {
+      continue;
+    }
 
-		if(timeout_sec > 0) {
-			if(!sock.set_timeout(timeout_sec)) {
-				continue;
-			}
-		}
+    if(timeout_sec > 0) {
+      if(!sock.set_timeout(timeout_sec)) {
+        continue;
+      }
+    }
 
-		if(!sock.set_nodelay(true)) {
-			continue;
-		}
+    if(!sock.set_nodelay(true)) {
+      continue;
+    }
 
-		ss.reset( new rpc_stream(sock.get(), timeout_sec) );
-		sock.release();
+    ss.reset( new rpc_stream(sock.get(), timeout_sec) );
+    sock.release();
 
-		break;
-	}
+    break;
+  }
 
-	return ss;
+  return ss;
 }
 
 

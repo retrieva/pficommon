@@ -43,29 +43,29 @@ namespace mprpc {
 
 class object_stream {
 public:
-	object_stream(int iofd);
-	object_stream(const std::string& host, uint16_t port);
-	~object_stream();
+  object_stream(int iofd);
+  object_stream(const std::string& host, uint16_t port);
+  ~object_stream();
 
-        int read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone,
-		 double timeout_sec);
+  int read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone,
+  double timeout_sec);
 
-	template <typename T>
-	int write(const T& v, double timeout_sec);
+  template <typename T>
+  int write(const T& v, double timeout_sec);
 
-        int write(const void* data, size_t size, double timeout_sec);
+  int write(const void* data, size_t size, double timeout_sec);
 
 private:
-	msgpack::unpacker unpacker;
-	int iofd;
+  msgpack::unpacker unpacker;
+  int iofd;
 };
 
 template <typename T>
 int object_stream::write(const T& v, double timeout_sec)
 {
-	msgpack::sbuffer sbuf;
-	msgpack::pack(sbuf, v);
-	return write(sbuf.data(), sbuf.size(), timeout_sec);
+  msgpack::sbuffer sbuf;
+  msgpack::pack(sbuf, v);
+  return write(sbuf.data(), sbuf.size(), timeout_sec);
 }
 
 

@@ -93,8 +93,7 @@ void stream_socket::set_dns_resolver(shared_ptr<dns_resolver, threading_model::m
     resolver=r;
 }
 
-bool stream_socket::connect(const string &host,
-			    uint16_t port_num)
+bool stream_socket::connect(const string &host, uint16_t port_num)
 {
   if (sock<0) return false;
 
@@ -109,7 +108,7 @@ bool stream_socket::connect(const string &host,
   synchronized(resolver_m){
     if (!resolver)
       set_dns_resolver(shared_ptr<dns_resolver, threading_model::multi_thread>
-		       (new normal_dns_resolver()));
+          (new normal_dns_resolver()));
     res=resolver;
   }
   vector<ipv4_address> ips=res->resolve(host, port_num);
@@ -292,14 +291,14 @@ bool stream_socket::getline(string &str, int limit)
     int c=getc();
     if (c=='\n'){
       if (ret.length()>=1 && ret[ret.length()-1]=='\r'){
-	str=ret.substr(0,ret.length()-1);
-	return true;
+        str=ret.substr(0,ret.length()-1);
+        return true;
       }
       break;
     }
     if (c==EOF){
       if (ret.length()==0)
-	return false;
+        return false;
       break;
     }
     ret+=(char)c;
@@ -448,7 +447,7 @@ bool server_socket::create(uint16_t port_num, int backlog)
 
   int yes=1;
   NO_INTR(res, ::setsockopt(sock, SOL_SOCKET, SO_REUSEADDR,
-			    (const char*)&yes, sizeof(yes)));
+        (const char*)&yes, sizeof(yes)));
 
   if (FAILED(res)){
     NO_INTR(res, ::close(sock));
@@ -468,7 +467,7 @@ bool server_socket::create(uint16_t port_num, int backlog)
 
   linger ling={0,0};
   NO_INTR(res, ::setsockopt(sock, SOL_SOCKET, SO_LINGER,
-			    &ling, sizeof(ling)));
+        &ling, sizeof(ling)));
   if (FAILED(res)){
     NO_INTR(res, ::close(sock));
     return false;

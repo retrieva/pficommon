@@ -48,45 +48,45 @@ namespace mprpc {
 
 class basic_server {
 public:
-	basic_server();
-	~basic_server();
+  basic_server();
+  ~basic_server();
 
-	bool create(uint16_t port, int backlog=4096);
-	bool close();
+  bool create(uint16_t port, int backlog=4096);
+  bool close();
 
-	static bool init_socket(int s);
+  static bool init_socket(int s);
 
 protected:
-	socket sock;
+  socket sock;
 };
 
 
 class rpc_server : public basic_server {
 public:
-	rpc_server(double timeout_sec);
-	~rpc_server();
+  rpc_server(double timeout_sec);
+  ~rpc_server();
 
-	bool serv(uint16_t port, int nthreads);
-	void process();
+  bool serv(uint16_t port, int nthreads);
+  void process();
 
-	template <class T>
-	void add(const std::string &name, const pfi::lang::function<T> &f);
+  template <class T>
+  void add(const std::string &name, const pfi::lang::function<T> &f);
 
 private:
-	double timeout_sec;
+  double timeout_sec;
 
-	void add(const std::string &name,
-			pfi::lang::shared_ptr<invoker_base> invoker);
+  void add(const std::string &name,
+      pfi::lang::shared_ptr<invoker_base> invoker);
 
-	void process_request(rpc_request& req, pfi::lang::shared_ptr<rpc_stream> rs);
+  void process_request(rpc_request& req, pfi::lang::shared_ptr<rpc_stream> rs);
 
-	std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
+  std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
 };
 
 template <class T>
 void rpc_server::add(const std::string &name, const pfi::lang::function<T> &f)
 {
-	add(name, make_invoker(f));
+  add(name, make_invoker(f));
 }
 
 

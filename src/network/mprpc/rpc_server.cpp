@@ -52,109 +52,109 @@ basic_server::basic_server() { }
 
 basic_server::~basic_server()
 {
-	close();
+  close();
 }
 
 bool basic_server::close()
 {
-	return sock.close();
+  return sock.close();
 }
 
 bool basic_server::create(uint16_t port, int backlog)
 {
-	return sock.listen(port, backlog);
+  return sock.listen(port, backlog);
 }
 
 
 rpc_server::rpc_server(double timeout_sec) :
-	timeout_sec(timeout_sec) { }
+  timeout_sec(timeout_sec) { }
 
 rpc_server::~rpc_server() { }
 
 
 bool rpc_server::serv(uint16_t port, int nthreads)
 {
-	using pfi::lang::shared_ptr;
-	using pfi::concurrent::thread;
+  using pfi::lang::shared_ptr;
+  using pfi::concurrent::thread;
 
-	if (!basic_server::create(port))
-		return false;
+  if (!basic_server::create(port))
+    return false;
 
-	std::vector<shared_ptr<thread> > ths(nthreads);
-	for (int i=0; i<nthreads; i++) {
-		ths[i] = shared_ptr<thread>(new thread(
-					pfi::lang::bind(&rpc_server::process, this)));
-		if (!ths[i]->start()) return false;
-	}
+  std::vector<shared_ptr<thread> > ths(nthreads);
+  for (int i=0; i<nthreads; i++) {
+    ths[i] = shared_ptr<thread>(new thread(
+          pfi::lang::bind(&rpc_server::process, this)));
+    if (!ths[i]->start()) return false;
+  }
 
-	for (int i=0; i<nthreads; i++) {
-		ths[i]->join();
-	}
+  for (int i=0; i<nthreads; i++) {
+    ths[i]->join();
+  }
 
-	return true;
+  return true;
 }
 
 void rpc_server::process()
 {
-	while(true) {
-		int s;
-		NO_INTR(s, ::accept(sock.get(), NULL, NULL));
-		if (FAILED(s)) { continue; }
-		socket ns(s);
+  while(true) {
+    int s;
+    NO_INTR(s, ::accept(sock.get(), NULL, NULL));
+    if (FAILED(s)) { continue; }
+    socket ns(s);
 
-		ns.set_nodelay(true);
-		if(timeout_sec > 0) {
-			if(!sock.set_timeout(timeout_sec)) {
-				continue;
-			}
-		}
+    ns.set_nodelay(true);
+    if(timeout_sec > 0) {
+      if(!sock.set_timeout(timeout_sec)) {
+        continue;
+      }
+    }
 
-		pfi::lang::shared_ptr<rpc_stream> rs(new rpc_stream(ns.get(), timeout_sec));
-		ns.release();
+    pfi::lang::shared_ptr<rpc_stream> rs(new rpc_stream(ns.get(), timeout_sec));
+    ns.release();
 
-		while(true) {
-			rpc_message msg;
-			if(!rs->receive(&msg)) {
-				break;
-			}
+    while(true) {
+      rpc_message msg;
+      if(!rs->receive(&msg)) {
+        break;
+      }
 
-			if(!msg.is_request()) {
-				continue;
-			}
+      if(!msg.is_request()) {
+        continue;
+      }
 
-			rpc_request req(msg);
-			try {
-				process_request(req, rs);
-			} catch (const rpc_error&e) {
-			}
-		}
-	}
+      rpc_request req(msg);
+      try {
+        process_request(req, rs);
+      } catch (const rpc_error&e) {
+      }
+    }
+  }
 }
 
 void rpc_server::add(const std::string &name,
-		pfi::lang::shared_ptr<invoker_base> invoker)
+    pfi::lang::shared_ptr<invoker_base> invoker)
 {
-	funcs[name] = invoker;
+  funcs[name] = invoker;
 }
 
 void rpc_server::process_request(rpc_request& req, pfi::lang::shared_ptr<rpc_stream> rs)
 {
-	responder res(req.msgid, rs);
+  responder res(req.msgid, rs);
 
-	std::map<std::string, pfi::lang::shared_ptr<invoker_base> >::iterator
-		fun = funcs.find(req.method);
+  std::map<std::string, pfi::lang::shared_ptr<invoker_base> >::iterator
+    fun = funcs.find(req.method);
 
-	if(fun == funcs.end()) {
-		res.send_error((unsigned int)METHOD_NOT_FOUND, req.method);
-		return;
-	}
+  if(fun == funcs.end()) {
+    res.send_error((unsigned int)METHOD_NOT_FOUND, req.method);
+    return;
+  }
 
-        try {
-                fun->second->invoke(req, res);
-        } catch (const rpc_error &e) {
-        } catch (const std::exception &e) {
-                res.send_error(std::string(e.what()));
-        }
+  try {
+    fun->second->invoke(req, res);
+  } catch (const rpc_error &e) {
+  } catch (const std::exception &e) {
+    res.send_error(std::string(e.what()));
+  }
 }
 
 

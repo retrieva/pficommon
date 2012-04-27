@@ -55,9 +55,9 @@ ipv4_address::ipv4_address(const ipv4_address &p)
 }
 
 ipv4_address::ipv4_address(unsigned char a,
-			   unsigned char b,
-			   unsigned char c,
-			   unsigned char d)
+    unsigned char b,
+    unsigned char c,
+    unsigned char d)
 {
   ip[0]=a;
   ip[1]=b;
@@ -71,13 +71,13 @@ ipv4_address::ipv4_address(const string &s)
   char x='\0',y='\0',z='\0';
   istringstream iss(s);
   if (!((iss>>a>>x>>b>>y>>c>>z>>d)&&
-	a>=0&&a<=255&&
-	b>=0&&b<=255&&
-	c>=0&&c<=255&&
-	d>=0&&d<=255&&
-	x=='.'&&
-	y=='.'&&
-	z=='.')){
+        a>=0&&a<=255&&
+        b>=0&&b<=255&&
+        c>=0&&c<=255&&
+        d>=0&&d<=255&&
+        x=='.'&&
+        y=='.'&&
+        z=='.')){
     *this=none;
     return;
   }
