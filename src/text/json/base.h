@@ -95,6 +95,10 @@ public:
   void add(const std::string &name, const json &v);
   void add(const json &v);
 
+  template<typename F>
+  json merge_with(json &v, F f);
+  json merge(json &v);
+
   size_t size() const;
 
   iterator begin();
@@ -331,6 +335,19 @@ private:
 };
 
 class json_object : public json_value{
+private:
+  template<typename T>
+  static inline T return_fst(T v1, T v2)
+  {
+    return v1;
+  }
+
+  template<typename T>
+  static inline T return_snd(T v1, T v2)
+  {
+    return v2;
+  }
+
 public:
   typedef std::map<std::string, json>::iterator iterator;
   typedef std::map<std::string, json>::const_iterator const_iterator;
@@ -340,6 +357,28 @@ public:
 
   void add(const std::string &name, const json &j){
     member[name]=j;
+  }
+
+  template <class F>
+  json_object *merge_with(json_object *obj, F f)
+  {
+    json_object *ret = new json_object();
+    for (iterator it = this->begin(); it != this->end(); ++it) {
+      ret->add(it->first,it->second);
+    }
+    for (iterator it = obj->begin(); it != obj->end(); ++it) {
+      if (ret->count(it->first) == 0){
+        ret->add(it->first,it->second);
+      } else {
+        json js = (*ret)[it->first];
+        ret->add(it->first,f(js,it->second));
+      }
+    }
+    return ret;
+  }
+
+  json_object *merge(json_object *obj) {
+    return merge_with(obj, &return_snd<json>);
   }
 
   json &operator[](const std::string &name){
@@ -508,6 +547,29 @@ inline void json::add(const json &v)
   p->add(v);
 }
 
+template<typename F>
+inline json json::merge_with(json &v, F f)
+{
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<json>("You failed to use the json as an object.");
+  json_object* q = dynamic_cast<json_object*>(v.get());
+  if (!q)
+    throw json_bad_cast<json>("You failed to use the json as an object.");
+  return json(p->merge_with(q,f));
+}
+
+inline json json::merge(json &v)
+{
+  json_object* p = dynamic_cast<json_object*>(val.get());
+  if (!p)
+    throw json_bad_cast<json>("You failed to use the json as an object.");
+  json_object* q = dynamic_cast<json_object*>(v.get());
+  if (!q)
+    throw json_bad_cast<json>("You failed to use the json as an object.");
+  return json(p->merge(q));
+}
+
 inline size_t json::size() const
 {
   if (json_array* p = dynamic_cast<json_array*>(val.get()))
@@ -565,6 +627,17 @@ inline void json::pretty(std::ostream &os, bool escape) const
 inline json json::clone() const
 {
   return json(val->clone());
+}
+
+template<typename F>
+json merge_with(json js1, json js2, F f)
+{
+  return js1.merge_with(js2,f);
+}
+
+json merge(json js1, json js2)
+{
+  return js1.merge(js2);
 }
 
 template <class T>

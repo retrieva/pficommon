@@ -82,6 +82,14 @@ jsonオブジェクトをハンドルするための型
 
 .. code-block:: c++
 
+  json json::merge(json &js)
+
+保持しているjson_objectに与えられたjson_objectをマージしたjson_objectを返す
+(例外は上と同様)。
+マージは非破壊であるが、シャローコピーであるため返されたjson_objectへの変更が元のjson_objectに影響を与えることがある。
+
+.. code-block:: c++
+
   json::size() const
 
 保持しているjson_arrayのサイズを取得する
