@@ -635,7 +635,7 @@ json merge_with(json js1, json js2, F f)
   return js1.merge_with(js2,f);
 }
 
-json merge(json js1, json js2)
+inline json merge(json js1, json js2)
 {
   return js1.merge(js2);
 }
