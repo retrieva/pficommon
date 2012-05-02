@@ -8,6 +8,7 @@ import Options
 import sys
 import os
 import re
+import waflib
 
 subdirs = 'src tools'
 
@@ -83,16 +84,16 @@ def build(bld):
       ])
 
   bld.recurse(subdirs)
-  
-  ls = ''
+  libs = []
   for tasks in bld.get_build_iterator():
     if tasks == []:
       break
     for task in tasks:
-      for out in task.outputs:
-        o = str(out)
-        if re.match(r'libpficommon.*\.so$', o):
-          ls = ls + ' -l' + o[3:-3]
+      if isinstance(task.generator, waflib.TaskGen.task_gen) and 'cxxshlib' in task.generator.features:
+        libs.append(task.generator.target)
+  ls = ''
+  for l in set(libs):
+    ls = ls + ' -l' + l
 
   bld(source = 'pficommon.pc.in',
       prefix = bld.env['PREFIX'],
