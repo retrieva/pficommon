@@ -21,7 +21,7 @@ def build(bld):
   
   bld.program(
     features = 'gtest',
-    source = 'json_test.cpp json_test_empty.cpp',
+    source = 'json_test.cpp json_multiple_definition_test.cpp',
     target = 'json_test',
     includes = '. json',
     use = 'pficommon_text')
