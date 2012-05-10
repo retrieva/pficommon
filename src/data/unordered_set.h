@@ -34,6 +34,8 @@
 
 #include "../pfi-config.h"
 
+#include <cmath>
+
 #if HAVE_UNORDERED_SET
 #include <unordered_set>
 #elif HAVE_TR1_UNORDERED_SET
@@ -80,6 +82,12 @@ public:
 		const typename _Base::key_equal &eql = typename _Base::key_equal(),
 		const typename _Base::allocator_type &a = typename _Base::allocator_type())
     : _Base(__f, __l, n, hf, eql, a) {}
+
+#if HAVE_TR1_UNORDERED_SET
+  void reserve(typename _Base::size_type n) {
+    this->rehash(std::ceil(n / this->max_load_factor()));
+  }
+#endif
 };
 
 template <class _Value,
@@ -105,6 +113,12 @@ public:
 		const typename _Base::key_equal &eql = typename _Base::key_equal(),
 		const typename _Base::allocator_type &a = typename _Base::allocator_type())
     : _Base(__f, __l, n, hf, eql, a) {}
+
+#if HAVE_TR1_UNORDERED_SET
+  void reserve(typename _Base::size_type n) {
+    this->rehash(std::ceil(n / this->max_load_factor()));
+  }
+#endif
 };
 
 #elif HAVE_EXT_HASH_SET

@@ -86,3 +86,4 @@ def build(bld):
   t('serialization_test.cpp')
   t('digest/md5_test.cpp')
   t('encoding/base64_test.cpp')
+  t('unordered_test.cpp')
