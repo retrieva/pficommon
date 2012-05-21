@@ -4,6 +4,7 @@
 #include <cctype>
 #include <cstring>
 #include <cstdio>
+#include <unistd.h>
 using namespace std;
 
 #include "../../src/lang/shared_ptr.h"

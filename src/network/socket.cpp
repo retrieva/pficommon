@@ -40,6 +40,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 #include "dns.h"
 #include "../system/syscall.h"
