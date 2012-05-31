@@ -67,6 +67,8 @@ public:
   ~rpc_server();
 
   bool serv(uint16_t port, int nthreads);
+  bool running() const;
+  void stop();
   void process();
 
   template <class T>
@@ -74,6 +76,7 @@ public:
 
 private:
   double timeout_sec;
+  volatile bool serv_running;
 
   void add(const std::string &name,
       pfi::lang::shared_ptr<invoker_base> invoker);

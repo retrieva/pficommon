@@ -60,6 +60,7 @@ object_stream::object_stream(const std::string& host, uint16_t port) :
 
 object_stream::~object_stream()
 {
+  ::shutdown(iofd, SHUT_RDWR);
   ::close(iofd);
 }
 
