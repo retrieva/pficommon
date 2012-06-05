@@ -99,7 +99,7 @@ class basic_httpstream : public std::basic_istream<C,T>{
 public:
   basic_httpstream(const std::string &url)
     : buf(url){
-    init(&buf);
+    this->init(&buf);
   }
   ~basic_httpstream(){
   }
