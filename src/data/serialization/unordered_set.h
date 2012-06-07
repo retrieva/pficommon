@@ -41,8 +41,8 @@ namespace pfi{
 namespace data{
 namespace serialization{
 
-template <class Archive, class K, class H, class P, class A>
-void serialize(Archive &ar, unordered_set<K, H, P, A> &s)
+template <class Archive, class T, class H, class P, class A>
+void serialize(Archive &ar, unordered_set<T, H, P, A> &s)
 {
   uint32_t size=static_cast<uint32_t>(s.size());
   ar & size;
