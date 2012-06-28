@@ -151,6 +151,29 @@ TEST(mprpc, mprpc_test)
   t.join();
 }
 
+TEST(mprpc, mprpc_nonblock_serv_test)
+{
+  testrpc_server ser(kTestTimeout);
+  ASSERT_TRUE(ser.create(kTestRPCPort));
+
+  ser.set_test_str(&test_str);
+  ser.run(kServThreads, false);
+  EXPECT_TRUE(ser.running());
+
+  testrpc_client cln(kLocalhost, kTestRPCPort, kClientTimeout);
+  string v, r;
+  EXPECT_NO_THROW({ r = cln.call_test_str(v); });
+
+  ser.stop();
+  ser.join();
+}
+
+TEST(mprpc, mprpc_nonblock_uninitialied_test)
+{
+  testrpc_server ser(kTestTimeout);
+  ASSERT_FALSE(ser.run(kServThreads));
+}
+
 TEST(mprpc, mprpc_server_timeout_test)
 {
   testrpc_server ser(kTestTimeout);

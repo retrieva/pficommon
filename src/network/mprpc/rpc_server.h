@@ -38,6 +38,7 @@
 #include "../../lang/shared_ptr.h"
 #include "../../lang/function.h"
 #include "../../lang/bind.h"
+#include "../../concurrent/thread.h"
 #include "socket.h"
 #include "invoker.h"
 
@@ -66,10 +67,14 @@ public:
   rpc_server(double timeout_sec);
   ~rpc_server();
 
+  bool create(uint16_t port, int backlog=4096);
   bool serv(uint16_t port, int nthreads);
+  bool run(int nthreads, bool sync = true);
   bool running() const;
   void stop();
+  void join();
   void process();
+
 
   template <class T>
   void add(const std::string &name, const pfi::lang::function<T> &f);
@@ -77,6 +82,7 @@ public:
 private:
   double timeout_sec;
   volatile bool serv_running;
+  std::vector<pfi::lang::shared_ptr<pfi::concurrent::thread> > serv_threads;
 
   void add(const std::string &name,
       pfi::lang::shared_ptr<invoker_base> invoker);
