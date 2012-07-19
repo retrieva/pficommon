@@ -116,7 +116,7 @@ void serialize(Archive &ar, std::iostream &ios)
   }
   else{
     std::istreambuf_iterator<char> p(ios), end;
-    char c[2]={0x00, 0xff};
+    char c[]={'\0', '\xff'};
     while(p!=end){
       c[0]=*p++;
       if (static_cast<unsigned char>(c[0])==0xff)
@@ -124,8 +124,8 @@ void serialize(Archive &ar, std::iostream &ios)
       else
 	ar & c[0];
     }
-    c[0]=0xff;
-    c[1]=0x00;
+    c[0]='\xff';
+    c[1]='\0';
     ar & c[0] & c[1];
   }
 }
