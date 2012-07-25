@@ -92,7 +92,7 @@ struct rpc_request {
   {
     msgpack::type::tuple<uint8_t, uint32_t, const std::string&, const P&>
       req(0, msgid, name, param);
-    return o.write(req, timeout_sec);
+    return o.write(req, timeout_sec) > 0;
   }
 
   template <typename T>
@@ -133,7 +133,7 @@ struct rpc_response {
   {
     msgpack::type::tuple<uint8_t, uint32_t, const E&, const R&>
       res(1, msgid, error, retval);
-    return o.write(res, timeout_sec);
+    return o.write(res, timeout_sec) > 0;
   }
 
   bool is_error() const
