@@ -33,6 +33,20 @@ jsonデータ型の操作
 
 .. code-block:: c++
 
+  typedef enum {
+    JSON_NULL,
+    JSON_INTEGER,
+    JSON_FLOAT,
+    JSON_BOOL,
+    JSON_STRING,
+    JSON_ARRAY,
+    JSON_OBJECT,
+  } json_type_t;
+
+それぞれのjsonのデータの型を表すためのタグ。
+
+.. code-block:: c++
+
   class json_value [#j1c13c05]
 
 上の型の基底クラス。
@@ -115,6 +129,12 @@ jsonオブジェクトをハンドルするための型
   json_value *json::get() const
 
 保持しているjson_valueのポインタを返す。
+
+.. code-block:: c++
+
+  json_type_t type() const
+
+保持しているjson_valueの型を示すタグを返す。
 
 .. code-block:: c++
 
