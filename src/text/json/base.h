@@ -143,7 +143,10 @@ public:
     print(os, escape);
   }
 
+private:
   virtual json_value *clone() const = 0;
+
+  friend class json;
 };
 
 class json_array : public json_value{
@@ -229,11 +232,11 @@ public:
     os<<dat;
   }
 
+private:
   json_value* clone() const {
     return new json_integer(dat);
   }
 
-private:
   int64_t dat;
 };
 
@@ -254,11 +257,11 @@ public:
       <<std::setprecision(prec);
   }
 
+private:
   json_value* clone() const {
     return new json_float(dat);
   }
 
-private:
   double dat;
 };
 
@@ -294,11 +297,10 @@ public:
     os<<'\"';
   }
 
+private:
   json_value* clone() const {
     return new json_string(dat);
   }
-
-private:
 
   static void print_char(std::ostream &os, pfi::data::string::uchar u){
     static const char escs[]={
@@ -469,6 +471,7 @@ public:
     os<<'}';
   }
 
+private:
   json_value* clone() const {
     json_object *obj = new json_object();
     try {
@@ -482,7 +485,6 @@ public:
     }
   }
 
-private:
   std::map<std::string, json> member;
 };
 
@@ -500,11 +502,11 @@ public:
     os<<(dat?"true":"false");
   }
 
+private:
   json_value* clone() const {
     return new json_bool(dat);
   }
 
-private:
   bool dat;
 };
 
@@ -520,6 +522,7 @@ public:
     os<<"null";
   }
 
+private:
   json_value* clone() const {
     return new json_null();
   }
