@@ -5,6 +5,7 @@ def build(bld):
   bld.install_files('${HPREFIX}/lang', [
       'cast.h',
       'bind.h', 'bind_mf.h', 'bind_template.h',
+      'demangle.h',
       'mem_fn.h', 'mem_fn_def.h', 'mem_fn_cc.h', 'mem_fn_tmpl.h',
       'function.h', 'function_def.h',
       'noncopyable.h',
