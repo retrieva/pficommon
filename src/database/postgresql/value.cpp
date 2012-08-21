@@ -106,7 +106,7 @@ sql_value *make_sql_value(char *p, int len, sql_type t)
     char *q=strptime(p, "%Y-%m-%d %T.", &t);
     int usec=atoi(q);
     calendar_time ct(t.tm_year+1900, t.tm_mon+1, t.tm_mday,
-		     t.tm_hour, t.tm_min, t.tm_sec, usec);
+                     t.tm_hour, t.tm_min, t.tm_sec, usec);
     return new sql_timestamp(clock_time(ct));
   }
 

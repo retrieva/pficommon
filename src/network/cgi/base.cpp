@@ -55,9 +55,9 @@ void cgi::set_max_content_length(size_t length)
 }
 
 void cgi::exec(istream &in,
-	       ostream &out,
-	       ostream &err,
-	       const map<string, string> &cenv)
+               ostream &out,
+               ostream &err,
+               const map<string, string> &cenv)
 {
   env=cenv;
   map<string,string>().swap(query);
@@ -89,21 +89,21 @@ void cgi::exec(istream &in,
       string dat(len, '\0');
       in.read(&dat[0], len);
       if (in.eof()){
-	valid=false;
-	invalid_msg="Request is too short";
+        valid=false;
+        invalid_msg="Request is too short";
       }
       else{
-	if (env["CONTENT_TYPE"].find("multipart/")!=string::npos){
-	  string::size_type ix=env["CONTENT_TYPE"].find("boundary=");
-	  if (ix==string::npos){
-	    valid=false;
-	    invalid_msg="Invalid html protocol";
-	  }
-	  string boundary=env["CONTENT_TYPE"].substr(ix+9);
-	  parse_multipart_input(dat, boundary);
-	}
-	else
-	  parse_input(dat);
+        if (env["CONTENT_TYPE"].find("multipart/")!=string::npos){
+          string::size_type ix=env["CONTENT_TYPE"].find("boundary=");
+          if (ix==string::npos){
+            valid=false;
+            invalid_msg="Invalid html protocol";
+          }
+          string boundary=env["CONTENT_TYPE"].substr(ix+9);
+          parse_multipart_input(dat, boundary);
+        }
+        else
+          parse_input(dat);
       }
     }
   }
@@ -216,7 +216,7 @@ void cgi::parse_multipart_input(const string &s, const string &boundary)
   for (string line; getline(iss, line); ){
     if (line.substr(0, boundary.length()+2)=="--"+boundary){
       if (line.substr(0, boundary.length()+4)=="--"+boundary+"--")
-	end=true;
+        end=true;
       break;
     }
   }
@@ -226,23 +226,23 @@ void cgi::parse_multipart_input(const string &s, const string &boundary)
     ssize_t cnt=0;
     for (char a=0, b=0, c=0; iss.get(c); a=b, b=c, cnt++){
       if (a=='\n' && b=='-' && c=='-'){
-	string chk(boundary.length(), ' ');
-	iss.read(&chk[0], boundary.length());
-	if (chk==boundary){
-	  int cnt=0;
-	  while(iss.get(a) && a!='\n'){
-	    if (a=='-'){ if (cnt>=0 && ++cnt==2) end=true; }
-	    else cnt=-1;
-	  }
-	  if (str.length()>0 && str[str.length()-1]=='\r')
-	    str.resize(str.length()-1);
-	  break;
-	}
-	str+=a;
-	str+="--";
-	str+=chk;
-	cnt=-1;
-	continue;
+        string chk(boundary.length(), ' ');
+        iss.read(&chk[0], boundary.length());
+        if (chk==boundary){
+          int cnt=0;
+          while(iss.get(a) && a!='\n'){
+            if (a=='-'){ if (cnt>=0 && ++cnt==2) end=true; }
+            else cnt=-1;
+          }
+          if (str.length()>0 && str[str.length()-1]=='\r')
+            str.resize(str.length()-1);
+          break;
+        }
+        str+=a;
+        str+="--";
+        str+=chk;
+        cnt=-1;
+        continue;
       }
       if (cnt>=2) str+=a;
     }
@@ -261,21 +261,21 @@ void cgi::parse_multipart_input(const string &s, const string &boundary)
       pair<string, map<string, string> > p=extract_header(cd);
 
       if (p.first=="form-data" &&
-	  p.second.count("name")>0 &&
-	  p.second.count("filename")>0){
-	query[p.second["name"]]=p.second["filename"];
-	multi_query[p.second["name"]].push_back(p.second["filename"]);
-	file[p.second["filename"]]=body;
-	file_info[p.second["filename"]]=hd;
+          p.second.count("name")>0 &&
+          p.second.count("filename")>0){
+        query[p.second["name"]]=p.second["filename"];
+        multi_query[p.second["name"]].push_back(p.second["filename"]);
+        file[p.second["filename"]]=body;
+        file_info[p.second["filename"]]=hd;
       }
       else if (p.first=="form-data" &&
-	       p.second.count("name")>0){
-	query[p.second["name"]]=body;
-	multi_query[p.second["name"]].push_back(body);
+               p.second.count("name")>0){
+        query[p.second["name"]]=body;
+        multi_query[p.second["name"]].push_back(body);
       }
       else if (p.first=="attachment"){
-	file[p.second["filename"]]=body;
-	file_info[p.second["filename"]]=hd;
+        file[p.second["filename"]]=body;
+        file_info[p.second["filename"]]=hd;
       }
     }
   }

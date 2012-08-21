@@ -284,14 +284,14 @@ public:
     if (escape){
       const char *p=dat.c_str();
       while(*p){
-	pfi::data::string::uchar uc=pfi::data::string::chars_to_uchar(p);
-	print_char(os, uc);
+        pfi::data::string::uchar uc=pfi::data::string::chars_to_uchar(p);
+        print_char(os, uc);
       }
     }
     else{
       const char *p=dat.c_str();
       while(*p){
-	print_char_without_escape(os, *p++);
+        print_char_without_escape(os, *p++);
       }
     }
     os<<'\"';
@@ -315,10 +315,10 @@ private:
     if (u<=0x7F){
       char c=static_cast<char>(u);
       for (int i=0; i<cnt; i++){
-	if (escs[i]==c){
-	  os<<'\\'<<cnvs[i];
-	  return;
-	}
+        if (escs[i]==c){
+          os<<'\\'<<cnvs[i];
+          return;
+        }
       }
       if (iscntrl(c)){
         os<<"\\u00"<<tohex((c>>4)&0xf)<<tohex(c&0xf);
@@ -328,10 +328,10 @@ private:
     }
     else{
       os<<"\\u"
-	<<tohex((u>>12)&0xf)
-	<<tohex((u>>8)&0xf)
-	<<tohex((u>>4)&0xf)
-	<<tohex((u>>0)&0xf);
+        <<tohex((u>>12)&0xf)
+        <<tohex((u>>8)&0xf)
+        <<tohex((u>>4)&0xf)
+        <<tohex((u>>0)&0xf);
     }
   }
 
@@ -347,8 +347,8 @@ private:
 
     for (int i=0; i<cnt; i++){
       if (escs[i]==c){
-	os<<'\\'<<cnvs[i];
-	return;
+        os<<'\\'<<cnvs[i];
+        return;
       }
     }
     if (iscntrl(c)){
@@ -444,7 +444,7 @@ public:
     bool fst=true;
     os<<'{';
     for (std::map<std::string, json>::const_iterator it=member.begin();
-	 it!=member.end(); it++){
+         it!=member.end(); it++){
       if (fst) fst=false;
       else os<<',';
       json_string::print(os, it->first, escape);
@@ -458,7 +458,7 @@ public:
     bool fst=true;
     os<<'{';
     for (std::map<std::string, json>::const_iterator it=member.begin();
-	 it!=member.end(); it++){
+         it!=member.end(); it++){
       if (fst) fst=false, os<<std::endl;
       else os<<','<<std::endl;
       for (int i=0; i<(level+1)*2; i++) os<<' ';

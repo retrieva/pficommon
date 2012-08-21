@@ -44,10 +44,10 @@ namespace database{
 namespace mysql{
 
 connection *connect(const std::string &host,
-		    uint16_t port,
-		    const std::string &dbname,
-		    const std::string &user,
-		    const std::string &password);
+                    uint16_t port,
+                    const std::string &dbname,
+                    const std::string &user,
+                    const std::string &password);
 
 } // mysql
 } // database

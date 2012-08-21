@@ -67,9 +67,9 @@ public:
   virtual void run(std::ostream &out)=0;
 
   void exec(std::istream &in,
-	    std::ostream &out,
-	    std::ostream &err,
-	    const std::map<std::string, std::string> &cenv);
+            std::ostream &out,
+            std::ostream &err,
+            const std::map<std::string, std::string> &cenv);
 
   void set_max_content_length(size_t length);
 

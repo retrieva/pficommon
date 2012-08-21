@@ -70,6 +70,6 @@ ratio<int> zero(0);
 ratio<int> one(1);
 
 TEST_FIELD(ratio_ring, 1000, ratio<int>, gen_ratio, 
-	   zero,one,expect_eq);
+           zero,one,expect_eq);
 
 

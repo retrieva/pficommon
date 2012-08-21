@@ -47,8 +47,8 @@ namespace string {
     for (size_t i=0;i<=b.size();++i) tbl[0][i]=i;
     for (size_t i=1;i<=a.size();++i)
       for (size_t j=1;j<=b.size();++j) {
-	tbl[i][j]=tbl[i-1][j-1]+(a[i-1]!=b[j-1]);
-	tbl[i][j]=std::min(tbl[i][j],std::min(tbl[i-1][j],tbl[i][j-1])+1);
+        tbl[i][j]=tbl[i-1][j-1]+(a[i-1]!=b[j-1]);
+        tbl[i][j]=std::min(tbl[i][j],std::min(tbl[i-1][j],tbl[i][j-1])+1);
       }
     return tbl[a.size()][b.size()];
   }
@@ -58,8 +58,8 @@ namespace string {
     std::vector<std::vector<int> > tbl(a.size()+1,std::vector<int>(b.size()+1));
     for (size_t i=1;i<=a.size();++i)
       for (size_t j=1;j<=b.size();++j) {
-	tbl[i][j]=tbl[i-1][j-1]+(a[i-1]==b[j-1]);
-	tbl[i][j]=std::max(tbl[i][j],std::max(tbl[i-1][j],tbl[i][j-1]));
+        tbl[i][j]=tbl[i-1][j-1]+(a[i-1]==b[j-1]);
+        tbl[i][j]=std::max(tbl[i][j],std::max(tbl[i-1][j],tbl[i][j-1]));
       }
     return tbl[a.size()][b.size()];
   }

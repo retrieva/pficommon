@@ -59,7 +59,7 @@ public:
 };
 
 class cached_dns_resolver : public dns_resolver
-			  , pfi::lang::noncopyable{
+                          , pfi::lang::noncopyable{
 public:
   cached_dns_resolver(int max_size, int expire_second);
   ~cached_dns_resolver();

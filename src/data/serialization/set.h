@@ -56,7 +56,7 @@ void serialize(Archive &ar, std::set<T, Compare, Allocator> &s)
   }
   else{
     for (typename std::set<T, Compare, Allocator>::iterator p=s.begin();
-	 p!=s.end();p++){
+         p!=s.end();p++){
       T v(*p);
       ar & v;
     }

@@ -77,26 +77,26 @@ namespace string {
     bool start = true;
     while(*in) {
       if((*in&0xC0) != 0x80){
-	if(!start){
-	  return cur;
-	}else{
-	  start = false;
-	}
-	if((*in&0xFC) == 0xFC){
-	  cur = *in & 0x01;
-	}else if((*in&0xF8) == 0xF8){
-	  cur = *in & 0x03;
-	}else if((*in&0xF0) == 0xF0){
-	  cur = *in & 0x07;
-	}else if((*in&0xE0) == 0xE0){
-	  cur = *in & 0x0F;
-	}else if((*in&0xC0) == 0xC0){
-	  cur = *in & 0x1F;
-	}else{
-	  cur = *in;
-	}
+        if(!start){
+          return cur;
+        }else{
+          start = false;
+        }
+        if((*in&0xFC) == 0xFC){
+          cur = *in & 0x01;
+        }else if((*in&0xF8) == 0xF8){
+          cur = *in & 0x03;
+        }else if((*in&0xF0) == 0xF0){
+          cur = *in & 0x07;
+        }else if((*in&0xE0) == 0xE0){
+          cur = *in & 0x0F;
+        }else if((*in&0xC0) == 0xC0){
+          cur = *in & 0x1F;
+        }else{
+          cur = *in;
+        }
       }else{
-	cur = cur * 64 + (*in&0x3F);
+        cur = cur * 64 + (*in&0x3F);
       }
       ++in;
     }

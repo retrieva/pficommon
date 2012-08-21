@@ -125,7 +125,7 @@ private:
       lbt.clear();
       lbt.resize(tbl.size());
       for (typename std::map<_Key,int,_Compare>::iterator it=tbl.begin();it!=tbl.end();++it) {
-	lbt[it->second]=it->first;
+        lbt[it->second]=it->first;
       }
     }
   }

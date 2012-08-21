@@ -198,8 +198,8 @@ inline int32_t from_sql(pfi::lang::shared_ptr<sql_value> v)
     sql_int64 *p=dynamic_cast<sql_int64*>(v.get());
     if (p){
       if (p->get()>=std::numeric_limits<int32_t>::min() &&
-	  p->get()<=std::numeric_limits<int32_t>::max())
-	return static_cast<int32_t>(p->get());
+          p->get()<=std::numeric_limits<int32_t>::max())
+        return static_cast<int32_t>(p->get());
       
       throw database_error("from_sql: cannot convert to int64 to int32, overflow");
     }

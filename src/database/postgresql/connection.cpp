@@ -125,10 +125,10 @@ connection *connect(const string &conninfo)
 }
 
 connection *connect(const string &host,
-		    uint16_t port,
-		    const string &dbname,
-		    const string &user,
-		    const string &password)
+                    uint16_t port,
+                    const string &dbname,
+                    const string &user,
+                    const string &password)
 {
   ostringstream oss;
   oss<<"host="<<host<<" "

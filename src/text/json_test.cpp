@@ -908,23 +908,23 @@ TEST(json, optional)
   }
   {
     EXPECT_THROW({
-	istringstream iss("{}");
-	opt1 a; iss>>via_json(a);
+        istringstream iss("{}");
+        opt1 a; iss>>via_json(a);
       },
       std::bad_cast);
     EXPECT_THROW({
-	istringstream iss("{\"def\": 456}");
-	opt1 a; iss>>via_json(a);
+        istringstream iss("{\"def\": 456}");
+        opt1 a; iss>>via_json(a);
       },
       std::bad_cast);
     EXPECT_THROW({
-	istringstream iss("{}");
-	opt1 a; iss>>via_json(a);
+        istringstream iss("{}");
+        opt1 a; iss>>via_json(a);
       },
       json_bad_cast_any);
     EXPECT_THROW({
-	istringstream iss("{\"def\": 456}");
-	opt1 a; iss>>via_json(a);
+        istringstream iss("{\"def\": 456}");
+        opt1 a; iss>>via_json(a);
       },
       json_bad_cast_any);
   }

@@ -175,8 +175,8 @@ void json_parser::parse_impl(callback &cb)
   default:{
     char err_msg[64];
     snprintf(err_msg, sizeof(err_msg),
-	     "invalid char: \'%s\' (U+%04X)",
-	     pfi::data::string::uchar_to_string(peek()).c_str(), peek());
+             "invalid char: \'%s\' (U+%04X)",
+             pfi::data::string::uchar_to_string(peek()).c_str(), peek());
     error(err_msg);
   }
 
@@ -327,22 +327,22 @@ void json_parser::parse_string_prim(char *&buf, int &buf_len, int &str_len)
       case 'n':  *p++='\n'; break;
       case 'r':  *p++='\r'; break;
       case 't':  *p++='\t'; break;
-	
+        
       case 'u':{
-	int a=parse_hex();
-	int b=parse_hex();
-	int c=parse_hex();
-	int d=parse_hex();
-	pfi::data::string::uchar_to_chars((a<<12)|(b<<8)|(c<<4)|d, p);
-	break;
+        int a=parse_hex();
+        int b=parse_hex();
+        int c=parse_hex();
+        int d=parse_hex();
+        pfi::data::string::uchar_to_chars((a<<12)|(b<<8)|(c<<4)|d, p);
+        break;
       }
 
       default: {
-	char err_msg[64];
-	snprintf(err_msg, sizeof(err_msg),
-		 "unexpected unescaped char: \'%s\' (U+%04X)",
-		 pfi::data::string::uchar_to_string(c).c_str(), c);
-	error(err_msg);
+        char err_msg[64];
+        snprintf(err_msg, sizeof(err_msg),
+                 "unexpected unescaped char: \'%s\' (U+%04X)",
+                 pfi::data::string::uchar_to_string(c).c_str(), c);
+        error(err_msg);
       }
 
       }
@@ -351,15 +351,15 @@ void json_parser::parse_string_prim(char *&buf, int &buf_len, int &str_len)
       int c=incr();
       
       if ((c>=0x20 && c<=0x21) ||
-	  (c>=0x23 && c<=0x5B) ||
-	  (c>=0x5D && c<=0x10FFFF))
-	pfi::data::string::uchar_to_chars(c, p);
+          (c>=0x23 && c<=0x5B) ||
+          (c>=0x5D && c<=0x10FFFF))
+        pfi::data::string::uchar_to_chars(c, p);
       else{
-	char err_msg[64];
-	snprintf(err_msg, sizeof(err_msg),
-		 "unexpected unescaped char: \'%s\' (U+%04X)",
-		 pfi::data::string::uchar_to_string(c).c_str(), c);
-	error(err_msg);
+        char err_msg[64];
+        snprintf(err_msg, sizeof(err_msg),
+                 "unexpected unescaped char: \'%s\' (U+%04X)",
+                 pfi::data::string::uchar_to_string(c).c_str(), c);
+        error(err_msg);
       }
     }
   }

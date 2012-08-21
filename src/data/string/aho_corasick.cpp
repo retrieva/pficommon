@@ -82,18 +82,18 @@ void aho_corasick::construct(const vector<pair<std::string, int> > &words)
     for (int i=0;i<n;i++){
       int c=dep<(int)words[ix+i].first.length()?(unsigned char)words[ix+i].first[dep]:0;
       if (tbl[c]++==0)
-	children[children_num++]=c;
+        children[children_num++]=c;
     }
 
     int base=max(1, bef_base-32);
     for (;;base++){
       bool ok=true;
       for (int ci=children[0]==0?1:0;ci<children_num;ci++){
-	int i=children[ci];
-	if (nodes[base+i].check>=0){
-	  ok=false;
-	  break;
-	}
+        int i=children[ci];
+        if (nodes[base+i].check>=0){
+          ok=false;
+          break;
+        }
       }
       if (ok) break;
     }
@@ -102,10 +102,10 @@ void aho_corasick::construct(const vector<pair<std::string, int> > &words)
     for (int cur=0, ci=0;ci<children_num;ci++){
       int i=children[ci];
       if (i>0 && tbl[i]>0){
-	int nix=nodes[pos].base+i;
-	if (nix+256>=(int)nodes.size()) nodes.resize(nix+256);
-	nodes[nix].check=pos;
-	ss.push(make_pair(make_pair(nix, dep+1), make_pair(ix+cur, tbl[i])));
+        int nix=nodes[pos].base+i;
+        if (nix+256>=(int)nodes.size()) nodes.resize(nix+256);
+        nodes[nix].check=pos;
+        ss.push(make_pair(make_pair(nix, dep+1), make_pair(ix+cur, tbl[i])));
       }
       cur+=tbl[i];
     }
@@ -124,7 +124,7 @@ void aho_corasick::construct(const vector<pair<std::string, int> > &words)
     
     for (int i=0;i<256;++i) {
       if (nodes[nodes[pos].base+i].check!=pos)
-	continue;
+        continue;
 
       int m=nodes[pos].fail;
       while (m>=0 && nodes[nodes[m].base+i].check!=m) m=nodes[m].fail;
@@ -150,10 +150,10 @@ void aho_corasick::search(const std::string& s, vector<pair<int,int> >& res) con
     if (nodes[pos].output!=-1) {
       int cur=pos;
       while(cur!=0) {
-	if (nodes[cur].output>=0) {
-	  res.push_back(make_pair(nodes[cur].output,i+1)); // word ID and end word pos
-	}
-	cur=nodes[cur].fail;
+        if (nodes[cur].output>=0) {
+          res.push_back(make_pair(nodes[cur].output,i+1)); // word ID and end word pos
+        }
+        cur=nodes[cur].fail;
       }
     }
   }

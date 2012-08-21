@@ -50,35 +50,35 @@ int main()
       string new_suf("."+string(infos[i].suffix));
 
       static const char *header_sufs[]={
-	".hpp",
-	".hxx",
-	".h",
-	"",
+        ".hpp",
+        ".hxx",
+        ".h",
+        "",
       };
 
       for (size_t j=0;j<sizeof(header_sufs)/sizeof(header_sufs[0]);j++){
-	string org_suf(header_sufs[j]);
+        string org_suf(header_sufs[j]);
 
-	if (org_suf==""){
-	  //outname+=new_suf;
-	  break;
-	}
+        if (org_suf==""){
+          //outname+=new_suf;
+          break;
+        }
 
-	string::size_type p=outname.find(org_suf);
-	if (p!=string::npos){
-	  outname.replace(p, org_suf.length(), ""/*new_suf*/);
-	  break;
-	}
+        string::size_type p=outname.find(org_suf);
+        if (p!=string::npos){
+          outname.replace(p, org_suf.length(), ""/*new_suf*/);
+          break;
+        }
       }
 
       try{
-	vector<reflect_base*> refs;
-	<<<ADDREFLECTS>>>
-	infos[i].f(refs, outname);
+        vector<reflect_base*> refs;
+        <<<ADDREFLECTS>>>
+        infos[i].f(refs, outname);
       }
       catch(const exception &e){
-	cerr<<"generate error: "<<e.what()<<endl;
-	unlink(outname.c_str());
+        cerr<<"generate error: "<<e.what()<<endl;
+        unlink(outname.c_str());
       }
 
       return 0;

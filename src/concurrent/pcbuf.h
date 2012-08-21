@@ -89,8 +89,8 @@ public:
     double start = static_cast<double>(system::time::get_clock_time());
     synchronized(m){
       while (q.size() >= cap){
-	second -= static_cast<double>(system::time::get_clock_time()) - start;
-	if (second <= 0 || !cond.wait(m, second)) return false;
+        second -= static_cast<double>(system::time::get_clock_time()) - start;
+        if (second <= 0 || !cond.wait(m, second)) return false;
       }
       q.push_back(value);
     }
@@ -111,8 +111,8 @@ public:
     double start = static_cast<double>(system::time::get_clock_time());
     synchronized(m){
       while (q.empty()){
-	second -= static_cast<double>(system::time::get_clock_time()) - start;
-	if (second <= 0 || !cond.wait(m, second)) return false;
+        second -= static_cast<double>(system::time::get_clock_time()) - start;
+        if (second <= 0 || !cond.wait(m, second)) return false;
       }
       value = q.front();
       q.pop_front();

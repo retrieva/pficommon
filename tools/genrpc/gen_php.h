@@ -45,10 +45,10 @@ private:
       map<string, function_type> &mems=refs[i]->members();
 
       for (map<string, function_type>::iterator p=mems.begin();
-	   p!=mems.end(); p++){
-	p->second.first->traverse(bind(&php_generator::add_type, this, &types, _1));
-	for (int i=0; i<(int)p->second.second.size(); i++)
-	  p->second.second[i]->traverse(bind(&php_generator::add_type, this, &types, _1));
+           p!=mems.end(); p++){
+        p->second.first->traverse(bind(&php_generator::add_type, this, &types, _1));
+        for (int i=0; i<(int)p->second.second.size(); i++)
+          p->second.second[i]->traverse(bind(&php_generator::add_type, this, &types, _1));
       }
     }
 
@@ -60,29 +60,29 @@ private:
 
     // defining classes
     for (map<string, type_rep*>::iterator p=types.begin();
-	 p!=types.end();p++){
+         p!=types.end();p++){
       class_type *cls=dynamic_cast<class_type*>(p->second);
       if (cls==NULL) continue;
 
       os<<"class "<<cls->get_name()<<"{"<<endl;
       for (class_type::iterator q=cls->begin();
-	   q!=cls->end(); q++){
-	if (q->first==""){
-	  ostringstream oss;
-	  oss<<"anon"<<(anon_mem_cnt++);
-	  q->first=oss.str();
-	}
-	os<<"  var $"<<q->first<<";"<<endl;
+           q!=cls->end(); q++){
+        if (q->first==""){
+          ostringstream oss;
+          oss<<"anon"<<(anon_mem_cnt++);
+          q->first=oss.str();
+        }
+        os<<"  var $"<<q->first<<";"<<endl;
       }
       os<<endl;
       os<<"  public function typeinfo(){"<<endl;
       os<<"    return new class_type(\""<<cls->get_name()<<"\","<<endl;
       os<<"      array("<<endl;
       for (class_type::iterator q=cls->begin();
-	   q!=cls->end(); q++){
-	os<<"        \""<<q->first<<"\" => ";
-	print_typeinfo(os, q->second.get());
-	os<<","<<endl;
+           q!=cls->end(); q++){
+        os<<"        \""<<q->first<<"\" => ";
+        print_typeinfo(os, q->second.get());
+        os<<","<<endl;
       }
       os<<"      ));"<<endl;
       os<<"  }"<<endl;
@@ -100,13 +100,13 @@ private:
       os<<"  var $string_typeinfo;"<<endl;
       
       for (map<string, pair<shared_ptr<type_rep>, vector<shared_ptr<type_rep> > > >::iterator p=mems.begin();
-	   p!=mems.end(); p++){
-	const string &method_name=p->first;
-	
-	os<<"  var $"<<method_name<<"_ret_typeinfo;"<<endl;
-	for (int i=0; i<(int)p->second.second.size(); i++){
-	  os<<"  var $"<<method_name<<"_a"<<i<<"_typeinfo;"<<endl;
-	}
+           p!=mems.end(); p++){
+        const string &method_name=p->first;
+        
+        os<<"  var $"<<method_name<<"_ret_typeinfo;"<<endl;
+        for (int i=0; i<(int)p->second.second.size(); i++){
+          os<<"  var $"<<method_name<<"_a"<<i<<"_typeinfo;"<<endl;
+        }
       }
       
       os<<"  function __construct($host, $port){"<<endl;
@@ -114,18 +114,18 @@ private:
       os<<"    $this->string_typeinfo=new string_type();"<<endl;
       
       for (map<string, pair<shared_ptr<type_rep>, vector<shared_ptr<type_rep> > > >::iterator p=mems.begin();
-	   p!=mems.end(); p++){
-	const string &method_name=p->first;
-	
-	os<<"    $this->"<<method_name<<"_ret_typeinfo=";
-	print_typeinfo(os, p->second.first.get());
-	os<<";"<<endl;
-	for (int i=0; i<(int)p->second.second.size(); i++){
-	  type_rep *arep=p->second.second[i].get();
-	  os<<"    $this->"<<method_name<<"_a"<<i<<"_typeinfo=";
-	  print_typeinfo(os, arep);
-	  os<<";"<<endl;
-	}
+           p!=mems.end(); p++){
+        const string &method_name=p->first;
+        
+        os<<"    $this->"<<method_name<<"_ret_typeinfo=";
+        print_typeinfo(os, p->second.first.get());
+        os<<";"<<endl;
+        for (int i=0; i<(int)p->second.second.size(); i++){
+          type_rep *arep=p->second.second[i].get();
+          os<<"    $this->"<<method_name<<"_a"<<i<<"_typeinfo=";
+          print_typeinfo(os, arep);
+          os<<";"<<endl;
+        }
       }
       
       os<<"    $sock=fsockopen($host, $port);"<<endl;
@@ -149,28 +149,28 @@ private:
       os<<"  }"<<endl;
       
       for (map<string, pair<shared_ptr<type_rep>, vector<shared_ptr<type_rep> > > >::iterator p=mems.begin();
-	   p!=mems.end(); p++){
-	const string &method_name=p->first;
-	
-	os<<"  function call_"<<method_name<<"(";
-	for (int i=0; i<(int)p->second.second.size(); i++){
-	  if (i>0) os<<", ";
-	  os<<"$a"<<i;
-	}
-	os<<"){"<<endl;
-	
-	os<<"    $this->ping_pong();"<<endl;
-	os<<"    $this->string_typeinfo->write($this->buf, \""<<method_name<<"\");"<<endl;
-	os<<"    $this->int_typeinfo->write($this->buf, 1);"<<endl;
-	for (int i=0; i<(int)p->second.second.size(); i++){
-	  os<<"    $this->"<<method_name<<"_a"<<i<<"_typeinfo->write($this->buf, $a"<<i<<");"<<endl;
-	}
-	os<<"    $this->buf->flush();"<<endl;
-	os<<"    $this->check_code();"<<endl;
-	
-	os<<"    return $this->"<<method_name<<"_ret_typeinfo->read($this->buf);"<<endl;
-	
-	os<<"  }"<<endl;
+           p!=mems.end(); p++){
+        const string &method_name=p->first;
+        
+        os<<"  function call_"<<method_name<<"(";
+        for (int i=0; i<(int)p->second.second.size(); i++){
+          if (i>0) os<<", ";
+          os<<"$a"<<i;
+        }
+        os<<"){"<<endl;
+        
+        os<<"    $this->ping_pong();"<<endl;
+        os<<"    $this->string_typeinfo->write($this->buf, \""<<method_name<<"\");"<<endl;
+        os<<"    $this->int_typeinfo->write($this->buf, 1);"<<endl;
+        for (int i=0; i<(int)p->second.second.size(); i++){
+          os<<"    $this->"<<method_name<<"_a"<<i<<"_typeinfo->write($this->buf, $a"<<i<<");"<<endl;
+        }
+        os<<"    $this->buf->flush();"<<endl;
+        os<<"    $this->check_code();"<<endl;
+        
+        os<<"    return $this->"<<method_name<<"_ret_typeinfo->read($this->buf);"<<endl;
+        
+        os<<"  }"<<endl;
       }
       os<<"}"<<endl;
     }
@@ -183,9 +183,9 @@ private:
     if (class_type *cls=dynamic_cast<class_type*>(type)){
       string class_name=cls->get_name();
       if (class_name==""){
-	ostringstream oss;
-	oss<<"anonymous"<<(anon++);
-	class_name=oss.str();
+        ostringstream oss;
+        oss<<"anonymous"<<(anon++);
+        class_name=oss.str();
       }
       cls->set_name(class_name);
       (*types)[class_name]=cls;
@@ -198,7 +198,7 @@ private:
 
     if (int_type *nt=dynamic_cast<int_type*>(rep))
       os<<"new int_type("<<(nt->sign()?"true":"false")
-	<<","<<nt->size()<<")";
+        <<","<<nt->size()<<")";
     
     if (dynamic_cast<float_type*>(rep))
       os<<"new float_type()";

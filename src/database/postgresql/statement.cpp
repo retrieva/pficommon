@@ -59,7 +59,7 @@ static string convert_query(const string &q)
 }
 
 postgresql_statement::postgresql_statement(shared_ptr<postgresql_connection_impl> conn,
-					   const string &query)
+                                           const string &query)
   : conn(conn)
 {
   postgresql_result res(PQprepare(conn->get(), "", convert_query(query).c_str(), 0, NULL));

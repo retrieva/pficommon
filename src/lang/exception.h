@@ -50,9 +50,9 @@ public:
     init();
   }
   parse_error(const std::string &filename,
-	      int lineno,
-	      int pos,
-	      const std::string &msg)
+              int lineno,
+              int pos,
+              const std::string &msg)
     : filename_(filename)
     , lineno_(lineno)
     , pos_(pos)

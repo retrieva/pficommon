@@ -49,7 +49,7 @@ public:
 };
 
 class scoped_lock : public pfi::lang::safe_bool<scoped_lock>
-		  , pfi::lang::noncopyable {
+                  , pfi::lang::noncopyable {
 public:
   explicit scoped_lock(lockable &r)
     : l(&r)
@@ -78,9 +78,9 @@ public:
   ~scoped_lock(){
     if (need_unlock){
       if (l)
-	l->unlock();
+        l->unlock();
       else
-	lp->unlock();
+        lp->unlock();
     }
   }
 

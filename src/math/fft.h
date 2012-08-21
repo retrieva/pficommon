@@ -63,12 +63,12 @@ inline void fft_inner(Iterator a, Iterator b, int flip)
       Complex w(cos(theta*irev), sin(theta*irev));
       for (ssize_t k=n>>2; k>(irev^=k); k>>=1);
       for (ssize_t j=i; j<mh+i; j++){
-	ssize_t k=j+mh;
-	Complex x=a[j]-a[k];
-	a[j]+=a[k];
-	//a[k]=w*x;
-	a[k].real()=w.real()*x.real()-w.imag()*x.imag();
-	a[k].imag()=w.real()*x.imag()+w.imag()*x.real();
+        ssize_t k=j+mh;
+        Complex x=a[j]-a[k];
+        a[j]+=a[k];
+        //a[k]=w*x;
+        a[k].real()=w.real()*x.real()-w.imag()*x.imag();
+        a[k].imag()=w.real()*x.imag()+w.imag()*x.real();
       }
     }
   }

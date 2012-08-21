@@ -54,7 +54,7 @@ bind(R (MF_CC T::*f)() const, A1 a1)
 
 #define DEF_BIND(ANUM, CNUM)						\
   template <class R, class T, class A1					\
-	    AARG BARG >							\
+            AARG BARG >							\
   _bi::bind_t<R, _mfi::MF_NAME(mf##ANUM)<R,T BTYPES>, _bi::list##CNUM<A1 ATYPES> > \
   bind(R (MF_CC T::*f)(BTYPESN), A1 a1 FARG)				\
   {									\
@@ -63,7 +63,7 @@ bind(R (MF_CC T::*f)() const, A1 a1)
     return _bi::bind_t<R, F, L>(mem_fn(f), L(a1 RARG));			\
   }									\
   template <class R, class T, class A1					\
-	    AARG BARG >							\
+            AARG BARG >							\
   _bi::bind_t<R, const _mfi::MF_NAME(cmf##ANUM)<R,T BTYPES>, _bi::list##CNUM<A1 ATYPES> > \
   bind(R (MF_CC T::*f)(BTYPESN) const, A1 a1 FARG)			\
   {									\

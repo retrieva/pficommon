@@ -58,8 +58,8 @@ TEST(ppm,test){
 template<class color>
 rgb<color> rand_rgb(){
   return rgb<color>((color)Rand.next_int(256),
-		    (color)Rand.next_int(256),
-		    (color)Rand.next_int(256));
+                    (color)Rand.next_int(256),
+                    (color)Rand.next_int(256));
 }
 
 
@@ -81,9 +81,9 @@ TEST(rgb,human_check){
 
 template<class color>
 ppm<color> rand_ppm(image_coordinate_t w=Rand.next_int(50,200),
-		    image_coordinate_t h=Rand.next_int(50,200),
-		    rgb<color> bc=rgb<color> 
-		    (Rand.next_int(256),Rand.next_int(256),Rand.next_int(256))){
+                    image_coordinate_t h=Rand.next_int(50,200),
+                    rgb<color> bc=rgb<color> 
+                    (Rand.next_int(256),Rand.next_int(256),Rand.next_int(256))){
 
   ppm<color> p(w,h,bc);
   for(int y=0;y<p.height();++y){
@@ -108,11 +108,11 @@ TEST(ppm,bmp_inside_detection){
     ppm<uint8_t> p(rand_ppm<uint8_t>());
     for(int y=0;y<p.height();++y){
       for(int x=0;x<p.width();++x){
-	EXPECT_TRUE(p.in(x,y));
-	EXPECT_TRUE(!p.in(x+p.width(),y));
-	EXPECT_TRUE(!p.in(x-p.width(),y));
-	EXPECT_TRUE(!p.in(x,y+p.height()));
-	EXPECT_TRUE(!p.in(x,y-p.height()));
+        EXPECT_TRUE(p.in(x,y));
+        EXPECT_TRUE(!p.in(x+p.width(),y));
+        EXPECT_TRUE(!p.in(x-p.width(),y));
+        EXPECT_TRUE(!p.in(x,y+p.height()));
+        EXPECT_TRUE(!p.in(x,y-p.height()));
       }
     }
   }
@@ -131,7 +131,7 @@ TEST(ppm,out_of_range_access_safety){
 
     for(int y=0;y<p.height();++y){
       for(int x=0;x<p.width();++x){
-	p(x,y)==p_orig(x,y);
+        p(x,y)==p_orig(x,y);
       }
     }
   }
@@ -152,7 +152,7 @@ TEST(ppm,IO){
 
     for(int y=0;y<p.height();++y){
       for(int x=0;x<p.width();++x){
-	EXPECT_TRUE(p(x,y)==p_orig(x,y));
+        EXPECT_TRUE(p(x,y)==p_orig(x,y));
       }
     }
   }
@@ -163,8 +163,8 @@ TEST(ppm,access_by_complex_and_vector){
     ppm<uint8_t> p=rand_ppm<uint8_t>();
     for(int i=0;i<1000;++i){
       double
-	x=Rand.next_double(-10,p.width()+10),
-	y=Rand.next_double(-10,p.height()+10);
+        x=Rand.next_double(-10,p.width()+10),
+        y=Rand.next_double(-10,p.height()+10);
       complex<double> z(x,y);
       vector2<double> pt(x,y);
       EXPECT_TRUE(p(x,y)==p(z));

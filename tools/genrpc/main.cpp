@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
       istringstream iss(names_str);
       
       for (string name; iss>>name; )
-	names.push_back(name);
+        names.push_back(name);
     }
     catch(const runtime_error &e){
       cout<<string("name extract failed: ")+e.what()<<endl;

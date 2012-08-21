@@ -43,9 +43,9 @@ public:
   ipv4_address(const ipv4_address &p);
 
   ipv4_address(unsigned char a,
-	       unsigned char b,
-	       unsigned char c,
-	       unsigned char d);
+               unsigned char b,
+               unsigned char c,
+               unsigned char d);
 
   explicit ipv4_address(const std::string &s);
 

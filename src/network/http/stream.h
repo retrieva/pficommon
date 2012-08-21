@@ -49,7 +49,7 @@ public:
     : buf(T::eof()){
     uri u(url);
     if (u.scheme()!="http" &&
-	u.scheme()!="")
+        u.scheme()!="")
       throw http::http_exception("scheme is invalid");
 
     int port=u.port()==""?80:pfi::lang::lexical_cast<int>(u.port());

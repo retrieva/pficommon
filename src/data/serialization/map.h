@@ -58,7 +58,7 @@ void serialize(Archive &ar, std::map<K, V, Compare, Allocator> &m)
   }
   else{
     for (typename std::map<K, V, Compare, Allocator>::iterator p=m.begin();
-	 p!=m.end();p++){
+         p!=m.end();p++){
       std::pair<K,V> v(*p);
       ar & v;
     }
@@ -68,7 +68,7 @@ void serialize(Archive &ar, std::map<K, V, Compare, Allocator> &m)
 class map_type : public type_rep {
 public:
   map_type(pfi::lang::shared_ptr<type_rep> key_type,
-	   pfi::lang::shared_ptr<type_rep> value_type)
+           pfi::lang::shared_ptr<type_rep> value_type)
     : key_type_(key_type)
     , value_type_(value_type){
   }
@@ -104,7 +104,7 @@ template <class K, class V, class Compare, class Allocator>
 void serialize(reflection &ref, std::map<K, V, Compare, Allocator> &)
 {
   ref.add("", pfi::lang::shared_ptr<type_rep>
-	  (new map_type(get_type<K>(), get_type<V>())));
+          (new map_type(get_type<K>(), get_type<V>())));
 }
 
 } // serialization

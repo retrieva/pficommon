@@ -104,13 +104,13 @@ void serialize(Archive &ar, std::iostream &ios)
     for (;;){
       ar & c[0];
       if (static_cast<unsigned char>(c[0])==0xff){
-	ar & c[1];
-	if (c[1]==0x00)
-	  break;
-	*p=0xff;
+        ar & c[1];
+        if (c[1]==0x00)
+          break;
+        *p=0xff;
       }
       else
-	*p=c[0];
+        *p=c[0];
     }
     ios.seekg(0);
   }
@@ -120,9 +120,9 @@ void serialize(Archive &ar, std::iostream &ios)
     while(p!=end){
       c[0]=*p++;
       if (static_cast<unsigned char>(c[0])==0xff)
-	ar & c[0] & c[1];
+        ar & c[0] & c[1];
       else
-	ar & c[0];
+        ar & c[0];
     }
     c[0]='\xff';
     c[1]='\0';

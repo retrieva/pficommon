@@ -44,17 +44,17 @@ private:
 
     // collecting classes
     for (map<string, pair<shared_ptr<type_rep>, vector<shared_ptr<type_rep> > > >::iterator p=mems.begin();
-	 p!=mems.end(); p++){
+         p!=mems.end(); p++){
       p->second.first->traverse(bind(&haskell_generator::add_type, this, &types, _1));
       for (int i=0; i<(int)p->second.second.size(); i++)
-	p->second.second[i]->traverse(bind(&haskell_generator::add_type, this, &types, _1));
+        p->second.second[i]->traverse(bind(&haskell_generator::add_type, this, &types, _1));
     }
 
     // output header
     os<<"module "<<module_name<<"("<<endl;
 
     for (map<string, type_rep*>::iterator p=types.begin();
-	 p!=types.end();p++){
+         p!=types.end();p++){
       class_type *cls=dynamic_cast<class_type*>(p->second);
       if (cls==NULL) continue;
       string class_name=cls->get_name();
@@ -63,7 +63,7 @@ private:
     }
 
     for (map<string, pair<shared_ptr<type_rep>, vector<shared_ptr<type_rep> > > >::iterator p=mems.begin();
-	 p!=mems.end(); p++){
+         p!=mems.end(); p++){
       const string &method_name=p->first;
       os<<"  call_"<<method_name<<","<<endl;
     }
@@ -80,7 +80,7 @@ private:
 
     // defining classes
     for (map<string, type_rep*>::iterator p=types.begin();
-	 p!=types.end();p++){
+         p!=types.end();p++){
       class_type *cls=dynamic_cast<class_type*>(p->second);
       if (cls==NULL) continue;
 
@@ -93,10 +93,10 @@ private:
       os<<"data "<<class_name<<" = "<<class_name<<endl;
       bool first_mem=true;
       for (class_type::iterator q=cls->begin();
-	   q!=cls->end(); q++, first_mem=false){
-	os<<"  "<<(first_mem?"{":",")<<" "<<mem_prefix<<q->first<<" :: ";
-	print_typename(os, q->second.get());
-	os<<endl;
+           q!=cls->end(); q++, first_mem=false){
+        os<<"  "<<(first_mem?"{":",")<<" "<<mem_prefix<<q->first<<" :: ";
+        print_typename(os, q->second.get());
+        os<<endl;
       }
       os<<"  } deriving (Eq, Show)"<<endl;
       os<<endl;
@@ -104,18 +104,18 @@ private:
       os<<"instance RPCType "<<class_name<<" where"<<endl;
       os<<"  sendValue c v = do"<<endl;
       for (class_type::iterator q=cls->begin();
-	   q!=cls->end(); q++){
-	os<<"    sendValue c ("<<mem_prefix<<q->first<<" v)"<<endl;
+           q!=cls->end(); q++){
+        os<<"    sendValue c ("<<mem_prefix<<q->first<<" v)"<<endl;
       }
       os<<"  recvValue c = do"<<endl;
       for (class_type::iterator q=cls->begin();
-	   q!=cls->end(); q++){
-	os<<"    a_"<<q->first<<" <- recvValue c"<<endl;
+           q!=cls->end(); q++){
+        os<<"    a_"<<q->first<<" <- recvValue c"<<endl;
       }
       os<<"    return $ "<<class_name;
       for (class_type::iterator q=cls->begin();
-	   q!=cls->end(); q++){
-	os<<" a_"<<q->first;
+           q!=cls->end(); q++){
+        os<<" a_"<<q->first;
       }
       os<<endl;
       os<<endl;
@@ -124,14 +124,14 @@ private:
     // generate rpc client
 
     for (map<string, pair<shared_ptr<type_rep>, vector<shared_ptr<type_rep> > > >::iterator p=mems.begin();
-	 p!=mems.end(); p++){
+         p!=mems.end(); p++){
       const string &method_name=p->first;
 
       os<<"call_"<<method_name<<" :: RPCClient c => c";
       for (int i=0; i<(int)p->second.second.size(); i++){
-	os<<" -> ";
-	type_rep *arep=p->second.second[i].get();
-	print_typename(os, arep);
+        os<<" -> ";
+        type_rep *arep=p->second.second[i].get();
+        print_typename(os, arep);
       }
       os<<" -> IO (";
       print_typename(os, p->second.first.get());
@@ -139,13 +139,13 @@ private:
 
       os<<"call_"<<method_name<<" c";
       for (int i=0; i<(int)p->second.second.size(); i++)
-	os<<" a"<<i;
+        os<<" a"<<i;
       os<<" ="<<endl;
 
       os<<"  call c \""<<method_name<<"\" 1 [";
       for (int i=0; i<(int)p->second.second.size(); i++){
-	if (i!=0) os<<",";
-	os<<" RPCValue a"<<i;
+        if (i!=0) os<<",";
+        os<<" RPCValue a"<<i;
       }
       os<<" ]"<<endl;
       os<<endl;
@@ -156,9 +156,9 @@ private:
     if (class_type *cls=dynamic_cast<class_type*>(type)){
       string class_name=cls->get_name();
       if (class_name==""){
-	ostringstream oss;
-	oss<<"anonymous"<<(anon++);
-	class_name=oss.str();
+        ostringstream oss;
+        oss<<"anonymous"<<(anon++);
+        class_name=oss.str();
       }
       cls->set_name(class_name);
       (*types)[class_name]=cls;

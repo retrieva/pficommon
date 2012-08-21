@@ -83,11 +83,11 @@ void config_file::init(const string &filename, const istream &cis)
     if (*p=='['){
       const char *q=strchr(p, ']');
       if (q==NULL)
-	throw parse_error(filename, lineno, line.length(), "']' missing");
+        throw parse_error(filename, lineno, line.length(), "']' missing");
       cur_sect=string(p+1, q);
       q=skip_spaces(q+1);
       if (*q!='\0') 
-	throw parse_error(filename, lineno, q-st, "invalid character");
+        throw parse_error(filename, lineno, q-st, "invalid character");
       
       (void)dat[cur_sect];
       
@@ -103,8 +103,8 @@ void config_file::init(const string &filename, const istream &cis)
     
     if (val.length()>=2){
       if (val[0]=='\"' &&
-	  val[val.length()-1]=='\"')
-	val=val.substr(1, val.length()-2);
+          val[val.length()-1]=='\"')
+        val=val.substr(1, val.length()-2);
     }
     
     dat[cur_sect][key]=val;

@@ -65,11 +65,11 @@ TEST(math_vector_test, addition){
 TEST(math_vector_test, inner_and_outer_product){
   for(int i=0;i<100;++i){
     vec3 a(Rand.next_double(-100,100),
-	   Rand.next_double(-100,100),
-	   Rand.next_double(-100,100));
+           Rand.next_double(-100,100),
+           Rand.next_double(-100,100));
     vec3 b(Rand.next_double(-100,100),
-	   Rand.next_double(-100,100),
-	   Rand.next_double(-100,100));
+           Rand.next_double(-100,100),
+           Rand.next_double(-100,100));
     EXPECT_NEAR(0.0, abs((a%b)*a) , 1e-8);
     EXPECT_NEAR(0.0, abs((a%b)*b) , 1e-8);
   }

@@ -124,10 +124,10 @@ static uint64_t get_total_memory()
       string kb;
       iss >> type >> mem >> kb;
       if (mem != "") {
-	memtotal = atoll(mem.c_str());
-	if (kb == "kB") {
-	  memtotal *= 1000;
-	}
+        memtotal = atoll(mem.c_str());
+        if (kb == "kB") {
+          memtotal *= 1000;
+        }
       }
     }
   }
@@ -162,10 +162,10 @@ static uint64_t get_free_memory()
       string kb;
       iss >> type >> mem >> kb;
       if (mem != "") {
-	memfree = atoi(mem.c_str());
-	if (kb == "kB") {
-	  memfree *= 1000;
-	}
+        memfree = atoi(mem.c_str());
+        if (kb == "kB") {
+          memfree *= 1000;
+        }
       }
     }
     if (s.find("Cached") == 0) {
@@ -175,10 +175,10 @@ static uint64_t get_free_memory()
       string kb;
       iss >> type >> cached >> kb;
       if (cached != "") {
-	memcached = atoi(cached.c_str());
-	if (kb == "kB") {
-	  memcached *= 1000;
-	}
+        memcached = atoi(cached.c_str());
+        if (kb == "kB") {
+          memcached *= 1000;
+        }
       }
     }
   }

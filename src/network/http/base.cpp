@@ -74,40 +74,40 @@ void header::read_header(function<bool(string*)> f)
     // field-name ":" [field-value]
     for (int i=0;i<(int)line.length();i++){
       if (line[i]!=':'){
-	key+=line[i];
+        key+=line[i];
       }
       else{
-	int ed=key.length();
-	while(ed>0&&isspace(key[ed-1])) ed--;
-	key=key.substr(0,ed);
+        int ed=key.length();
+        while(ed>0&&isspace(key[ed-1])) ed--;
+        key=key.substr(0,ed);
 
-	val=line.substr(i+1);
-	break;
+        val=line.substr(i+1);
+        break;
       }
     }
 
     // LWS
     for (;;){
       if (!f(&line)){
-	cont=false;
-	break;
+        cont=false;
+        break;
       }
       if (line.length()==0||line=="\r"){
-	cont=false;
-	break;
+        cont=false;
+        break;
       }
       if (isspace(line[0])){
-	// LWS
-	for (int i=0;i<(int)line.length();i++){
-	  if (val.length()>0 &&
-	      isspace(val[val.length()-1]) &&
-	      isspace(line[i]));
-	  else
-	    val+=line[i];
-	}
+        // LWS
+        for (int i=0;i<(int)line.length();i++){
+          if (val.length()>0 &&
+              isspace(val[val.length()-1]) &&
+              isspace(line[i]));
+          else
+            val+=line[i];
+        }
       }
       else
-	break;
+        break;
     }
 
     int st=0;
@@ -274,8 +274,8 @@ private:
     if (chunk_rest==0){ // last chunk
       // skip trailer
       if (sock){
-	for (string line;
-	     sock->getline(line,line_limit) && line.length()>0;);
+        for (string line;
+             sock->getline(line,line_limit) && line.length()>0;);
       }
       shutdown();
       return;
@@ -296,13 +296,13 @@ private:
     if (chunk_rest==0){
       char c=sock->getc();
       if (c=='\r'){
-	c=sock->getc();
-	if (c!='\n')
-	  throw http_exception("invalid chunk footer");
+        c=sock->getc();
+        if (c!='\n')
+          throw http_exception("invalid chunk footer");
       }
       else if (c=='\n');
       else
-	throw http_exception("invalid chunk footer");
+        throw http_exception("invalid chunk footer");
     }
   }
 
@@ -353,7 +353,7 @@ public:
       if (!sock) return T::eof();
       buf=sock->getc();
       if (--rest==0)
-	sock.reset();
+        sock.reset();
     }
     return buf;
   }

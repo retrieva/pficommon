@@ -97,37 +97,37 @@ TEST(sparse_matrix_test, index) {
     EXPECT_EQ(mat.size(),size_t(smr.row_num()));
     for (int i=0;i<(int)mat.size();++i) {
       { // get_row using vector<pair<int,unsigned char> >
-	vector<pair<int,unsigned char> > row;
-	smr.get_row(i,row);
-	EXPECT_EQ(mat[i].size(),row.size());
-	for (int j=0;j<(int)mat[i].size();++j) {
-	  EXPECT_EQ(row[j].first,mat[i][j].first);
-	  EXPECT_EQ((int)row[j].second,(int)mat[i][j].second);
-	}
+        vector<pair<int,unsigned char> > row;
+        smr.get_row(i,row);
+        EXPECT_EQ(mat[i].size(),row.size());
+        for (int j=0;j<(int)mat[i].size();++j) {
+          EXPECT_EQ(row[j].first,mat[i][j].first);
+          EXPECT_EQ((int)row[j].second,(int)mat[i][j].second);
+        }
       }
       { // get_row using map<int,unsigned char>
-	map<int,unsigned char> row;
-	smr.get_row(i,row);
-	EXPECT_EQ(mat[i].size(),row.size());
-	map<int,unsigned char>::iterator it=row.begin();
-	for (int j=0;j<(int)mat[i].size()&&it!=row.end();++j,++it) {
-	  EXPECT_EQ(it->first,mat[i][j].first);
-	  EXPECT_EQ((int)it->second,(int)mat[i][j].second);
-	}
+        map<int,unsigned char> row;
+        smr.get_row(i,row);
+        EXPECT_EQ(mat[i].size(),row.size());
+        map<int,unsigned char>::iterator it=row.begin();
+        for (int j=0;j<(int)mat[i].size()&&it!=row.end();++j,++it) {
+          EXPECT_EQ(it->first,mat[i][j].first);
+          EXPECT_EQ((int)it->second,(int)mat[i][j].second);
+        }
       }
       { // get_row using unordered_map<int,unsigned char>
-	pfi::data::unordered_map<int,unsigned char> row_um;
-	vector<pair<int,unsigned char> > row;
-	smr.get_row(i,row_um);
-	for (pfi::data::unordered_map<int,unsigned char>::iterator it=row_um.begin();it!=row_um.end();++it)
-	  row.push_back(make_pair(it->first,it->second));
-	sort(row.begin(),row.end());
-	
-	EXPECT_EQ(mat[i].size(),row.size());
-	for (int j=0;j<(int)mat[i].size();++j) {
-	  EXPECT_EQ(row[j].first,mat[i][j].first);
-	  EXPECT_EQ((int)row[j].second,(int)mat[i][j].second);
-	}
+        pfi::data::unordered_map<int,unsigned char> row_um;
+        vector<pair<int,unsigned char> > row;
+        smr.get_row(i,row_um);
+        for (pfi::data::unordered_map<int,unsigned char>::iterator it=row_um.begin();it!=row_um.end();++it)
+          row.push_back(make_pair(it->first,it->second));
+        sort(row.begin(),row.end());
+        
+        EXPECT_EQ(mat[i].size(),row.size());
+        for (int j=0;j<(int)mat[i].size();++j) {
+          EXPECT_EQ(row[j].first,mat[i][j].first);
+          EXPECT_EQ((int)row[j].second,(int)mat[i][j].second);
+        }
       }
     }
   }

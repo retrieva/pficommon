@@ -47,7 +47,7 @@ public:
     using pfi::concurrent::scoped_lock;
     synchronized(m){
       if (!p)
-	p=new T();
+        p=new T();
       return *p;
     }
   }

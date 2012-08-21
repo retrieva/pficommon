@@ -42,8 +42,8 @@
       T2 b=G2();							\
       T3 c=G3();							\
       if(!EXPECT_EQ(a OP12 (b OP23 c),(a OP12 b) OP23 c)){		\
-	std::cerr << "associativity broken for"				\
-		  << a << #OP12 << b << #OP23 << c << endl;		\
+        std::cerr << "associativity broken for"				\
+                  << a << #OP12 << b << #OP23 << c << endl;		\
       }									\
     }									\
   }									\
@@ -56,12 +56,12 @@
     for(int i=0;i<N;++i){						\
       T a=G();							\
       if(!EXPECT_EQ(a OP ID,a)){					\
-	std::cerr << ID << " is not right identity in"			\
-		  << a << #OP << ID << endl;				\
+        std::cerr << ID << " is not right identity in"			\
+                  << a << #OP << ID << endl;				\
       }									\
       if(!EXPECT_EQ(ID OP a,a)){					\
-	std::cerr << ID << " is not left identity in"			\
-		  << ID << #OP << a << endl;				\
+        std::cerr << ID << " is not left identity in"			\
+                  << ID << #OP << a << endl;				\
       }									\
     }									\
   }									\
@@ -71,12 +71,12 @@
     for(int i=0;i<N;++i){						\
       TYPE a=GEN();							\
       if(!EXPECT_EQ(a OPI a,ID)){					\
-	std::cerr << #OPI << " is not inverse operator in"		\
-		  << a << #OPI << a << endl;				\
+        std::cerr << #OPI << " is not inverse operator in"		\
+                  << a << #OPI << a << endl;				\
       }									\
       if(!EXPECT_EQ(a OP (ID OPI a),ID)){				\
-	std::cerr << #OPI << " is not inverse operator because "	\
-		  << ID << #OPI << a << " is not " << a << endl;	\
+        std::cerr << #OPI << " is not inverse operator because "	\
+                  << ID << #OPI << a << " is not " << a << endl;	\
       }									\
     }									\
   }									\
@@ -89,15 +89,15 @@
       T1 a=G1();							\
       T2 b=G2();							\
       if(!EXPECT_EQ(a OP b,b OP a)){					\
-	std::cerr << "commutativity broken for"				\
-		  << a << #OP << b << endl;				\
+        std::cerr << "commutativity broken for"				\
+                  << a << #OP << b << endl;				\
       }									\
     }									\
   }									\
 
 #define TEST_COMMUTATIVITY(CAPTION,N,T,G,OP,EXPECT_EQ)			\
-  TEST_COMMUTATIVITY2(CAPTION,N,T,T,G,G,OP,EXPECT_EQ)			\
-							  
+  TEST_COMMUTATIVITY2(CAPTION,N,T,T,G,G,OP,EXPECT_EQ)
+
 
 
 #define TEST_DISTRIBUTIVITY3(CAPTION,N,T1,T2,T3,G1,G2,ADD,MUL,EXPECT_EQ) \
@@ -108,21 +108,21 @@
       T2 c=G2();							\
       T3 lhs=a MUL c ADD b MUL c,rhs=(a ADD b) MUL c;			\
       if(!EXPECT_EQ(lhs,rhs)){						\
-	std::cerr << "distributivity broken for " << endl;		\
-	std::cerr << "a=" << a << endl;					\
-	std::cerr << "b=" << b << endl;					\
-	std::cerr << "c=" << c << endl;					\
-	std::cerr << "a" #MUL "c" #ADD "b" #MUL "c=" << lhs << " ; "	\
-		  << "(a" #ADD "b)" #MUL "c=" << rhs << endl;		\
+        std::cerr << "distributivity broken for " << endl;		\
+        std::cerr << "a=" << a << endl;					\
+        std::cerr << "b=" << b << endl;					\
+        std::cerr << "c=" << c << endl;					\
+        std::cerr << "a" #MUL "c" #ADD "b" #MUL "c=" << lhs << " ; "	\
+                  << "(a" #ADD "b)" #MUL "c=" << rhs << endl;		\
       }									\
       T3 lhs2=c MUL a ADD c MUL b,rhs2=c MUL (a ADD b);			\
       if(!EXPECT_EQ(lhs2,rhs2)){						\
-	std::cerr << "distributivity broken for " << endl;		\
-	std::cerr << "a=" << a << endl;					\
-	std::cerr << "b=" << b << endl;					\
-	std::cerr << "c=" << c << endl;					\
-	std::cerr << "c" #MUL "a" #ADD "c" #MUL "b=" << lhs << " ; "	\
-		  << "c" #MUL "(a" #ADD "b)=" << rhs << endl;		\
+        std::cerr << "distributivity broken for " << endl;		\
+        std::cerr << "a=" << a << endl;					\
+        std::cerr << "b=" << b << endl;					\
+        std::cerr << "c=" << c << endl;					\
+        std::cerr << "c" #MUL "a" #ADD "c" #MUL "b=" << lhs << " ; "	\
+                  << "c" #MUL "(a" #ADD "b)=" << rhs << endl;		\
       }									\
     }									\
   }									\
@@ -145,11 +145,11 @@
   TEST_IDENTITY(CAPTION ## _add,N,TYPE,GEN,ZERO,+,EXPECT_EQ)		\
   TEST_INVERSE(CAPTION ## _add,N,TYPE,GEN,ZERO,+,-,EXPECT_EQ)		\
   TEST_COMMUTATIVITY(CAPTION ## _add,N,TYPE,GEN,+,EXPECT_EQ)		\
-									\
+                                                                        \
   TEST_ASSOCIATIVITY(CAPTION ## _mul,N,TYPE,GEN,*,EXPECT_EQ)		\
   TEST_IDENTITY(CAPTION ## _mul,N,TYPE,GEN,ONE,*,EXPECT_EQ)		\
   TEST_COMMUTATIVITY(CAPTION ## _mul,N,TYPE,GEN,*,EXPECT_EQ)		\
-									\
+                                                                        \
   TEST_DISTRIBUTIVITY(CAPTION ## _add_mul,N,TYPE,GEN,+,*,EXPECT_EQ)	\
   TEST_DISTRIBUTIVITY(CAPTION ## _sub_mul,N,TYPE,GEN,-,*,EXPECT_EQ)	\
 
@@ -167,12 +167,12 @@
   TEST_IDENTITY(CAPTION ## _add,N,TYPE,GEN,ZERO,+,EXPECT_EQ)		\
   TEST_INVERSE(CAPTION ## _add,N,TYPE,GEN,ZERO,+,-,EXPECT_EQ)		\
   TEST_COMMUTATIVITY(CAPTION ## _add,N,TYPE,GEN,+,EXPECT_EQ)		\
-									\
+                                                                        \
   TEST_ASSOCIATIVITY(CAPTION ## _mul,N,TYPE,GEN,*,EXPECT_EQ)		\
   TEST_IDENTITY(CAPTION ## _mul,N,TYPE,GEN,ONE,*,EXPECT_EQ)		\
   TEST_INVERSE(CAPTION ## _mul,N,TYPE,GEN,ONE,*,/,EXPECT_EQ)		\
   TEST_COMMUTATIVITY(CAPTION ## _mul,N,TYPE,GEN,*,EXPECT_EQ)		\
-									\
+                                                                        \
   TEST_DISTRIBUTIVITY(CAPTION ## _add_mul,N,TYPE,GEN,+,*,EXPECT_EQ)	\
   TEST_DISTRIBUTIVITY(CAPTION ## _sub_mul,N,TYPE,GEN,-,*,EXPECT_EQ)	\
   /*

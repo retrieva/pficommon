@@ -43,10 +43,10 @@ namespace database{
 namespace mysql{
 
 mysql_connection_impl::mysql_connection_impl(const string &host,
-					     const string &user,
-					     const string &passwd,
-					     const string &db,
-					     uint16_t port)
+                                             const string &user,
+                                             const string &passwd,
+                                             const string &db,
+                                             uint16_t port)
   :conn(NULL), host(host), user(user), passwd(passwd), db(db), port(port)
 {
   reconnect();
@@ -74,27 +74,27 @@ void mysql_connection_impl::reconnect()
     throw database_error("cannot create connection");
 
   conn=mysql_real_connect(c,
-			  host.c_str(),
-			  user.c_str(),
-			  passwd.c_str(),
-			  db.c_str(),
-			  port,
-			  NULL,
-			  0);
+                          host.c_str(),
+                          user.c_str(),
+                          passwd.c_str(),
+                          db.c_str(),
+                          port,
+                          NULL,
+                          0);
 
   if (conn==NULL){
     string msg(string("cannot connect to db: ")+
-	       mysql_error(c));
+               mysql_error(c));
     mysql_close(c);
     throw connection_error(msg);
   }
 }
 
 mysql_connection::mysql_connection(const string &host,
-				   const string &user,
-				   const string &passwd,
-				   const string &db,
-				   uint16_t port)
+                                   const string &user,
+                                   const string &passwd,
+                                   const string &db,
+                                   uint16_t port)
   :conn(new mysql_connection_impl(host, user, passwd, db, port))
 {
 }
@@ -145,7 +145,7 @@ void mysql_connection::reconnect()
 }
 
 int mysql_connection::run(const string &sql,
-			  const vector<shared_ptr<sql_value> > &args)
+                          const vector<shared_ptr<sql_value> > &args)
 {
   if (conn->get() == NULL) reconnect();
 

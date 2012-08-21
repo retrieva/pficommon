@@ -210,7 +210,7 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2]);
+             a[base_type::a2]);
   }
 };
 
@@ -232,8 +232,8 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2],
-	     a[base_type::a3]);
+             a[base_type::a2],
+             a[base_type::a3]);
   }
 };
 
@@ -253,9 +253,9 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2],
-	     a[base_type::a3],
-	     a[base_type::a4]);
+             a[base_type::a2],
+             a[base_type::a3],
+             a[base_type::a4]);
   }
 };
 
@@ -276,10 +276,10 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2],
-	     a[base_type::a3],
-	     a[base_type::a4],
-	     a[base_type::a5]);
+             a[base_type::a2],
+             a[base_type::a3],
+             a[base_type::a4],
+             a[base_type::a5]);
   }
 };
 
@@ -302,11 +302,11 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2],
-	     a[base_type::a3],
-	     a[base_type::a4],
-	     a[base_type::a5],
-	     a[base_type::a6]);
+             a[base_type::a2],
+             a[base_type::a3],
+             a[base_type::a4],
+             a[base_type::a5],
+             a[base_type::a6]);
   }
 };
 
@@ -330,12 +330,12 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2],
-	     a[base_type::a3],
-	     a[base_type::a4],
-	     a[base_type::a5],
-	     a[base_type::a6],
-	     a[base_type::a7]);
+             a[base_type::a2],
+             a[base_type::a3],
+             a[base_type::a4],
+             a[base_type::a5],
+             a[base_type::a6],
+             a[base_type::a7]);
   }
 };
 
@@ -360,13 +360,13 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2],
-	     a[base_type::a3],
-	     a[base_type::a4],
-	     a[base_type::a5],
-	     a[base_type::a6],
-	     a[base_type::a7],
-	     a[base_type::a8]);
+             a[base_type::a2],
+             a[base_type::a3],
+             a[base_type::a4],
+             a[base_type::a5],
+             a[base_type::a6],
+             a[base_type::a7],
+             a[base_type::a8]);
   }
 };
 
@@ -392,14 +392,14 @@ public:
   template <class R, class F, class A>
   R operator()(type<R>, F &f, const A& a){
     return f(a[base_type::a1],
-	     a[base_type::a2],
-	     a[base_type::a3],
-	     a[base_type::a4],
-	     a[base_type::a5],
-	     a[base_type::a6],
-	     a[base_type::a7],
-	     a[base_type::a8],
-	     a[base_type::a9]);
+             a[base_type::a2],
+             a[base_type::a3],
+             a[base_type::a4],
+             a[base_type::a5],
+             a[base_type::a6],
+             a[base_type::a7],
+             a[base_type::a8],
+             a[base_type::a9]);
   }
 };
 
@@ -459,8 +459,8 @@ bind(R (*f)(B1,B2,B3), A1 a1, A2 a2, A3 a3)
 }
 
 template <class R,
-	  class A1, class A2, class A3, class A4,
-	  class B1, class B2, class B3, class B4>
+          class A1, class A2, class A3, class A4,
+          class B1, class B2, class B3, class B4>
 _bi::bind_t<R, R (*)(B1,B2,B3,B4), _bi::list4<A1,A2,A3,A4> >
 bind(R (*f)(B1,B2,B3,B4), A1 a1, A2 a2, A3 a3, A4 a4)
 {
@@ -470,8 +470,8 @@ bind(R (*f)(B1,B2,B3,B4), A1 a1, A2 a2, A3 a3, A4 a4)
 }
 
 template <class R,
-	  class A1, class A2, class A3, class A4, class A5,
-	  class B1, class B2, class B3, class B4, class B5>
+          class A1, class A2, class A3, class A4, class A5,
+          class B1, class B2, class B3, class B4, class B5>
 _bi::bind_t<R, R (*)(B1,B2,B3,B4,B5), _bi::list5<A1,A2,A3,A4,A5> >
 bind(R (*f)(B1,B2,B3,B4,B5), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
 {
@@ -481,8 +481,8 @@ bind(R (*f)(B1,B2,B3,B4,B5), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
 }
 
 template <class R,
-	  class A1, class A2, class A3, class A4, class A5, class A6,
-	  class B1, class B2, class B3, class B4, class B5, class B6>
+          class A1, class A2, class A3, class A4, class A5, class A6,
+          class B1, class B2, class B3, class B4, class B5, class B6>
 _bi::bind_t<R, R (*)(B1,B2,B3,B4,B5,B6), _bi::list6<A1,A2,A3,A4,A5,A6> >
 bind(R (*f)(B1,B2,B3,B4,B5,B6), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
 {
@@ -492,8 +492,8 @@ bind(R (*f)(B1,B2,B3,B4,B5,B6), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
 }
 
 template <class R,
-	  class A1, class A2, class A3, class A4, class A5, class A6, class A7,
-	  class B1, class B2, class B3, class B4, class B5, class B6, class B7>
+          class A1, class A2, class A3, class A4, class A5, class A6, class A7,
+          class B1, class B2, class B3, class B4, class B5, class B6, class B7>
 _bi::bind_t<R, R (*)(B1,B2,B3,B4,B5,B6,B7), _bi::list7<A1,A2,A3,A4,A5,A6,A7> >
 bind(R (*f)(B1,B2,B3,B4,B5,B6,B7), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7)
 {
@@ -503,8 +503,8 @@ bind(R (*f)(B1,B2,B3,B4,B5,B6,B7), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 
 }
 
 template <class R,
-	  class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8,
-	  class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8>
+          class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8,
+          class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8>
 _bi::bind_t<R, R (*)(B1,B2,B3,B4,B5,B6,B7,B8), _bi::list8<A1,A2,A3,A4,A5,A6,A7,A8> >
 bind(R (*f)(B1,B2,B3,B4,B5,B6,B7,B8), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
 {
@@ -514,8 +514,8 @@ bind(R (*f)(B1,B2,B3,B4,B5,B6,B7,B8), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, 
 }
 
 template <class R,
-	  class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9,
-	  class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8, class B9>
+          class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9,
+          class B1, class B2, class B3, class B4, class B5, class B6, class B7, class B8, class B9>
 _bi::bind_t<R, R (*)(B1,B2,B3,B4,B5,B6,B7,B8,B9), _bi::list9<A1,A2,A3,A4,A5,A6,A7,A8,A9> >
 bind(R (*f)(B1,B2,B3,B4,B5,B6,B7,B8,B9), A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
 {

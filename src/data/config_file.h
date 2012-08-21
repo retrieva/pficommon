@@ -60,7 +60,7 @@ public:
       static const std::string empty("");
       const_iterator p=dat.find(key);
       if (p!=dat.end())
-	return p->second;
+        return p->second;
       return empty;
     }
 

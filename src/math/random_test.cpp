@@ -131,8 +131,8 @@ bool is_standard_deviation(function<double()> f, bool expectation=true){
     double err=abs(mom[n]-expect_moment);
     double tor=5.0 * exp(n)/sqrt(size);
     debug << "mom[" << n << "] = " << mom[n] << " " 
-	  << err << " " << tor
-	  << endl;
+          << err << " " << tor
+          << endl;
     ret = ret && err<tor;
   }
 /*
@@ -199,8 +199,8 @@ TEST(random, sampling_without_replacement) {
       EXPECT_TRUE(sample_without_replacement(r,n,k,vs));
       for (int i=0;i<(int)vs.size();++i) EXPECT_TRUE(0<=vs[i]&&vs[i]<n);
       for (int i=0;i<(int)vs.size();++i)
-	for (int j=i+1;j<(int)vs.size();++j)
-	  EXPECT_TRUE(vs[i]!=vs[j]);
+        for (int j=i+1;j<(int)vs.size();++j)
+          EXPECT_TRUE(vs[i]!=vs[j]);
     }
   }
 

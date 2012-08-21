@@ -47,10 +47,10 @@ namespace mysql{
 class mysql_connection_impl{
 public:
   mysql_connection_impl(const std::string &host,
-		   const std::string &user,
-		   const std::string &passwd,
-		   const std::string &db,
-		   uint16_t port);
+                   const std::string &user,
+                   const std::string &passwd,
+                   const std::string &db,
+                   uint16_t port);
   ~mysql_connection_impl();
 
   void reconnect();
@@ -65,10 +65,10 @@ private:
 class mysql_connection : public connection{
 public:
   mysql_connection(const std::string &host,
-		   const std::string &user,
-		   const std::string &passwd,
-		   const std::string &db,
-		   uint16_t port);
+                   const std::string &user,
+                   const std::string &passwd,
+                   const std::string &db,
+                   uint16_t port);
   ~mysql_connection();
 
   void begin_transaction();
@@ -76,7 +76,7 @@ public:
   void rollback();
 
   int run(const std::string &sql,
-	  const std::vector<pfi::lang::shared_ptr<sql_value> > &args);
+          const std::vector<pfi::lang::shared_ptr<sql_value> > &args);
   statement *prepare(const std::string &sql);
 
 private:

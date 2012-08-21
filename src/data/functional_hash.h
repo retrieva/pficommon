@@ -102,7 +102,7 @@ struct hash<float>{
   size_t operator()(float val) const{
     if (val!=0.0f)
       return fnv_hash<>::hash(reinterpret_cast<const char*>(&val),
-			      sizeof(val));
+                              sizeof(val));
     return 0;
   }
 };
@@ -112,7 +112,7 @@ struct hash<double>{
   size_t operator()(double val) const{
     if (val!=0.0)
       return fnv_hash<>::hash(reinterpret_cast<const char*>(&val),
-			      sizeof(val));
+                              sizeof(val));
     return 0;
   }
 };
@@ -122,7 +122,7 @@ struct hash<long double>{
   size_t operator()(long double val) const{
     if (val!=0.0L)
       return fnv_hash<>::hash(reinterpret_cast<const char*>(&val),
-			      sizeof(val));
+                              sizeof(val));
     return 0;
   }
 };

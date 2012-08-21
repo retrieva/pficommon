@@ -180,40 +180,40 @@ public:
       if(!cin) return is_valid_ = false;
       getline(cin,line);
       if(line[0]=='#'){
-	continue;
+        continue;
       }else{
-	std::istringstream iss(line);
-	switch(header_count++){
-	case 0:
-	  iss>>format_str;
-	  break;
-	case 1:
-	  iss >> w >> h;
-	  break;
-	case 2:
-	  iss >> c_m;
-	  my_max_color = c_m;
-	  break;
-	default:
+        std::istringstream iss(line);
+        switch(header_count++){
+        case 0:
+          iss>>format_str;
+          break;
+        case 1:
+          iss >> w >> h;
+          break;
+        case 2:
+          iss >> c_m;
+          my_max_color = c_m;
+          break;
+        default:
 #ifdef TEST
-	  EXPECT_TRUE(false) << "ppm header parsing algorithm wrong" << std::endl;
+          EXPECT_TRUE(false) << "ppm header parsing algorithm wrong" << std::endl;
 #endif
-	  break;
-	}
+          break;
+        }
       }
     }
 
     bmp.clear();
     for(int y=0;y<h;++y){
       for(int x=0;x<w;++x){
-	quantum r,g,b;
-	if(!cin) return is_valid_ = false;
-	r=(quantum)cin.get();
-	if(!cin) return is_valid_ = false;
-	g=(quantum)cin.get();
-	if(!cin) return is_valid_ = false;
-	b=(quantum)cin.get();
-	bmp.push_back(color::rgb<quantum>(r,g,b));
+        quantum r,g,b;
+        if(!cin) return is_valid_ = false;
+        r=(quantum)cin.get();
+        if(!cin) return is_valid_ = false;
+        g=(quantum)cin.get();
+        if(!cin) return is_valid_ = false;
+        b=(quantum)cin.get();
+        bmp.push_back(color::rgb<quantum>(r,g,b));
       }
     }
     this->set_max_color(255);
@@ -229,8 +229,8 @@ public:
   void write(std::ostream &cout){
 
     cout << "P6" << std::endl 
-	 << w << " " << h << std::endl 
-	 << my_max_color << std::endl;
+         << w << " " << h << std::endl 
+         << my_max_color << std::endl;
     for(size_t i=0;i<bmp.size();++i){
       cout.put(__nc(bmp[i].r));
       cout.put(__nc(bmp[i].g));

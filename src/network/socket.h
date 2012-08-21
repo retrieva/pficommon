@@ -113,7 +113,7 @@ private:
   int wrbuf_size;
 
   static pfi::lang::shared_ptr<dns_resolver,
-			       pfi::concurrent::threading_model::multi_thread> resolver;
+                               pfi::concurrent::threading_model::multi_thread> resolver;
   static pfi::concurrent::r_mutex resolver_m;
 };
 

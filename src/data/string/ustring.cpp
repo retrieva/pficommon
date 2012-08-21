@@ -232,31 +232,31 @@ ustring hankaku_to_zenkaku(const ustring& ustr){
     uchar c=res.size()>0?res[res.size()-1]:0xFFFFFFFFU;
     if (is_hankaku(ustr[i])) {
       if (ustr[i]==UTF_HANKAKU_DAKUTEN) { 
-	if (c!=0xFFFFFFFFU&&is_katakana(c)&&take_dakuten_tbl[c-0x30a0]) {
-	  if (c==0x30a6) { // ウ
-	    res[res.size()-1]=0x30f4;
-	  } else if (c==0x30f2) { // ヲ
-	    res[res.size()-1]=0x30fa;
-	  } else {
-	    ++res[res.size()-1];
-	  }
-	} else {
-	  res.push_back(UTF_ZENKAKU_DAKUTEN); // zenkaku dakuten
-	}
+        if (c!=0xFFFFFFFFU&&is_katakana(c)&&take_dakuten_tbl[c-0x30a0]) {
+          if (c==0x30a6) { // ウ
+            res[res.size()-1]=0x30f4;
+          } else if (c==0x30f2) { // ヲ
+            res[res.size()-1]=0x30fa;
+          } else {
+            ++res[res.size()-1];
+          }
+        } else {
+          res.push_back(UTF_ZENKAKU_DAKUTEN); // zenkaku dakuten
+        }
       } else if (ustr[i]==UTF_HANKAKU_HANDAKUTEN) {
-	if (c!=0xFFFFFFFFU&&is_katakana(c)&&take_handakuten_tbl[c-0x30a0]) {
-	  res[res.size()-1]+=2;
-	} else {
-	  res.push_back(UTF_ZENKAKU_HANDAKUTEN); // zenkaku dakuten
-	}
+        if (c!=0xFFFFFFFFU&&is_katakana(c)&&take_handakuten_tbl[c-0x30a0]) {
+          res[res.size()-1]+=2;
+        } else {
+          res.push_back(UTF_ZENKAKU_HANDAKUTEN); // zenkaku dakuten
+        }
       } else {
-	res.push_back(hankaku_zenkaku_tbl[ustr[i]-0xff60]);
+        res.push_back(hankaku_zenkaku_tbl[ustr[i]-0xff60]);
       }
     } else if (ustr[i]==UTF_HANKAKU_BAR) { // -
       if (c!=0xFFFFFFFFU&&!is_basic_latin(c)) {
-	res.push_back(UTF_ZENKAKU_BAR);
+        res.push_back(UTF_ZENKAKU_BAR);
       } else {
-	res.push_back(ustr[i]);
+        res.push_back(ustr[i]);
       }
     } else {
       res.push_back(ustr[i]);

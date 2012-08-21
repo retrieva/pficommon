@@ -107,8 +107,8 @@ namespace sparse_matrix {
       offsets=vector<int>(rowNum);
       ifs.read((char*)&rowInfos[0],rowNum*sizeof(RowInfo));
       if (offsets.size()>0) {
-	offsets[0]=0;
-	for (int i=1;i<(int)offsets.size();++i) offsets[i]=offsets[i-1]+rowInfos[i-1].size;
+        offsets[0]=0;
+        for (int i=1;i<(int)offsets.size();++i) offsets[i]=offsets[i-1]+rowInfos[i-1].size;
       }
     } 
     return 0;
@@ -128,8 +128,8 @@ namespace sparse_matrix {
     if (ioMode==MATRIX_IO_WRITE) {
       ofstream ofs(fnOffsets.c_str());
       if (!ofs) {
-	fprintf(stderr,"matrix_offsets::flush: cannot open %s\n",fnOffsets.c_str());
-	return -1;
+        fprintf(stderr,"matrix_offsets::flush: cannot open %s\n",fnOffsets.c_str());
+        return -1;
       }
       int rowNum=rowInfos.size();
       ofs.write((char*)&rowNum,sizeof(int));
@@ -416,9 +416,9 @@ namespace sparse_matrix {
       vector<pair<int,unsigned char> > docs;
       index.get_row(i,docs);
       for (int j=0;j<(int)docs.size();++j) {
-	int term=docs[j].first;
-	if (term>=(int)termCount.size()) termCount.resize(term+1);
-	++termCount[term];
+        int term=docs[j].first;
+        if (term>=(int)termCount.size()) termCount.resize(term+1);
+        ++termCount[term];
       }
     }
     int termNum=termCount.size();
@@ -439,9 +439,9 @@ namespace sparse_matrix {
     for (int i=0;i<(int)termCount.size();++i) {
       sum+=termCount[i];
       if (sum>=limit) {
-	fprintf(stderr,"boundary: %d\n",i);
-	boundary.push_back(i+1);
-	sum=0;
+        fprintf(stderr,"boundary: %d\n",i);
+        boundary.push_back(i+1);
+        sum=0;
       }
     }
     if (sum>0) {
@@ -460,11 +460,11 @@ namespace sparse_matrix {
       vector<std::map<int,unsigned char> > hash(en-st);
 
       for (int j=0;j<docNum;++j) {
-	vector<pair<int,unsigned char> > docs;
-	index.get_row(j,docs);
-	for (int k=0;k<(int)docs.size();++k) 
-	  if (st<=(int)docs[k].first&&(int)docs[k].first<en) 
-	    hash[docs[k].first-st][j]=docs[k].second;
+        vector<pair<int,unsigned char> > docs;
+        index.get_row(j,docs);
+        for (int k=0;k<(int)docs.size();++k) 
+          if (st<=(int)docs[k].first&&(int)docs[k].first<en) 
+            hash[docs[k].first-st][j]=docs[k].second;
       }
       for (int i=st;i<en;++i) indexT.append_row(hash[i-st]);
       st=en;

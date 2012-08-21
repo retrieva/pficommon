@@ -58,8 +58,8 @@ public:
 private:
 
   void process(socket_type ssock,
-	       pfi::lang::shared_ptr<cgi,
-	       pfi::concurrent::threading_model::multi_thread> cc);
+               pfi::lang::shared_ptr<cgi,
+               pfi::concurrent::threading_model::multi_thread> cc);
 
   void listen(uint16_t port, double time_out);
 

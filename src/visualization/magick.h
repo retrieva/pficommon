@@ -82,13 +82,13 @@ private:
 public:
   magick_ppm(){}
   magick_ppm(int w,int h):pfi::visualization::ppm::ppm<color>(w,h),
-		   format_tag("PPM"){}
+                   format_tag("PPM"){}
   magick_ppm(int w,int h,pfi::visualization::color::rgb<color> c):
     pfi::visualization::ppm::ppm<color>(w,h,c),
     format_tag("PPM"){}
   magick_ppm(const std::string &filename, 
-	     magick_ppm<color> default_ppm=
-	     magick_ppm<color>(1,1,pfi::visualization::color::rgb<color>(0,0,0))){
+             magick_ppm<color> default_ppm=
+             magick_ppm<color>(1,1,pfi::visualization::color::rgb<color>(0,0,0))){
     if(!read(filename)){
       *this=default_ppm;
       this->is_valid_ = false;
@@ -96,8 +96,8 @@ public:
   }
   /// load image from Blob
   magick_ppm(const void *data, const size_t size, const std::string &fmt="",
-	     magick_ppm<color> default_ppm=
-	     magick_ppm<color>(1,1,pfi::visualization::color::rgb<color>(0,0,0))){
+             magick_ppm<color> default_ppm=
+             magick_ppm<color>(1,1,pfi::visualization::color::rgb<color>(0,0,0))){
     if(!read(data,size,fmt)){
       *this=default_ppm;
       this->is_valid_ = false;
@@ -111,11 +111,11 @@ public:
     try {
       *this=magick_ppm(img.columns(),img.rows());
       for(pfi::visualization::ppm::image_coordinate_t y=0;y<this->height();++y){
-	for(pfi::visualization::ppm::image_coordinate_t x=0;x<this->width();++x){
-	  unsigned char r, g, b;
-	  img.pixel(x, y, r, g, b);
-	  (*this)(x,y)=pfi::visualization::color::rgb<color>(r, g, b);
-	}
+        for(pfi::visualization::ppm::image_coordinate_t x=0;x<this->width();++x){
+          unsigned char r, g, b;
+          img.pixel(x, y, r, g, b);
+          (*this)(x,y)=pfi::visualization::color::rgb<color>(r, g, b);
+        }
       }
       this->set_max_color(img.max_color());
       return this->is_valid_ = true;

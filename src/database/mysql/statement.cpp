@@ -49,8 +49,8 @@ namespace database{
 namespace mysql{
 
 mysql_statement::mysql_statement(shared_ptr<mysql_connection_impl,
-                                   pfi::concurrent::threading_model::multi_thread> &conn,
-				 const string &query)
+                                 pfi::concurrent::threading_model::multi_thread> &conn,
+                                 const string &query)
   :conn(conn),meta(NULL)
 {
   stmt=mysql_stmt_init(conn->get());
@@ -62,7 +62,7 @@ mysql_statement::mysql_statement(shared_ptr<mysql_connection_impl,
     rc=mysql_stmt_errno(stmt);
     string msg(string("cannot prepare statement: E")+
                lexical_cast<string>(rc)+": "+
-	       mysql_stmt_error(stmt));
+               mysql_stmt_error(stmt));
     mysql_stmt_close(stmt);
     if (rc==CR_SERVER_GONE_ERROR||rc==CR_SERVER_LOST)
       throw connection_error(msg);
@@ -126,13 +126,13 @@ int mysql_statement::execute(const vector<shared_ptr<sql_value> > &args)
   my_bool rb=mysql_stmt_bind_param(stmt, &bind[0]);
   if (rb!=0){
     throw database_error(string("cannot bind parameter: ")+
-			 mysql_stmt_error(stmt));
+                         mysql_stmt_error(stmt));
   }
 
   int rc=mysql_stmt_execute(stmt);
   if (rc!=0){
     throw database_error(string("cannot execute statement")+
-			 mysql_stmt_error(stmt));
+                         mysql_stmt_error(stmt));
   }
 
   binds.clear();
@@ -179,13 +179,13 @@ bool mysql_statement::fetch_row(vector<shared_ptr<sql_value> > &row)
     size_t fn=flds.size();
     for (size_t i=0;i<fn;i++){
       if (binds[i].buffer_length<*binds[i].length){
-	bufs[i].resize(*binds[i].length+1);
-	binds[i].buffer=&bufs[i][0];
-	binds[i].buffer_length=bufs[i].size();
-	int rr=mysql_stmt_fetch_column(stmt, &binds[i], i, 0);
-	if (rr!=0)
-	  throw database_error(string("mysql_statement::fetch_row(): ")+
-			       mysql_stmt_error(stmt));
+        bufs[i].resize(*binds[i].length+1);
+        binds[i].buffer=&bufs[i][0];
+        binds[i].buffer_length=bufs[i].size();
+        int rr=mysql_stmt_fetch_column(stmt, &binds[i], i, 0);
+        if (rr!=0)
+          throw database_error(string("mysql_statement::fetch_row(): ")+
+                               mysql_stmt_error(stmt));
       }
     }
     mysql_stmt_bind_result(stmt, &binds[0]);
@@ -196,7 +196,7 @@ bool mysql_statement::fetch_row(vector<shared_ptr<sql_value> > &row)
 
   if (rc==1)
     throw database_error(string("fetch_row(): ")+
-			 mysql_stmt_error(stmt));
+                         mysql_stmt_error(stmt));
 
   row.resize(flds.size());
   for (size_t i=0;i<flds.size();i++)

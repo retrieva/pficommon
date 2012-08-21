@@ -84,24 +84,24 @@ run_server::run_server(const cgi &cc, int argc, char *argv[])
     case 'p': {
       int p=atoi(optarg);
       if (p>=1 && p<=0xFFFF)
-	port=static_cast<uint16_t>(p);
+        port=static_cast<uint16_t>(p);
       else{
-	cerr<<"wrong argument: --port="<<optarg<<endl;
-	exit(0);
+        cerr<<"wrong argument: --port="<<optarg<<endl;
+        exit(0);
       }
       break;
     }
     case 't': {
       int t=atoi(optarg);
       if (t>=1 && t<=1024)
-	thread_num=t;
+        thread_num=t;
       else if (t<=0){
-	cerr<<"wrong argument: --thread="<<optarg<<endl;
-	exit(0);
+        cerr<<"wrong argument: --thread="<<optarg<<endl;
+        exit(0);
       }
       else{
-	cerr<<"too many threads: --thread="<<optarg<<endl;
-	exit(0);
+        cerr<<"too many threads: --thread="<<optarg<<endl;
+        exit(0);
       }
       break;
     }
@@ -232,7 +232,7 @@ string str_to_upper(const string &s)
 }
 
 void run_server::process(socket_type ssock,
-			 shared_ptr<cgi, threading_model::multi_thread> cc)
+                         shared_ptr<cgi, threading_model::multi_thread> cc)
 {
   for (;;){
     shared_ptr<stream_socket> sock(ssock->accept());
@@ -248,13 +248,13 @@ void run_server::process(socket_type ssock,
       map<string, string> env;
 
       for (http::header::iterator p=req.head().begin();
-	   p!=req.head().end(); p++)
-	env["HTTP_"+str_to_upper(p->first)]=p->second;
+           p!=req.head().end(); p++)
+        env["HTTP_"+str_to_upper(p->first)]=p->second;
 
       env["REQUEST_METHOD"]=req.method();
       env["REQUEST_URI"]=req.path().path();
       if (req.path().query()!="")
-	env["REQUEST_URI"]+="?"+req.path().query();
+        env["REQUEST_URI"]+="?"+req.path().query();
       env["SCRIPT_NAME"]=req.path().path();
       env["QUERY_STRING"]=req.path().query();
 
@@ -290,7 +290,7 @@ void run_server_or_cgi::run()
   bool server=false;
   for (int i=1; i<argc; i++)
     if (argv[i]==string("-s")||
-	argv[i]==string("--server"))
+        argv[i]==string("--server"))
       server=true;
 
   if (server){
@@ -300,8 +300,8 @@ void run_server_or_cgi::run()
     bool help=false;
     for (int i=1; i<argc; i++)
       if (argv[i]==string("-h")||
-	  argv[i]==string("--help"))
-	help=true;
+          argv[i]==string("--help"))
+        help=true;
 
     if (help){
       cerr<<"usage: "<<argv[0]<<" [-s] [-h] [server-options]"<<endl;

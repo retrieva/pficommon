@@ -44,7 +44,7 @@
   }								\
   };								\
   }								\
-								\
+                                                                \
   namespace _client_impl{					\
   class name : public virtual pfi::network::rpc::rpc_client{	\
   public:							\

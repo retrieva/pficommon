@@ -54,8 +54,8 @@ class mysql_connection_impl;
 class mysql_statement : public statement{
 public:
   mysql_statement(pfi::lang::shared_ptr<mysql_connection_impl,
-                    pfi::concurrent::threading_model::multi_thread> &conn,
-		  const std::string &query);
+                  pfi::concurrent::threading_model::multi_thread> &conn,
+                  const std::string &query);
   ~mysql_statement();
 
   int execute(const std::vector<pfi::lang::shared_ptr<sql_value> > &args);

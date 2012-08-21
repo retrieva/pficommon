@@ -43,10 +43,10 @@ namespace postgresql{
 connection *connect(const std::string &conninfo);
 
 connection *connect(const std::string &host,
-		    uint16_t port,
-		    const std::string &dbname,
-		    const std::string &user,
-		    const std::string &password);
+                    uint16_t port,
+                    const std::string &dbname,
+                    const std::string &user,
+                    const std::string &password);
 
 } // postgresql
 } // database

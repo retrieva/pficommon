@@ -61,7 +61,7 @@ public:
 
   csv_parser(std::istream &ifs){
     init(std::istreambuf_iterator<char>(ifs),
-	 std::istreambuf_iterator<char>());
+         std::istreambuf_iterator<char>());
   }
 
   csv_parser(const std::string &str){
@@ -112,33 +112,33 @@ private:
       if (p==q) return false;
 
       for (size_t bufcnt=0; ; ){
-	size_t start=bufcnt;
+        size_t start=bufcnt;
 
-	if (*p=='\"'){
-	  p++;
-	  for (;;){
-	    if (*p=='\"'){
-	      p++;
-	      if (*p!='\"') break;
-	    }
-	    if (bufcnt>=buf.size()) extend();
-	    buf[bufcnt++]=*p++;
-	  }
-	  while(*p && *p!=',' && *p!='\n') p++;
-	}
-	else{
-	  while(*p && *p!=',' && *p!='\r' && *p!='\n'){
-	    if (bufcnt>=buf.size()) extend();
-	    buf[bufcnt++]=*p++;
-	  }
-	}
+        if (*p=='\"'){
+          p++;
+          for (;;){
+            if (*p=='\"'){
+              p++;
+              if (*p!='\"') break;
+            }
+            if (bufcnt>=buf.size()) extend();
+            buf[bufcnt++]=*p++;
+          }
+          while(*p && *p!=',' && *p!='\n') p++;
+        }
+        else{
+          while(*p && *p!=',' && *p!='\r' && *p!='\n'){
+            if (bufcnt>=buf.size()) extend();
+            buf[bufcnt++]=*p++;
+          }
+        }
 
-	buf[bufcnt++]='\0';
-	cur.push_back(&buf[start]);
-	if (!*p) break;
-	if (*p=='\r') p++;
-	if (*p=='\n'){ p++; break; }
-	p++;
+        buf[bufcnt++]='\0';
+        cur.push_back(&buf[start]);
+        if (!*p) break;
+        if (*p=='\r') p++;
+        if (*p=='\n'){ p++; break; }
+        p++;
       }
 
       return true;
@@ -156,7 +156,7 @@ private:
       buf=this->buf;
       row.resize(this->cur.size());
       for (size_t i=0; i<this->cur.size(); i++)
-	row[i]=(&buf[0]+(this->cur[i]-&(this->buf[0])));
+        row[i]=(&buf[0]+(this->cur[i]-&(this->buf[0])));
     }
 
   private:
@@ -164,7 +164,7 @@ private:
       const char *o=&buf[0];
       buf.resize(buf.size()*2);
       for (size_t i=0; i<cur.size(); i++)
-	cur[i]=&buf[0]+(cur[i]-o);
+        cur[i]=&buf[0]+(cur[i]-o);
     }
 
     Iterator p, q;
@@ -236,7 +236,7 @@ private:
 };
 
 void parse_csv(const std::string &str,
-	       std::vector<std::vector<std::string> > &ret);
+               std::vector<std::vector<std::string> > &ret);
 
 } // text
 } // pfi

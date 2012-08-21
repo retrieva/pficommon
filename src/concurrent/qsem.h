@@ -41,7 +41,7 @@ namespace pfi{
 namespace concurrent{
 
 class qsem : public lockable
-	   , pfi::lang::noncopyable{
+           , pfi::lang::noncopyable{
 public:
   qsem(int q)
     :quantity(q){

@@ -48,7 +48,7 @@ class postgresql_connection_impl;
 class postgresql_statement : public statement{
 public:
   postgresql_statement(pfi::lang::shared_ptr<postgresql_connection_impl> conn,
-		       const std::string &query);
+                       const std::string &query);
   ~postgresql_statement();
 
   int execute(const std::vector<pfi::lang::shared_ptr<sql_value> > &args);

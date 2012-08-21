@@ -36,45 +36,45 @@
 #include "mprpc/rpc_client.h"
 
 #define MPRPC_PROC(name, ...) \
-	namespace _server_impl { \
-	class name : public virtual pfi::network::mprpc::rpc_server { \
-	public: \
-		name() : rpc_server(0) { } \
-		void set_##name(const pfi::lang::function<__VA_ARGS__> &f) \
-		{ \
-			rpc_server::add<__VA_ARGS__>(#name, f); \
-		} \
-	}; \
-	} \
-	\
-	namespace _client_impl { \
-	class name : public virtual pfi::network::mprpc::rpc_client { \
-	public: \
-		name() : rpc_client("",0,0) \
-		{ \
-			call_##name = call<__VA_ARGS__>(#name); \
-		} \
-	\
-		pfi::lang::function<__VA_ARGS__> call_##name; \
-	}; \
-	}
+        namespace _server_impl { \
+        class name : public virtual pfi::network::mprpc::rpc_server { \
+        public: \
+                name() : rpc_server(0) { } \
+                void set_##name(const pfi::lang::function<__VA_ARGS__> &f) \
+                { \
+                        rpc_server::add<__VA_ARGS__>(#name, f); \
+                } \
+        }; \
+        } \
+        \
+        namespace _client_impl { \
+        class name : public virtual pfi::network::mprpc::rpc_client { \
+        public: \
+                name() : rpc_client("",0,0) \
+                { \
+                        call_##name = call<__VA_ARGS__>(#name); \
+                } \
+        \
+                pfi::lang::function<__VA_ARGS__> call_##name; \
+        }; \
+        }
 
 #define MPRPC_GEN(ver, base, ...) \
-	namespace _server_impl { \
-	struct base##_server : __VA_ARGS__ { \
-	public: \
-		base##_server(double timeout_sec) : rpc_server(timeout_sec) { } \
-	}; \
-	} \
-	typedef _server_impl::base##_server base##_server; \
-	\
-	namespace _client_impl { \
-	struct base##_client : __VA_ARGS__ { \
-	public: \
-		base##_client(const std::string& host, uint16_t port, double timeout_sec) : \
-			rpc_client(host, port, timeout_sec) { } \
-	}; \
-	} \
-	typedef _client_impl::base##_client base##_client;
+        namespace _server_impl { \
+        struct base##_server : __VA_ARGS__ { \
+        public: \
+                base##_server(double timeout_sec) : rpc_server(timeout_sec) { } \
+        }; \
+        } \
+        typedef _server_impl::base##_server base##_server; \
+        \
+        namespace _client_impl { \
+        struct base##_client : __VA_ARGS__ { \
+        public: \
+                base##_client(const std::string& host, uint16_t port, double timeout_sec) : \
+                        rpc_client(host, port, timeout_sec) { } \
+        }; \
+        } \
+        typedef _client_impl::base##_client base##_client;
 
 #endif // #ifndef INCLUDE_GUARD_PFI_NETWORK_MPRPC_H_

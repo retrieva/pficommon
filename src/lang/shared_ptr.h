@@ -167,10 +167,10 @@ private:
   void dec(){
     if (ref){
       if (ref->dec()==0){
-	delete ref;
-	if (p) delete p;
-	ref=NULL;
-	p=NULL;
+        delete ref;
+        if (p) delete p;
+        ref=NULL;
+        p=NULL;
       }
     }
   }
