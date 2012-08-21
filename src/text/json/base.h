@@ -78,11 +78,23 @@ class json_value;
 
 class json{
 public:
+  typedef enum {
+    JSON_NULL,
+    JSON_INTEGER,
+    JSON_FLOAT,
+    JSON_BOOL,
+    JSON_STRING,
+    JSON_ARRAY,
+    JSON_OBJECT,
+  } json_type_t;
+
   typedef std::map<std::string, json>::iterator iterator;
   typedef std::map<std::string, json>::const_iterator const_iterator;
 
   json();
   json(json_value* p): val(p) {}
+
+  json_type_t type() const;
 
   json &operator[](const std::string &name);
   json &operator[](size_t ix);
@@ -124,6 +136,8 @@ class json_value{
 public:
   virtual ~json_value(){}
 
+  virtual json::json_type_t type() const = 0;
+
   virtual void print(std::ostream &os, bool escape) const = 0;
   virtual void pretty(std::ostream &os, int level, bool escape) const {
     print(os, escape);
@@ -135,6 +149,10 @@ public:
 class json_array : public json_value{
 public:
   json_array(){}
+
+  json::json_type_t type() const {
+    return json::JSON_ARRAY;
+  }
 
   size_t size() const{
     return dat.size();
@@ -201,6 +219,10 @@ class json_integer : public json_number{
 public:
   json_integer(int64_t n) : dat(n){}
 
+  json::json_type_t type() const {
+    return json::JSON_INTEGER;
+  }
+
   int64_t get() const { return dat; }
 
   void print(std::ostream &os, bool escape) const {
@@ -218,6 +240,10 @@ private:
 class json_float : public json_number{
 public:
   json_float(double d) : dat(d){}
+
+  json::json_type_t type() const {
+    return json::JSON_FLOAT;
+  }
 
   double get() const { return dat; }
 
@@ -239,6 +265,10 @@ private:
 class json_string : public json_value{
 public:
   json_string(const std::string &s): dat(s) {}
+
+  json::json_type_t type() const {
+    return json::JSON_STRING;
+  }
 
   const std::string &get() const { return dat; }
 
@@ -355,6 +385,10 @@ public:
   
   json_object(){}
 
+  json::json_type_t type() const {
+    return json::JSON_OBJECT;
+  }
+
   void add(const std::string &name, const json &j){
     member[name]=j;
   }
@@ -456,6 +490,10 @@ class json_bool : public json_value{
 public:
   json_bool(bool b): dat(b) {}
 
+  json::json_type_t type() const {
+    return json::JSON_BOOL;
+  }
+
   bool get() const { return dat; }
 
   void print(std::ostream &os, bool escape) const {
@@ -474,6 +512,10 @@ class json_null : public json_value{
 public:
   json_null(){}
 
+  json::json_type_t type() const {
+    return json::JSON_NULL;
+  }
+
   void print(std::ostream &os, bool escape) const {
     os<<"null";
   }
@@ -491,6 +533,11 @@ inline bool is(const json &j)
 
 inline json::json(): val(new json_null())
 {
+}
+
+inline json::json_type_t json::type() const
+{
+  return val->type();
 }
 
 inline const json &json::operator[](const std::string &name) const
