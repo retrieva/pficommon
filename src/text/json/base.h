@@ -78,7 +78,7 @@ class json_value;
 
 class json{
 public:
-  typedef enum {
+  enum json_type_t {
     JSON_NULL,
     JSON_INTEGER,
     JSON_FLOAT,
@@ -86,7 +86,7 @@ public:
     JSON_STRING,
     JSON_ARRAY,
     JSON_OBJECT,
-  } json_type_t;
+  };
 
   typedef std::map<std::string, json>::iterator iterator;
   typedef std::map<std::string, json>::const_iterator const_iterator;

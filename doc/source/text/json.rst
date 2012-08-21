@@ -33,7 +33,7 @@ jsonデータ型の操作
 
 .. code-block:: c++
 
-  typedef enum {
+  enum json_type_t {
     JSON_NULL,
     JSON_INTEGER,
     JSON_FLOAT,
@@ -41,7 +41,7 @@ jsonデータ型の操作
     JSON_STRING,
     JSON_ARRAY,
     JSON_OBJECT,
-  } json_type_t;
+  };
 
 それぞれのjsonのデータの型を表すためのタグ。
 
