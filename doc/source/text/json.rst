@@ -150,6 +150,12 @@ jsonオブジェクトをハンドルするための型
 保持しているjson_valueをストリームに書き出す。
 読みやすい形で出力される。
 
+.. code-block:: c++
+
+  json json::clone() const
+
+保持しているjson_valueをディープコピーし、jsonハンドルを返す。
+
 例
 ---
 
