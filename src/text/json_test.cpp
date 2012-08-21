@@ -511,31 +511,31 @@ TEST(json, type)
 {
   {
     json j(new json_integer(0));
-    EXPECT_EQ(json::JSON_INTEGER, j.type());
+    EXPECT_EQ(json::Integer, j.type());
   }
   {
     json j(new json_float(0));
-    EXPECT_EQ(json::JSON_FLOAT, j.type());
+    EXPECT_EQ(json::Float, j.type());
   }
   {
     json j(new json_string(""));
-    EXPECT_EQ(json::JSON_STRING, j.type());
+    EXPECT_EQ(json::String, j.type());
   }
   {
     json j(new json_bool(false));
-    EXPECT_EQ(json::JSON_BOOL, j.type());
+    EXPECT_EQ(json::Bool, j.type());
   }
   {
     json j(new json_array());
-    EXPECT_EQ(json::JSON_ARRAY, j.type());
+    EXPECT_EQ(json::Array, j.type());
   }
   {
     json j(new json_object());
-    EXPECT_EQ(json::JSON_OBJECT, j.type());
+    EXPECT_EQ(json::Object, j.type());
   }
   {
     json j(new json_null());
-    EXPECT_EQ(json::JSON_NULL, j.type());
+    EXPECT_EQ(json::Null, j.type());
   }
 }
 

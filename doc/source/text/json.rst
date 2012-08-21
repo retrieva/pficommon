@@ -34,13 +34,13 @@ jsonデータ型の操作
 .. code-block:: c++
 
   enum json_type_t {
-    JSON_NULL,
-    JSON_INTEGER,
-    JSON_FLOAT,
-    JSON_BOOL,
-    JSON_STRING,
-    JSON_ARRAY,
-    JSON_OBJECT,
+    Null,
+    Integer,
+    Float,
+    Bool,
+    String,
+    Array,
+    Object,
   };
 
 それぞれのjsonのデータの型を表すためのタグ。
