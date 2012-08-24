@@ -334,7 +334,7 @@ class basic_httpbody_streambuf : public basic_streambuf<C,T>{
 public:
   typedef C char_type;
 
-  basic_httpbody_streambuf(shared_ptr<stream_socket> sock, int length)
+  basic_httpbody_streambuf(shared_ptr<stream_socket> sock, int64_t length)
     : sock(sock)
     , rest(length)
     , buf(T::eof()){
@@ -361,8 +361,8 @@ public:
 private:
   shared_ptr<stream_socket> sock;
 
-  int rest;
-  int buf;
+  int64_t rest;
+  int64_t buf;
 };
 
 template <class C, class T=char_traits<C> >
@@ -380,7 +380,7 @@ private:
 template <class C, class T=char_traits<C> >
 class basic_httpbody_stream : public basic_iostream<C,T>{
 public:
-  basic_httpbody_stream(shared_ptr<stream_socket> sock, int len)
+  basic_httpbody_stream(shared_ptr<stream_socket> sock, int64_t len)
     : basic_iostream<C,T>()
     , buf(sock, len){
     this->init(&buf);
@@ -440,7 +440,7 @@ request::request(shared_ptr<stream_socket> sock)
   if (cicmp(header_["Transfer-Encoding"],"chunked"))
     stream=shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
   else if (header_["Content-Length"]!="")
-    stream=shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int>(header_["Content-Length"])));
+    stream=shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<unsigned int64_t>(header_["Content-Length"])));
   else
     stream=shared_ptr<iostream>(new socketstream(sock));
 }
@@ -548,7 +548,7 @@ response::response(shared_ptr<stream_socket> sock)
   if (cicmp(header_["Transfer-Encoding"],"chunked"))
     stream=shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
   else if (header_["Content-Length"]!="")
-    stream=shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int>(header_["Content-Length"])));
+    stream=shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<unsigned int64_t>(header_["Content-Length"])));
   else
     stream=shared_ptr<iostream>(new socketstream(sock));
 }
