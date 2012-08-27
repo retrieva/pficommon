@@ -1,5 +1,7 @@
+subdirs = [ 'algorithm' ]
+
 def configure(conf):
-  pass
+  conf.recurse(subdirs)
 
 def build(bld):
   bld.install_files('${HPREFIX}/lang', [
@@ -35,3 +37,5 @@ def build(bld):
     source = 'demangle_test.cpp',
     target = 'demangle_test',
     includes = '.')
+
+  bld.recurse(subdirs)
