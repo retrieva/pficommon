@@ -32,3 +32,9 @@ def build(bld):
     target = 'csv_test',
     includes = '.',
     use = 'pficommon_text')
+
+  bld.program(
+    features = 'gtest',
+    source = 'include_test.cpp',
+    target = 'include_test',
+    includes = '.')

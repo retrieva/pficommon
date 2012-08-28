@@ -37,6 +37,7 @@
 #include <typeinfo>
 
 #include "base.h"
+#include "parser.h"
 
 #include "../../data/serialization.h"
 #include "../../data/optional.h"
