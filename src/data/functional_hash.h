@@ -32,13 +32,31 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_FUNCTIONAL_HASH_H_
 #define INCLUDE_GUARD_PFI_DATA_FUNCTIONAL_HASH_H_
 
+#include "../pfi-config.h"
+
+#if HAVE_UNORDERED_MAP
+#include <utility>
+#elif HAVE_TR1_UNORDERED_MAP
+#include <tr1/unordered_map>
+#elif HAVE_EXT_HASH_MAP
+#include <ext/hash_map>
+#else
+#error "There is no hash implementation."
+#endif
+
 namespace pfi{
 namespace data{
+
+#if HAVE_UNORDERED_MAP
+namespace unordered_namespace = ::std;
+#elif HAVE_TR1_UNORDERED_MAP
+namespace unordered_namespace = ::std::tr1;
+#endif
 
 #if HAVE_UNORDERED_MAP || HAVE_TR1_UNORDERED_MAP
 
 template <class T>
-class hash : public UOMAP_NS::hash<T> {};
+class hash : public unordered_namespace::hash<T> {};
 
 #elif HAVE_EXT_HASH_MAP
 
@@ -46,7 +64,6 @@ template <class T>
 class hash : public __gnu_cxx::hash<T> {};
 
 #endif
-
 } // data
 } // pfi
 

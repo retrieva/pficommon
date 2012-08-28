@@ -46,7 +46,7 @@ namespace suffix_array {
      @param invsa this vector is overwritten by inverted sa
   */
   template<typename IT>
-  void invert_suffix_array(IT sab, IT sae, vector<int> & invsa){
+  void invert_suffix_array(IT sab, IT sae, std::vector<int> & invsa){
     invsa.resize(distance(sab, sae));
     for(IT it = sab; it != sae; ++it){
       invsa[*it] = distance(sab, it);

@@ -50,11 +50,11 @@ namespace suffix_array {
      @param lcp_ returning array that contains LCP array
   */
   template<typename IT, typename IT2>
-  void lcp(IT b, IT e, IT2 sa, vector<int> &lcp_)
+  void lcp(IT b, IT e, IT2 sa, std::vector<int> &lcp_)
   {
     const size_t size = distance(b, e);
-    vector<int> rank(size);
-    vector<int> height(size);
+    std::vector<int> rank(size);
+    std::vector<int> height(size);
     for(int i = 0; i < size; ++i)
       rank[*(sa+i)] = i;
     int h = 0;

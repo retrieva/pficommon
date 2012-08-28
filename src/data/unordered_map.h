@@ -41,13 +41,7 @@
 #elif HAVE_EXT_HASH_MAP
 #include <ext/hash_map>
 #else
-#error There is no unordered map implementation.
-#endif
-
-#if HAVE_UNORDERED_MAP
-#define UOMAP_NS std
-#else
-#define UOMAP_NS std::tr1
+#error "There is no unordered map implementation."
 #endif
 
 #include "functional_hash.h"
@@ -62,8 +56,8 @@ template <class _Key, class _Tp,
           class _EqualKey = std::equal_to<_Key>,
           class _Alloc = std::allocator<std::pair<const _Key, _Tp> > >
 class unordered_map :
-    public UOMAP_NS::unordered_map<_Key, _Tp, _Hash, _EqualKey, _Alloc> {
-  typedef UOMAP_NS::unordered_map<_Key, _Tp, _Hash, _EqualKey, _Alloc> _Base;
+    public unordered_namespace::unordered_map<_Key, _Tp, _Hash, _EqualKey, _Alloc> {
+  typedef unordered_namespace::unordered_map<_Key, _Tp, _Hash, _EqualKey, _Alloc> _Base;
 
 public:
   explicit
@@ -87,8 +81,8 @@ template <class _Key, class _Tp,
           class _EqualKey = std::equal_to<_Key>,
           class _Alloc = std::allocator<std::pair<const _Key, _Tp> > >
 class unordered_multimap :
-    public UOMAP_NS::unordered_multimap<_Key, _Tp, _Hash, _EqualKey, _Alloc> {
-  typedef UOMAP_NS::unordered_multimap<_Key, _Tp, _Hash, _EqualKey, _Alloc> _Base;
+    public unordered_namespace::unordered_multimap<_Key, _Tp, _Hash, _EqualKey, _Alloc> {
+  typedef unordered_namespace::unordered_multimap<_Key, _Tp, _Hash, _EqualKey, _Alloc> _Base;
 
 public:
   explicit
@@ -160,8 +154,6 @@ public:
 };
 
 #endif
-
-#undef UOMAP_NS
 
 } // data
 } // pfi

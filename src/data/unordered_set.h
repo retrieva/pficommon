@@ -41,13 +41,7 @@
 #elif HAVE_EXT_HASH_SET
 #include <ext/hash_set>
 #else
-#error There is no unordered set implementation.
-#endif
-
-#if HAVE_UNORDERED_MAP
-#define UOMAP_NS std
-#else
-#define UOMAP_NS std::tr1
+#error "There is no unordered set implementation."
 #endif
 
 #include "functional_hash.h"
@@ -62,8 +56,8 @@ template <class _Value,
           class _Pred = std::equal_to<_Value>,
           class _Alloc = std::allocator<_Value> >
 class unordered_set :
-    public UOMAP_NS::unordered_set<_Value, _Hash, _Pred, _Alloc> {
-  typedef UOMAP_NS::unordered_set<_Value, _Hash, _Pred, _Alloc> _Base;
+    public unordered_namespace::unordered_set<_Value, _Hash, _Pred, _Alloc> {
+  typedef unordered_namespace::unordered_set<_Value, _Hash, _Pred, _Alloc> _Base;
 
 public:
   explicit
@@ -87,8 +81,8 @@ template <class _Value,
           class _Pred = std::equal_to<_Value>,
           class _Alloc = std::allocator<_Value> >
 class unordered_multiset :
-    public UOMAP_NS::unordered_multiset<_Value, _Hash, _Pred, _Alloc> {
-  typedef UOMAP_NS::unordered_multiset<_Value, _Hash, _Pred, _Alloc> _Base;
+    public unordered_namespace::unordered_multiset<_Value, _Hash, _Pred, _Alloc> {
+  typedef unordered_namespace::unordered_multiset<_Value, _Hash, _Pred, _Alloc> _Base;
 
 public:
   explicit
@@ -160,8 +154,6 @@ public:
 };
 
 #endif
-
-#undef UOMAP_NS
 
 } // data
 } // pfi
