@@ -44,3 +44,9 @@ def build(bld):
     target = 'sysstat_test',
     includes = '.',
     use = 'pficommon_system')
+
+  bld.program(
+    features = 'gtest',
+    source = 'include_test.cpp',
+    target = 'include_test',
+    includes = '.')
