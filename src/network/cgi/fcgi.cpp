@@ -97,7 +97,7 @@ public:
   basic_fcgxstream(FCGX_Stream *p)
     : basic_iostream<C,T>()
     , fcgxbuf(p){
-    init(&fcgxbuf);
+    this->init(&fcgxbuf);
   }
 
 private:
