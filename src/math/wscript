@@ -30,3 +30,4 @@ def build(bld):
   t('ratio_test.cpp')
   t('vector_test.cpp')
   t('fft_test.cpp')
+  t('include_test.cpp')
