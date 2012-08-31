@@ -89,3 +89,4 @@ def build(bld):
   t('digest/md5_test.cpp')
   t('encoding/base64_test.cpp')
   t('include_test.cpp')
+  t('instantiation_test.cpp')
