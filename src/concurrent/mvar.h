@@ -90,7 +90,7 @@ public:
   bool try_put(const T &r){
     synchronized(m){
       if (p) return false;
-      p.reset(r);
+      p.reset(new T(r));
     }
     cond.notify_all();
     return true;
