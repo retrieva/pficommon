@@ -8,8 +8,10 @@
 #include "suffix_array/lcp.h"
 #include "suffix_array/rmq.h"
 #include "suffix_array/invsa.h"
+#include "intern.h"
 #include <stddef.h>
 #include <deque>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -78,5 +80,9 @@ template void rmq<std::vector<size_t> >::construct_log_table<size_t*>(size_t*, s
 template void invert_suffix_array<size_t*>(size_t*, size_t*, std::vector<int>&);
 
 } // namespace suffix_array
+
+template class intern<int, std::greater<int> >;
+template void intern<int>::serialize<serialization::binary_iarchive>(serialization::binary_iarchive&);
+
 } // namespace data
 } // namespace pfi
