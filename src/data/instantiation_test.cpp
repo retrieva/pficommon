@@ -4,6 +4,7 @@
 #include "string/ustring.h"
 #include "string/utility.h"
 #include "optional.h"
+#include "suffix_array/checker.h"
 #include <deque>
 #include <string>
 #include <vector>
@@ -58,6 +59,10 @@ template bool operator><optional<int> >(const optional<optional<int> >&, const o
 template bool operator<=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
 template bool operator>=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
 
+namespace suffix_array {
 
+template bool check_sa<std::string*, size_t*>(std::string*, std::string*, size_t*);
+
+} // namespace suffix_array
 } // namespace data
 } // namespace pfi
