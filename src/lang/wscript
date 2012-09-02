@@ -41,3 +41,9 @@ def build(bld):
     source = 'include_test.cpp',
     target = 'include_test',
     includes = '.')
+
+  bld.program(
+    features = 'gtest',
+    source = 'instantiation_test.cpp',
+    target = 'instantiation_test',
+    includes = '.')
