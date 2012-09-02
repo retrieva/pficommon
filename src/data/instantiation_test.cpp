@@ -6,6 +6,7 @@
 #include "optional.h"
 #include "suffix_array/checker.h"
 #include "suffix_array/lcp.h"
+#include "suffix_array/rmq.h"
 #include <stddef.h>
 #include <deque>
 #include <string>
@@ -64,7 +65,14 @@ template bool operator>=<optional<int> >(const optional<optional<int> >&, const 
 namespace suffix_array {
 
 template bool check_sa<std::string*, size_t*>(std::string*, std::string*, size_t*);
+
 template void lcp(std::string*, std::string*, size_t*, std::vector<int>&);
+
+template int cartesian_type<size_t*>(size_t*);
+template int cartesian_type<size_t*>(size_t*, size_t*);
+template class rmq<std::vector<int> >;
+template void rmq<std::vector<size_t> >::construct_type<size_t*>(size_t*, size_t*, int);
+template void rmq<std::vector<size_t> >::construct_log_table<size_t*>(size_t*, size_t*);
 
 } // namespace suffix_array
 } // namespace data

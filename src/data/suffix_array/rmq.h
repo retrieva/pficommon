@@ -186,7 +186,7 @@ namespace suffix_array {
     */
     template<typename IT>
     int cartesian_type(IT b, IT e){
-      const size_t real_s = distance(b, e);
+      const size_t real_s = std::distance(b, e);
       const size_t s = block_size;
       std::vector<int> R(s+1);
       R[0] = neg_infty;
@@ -255,7 +255,7 @@ namespace suffix_array {
     void construct_type(IT b, IT e, int level){
       if(level >= block_access_depth) { construct_log_table(b, e); return; }
 
-      size_t s = distance(b, e);
+      size_t s = std::distance(b, e);
       size_t blks = (s + block_size - 1) >> block_bits;
       size_t blks_p = s >> block_bits;
       std::vector<block_type> &tys = types[level];
@@ -284,7 +284,7 @@ namespace suffix_array {
     template<typename IT>
     void construct_log_table(IT b, IT e){
       // four-russian-trick
-      size_t s = distance(b, e);
+      size_t s = std::distance(b, e);
 
       log_rmq_table.clear();
       {
