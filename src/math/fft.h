@@ -36,6 +36,7 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+#include <unistd.h>
 
 namespace pfi{
 namespace math{

@@ -31,3 +31,4 @@ def build(bld):
   t('vector_test.cpp')
   t('fft_test.cpp')
   t('include_test.cpp')
+  t('instantiation_test.cpp')
