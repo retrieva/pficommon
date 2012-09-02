@@ -7,6 +7,7 @@
 #include "suffix_array/checker.h"
 #include "suffix_array/lcp.h"
 #include "suffix_array/rmq.h"
+#include "suffix_array/invsa.h"
 #include <stddef.h>
 #include <deque>
 #include <string>
@@ -73,6 +74,8 @@ template int cartesian_type<size_t*>(size_t*, size_t*);
 template class rmq<std::vector<int> >;
 template void rmq<std::vector<size_t> >::construct_type<size_t*>(size_t*, size_t*, int);
 template void rmq<std::vector<size_t> >::construct_log_table<size_t*>(size_t*, size_t*);
+
+template void invert_suffix_array<size_t*>(size_t*, size_t*, std::vector<int>&);
 
 } // namespace suffix_array
 } // namespace data
