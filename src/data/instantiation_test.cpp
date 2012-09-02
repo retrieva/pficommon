@@ -3,6 +3,7 @@
 #include "string/algorithm.h"
 #include "string/ustring.h"
 #include "string/utility.h"
+#include "optional.h"
 #include <deque>
 #include <string>
 #include <vector>
@@ -46,5 +47,17 @@ template void replace<std::string>(const std::string&, const std::string&, const
 template std::string replace<std::string>(const std::string&, const std::string&, const std::string&);
 
 } // namespace string
+
+template class optional<int>;
+template optional<int>::optional<long>(const optional<long>&);
+template optional<int>& optional<int>::operator=<long>(const optional<long>&);
+template bool operator==<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
+template bool operator!=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
+template bool operator< <optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
+template bool operator><optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
+template bool operator<=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
+template bool operator>=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
+
+
 } // namespace data
 } // namespace pfi
