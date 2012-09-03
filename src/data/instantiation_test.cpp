@@ -29,7 +29,7 @@ template int edit_distance<std::string>(const std::string&, const std::string&);
 template int longest_common_subsequence<std::string>(const std::string&, const std::string&);
 template int longest_increasing_subsequence<std::string>(const std::string&);
 
-template ustring::ustring<char*>(char*, char*);
+template ustring::ustring(char*, char*);
 template uchar chars_to_uchar<char*>(char*&);
 template void uchar_to_chars<char*>(uchar, char*&);
 
@@ -57,7 +57,7 @@ template std::string replace<std::string>(const std::string&, const std::string&
 } // namespace string
 
 template class optional<int>;
-template optional<int>::optional<long>(const optional<long>&);
+template optional<int>::optional(const optional<long>&);
 template optional<int>& optional<int>::operator=<long>(const optional<long>&);
 template bool operator==<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
 template bool operator!=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
