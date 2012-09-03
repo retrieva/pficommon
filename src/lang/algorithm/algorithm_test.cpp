@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 #include <ctype.h>
+#include <limits.h>
 #include <stddef.h>
 #include <algorithm>
 #include <iterator>
