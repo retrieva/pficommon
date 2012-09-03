@@ -1,5 +1,6 @@
 #include "fft.h"
 #include "vector.h"
+#include "ratio.h"
 #include <stddef.h>
 #include <complex>
 #include <vector>
@@ -67,6 +68,22 @@ template std::ostream& operator<<<double>(std::ostream&, const vector2<double>&)
 
 } // namespace component_by_array
 } // namespace vector
+
+namespace ratio {
+
+template class ratio<int>;
+template ratio<int>& operator+=<int>(ratio<int>&, const ratio<int>&);
+template ratio<int>& operator-=<int>(ratio<int>&, const ratio<int>&);
+template ratio<int>& operator*=<int>(ratio<int>&, const ratio<int>&);
+template ratio<int>& operator/=<int>(ratio<int>&, const ratio<int>&);
+template const ratio<int> operator+<int>(ratio<int>, const ratio<int>&);
+template const ratio<int> operator-<int>(ratio<int>, const ratio<int>&);
+template const ratio<int> operator*<int>(ratio<int>, const ratio<int>&);
+template const ratio<int> operator/<int>(ratio<int>, const ratio<int>&);
+template bool operator==<int>(const ratio<int>&, const ratio<int>&);
+template std::ostream& operator<<<int>(std::ostream&, const ratio<int>&);
+
+} // namespace ratio
 
 } // namespace math
 } // namespace pfi
