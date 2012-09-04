@@ -48,9 +48,9 @@ template<typename _Key,
   class _EqualKey = std::equal_to<_Key>,
   class _Alloc = std::allocator<std::pair<const _Key, int> > >
 class intern {
-public:
-  typedef unordered_map<_Key,int,_Hash,_EqualKey,_Alloc> map_t;
+  typedef unordered_map<Key, int, Hash, EqualKey, Alloc> map_t;
 
+public:
   /**
    * @brief is it empty
    */
