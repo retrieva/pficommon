@@ -36,7 +36,6 @@ template void split<std::string, char, std::string*>(const std::string&, char, s
 template std::deque<std::string> split<std::deque<std::string>, std::string, char>(const std::string&, char);
 template std::vector<std::string> split<std::string, char>(const std::string&, char);
 template void split<std::string, std::string*>(const std::string&, const std::string&, std::string*);
-template std::deque<std::string> split<std::deque<std::string>, std::string>(const std::string&, const std::string&);
 template std::vector<std::string> split<std::string>(const std::string&, const std::string&);
 template void strip<std::string>(const std::string&, std::string&);
 template std::string strip<std::string>(const std::string&);
