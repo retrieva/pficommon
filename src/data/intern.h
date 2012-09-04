@@ -43,10 +43,10 @@ namespace data {
 /**
  * @brief Key to ID dictionary class
  */
-template<typename _Key,
-  class _Hash = hash<_Key>,
-  class _EqualKey = std::equal_to<_Key>,
-  class _Alloc = std::allocator<std::pair<const _Key, int> > >
+template<typename Key,
+  class Hash = hash<Key>,
+  class EqualKey = std::equal_to<Key>,
+  class Alloc = std::allocator<std::pair<const Key, int> > >
 class intern {
   typedef unordered_map<Key, int, Hash, EqualKey, Alloc> map_t;
 
@@ -77,7 +77,7 @@ public:
    * @brief get Key's ID
    * @param Key
    */
-  int key2id_nogen(const _Key& key) const {
+  int key2id_nogen(const Key& key) const {
     typename map_t::const_iterator it=tbl.find(key);
     if (it!=tbl.end()) return it->second;
     return -1;
@@ -88,7 +88,7 @@ public:
    * @param Key
    * @param create new entry if missing
    */
-  int key2id(const _Key& key, bool gen=true) {
+  int key2id(const Key& key, bool gen=true) {
     typename map_t::const_iterator it=tbl.find(key);
     if (it!=tbl.end()) return it->second;
     if (gen==false) return -1;
@@ -102,14 +102,14 @@ public:
    * @brief get key from ID
    * @param ID
    */
-  const _Key& id2key(int id) const {
+  const Key& id2key(int id) const {
     return lbt[id];
   }
 
   /**
    * @brief return is key exist?
    */
-  bool exist_key(const _Key& key) const {
+  bool exist_key(const Key& key) const {
     return tbl.count(key)==true;
   }
   /**
@@ -135,7 +135,7 @@ private:
   }
 
   map_t tbl; // key to ID
-  std::vector<_Key> lbt;	   // ID to key
+  std::vector<Key> lbt;	   // ID to key
 };
 } // data
 } // pfi
