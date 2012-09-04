@@ -33,9 +33,9 @@
 #define INCLUDE_GUARD_PFI_DATA_INTERN_H_
 
 #include <vector>
-#include <map>
 
-#include "serialization.h"
+#include "unordered_map.h"
+#include "serialization/unordered_map.h"
 
 namespace pfi {
 namespace data {
@@ -43,9 +43,13 @@ namespace data {
 /**
  * @brief Key to ID dictionary class
  */
-template<typename _Key, typename _Compare = std::less<_Key> >
-class intern  {
+template<typename _Key,
+  class _Hash = hash<_Key>,
+  class _EqualKey = std::equal_to<_Key>,
+  class _Alloc = std::allocator<std::pair<const _Key, int> > >
+class intern {
 public:
+  typedef unordered_map<_Key,int,_Hash,_EqualKey,_Alloc> map_t;
 
   /**
    * @brief is it empty
@@ -74,7 +78,7 @@ public:
    * @param Key
    */
   int key2id_nogen(const _Key& key) const {
-    typename std::map<_Key, int>::const_iterator it=tbl.find(key);
+    typename map_t::const_iterator it=tbl.find(key);
     if (it!=tbl.end()) return it->second;
     return -1;
   }
@@ -85,7 +89,7 @@ public:
    * @param create new entry if missing
    */
   int key2id(const _Key& key, bool gen=true) {
-    typename std::map<_Key, int>::const_iterator it=tbl.find(key);
+    typename map_t::const_iterator it=tbl.find(key);
     if (it!=tbl.end()) return it->second;
     if (gen==false) return -1;
     int id=tbl.size();
@@ -109,7 +113,7 @@ public:
     return tbl.count(key)==true;
   }
   /**
-   * @brief return is key exist?
+   * @brief return is id exist?
    */
   bool exist_id(int id) const {
     return id<(int)lbt.size();
@@ -124,13 +128,13 @@ private:
     if (ar.is_read) {
       lbt.clear();
       lbt.resize(tbl.size());
-      for (typename std::map<_Key,int,_Compare>::iterator it=tbl.begin();it!=tbl.end();++it) {
+      for (typename map_t::iterator it=tbl.begin();it!=tbl.end();++it) {
         lbt[it->second]=it->first;
       }
     }
   }
 
-  std::map<_Key,int,_Compare> tbl; // key to ID
+  map_t tbl; // key to ID
   std::vector<_Key> lbt;	   // ID to key
 };
 } // data

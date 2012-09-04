@@ -12,7 +12,6 @@
 #include "lru.h"
 #include <stddef.h>
 #include <deque>
-#include <functional>
 #include <string>
 #include <vector>
 
@@ -82,7 +81,7 @@ template void invert_suffix_array<size_t*>(size_t*, size_t*, std::vector<int>&);
 
 } // namespace suffix_array
 
-template class intern<int, std::greater<int> >;
+template class intern<int>;
 template void intern<int>::serialize<serialization::binary_iarchive>(serialization::binary_iarchive&);
 
 template class lru<int, int>;
