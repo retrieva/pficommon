@@ -116,7 +116,7 @@ public:
    * @brief return is id exist?
    */
   bool exist_id(int id) const {
-    return id<(int)lbt.size();
+    return id >= 0 && id < (int)lbt.size();
   }
 
 private:
