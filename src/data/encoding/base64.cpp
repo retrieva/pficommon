@@ -62,33 +62,32 @@ string base64_encode(const string &s)
   size_t srclen = s.size();
   size_t remain = srclen % 3;
   string result;
-  result.resize(((srclen + 2) / 3) * 4);
-  char* resptr = (char*)result.c_str();
+  result.reserve(((srclen + 2) / 3) * 4);
 
   for (size_t i = 0, limit = srclen / 3; i < limit; i++) {
     size_t val = (static_cast<uint8_t>(s[index]) << 16) |
       (static_cast<uint8_t>(s[index + 1]) << 8) | static_cast<uint8_t>(s[index + 2]);
-    *resptr++ = tochar[(val >> 18)       ];
-    *resptr++ = tochar[(val >> 12) & 0x3f];
-    *resptr++ = tochar[(val >>  6) & 0x3f];
-    *resptr++ = tochar[ val        & 0x3f];
+    result.push_back(tochar[val >> 18]);
+    result.push_back(tochar[(val>>12) & 0x3f]);
+    result.push_back(tochar[(val>>6) & 0x3f]);
+    result.push_back(tochar[val & 0x3f]);
     index += 3;
   }
 
   if (remain) {
     size_t val = (static_cast<uint8_t>(s[index]) << 16) |
       (remain == 2 ? (static_cast<uint8_t>(s[index + 1]) << 8) : 0);
-    *resptr++ = tochar[(val >> 18)       ];
-    *resptr++ = tochar[(val >> 12) & 0x3f];
+    result.push_back(tochar[val >> 18]);
+    result.push_back(tochar[(val>>12) & 0x3f]);
 
     switch (remain) {
     case 2:
-      *resptr++ = tochar[(val >> 6) & 0x3f];
-      *resptr++ = '=';
+      result.push_back(tochar[(val>>6) & 0x3f]);
+      result.push_back('=');
       break;
     case 1:
-      *resptr++ = '=';
-      *resptr++ = '=';
+      result.push_back('=');
+      result.push_back('=');
       break;
     default:  // non-reachable
       break;
