@@ -105,30 +105,27 @@ string base64_decode(const string &s)
 
   size_t blocks = srclen / 4;
   string result;
-  result.resize((srclen / 4) * 3);
-  char* resptr = (char*)result.c_str();
-  char* srcptr = (char*)s.c_str();
+  result.reserve((srclen / 4) * 3);
+  const char* srcptr = s.c_str();
 
   for (size_t i = 0; i < blocks; i++) {
     int v1 = toint(*srcptr++);
     int v2 = toint(*srcptr++);
     if (v1 == -1 || v2 == -1)
       throw invalid_argument(string("invalid char: ")+s.substr(i * 4,4));
-    *resptr++ = static_cast<uint8_t>((v1 << 2) | (v2 >> 4));
+    result.push_back((v1 << 2) | (v2 >> 4));
 
     int v3 = toint(*srcptr++);
     if (v3 == -1) {
-      result.resize(result.size() - 2);
       break;
     }
-    *resptr++ = static_cast<uint8_t>(((v2 << 4) | (v3 >> 2)) & 0xff);
+    result.push_back(((v2 << 4) | (v3 >> 2)) & 0xff);
 
     int v4 = toint(*srcptr++);
     if (v4 == -1) {
-      result.resize(result.size() - 1);
       break;
     }
-    *resptr++ = static_cast<uint8_t>(((v3 << 6) | v4) & 0xff);
+    result.push_back(((v3 << 6) | v4) & 0xff);
   }
 
   return result;
