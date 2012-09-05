@@ -55,10 +55,10 @@ namespace suffix_array {
     const size_t size = distance(b, e);
     std::vector<int> rank(size);
     std::vector<int> height(size);
-    for(int i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
       rank[*(sa+i)] = i;
-    int h = 0;
-    for(int i = 0; i < size; ++i){
+    size_t h = 0;
+    for(size_t i = 0; i < size; ++i){
       if(rank[i] > 0){
         int j = *(sa+rank[i]-1);
         while(*(b+i+h) == *(b+j+h)) ++h;

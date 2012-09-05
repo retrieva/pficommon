@@ -71,7 +71,7 @@ namespace suffix_array {
         if(i == 0) break; // i >= 0 -> inf loop
       }
       ++a[*(sb+(n-1))];
-      for(int k = 0; k < n; ++k)
+      for(int k = 0; k < int(n); ++k)
         if(*(sa+k) > 0){
           T c = *(sb+(*(sa+k)-1));
           if(*(sa+a[c])+1 != *(sa+k)){

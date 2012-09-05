@@ -75,6 +75,7 @@ public:
       return *p;
     }
     /* NOTREACHED */
+    return *p;
   }
 
   bool try_take(T &ret){
@@ -111,6 +112,7 @@ public:
       return !p;
     }
     /* NOTREACHED */
+    return !p;
   }
 
 private:
