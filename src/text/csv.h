@@ -59,12 +59,12 @@ public:
     init(b, e);
   }
 
-  csv_parser(std::istream &ifs){
+  explicit csv_parser(std::istream &ifs){
     init(std::istreambuf_iterator<char>(ifs),
          std::istreambuf_iterator<char>());
   }
 
-  csv_parser(const std::string &str){
+  explicit csv_parser(const std::string &str){
     init(str.begin(), str.end());
   }
 
@@ -180,7 +180,7 @@ class csv_iterator{
 public:
   typedef std::vector<const char*> row_type;
 
-  csv_iterator(csv_parser &p): p(&p), cached(false){
+  explicit csv_iterator(csv_parser &p): p(&p), cached(false){
     ++(*this);
   }
 
