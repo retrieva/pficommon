@@ -40,7 +40,7 @@ namespace data{
 template <class T>
 class fenwick_tree{
 public:
-  fenwick_tree(int n) :v(n) {}
+  explicit fenwick_tree(int n) :v(n) {}
 
   T query(int a){
     return a>=0?v[a]+query((a&(a+1))-1):0;
