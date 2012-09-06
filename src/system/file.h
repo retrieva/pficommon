@@ -32,6 +32,7 @@
 #ifndef INCLUDE_GUARD_PFI_SYSTEM_FILE_H_
 #define INCLUDE_GUARD_PFI_SYSTEM_FILE_H_
 
+#include <sys/types.h>
 #include <iostream>
 #include <ext/stdio_filebuf.h>
 
