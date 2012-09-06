@@ -38,8 +38,6 @@
 #include <unordered_set>
 #elif HAVE_TR1_UNORDERED_SET
 #include <tr1/unordered_set>
-#elif HAVE_EXT_HASH_SET
-#include <ext/hash_set>
 #else
 #error "There is no unordered set implementation."
 #endif
@@ -48,8 +46,6 @@
 
 namespace pfi{
 namespace data{
-
-#if HAVE_UNORDERED_SET || HAVE_TR1_UNORDERED_SET
 
 template <class Value,
           class Hash = hash<Value>,
@@ -100,60 +96,6 @@ public:
                 const typename Base::allocator_type &a = typename Base::allocator_type())
     : Base(f, l, n, hf, eql, a) {}
 };
-
-#elif HAVE_EXT_HASH_SET
-
-template <class Value,
-          class Hash = hash<Value>,
-          class Pred = std::equal_to<Value>,
-          class Alloc = std::allocator<Value> >
-class unordered_set :
-    public __gnu_cxx::hash_set<Value, Hash, Pred, Alloc> {
-  typedef __gnu_cxx::hash_set<Value, Hash, Pred, Alloc> Base;
-
-public:
-  explicit
-  unordered_set(typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_set(InputIterator f, InputIterator l,
-                typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-};
-
-template <class Value,
-          class Hash = hash<Value>,
-          class Pred = std::equal_to<Value>,
-          class Alloc = std::allocator<Value> >
-class unordered_multiset :
-    public __gnu_cxx::hash_multiset<Value, Hash, Pred, Alloc> {
-  typedef __gnu_cxx::hash_multiset<Value, Hash, Pred, Alloc> Base;
-
-public:
-  explicit
-  unordered_multiset(typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_multiset(InputIterator f, InputIterator l,
-                typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-};
-
-#endif
 
 } // data
 } // pfi

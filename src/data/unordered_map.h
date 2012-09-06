@@ -38,8 +38,6 @@
 #include <unordered_map>
 #elif HAVE_TR1_UNORDERED_MAP
 #include <tr1/unordered_map>
-#elif HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
 #else
 #error "There is no unordered map implementation."
 #endif
@@ -48,8 +46,6 @@
 
 namespace pfi{
 namespace data{
-
-#if HAVE_UNORDERED_MAP || HAVE_TR1_UNORDERED_MAP
 
 template <class Key, class Tp,
           class Hash = hash<Key>,
@@ -100,60 +96,6 @@ public:
                 const typename Base::allocator_type &a = typename Base::allocator_type())
     : Base(f, l, n, hf, eql, a) {}
 };
-
-#elif HAVE_EXT_HASH_MAP
-
-template <class Key, class Tp,
-          class Hash = hash<Key>,
-          class EqualKey = std::equal_to<Key>,
-          class Alloc = std::allocator<Tp> >
-class unordered_map :
-    public __gnu_cxx::hash_map<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef __gnu_cxx::hash_map<Key, Tp, Hash, EqualKey, Alloc> Base;
-
-public:
-  explicit
-  unordered_map(typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_map(InputIterator f, InputIterator l,
-                typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-};
-
-template <class Key, class Tp,
-          class Hash = hash<Key>,
-          class EqualKey = std::equal_to<Key>,
-          class Alloc = std::allocator<Tp> >
-class unordered_multimap :
-    public __gnu_cxx::hash_multimap<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef __gnu_cxx::hash_multimap<Key, Tp, Hash, EqualKey, Alloc> Base;
-
-public:
-  explicit
-  unordered_multimap(typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_multimap(InputIterator f, InputIterator l,
-                typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-};
-
-#endif
 
 } // data
 } // pfi

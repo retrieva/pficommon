@@ -38,8 +38,6 @@
 #include <utility>
 #elif HAVE_TR1_UNORDERED_MAP
 #include <tr1/unordered_map>
-#elif HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
 #else
 #error "There is no hash implementation."
 #endif
@@ -53,98 +51,9 @@ namespace unordered_namespace = ::std;
 namespace unordered_namespace = ::std::tr1;
 #endif
 
-#if HAVE_UNORDERED_MAP || HAVE_TR1_UNORDERED_MAP
-
 template <class T>
 class hash : public unordered_namespace::hash<T> {};
 
-#elif HAVE_EXT_HASH_MAP
-
-template <class T>
-class hash : public __gnu_cxx::hash<T> {};
-
-#endif
 } // data
 } // pfi
-
-#if HAVE_UNORDERED_MAP || HAVE_TR1_UNORDERED_MAP
-
-#elif HAVE_EXT_HASH_MAP
-
-namespace __gnu_cxx{
-
-template <size_t=sizeof(size_t)>
-struct fnv_hash{
-  static size_t hash(const char *p, size_t length){
-    size_t ret=0;
-    for (; length>0; length--)
-      ret=(ret*131)+*p++;
-    return ret;
-  }
-};
-
-template<>
-struct fnv_hash<4>{
-  static size_t hash(const char *p, size_t length){
-    size_t ret=static_cast<size_t>(2166136261UL);
-    for (; length>0; length--){
-      ret^=static_cast<size_t>(*p++);
-      ret*=static_cast<size_t>(16777619UL);
-    }
-    return ret;
-  }
-};
-
-template<>
-struct fnv_hash<8> {
-  static size_t hash(const char *p, size_t length){
-    size_t ret=static_cast<size_t>(14695981039346656037ULL);
-    for (; length>0; length--){
-      ret^=static_cast<size_t>(*p++);
-      ret*=static_cast<size_t>(1099511628211ULL);
-    }
-    return ret;
-  }
-};
-
-template <>
-struct hash<std::string>{
-  size_t operator()(const std::string &s) const{
-    return fnv_hash<>::hash(s.c_str(), s.length());
-  }
-};
-
-template<>
-struct hash<float>{
-  size_t operator()(float val) const{
-    if (val!=0.0f)
-      return fnv_hash<>::hash(reinterpret_cast<const char*>(&val),
-                              sizeof(val));
-    return 0;
-  }
-};
-  
-template<>
-struct hash<double>{
-  size_t operator()(double val) const{
-    if (val!=0.0)
-      return fnv_hash<>::hash(reinterpret_cast<const char*>(&val),
-                              sizeof(val));
-    return 0;
-  }
-};
-
-template<>
-struct hash<long double>{
-  size_t operator()(long double val) const{
-    if (val!=0.0L)
-      return fnv_hash<>::hash(reinterpret_cast<const char*>(&val),
-                              sizeof(val));
-    return 0;
-  }
-};
-
-} // __gnu_cxx
-
-#endif
 #endif // #ifndef INCLUDE_GUARD_PFI_DATA_FUNCTIONAL_HASH_H_
