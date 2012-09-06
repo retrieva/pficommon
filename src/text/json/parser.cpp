@@ -32,6 +32,7 @@
 #include "parser.h"
 
 #include <iostream>
+#include <memory>
 #include <stack>
 #include <cmath>
 #include <cstring>
@@ -55,23 +56,23 @@ public:
   }
 
   void null() {
-    stk.push_back(new json_null());
+    stk.push_back(json(new json_null()));
   }
 
   void boolean(bool val) {
-    stk.push_back(new json_bool(val));
+    stk.push_back(json(new json_bool(val)));
   }
 
   void integer(int64_t val) {
-    stk.push_back(new json_integer(val));
+    stk.push_back(json(new json_integer(val)));
   }
 
   void number(double val) {
-    stk.push_back(new json_float(val));
+    stk.push_back(json(new json_float(val)));
   }
 
   void string(const char *val, size_t len) {
-    stk.push_back(new json_string(std::string(val, val+len)));
+    stk.push_back(json(new json_string(std::string(val, val+len))));
   }
 
   void start_object() {
@@ -81,7 +82,7 @@ public:
     key.push_back(std::string(val, val+len));
   }
   void end_object() {
-    json_object *obj = new json_object();
+    std::auto_ptr<json_object> obj(new json_object());
     int ix = ixs.top();
     ixs.pop();
     int jx = (int)stk.size();
@@ -90,14 +91,14 @@ public:
       obj->add(key[key.size() - sz + i], stk[ix + i]);
     stk.erase(stk.end() - sz, stk.end());
     key.erase(key.end() - sz, key.end());
-    stk.push_back(obj);
+    stk.push_back(json(obj.release()));
   }
   
   void start_array() {
     ixs.push(stk.size());
   }
   void end_array() {
-    json_array *obj = new json_array();
+    std::auto_ptr<json_array> obj(new json_array());
     int ix = ixs.top();
     ixs.pop();
     int jx = (int)stk.size();
@@ -105,7 +106,7 @@ public:
     for (int i = 0; i < sz; i++)
       obj->add(stk[ix + i]);
     stk.erase(stk.end() - sz, stk.end());
-    stk.push_back(obj);
+    stk.push_back(json(obj.release()));
   }
 
   std::vector<json> stk;

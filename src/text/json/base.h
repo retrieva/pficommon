@@ -93,7 +93,7 @@ public:
   typedef std::map<std::string, json>::const_iterator const_iterator;
 
   json();
-  json(json_value* p): val(p) {}
+  explicit json(json_value* p): val(p) {}
 
   json_type_t type() const;
 
@@ -221,7 +221,7 @@ class json_number : public json_value{
 
 class json_integer : public json_number{
 public:
-  json_integer(int64_t n) : dat(n){}
+  explicit json_integer(int64_t n) : dat(n){}
 
   json::json_type_t type() const {
     return json::Integer;
@@ -243,7 +243,7 @@ private:
 
 class json_float : public json_number{
 public:
-  json_float(double d) : dat(d){}
+  explicit json_float(double d) : dat(d){}
 
   json::json_type_t type() const {
     return json::Float;
@@ -268,7 +268,7 @@ private:
 
 class json_string : public json_value{
 public:
-  json_string(const std::string &s): dat(s) {}
+  explicit json_string(const std::string &s): dat(s) {}
 
   json::json_type_t type() const {
     return json::String;
@@ -491,7 +491,7 @@ private:
 
 class json_bool : public json_value{
 public:
-  json_bool(bool b): dat(b) {}
+  explicit json_bool(bool b): dat(b) {}
 
   json::json_type_t type() const {
     return json::Bool;
@@ -694,7 +694,7 @@ inline json merge(json js1, json js2)
 template <class T>
 class pretty_tag{
 public:
-  pretty_tag(const T &dat): dat(dat) {}
+  explicit pretty_tag(const T &dat): dat(dat) {}
   const T &dat;
 };
 
@@ -707,7 +707,7 @@ pretty_tag<T> pretty(const T &v)
 template <class T>
 class without_escape_tag{
 public:
-  without_escape_tag(const T &dat): dat(dat) {}
+  explicit without_escape_tag(const T &dat): dat(dat) {}
   const T &dat;
 };
 

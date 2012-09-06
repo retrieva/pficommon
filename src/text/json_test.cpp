@@ -281,9 +281,9 @@ TEST(json, from_json)
 
   {
     json j(new json_array());
-    j.add(new json_integer(0));
-    j.add(new json_integer(1));
-    j.add(new json_integer(2));
+    j.add(json(new json_integer(0)));
+    j.add(json(new json_integer(1)));
+    j.add(json(new json_integer(2)));
 
     vector<int> v;
     v.push_back(0);
@@ -324,12 +324,12 @@ TEST(json, merge)
 {
   {
     json js1(new json_object());
-    js1["a"] = new json_integer(42);
-    js1["c"] = new json_string("string");
+    js1["a"] = json(new json_integer(42));
+    js1["c"] = json(new json_string("string"));
 
     json js2(new json_object());
-    js2["b"] = new json_bool(true);
-    js2["c"] = new json_string("new string");
+    js2["b"] = json(new json_bool(true));
+    js2["c"] = json(new json_string("new string"));
 
     json js3 = js1.merge(js2);
     EXPECT_EQ(42, json_cast<int>(js3["a"]));
@@ -347,9 +347,9 @@ TEST(json, merge)
     json jf(new json_float(3.14));
     json js(new json_string("string"));
     json jb(new json_bool(true));
-    json ja(new json_array()); ja.add(new json_integer(1));
+    json ja(new json_array()); ja.add(json(new json_integer(1)));
     json jn(new json_null());
-    json jo(new json_object()); jo.add("key", new json_string("value"));
+    json jo(new json_object()); jo.add("key", json(new json_string("value")));
 
     EXPECT_THROW(ji.merge(jo), json_bad_cast<json>);
     EXPECT_THROW(jf.merge(jo), json_bad_cast<json>);
@@ -371,31 +371,31 @@ TEST(json, merge)
 
   {
     json js1(new json_object());
-    js1["a"] = new json_array();
-    js1["a"].add(new json_integer(1));
-    js1["a"].add(new json_integer(2));
-    js1["a"].add(new json_integer(3));
-    js1["b"] = new json_object();
-    js1["b"]["p"] = new json_integer(42);
-    js1["b"]["q"] = new json_string("string");
-    js1["b"]["r"] = new json_float(3.14);
+    js1["a"] = json(new json_array());
+    js1["a"].add(json(new json_integer(1)));
+    js1["a"].add(json(new json_integer(2)));
+    js1["a"].add(json(new json_integer(3)));
+    js1["b"] = json(new json_object());
+    js1["b"]["p"] = json(new json_integer(42));
+    js1["b"]["q"] = json(new json_string("string"));
+    js1["b"]["r"] = json(new json_float(3.14));
 
     json js2(new json_object());
-    js2["b"] = new json_object();
-    js2["b"]["x"] = new json_string("another string");
-    js2["b"]["y"] = new json_float(1.0);
-    js2["b"]["z"] = new json_bool(false);
-    js2["c"] = new json_array();
-    js2["c"].add(new json_string("one"));
-    js2["c"].add(new json_string("two"));
-    js2["c"].add(new json_string("three"));
+    js2["b"] = json(new json_object());
+    js2["b"]["x"] = json(new json_string("another string"));
+    js2["b"]["y"] = json(new json_float(1.0));
+    js2["b"]["z"] = json(new json_bool(false));
+    js2["c"] = json(new json_array());
+    js2["c"].add(json(new json_string("one")));
+    js2["c"].add(json(new json_string("two")));
+    js2["c"].add(json(new json_string("three")));
 
     json js3 = js1.merge(js2);
 
-    js1["a"].add(new json_integer(4));
-    js1["b"]["s"] = new json_float(1.414);
-    js2["b"]["w"] = new json_float(1.732);
-    js2["c"].add(new json_string("four"));
+    js1["a"].add(json(new json_integer(4)));
+    js1["b"]["s"] = json(new json_float(1.414));
+    js2["b"]["w"] = json(new json_float(1.732));
+    js2["c"].add(json(new json_string("four")));
 
     EXPECT_EQ(4, json_cast<int>(js3["a"][3]));
     EXPECT_TRUE(is<json_null>(js3["b"]["s"]));
@@ -430,11 +430,11 @@ TEST(json, merge_with)
 {
   {
     json js1(new json_object());
-    js1["a"] = new json_integer(1);
-    js1["b"] = new json_integer(2);
+    js1["a"] = json(new json_integer(1));
+    js1["b"] = json(new json_integer(2));
     json js2(new json_object());
-    js2["b"] = new json_integer(20);
-    js2["c"] = new json_integer(30);
+    js2["b"] = json(new json_integer(20));
+    js2["c"] = json(new json_integer(30));
     json js3 = js1.merge_with(js2,&add_json_integer);
     EXPECT_EQ( 1,json_cast<int>(js3["a"]));
     EXPECT_EQ(22,json_cast<int>(js3["b"]));
@@ -442,22 +442,22 @@ TEST(json, merge_with)
   }
   {
     json js1(new json_object());
-    js1["v"] = new json_integer(1);
-    js1["n"] = new json_object();
-    js1["n"]["v"] = new json_integer(2);
-    js1["n"]["n"] = new json_object();
-    js1["n"]["n"]["v"] = new json_integer(3);
-    js1["n"]["n"]["n"] = new json_object();
-    js1["n"]["n"]["n"]["v"] = new json_integer(4);
+    js1["v"] = json(new json_integer(1));
+    js1["n"] = json(new json_object());
+    js1["n"]["v"] = json(new json_integer(2));
+    js1["n"]["n"] = json(new json_object());
+    js1["n"]["n"]["v"] = json(new json_integer(3));
+    js1["n"]["n"]["n"] = json(new json_object());
+    js1["n"]["n"]["n"]["v"] = json(new json_integer(4));
 
     json js2(new json_object());
-    js2["v"] = new json_integer(10);
-    js2["n"] = new json_object();
-    js2["n"]["v"] = new json_integer(20);
-    js2["n"]["n"] = new json_object();
-    js2["n"]["n"]["v"] = new json_integer(30);
-    js2["n"]["n"]["n"] = new json_object();
-    js2["n"]["n"]["n"]["v"] = new json_integer(40);
+    js2["v"] = json(new json_integer(10));
+    js2["n"] = json(new json_object());
+    js2["n"]["v"] = json(new json_integer(20));
+    js2["n"]["n"] = json(new json_object());
+    js2["n"]["n"]["v"] = json(new json_integer(30));
+    js2["n"]["n"]["n"] = json(new json_object());
+    js2["n"]["n"]["n"]["v"] = json(new json_integer(40));
 
     json js3 = recursive_merge_with(js1, js2, (&add_json_integer));
 
@@ -785,8 +785,8 @@ TEST(json, clone)
     json js2 = js1;
     json js3 = js1.clone();
 
-    js1["Image"]["IDs"][2] = new json_integer(42);
-    js1["Image"]["IDs"].add(new json_integer(105));
+    js1["Image"]["IDs"][2] = json(new json_integer(42));
+    js1["Image"]["IDs"].add(json(new json_integer(105)));
 
     EXPECT_EQ(json_cast<int>(js1["Image"]["IDs"][2]), 42);
     EXPECT_EQ(json_cast<int>(js2["Image"]["IDs"][2]), 42);
@@ -798,8 +798,7 @@ TEST(json, clone)
 
     json js4 = js1["Image"]["Thumbnail"];
     json js5 = js1["Image"]["Thumbnail"].clone();
-    js1["Image"]["Thumbnail"]["Height"] = new json_integer(200);
-
+    js1["Image"]["Thumbnail"]["Height"] = json(new json_integer(200));
     EXPECT_EQ(json_cast<int>(js4["Height"]), 200);
     EXPECT_EQ(json_cast<int>(js5["Height"]), 125);
   }
