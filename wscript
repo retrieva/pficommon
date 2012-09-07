@@ -103,5 +103,3 @@ def build(bld):
       includedir = '${prefix}/include',
       PACKAGE = APPNAME,
       VERSION = VERSION)
-
-  bld.install_files(os.path.join(bld.env['LIBDIR'], 'pkgconfig'), 'pficommon.pc')
