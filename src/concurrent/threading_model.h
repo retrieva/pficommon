@@ -32,25 +32,11 @@
 #ifndef INCLUDE_GUARD_PFI_CONCURRENT_THREADING_MODEL_H_
 #define INCLUDE_GUARD_PFI_CONCURRENT_THREADING_MODEL_H_
 
-#include "mutex.h"
-#include "lock.h"
-
 namespace pfi{
 namespace concurrent{
 namespace threading_model{
 
-class multi_thread{
-public:
-  class lock{
-  public:
-    lock(multi_thread &mt) :lk(mt.m){}
-  private:
-    scoped_lock lk;
-  };
-private:
-  friend class lock;
-  mutex m;
-};
+class multi_thread;
 
 } // threading_model
 } // concurrent

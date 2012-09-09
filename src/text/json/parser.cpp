@@ -36,6 +36,7 @@
 #include <cmath>
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 
 #include "../../lang/exception.h"
 

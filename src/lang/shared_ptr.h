@@ -32,175 +32,110 @@
 #ifndef INCLUDE_GUARD_PFI_LANG_SHARED_PTR_H_
 #define INCLUDE_GUARD_PFI_LANG_SHARED_PTR_H_
 
-#include <algorithm> // std::swap
+#include <exception>
+#include <memory>
+#include <tr1/memory>
 
-#include "safe_bool.h"
+namespace pfi {
+namespace concurrent {
+namespace threading_model {
 
-namespace pfi{
-namespace concurrent{
-namespace threading_model{
-
-class single_thread{
-public:
-  class lock{
-  public:
-    lock(const single_thread &){}
-  };
-};
+class single_thread;
 
 } // threading_model
 } // concurrent
-} // pfi
 
-namespace pfi{
-namespace lang{
+namespace lang {
 
-template <class TM>
-class ref_obj : private TM {
+class bad_weak_ptr : std::exception {
 public:
-  ref_obj() :cnt(0) {}
-  
-  void inc(){
-    typename TM::lock lk(*this);
-    cnt++;
+  const char* what() const throw() {
+    return "pfi::lang::bad_weak_ptr";
   }
-  int dec(){
-    typename TM::lock lk(*this);
-    return --cnt;
-  }
-  
-  int cur() const{
-    return cnt;
-  }
-  
-private:
-  int cnt;
 };
-
-// shared_pt is not thread-safe.
-// if you need to shared_ptr in multi-thread,
-// you must specify suitable threading model
-
-template <class T, class TM = pfi::concurrent::threading_model::single_thread>
-class shared_ptr : public safe_bool<shared_ptr<T> > {
-  template <class Y, class Z> friend class shared_ptr;
-
-public:
-  shared_ptr() :ref(NULL), p(NULL) {}
-
-  template <class Y>
-  explicit shared_ptr(Y *p) :ref(new ref_obj<TM>()), p(p){
-    inc();
-  }
-
-  shared_ptr(const shared_ptr &p)
-    : safe_bool<shared_ptr<T> >(*this) // avoid warning for g++<=4.1.x
-    , ref(p.ref), p(p.p){
-    inc();
-  }
-
-  template <class Y>
-  shared_ptr(const shared_ptr<Y, TM> &p) :ref(p.ref), p(p.p){
-    inc();
-  }
-
-  ~shared_ptr(){
-    dec();
-  }
-
-  shared_ptr &operator=(const shared_ptr &r){
-    shared_ptr s(r);
-    swap(s);
-    return *this;
-  }
-
-  template <class Y>
-  shared_ptr &operator=(const shared_ptr<Y, TM> &r){
-    shared_ptr s(r);
-    swap(s);
-    return *this;
-  }
-
-  void reset(){
-    set_ptr(NULL,NULL);
-  }
-
-  template<class Y>
-  void reset(Y *r){
-    set_ptr(new ref_obj<TM>(),r);
-  }
-
-  T &operator*() const { return *get(); }
-  T *operator->() const { return get(); }
-  T *get() const { return p; }
-
-  bool unique() const {
-    return use_count()==1;
-  }
-
-  int use_count() const {
-    if (ref==NULL) return 0;
-    return ref->cur();
-  }
-
-  bool bool_test() const {
-    return p!=NULL;
-  }
-
-  void swap(shared_ptr &r){
-    std::swap(ref,r.ref);
-    std::swap(p,r.p);
-  }
-
-private:
-
-  void set_ptr(ref_obj<TM> *a, T* b){
-    dec();
-    ref=a;
-    p=b;
-    inc();
-  }
-
-  void inc(){
-    if (ref) ref->inc();
-  }
-  void dec(){
-    if (ref){
-      if (ref->dec()==0){
-        delete ref;
-        if (p) delete p;
-        ref=NULL;
-        p=NULL;
-      }
-    }
-  }
-
-  ref_obj<TM> *ref;
-  T *p;
-};
-
-template <class T, class U>
-bool operator==(const shared_ptr<T> &a, const shared_ptr<U> &b)
-{
-  return a.get() == b.get();
-}
-
-template <class T, class U>
-bool operator!=(const shared_ptr<T> &a, const shared_ptr<U> &b)
-{
-  return !(a == b);
-}
-
-template <class T, class U>
-bool operator<(const shared_ptr<T> &a, const shared_ptr<U> &b)
-{
-  return a.get() < b.get();
-}
 
 template <class T>
-void swap(shared_ptr<T> &a, shared_ptr<T> &b)
+class weak_ptr;
+
+template <class T, class /* dummy for compatibility */ = pfi::concurrent::threading_model::single_thread>
+class shared_ptr : public std::tr1::shared_ptr<T> {
+  typedef std::tr1::shared_ptr<T> base;
+
+  template <class U>
+  friend class enable_shared_from_this;
+
+  template <class U>
+  friend class weak_ptr;
+
+  template <class U, class V, class TM>
+  friend shared_ptr<U> static_pointer_cast(const shared_ptr<V, TM>& p);
+  template <class U, class V, class TM>
+  friend shared_ptr<U> dynamic_pointer_cast(const shared_ptr<V, TM>& p);
+  template <class U, class V, class TM>
+  friend shared_ptr<U> const_pointer_cast(const shared_ptr<V, TM>& p);
+
+public:
+  shared_ptr() {}
+
+  template <class U>
+  explicit shared_ptr(U* p) : base(p) {}
+
+  template <class U, class Deleter>
+  shared_ptr(U* p, Deleter d) : base(p, d) {}
+
+  template <class U, class UM>
+  shared_ptr(const shared_ptr<U, UM>& p) : base(p) {}
+
+  template <class U>
+  explicit shared_ptr(const weak_ptr<U>& p)
+  try : base(p) {
+
+  } catch (std::tr1::bad_weak_ptr&) {
+    throw bad_weak_ptr();
+  }
+
+  template <class U>
+  explicit shared_ptr(std::auto_ptr<U>& p) : base(p) {}
+
+private:
+  template <class U>
+  explicit shared_ptr(const std::tr1::shared_ptr<U>& p) : base(p) {}
+
+public:
+  template <class U, class UM>
+  shared_ptr& operator=(const shared_ptr<U, UM>& r) {
+    base::operator=(r);
+    return *this;
+  }
+
+  template <class U>
+  shared_ptr& operator=(std::auto_ptr<U>& p) {
+    return *this = shared_ptr<U>(p);
+  }
+};
+
+template <class T, class U, class TM>
+shared_ptr<T> static_pointer_cast(const shared_ptr<U, TM>& p)
 {
-  a.swap(b);
+  return shared_ptr<T>(std::tr1::static_pointer_cast<T>(p));
+}
+
+template <class T, class U, class TM>
+shared_ptr<T> dynamic_pointer_cast(const shared_ptr<U, TM>& p)
+{
+  return shared_ptr<T>(std::tr1::dynamic_pointer_cast<T>(p));
+}
+
+template <class T, class U, class TM>
+shared_ptr<T> const_pointer_cast(const shared_ptr<U, TM>& p)
+{
+  return shared_ptr<T>(std::tr1::const_pointer_cast<T>(p));
+}
+
+template <class D, class T, class TM>
+D* get_deleter(const shared_ptr<T, TM>& p)
+{
+  return std::tr1::get_deleter<D>(p);
 }
 
 } // lang

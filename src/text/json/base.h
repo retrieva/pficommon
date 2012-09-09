@@ -32,6 +32,7 @@
 #ifndef INCLUDE_GUARD_PFI_TEXT_JSON_BASE_H_
 #define INCLUDE_GUARD_PFI_TEXT_JSON_BASE_H_
 
+#include <stdint.h>
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
