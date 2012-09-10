@@ -34,6 +34,7 @@
 
 #include <pthread.h>
 
+#include <mutex.h>
 #include "thread.h"
 
 namespace pfi{

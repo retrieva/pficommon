@@ -35,7 +35,7 @@
 #include "mutex.h"
 #include "condition.h"
 #include "../lang/shared_ptr.h"
-#include "../lang/util.h"
+#include "../lang/noncopyable.h"
 
 namespace pfi{
 namespace concurrent{

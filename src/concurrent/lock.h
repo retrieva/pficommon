@@ -35,7 +35,7 @@
 #include <memory>
 
 #include "../lang/safe_bool.h"
-#include "../lang/util.h"
+#include "../lang/noncopyable.h"
 
 namespace pfi{
 namespace concurrent{

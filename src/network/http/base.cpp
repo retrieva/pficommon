@@ -34,9 +34,11 @@
 #include <cstdio>
 #include <algorithm>
 #include <stdint.h>
+#include <sstream>
 
 #include "../iostream.h"
 #include "../../lang/bind.h"
+#include "../../lang/cast.h"
 
 using namespace std;
 using namespace pfi::lang;

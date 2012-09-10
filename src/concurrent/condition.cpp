@@ -31,8 +31,6 @@
 
 #include "condition.h"
 
-#include <algorithm>
-
 #include <pthread.h>
 #include <sys/time.h>
 

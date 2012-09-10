@@ -37,6 +37,7 @@
 #include <iostream>
 
 #include "../../data/encoding/base64.h"
+#include "../../lang/cast.h"
 
 namespace pfi{
 namespace network{

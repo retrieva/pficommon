@@ -37,7 +37,7 @@
 #include "mutex.h"
 #include "condition.h"
 #include "lock.h"
-#include "../lang/util.h"
+#include "../lang/noncopyable.h"
 #include "../system/time_util.h"
 
 namespace pfi{

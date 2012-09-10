@@ -32,11 +32,13 @@
 #ifndef INCLUDE_GUARD_PFI_CONCURRENT_CONDITION_H_
 #define INCLUDE_GUARD_PFI_CONCURRENT_CONDITION_H_
 
-#include "../lang/util.h"
-#include "mutex.h"
+#include "../lang/noncopyable.h"
+#include "../lang/scoped_ptr.h"
 
 namespace pfi{
 namespace concurrent{
+
+class mutex_base;
 
 class condition_impl;
 
