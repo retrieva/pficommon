@@ -33,7 +33,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <cassert>
 
 #include "../../system/file.h"
 #include "../../system/endian_util.h"

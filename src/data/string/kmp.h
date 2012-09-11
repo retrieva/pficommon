@@ -32,7 +32,8 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_STRING_KMP_H_
 #define INCLUDE_GUARD_PFI_DATA_STRING_KMP_H_
 
-#include <iterator>
+#include <stddef.h>
+#include <string>
 #include <vector>
 
 namespace pfi{

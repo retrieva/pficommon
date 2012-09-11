@@ -33,10 +33,7 @@
 
 #include "./lru.h"
 
-#include <climits>
-#include <fstream>
-#include <string>
-#include <algorithm>
+#include <stdlib.h>
 
 using namespace std;
 using namespace pfi::data;

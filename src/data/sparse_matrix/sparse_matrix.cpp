@@ -31,6 +31,7 @@
 
 #include "sparse_matrix.h"
 
+#include <cstdio>
 #include <cstring>
 #include <string>
 #include <algorithm>

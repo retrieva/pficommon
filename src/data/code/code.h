@@ -34,8 +34,7 @@
 
 #include <cstdio>
 #include <vector>
-#include <ostream>
-#include <istream>
+#include <iosfwd>
 
 namespace pfi {
 namespace data {

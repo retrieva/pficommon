@@ -32,7 +32,6 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_SPARSE_MATRIX_SPARSE_MATRIX_H_
 #define INCLUDE_GUARD_PFI_DATA_SPARSE_MATRIX_SPARSE_MATRIX_H_
 
-#include <cstdio>
 #include <vector>
 #include <string>
 #include <map>

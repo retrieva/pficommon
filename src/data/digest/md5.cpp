@@ -32,12 +32,10 @@
 #include "md5.h"
 
 #include <iomanip>
+#include <ostream>
 #include <cmath>
 
-#include "../../concurrent/mutex.h"
-
 using namespace std;
-using namespace pfi::concurrent;
 
 namespace pfi{
 namespace data{

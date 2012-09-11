@@ -32,9 +32,7 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_CONFIG_FILE_H_
 #define INCLUDE_GUARD_PFI_DATA_CONFIG_FILE_H_
 
-#include <stdexcept>
-#include <iostream>
-#include <fstream>
+#include <iosfwd>
 #include <string>
 #include <map>
 

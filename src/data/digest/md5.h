@@ -32,7 +32,9 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_DIGEST_MD5_H_
 #define INCLUDE_GUARD_PFI_DATA_DIGEST_MD5_H_
 
-#include <iostream>
+// #include <iostream>
+#include <iosfwd>
+#include <iterator>
 #include <string>
 #include <stdint.h>
 

@@ -33,7 +33,8 @@
 #define INCLUDE_GUARD_PFI_DATA_SERIALIZATION_BASE_H_
 
 #include <cstdio>
-#include <iostream>
+#include <istream>
+#include <iterator>
 
 #include "../../lang/safe_bool.h"
 #include "../../system/endian_util.h"
