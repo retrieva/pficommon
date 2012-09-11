@@ -55,13 +55,13 @@ public:
     virtual ~callback() {}
 
     virtual void null() {}
-    virtual void boolean(bool val) {}
-    virtual void integer(int64_t val) {}
-    virtual void number(double val) {}
-    virtual void string(const char *val, size_t len) {}
+    virtual void boolean(bool) {}
+    virtual void integer(int64_t) {}
+    virtual void number(double) {}
+    virtual void string(const char*, size_t /* length */) {}
 
     virtual void start_object() {}
-    virtual void object_key(const char *val, size_t len) {}
+    virtual void object_key(const char*, size_t /* length */) {}
     virtual void end_object() {}
 
     virtual void start_array() {}
