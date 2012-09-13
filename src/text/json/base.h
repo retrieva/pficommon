@@ -199,6 +199,7 @@ public:
     os<<']';
   }
 
+private:
   json_value* clone() const {
     json_array* arr = new json_array();
     try {
@@ -212,7 +213,6 @@ public:
     }
   }
 
-private:
   std::vector<json> dat;
 };
 
