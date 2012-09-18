@@ -29,63 +29,73 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// *** THIS FILE MUST NOT BE INCLUDE DIRECTORY ***
-// THIS FILE IS INCLUDED BY "function.h"
+#include <stdio.h>
+#include <functional>
+#include <typeinfo>
 
-template <class R TARG>
-class ARITY : public safe_bool<ARITY<R BARG> > { 
-public:
-  typedef R result_type;
+#include "function.h"
+#include "gtest/gtest.h"
 
-  R operator()(FARG) const {
-    return (*content)(RARG);
-  }
+using pfi::lang::function;
 
-  ARITY()
-    :content(){
-  }
 
-  template <class Func>
-  ARITY(const Func &func)
-    :content(shared_ptr<placeholder>(new holder<Func>(func))){
-  }
+TEST(function, constructor)
+{
+  function<void ()> f;
+  function<void (int**** const**** const** const&, function<void ()>)> f2;
 
-  template <class Func>
-  ARITY &operator=(const Func &func){
-    content=shared_ptr<placeholder>(new holder<Func>(func));
-    return *this;
-  }
+  function<int (const char*)> f3(printf);
+  function<void (const char*)> f4(printf);
 
-  bool bool_test() const {
-    return !!content;
-  }
+  function<int (const char*)> f5(f3);
+  function<void (const char*)> f6(f5);
+}
 
-private:
-  class placeholder{
-  public:
-    virtual ~placeholder(){}
-    virtual R operator()(FARG)=0;
-  };
+TEST(function, assignment)
+{
+  function<int (int, int)> f;
+  f = f;
+  f = std::plus<int>();
+  EXPECT_EQ(3, f(1, 2));
+}
 
-  template <class Func>
-  class holder : public placeholder{
-  public:
-    holder(const Func &f) :f(f){}
-    R operator()(FARG){
-      return f(RARG);
-    }
-  private:
-    Func f;
-  };
+TEST(function, swap)
+{
+  function<int (int, int)> f;
+  function<int (int, int)> f2 = std::minus<int>();
+  f.swap(f2);
+  EXPECT_EQ(3, f(5, 2));
+  EXPECT_THROW(f2(5, 2);, std::exception);
 
-  shared_ptr<placeholder> content;
-};
+  swap(f, f2);
+  EXPECT_THROW(f(10, 5);, std::exception);
+  EXPECT_EQ(5, f2(10, 5));
+}
 
-template <class R TARG>
-class function<R(AARG)> : public ARITY<R BARG>{
-public:
-  function() :ARITY<R BARG>() {}
+TEST(function, target)
+{
+  function<int (int, int)> f = std::multiplies<int>();
+  const std::type_info& ti = f.target_type();
+  EXPECT_EQ(typeid(std::multiplies<int>), ti);
 
-  template <class Func>
-  function(const Func &f) :ARITY<R BARG>(f) {}
-};
+  std::multiplies<int>* t = f.target<std::multiplies<int> >();
+  EXPECT_EQ(15, (*t)(3, 5));
+
+  const std::multiplies<int>* ct = const_cast<const function<int (int, int)>&>(f).target<std::multiplies<int> >();
+  EXPECT_EQ(1, (*ct)(-1, -1));
+}
+
+TEST(function, comparison_with_null_pointer)
+{
+  function <int (const char*)> f;
+  EXPECT_TRUE(f == 0);
+  EXPECT_TRUE(0 == f);
+  EXPECT_FALSE(f != 0);
+  EXPECT_FALSE(0 != f);
+
+  f = printf;
+  EXPECT_FALSE(f == 0);
+  EXPECT_FALSE(0 == f);
+  EXPECT_TRUE(f != 0);
+  EXPECT_TRUE(0 != f);
+}
