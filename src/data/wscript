@@ -90,3 +90,4 @@ def build(bld):
   t('encoding/base64_test.cpp')
   t('include_test.cpp')
   t('instantiation_test.cpp')
+  t('unordered_test.cpp')
