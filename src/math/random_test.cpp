@@ -52,7 +52,7 @@ using namespace pfi::lang;
 
 
 template <class t>
-vector<t> moment(int max_mom, int size, function<t()> &val){
+vector<t> moment(int max_mom, int size, pfi::lang::function<t()> &val){
   vector<t> mom(max_mom,0);
   for(int i=0;i<size; ++i){
     t x=val(); // test
@@ -110,7 +110,7 @@ TEST(random, time_seed){
   
 }
 
-bool is_standard_deviation(function<double()> f, bool expectation=true){
+bool is_standard_deviation(pfi::lang::function<double()> f, bool expectation=true){
   // if f is standard deviation, it passes approx 99.99% probability.
 
   int size=1<<22;

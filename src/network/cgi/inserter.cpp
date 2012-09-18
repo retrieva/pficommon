@@ -50,8 +50,8 @@ tag_inserter::tag_inserter(const string &name, xhtml_builder &b)
 
 tag_inserter::~tag_inserter()
 {
-  shared_ptr<tag_elem> elem(new tag_elem(name, attrs));
-  vector<shared_ptr<html_elem> > children=b.leave();
+  pfi::lang::shared_ptr<tag_elem> elem(new tag_elem(name, attrs));
+  vector<pfi::lang::shared_ptr<html_elem> > children=b.leave();
   for (int i=0;i<(int)children.size();i++)
     elem->add_child(children[i]);
   b.push(elem);
@@ -59,12 +59,12 @@ tag_inserter::~tag_inserter()
 
 text_inserter::text_inserter(const string &text, xhtml_builder &b)
 {
-  b.push(shared_ptr<html_elem>(new text_elem(text)));
+  b.push(pfi::lang::shared_ptr<html_elem>(new text_elem(text)));
 }
 
 prim_inserter::prim_inserter(const string &text, xhtml_builder &b)
 {
-  b.push(shared_ptr<html_elem>(new prim_elem(text)));
+  b.push(pfi::lang::shared_ptr<html_elem>(new prim_elem(text)));
 }
 
 } // cgi

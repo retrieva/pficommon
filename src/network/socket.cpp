@@ -58,7 +58,7 @@ const int buf_size=8*1024;
 namespace pfi{
 namespace network{
 
-shared_ptr<dns_resolver, threading_model::multi_thread> stream_socket::resolver;
+pfi::lang::shared_ptr<dns_resolver, threading_model::multi_thread> stream_socket::resolver;
 r_mutex stream_socket::resolver_m;
 
 class sigign{
@@ -88,7 +88,7 @@ stream_socket::~stream_socket()
   close();
 }
 
-void stream_socket::set_dns_resolver(shared_ptr<dns_resolver, threading_model::multi_thread> r)
+void stream_socket::set_dns_resolver(pfi::lang::shared_ptr<dns_resolver, threading_model::multi_thread> r)
 {
   synchronized(resolver_m)
     resolver=r;
@@ -105,10 +105,10 @@ bool stream_socket::connect(const string &host, uint16_t port_num)
       return false;
   }
 
-  shared_ptr<dns_resolver, threading_model::multi_thread> res;
+  pfi::lang::shared_ptr<dns_resolver, threading_model::multi_thread> res;
   synchronized(resolver_m){
     if (!resolver)
-      set_dns_resolver(shared_ptr<dns_resolver, threading_model::multi_thread>
+      set_dns_resolver(pfi::lang::shared_ptr<dns_resolver, threading_model::multi_thread>
           (new normal_dns_resolver()));
     res=resolver;
   }

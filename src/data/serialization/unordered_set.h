@@ -56,7 +56,7 @@ void serialize(Archive &ar, unordered_set<T, H, P, A> &s)
     }
   }
   else{
-    for (typename std::tr1::unordered_set<T,H,P,A>::iterator p=s.begin();
+    for (typename pfi::data::unordered_set<T,H,P,A>::iterator p=s.begin();
 	 p!=s.end();p++){
       T v(*p);
       ar & v;

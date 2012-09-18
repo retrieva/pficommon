@@ -44,7 +44,7 @@ using namespace pfi::data::suffix_array;
 template<typename IT> 
 int rmq_vanilla(IT b, int i, int j)
 {
-  typeof(*b) x = *(b+i);
+  __typeof__(*b) x = *(b+i);
   int minix = i;
 
   for(int k = i; k <= j; ++k){
