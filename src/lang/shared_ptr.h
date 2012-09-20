@@ -132,10 +132,10 @@ shared_ptr<T> const_pointer_cast(const shared_ptr<U, TM>& p)
   return shared_ptr<T>(std::tr1::const_pointer_cast<T>(p));
 }
 
-template <class D, class T, class TM>
-D* get_deleter(const shared_ptr<T, TM>& p)
+template <class Deleter, class T, class TM>
+Deleter* get_deleter(const shared_ptr<T, TM>& p)
 {
-  return std::tr1::get_deleter<D>(p);
+  return std::tr1::get_deleter<Deleter>(p);
 }
 
 } // lang
