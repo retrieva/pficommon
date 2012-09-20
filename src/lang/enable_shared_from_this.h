@@ -29,48 +29,46 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
-#define INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
+#ifndef INCLUDE_GUARD_PFI_LANG_ENABLE_SHARED_FROM_THIS_H_
+#define INCLUDE_GUARD_PFI_LANG_ENABLE_SHARED_FROM_THIS_H_
 
-#include <exception>
+#include <memory>
+#include <tr1/memory>
+#include "shared_ptr.h"
 
-#include "connection.h"
-#include "../lang/safe_bool.h"
+namespace pfi {
+namespace lang {
 
-namespace pfi{
-namespace database{
+template <class T>
+class enable_shared_from_this : public std::tr1::enable_shared_from_this<T> {
+  typedef std::tr1::enable_shared_from_this<T> base;
 
-class committer : public pfi::lang::safe_bool<committer>{
+protected:
+  enable_shared_from_this() {}
+  enable_shared_from_this(const enable_shared_from_this& x) : base(x) {}
+  enable_shared_from_this& operator=(const enable_shared_from_this& x) {
+    base::operator=(x);
+    return *this;
+  }
+  ~enable_shared_from_this() {}
+
 public:
-  // committer must not be copied because destructor
-  // must be called only once. Do not implement these functions.
-  committer(const committer&);
-  committer& operator=(const committer&);
-
-public:
-  template<typename ThreadingModel>
-  committer(pfi::lang::shared_ptr<connection, ThreadingModel>& ptr)
-    :conn(ptr.get()){
-    conn->begin_transaction();
+  shared_ptr<T> shared_from_this() {
+    try {
+      return shared_ptr<T>(base::shared_from_this());
+    } catch (std::tr1::bad_weak_ptr&) {
+      throw pfi::lang::bad_weak_ptr();
+    }
   }
-  committer(connection *conn):conn(conn){
-    conn->begin_transaction();
+  shared_ptr<const T> shared_from_this() const {
+    try {
+      return shared_ptr<const T>(base::shared_from_this());
+    } catch (std::tr1::bad_weak_ptr&) {
+      throw pfi::lang::bad_weak_ptr();
+    }
   }
-
-  ~committer(){
-    if (std::uncaught_exception()) conn->rollback();
-    else conn->commit();
-  }
-
-  bool bool_test() const{ return true; }
-
-private:
-  connection *conn;
 };
 
-} // database
+} // lang
 } // pfi
-
-#define transaction(conn) \
-  if (committer comm__ = committer(conn))
-#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_ENABLE_SHARED_FROM_THIS_H_
