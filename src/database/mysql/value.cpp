@@ -88,14 +88,14 @@ static sql_value *from_bind_p(MYSQL_BIND &bind)
   }
 }
 
-shared_ptr<sql_value> from_bind(MYSQL_BIND &bind)
+pfi::lang::shared_ptr<sql_value> from_bind(MYSQL_BIND &bind)
 {
   sql_value *p=from_bind_p(bind);
-  if (!p) return shared_ptr<sql_value>();
-  return shared_ptr<sql_value>(p);
+  if (!p) return pfi::lang::shared_ptr<sql_value>();
+  return pfi::lang::shared_ptr<sql_value>(p);
 }
 
-size_t bind_length(shared_ptr<sql_value> p)
+size_t bind_length(pfi::lang::shared_ptr<sql_value> p)
 {
   if (!p) return 0;
 
@@ -119,7 +119,7 @@ size_t bind_length(shared_ptr<sql_value> p)
   }
 }
 
-void to_bind(shared_ptr<sql_value> p, MYSQL_BIND &bind)
+void to_bind(pfi::lang::shared_ptr<sql_value> p, MYSQL_BIND &bind)
 {
   if (!p){
     bind.is_null=NULL;
