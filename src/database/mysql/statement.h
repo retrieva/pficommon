@@ -43,7 +43,6 @@
 
 #include "../statement.h"
 #include "../../lang/shared_ptr.h"
-#include "../../concurrent/threading_model.h"
 
 namespace pfi{
 namespace database{
@@ -53,8 +52,7 @@ class mysql_connection_impl;
 
 class mysql_statement : public statement{
 public:
-  mysql_statement(pfi::lang::shared_ptr<mysql_connection_impl,
-                  pfi::concurrent::threading_model::multi_thread> &conn,
+  mysql_statement(pfi::lang::shared_ptr<mysql_connection_impl> &conn,
                   const std::string &query);
   ~mysql_statement();
 
@@ -62,8 +60,7 @@ public:
   bool fetch_row(std::vector<pfi::lang::shared_ptr<sql_value> > &row);
 
 private:
-  pfi::lang::shared_ptr<mysql_connection_impl,
-    pfi::concurrent::threading_model::multi_thread> conn;
+  pfi::lang::shared_ptr<mysql_connection_impl> conn;
 
   MYSQL_STMT *stmt;
   MYSQL_RES *meta;

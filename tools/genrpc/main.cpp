@@ -28,12 +28,12 @@ string eval_cpp(const string &source_code, const string &compiler_options)
   string tname("genrpctmpXXXXXX");
   string gname("genrpcexeXXXXXX");
   {
-    shared_ptr<ostream> pofs(tmpstream(tname));
+    pfi::lang::shared_ptr<ostream> pofs(tmpstream(tname));
     ostream &ofs=*pofs.get();
     ofs<<source_code;
   }
   {
-    shared_ptr<ostream> pofs(tmpstream(gname));
+    pfi::lang::shared_ptr<ostream> pofs(tmpstream(gname));
   }
   int compile_stat=system(("g++ -xc++ "+tname+" "+compiler_options+" -lpficommon -o "+gname).c_str());
   unlink(tname.c_str());

@@ -145,20 +145,20 @@ void mysql_connection::reconnect()
 }
 
 int mysql_connection::run(const string &sql,
-                          const vector<shared_ptr<sql_value> > &args)
+                          const vector<pfi::lang::shared_ptr<sql_value> > &args)
 {
   if (conn->get() == NULL) reconnect();
 
   // TODO: optimize
   try {
-    shared_ptr<statement> stat(prepare(sql));
+    pfi::lang::shared_ptr<statement> stat(prepare(sql));
     return stat->execute(args);
   }
   catch (const connection_error &e) {
     reconnect(); // this function rethrows an exception if necessary
   }
 
-  shared_ptr<statement> stat(prepare(sql));
+  pfi::lang::shared_ptr<statement> stat(prepare(sql));
   return stat->execute(args);
 }
 

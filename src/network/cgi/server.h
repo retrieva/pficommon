@@ -36,7 +36,6 @@
 
 #include "../../lang/shared_ptr.h"
 #include "../../concurrent/thread.h"
-#include "../../concurrent/threading_model.h"
 
 namespace pfi{
 namespace network{
@@ -44,7 +43,7 @@ namespace cgi{
 
 class run_server{
 public:
-  typedef pfi::lang::shared_ptr<server_socket, pfi::concurrent::threading_model::multi_thread> socket_type;
+  typedef pfi::lang::shared_ptr<server_socket> socket_type;
 
   run_server(const cgi &cc, uint16_t port=8080, int thread_num=1, double time_out=10);
   run_server(const cgi &cc, socket_type ssock, int thread_num=1);
@@ -58,8 +57,7 @@ public:
 private:
 
   void process(socket_type ssock,
-               pfi::lang::shared_ptr<cgi,
-               pfi::concurrent::threading_model::multi_thread> cc);
+               pfi::lang::shared_ptr<cgi> cc);
 
   void listen(uint16_t port, double time_out);
 

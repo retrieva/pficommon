@@ -62,7 +62,7 @@ header::header()
 {
 }
 
-void header::read_header(function<bool(string*)> f)
+void header::read_header(pfi::lang::function<bool(string*)> f)
 {
   string line, key, val;
   if (!f(&line))
@@ -125,7 +125,7 @@ static bool socket_getline(stream_socket *sock, string *str, int line_limit)
   return sock->getline(*str, line_limit);
 }
 
-header::header(shared_ptr<stream_socket> sock)
+header::header(pfi::lang::shared_ptr<stream_socket> sock)
 {
   read_header(bind(&socket_getline, sock.get(), _1, line_limit));
 }
@@ -212,7 +212,7 @@ header::const_iterator header::end() const
   return dat.end();
 }
 
-void header::send(shared_ptr<stream_socket> sock)
+void header::send(pfi::lang::shared_ptr<stream_socket> sock)
 {
   for (int i=0;i<(int)dat.size();i++){
     string line=dat[i].first+": "+dat[i].second+"\r\n";
@@ -229,7 +229,7 @@ class basic_httpbody_chunked_streambuf : public basic_streambuf<C,T>{
 public:
   typedef C char_type;
 
-  basic_httpbody_chunked_streambuf(shared_ptr<stream_socket> sock)
+  basic_httpbody_chunked_streambuf(pfi::lang::shared_ptr<stream_socket> sock)
     : sock(sock)
     , chunk_rest(0)
     , buf(buf_size)
@@ -322,7 +322,7 @@ private:
     iss>>hex>>chunk_rest;
   }
 
-  shared_ptr<stream_socket> sock;
+  pfi::lang::shared_ptr<stream_socket> sock;
 
   int chunk_rest;
 
@@ -335,7 +335,7 @@ class basic_httpbody_streambuf : public basic_streambuf<C,T>{
 public:
   typedef C char_type;
 
-  basic_httpbody_streambuf(shared_ptr<stream_socket> sock, int64_t length)
+  basic_httpbody_streambuf(pfi::lang::shared_ptr<stream_socket> sock, int64_t length)
     : sock(sock)
     , rest(length)
     , buf(T::eof()){
@@ -360,7 +360,7 @@ public:
   }
 
 private:
-  shared_ptr<stream_socket> sock;
+  pfi::lang::shared_ptr<stream_socket> sock;
 
   int64_t rest;
   int buf;
@@ -369,7 +369,7 @@ private:
 template <class C, class T=char_traits<C> >
 class basic_httpbody_chunked_stream : public basic_iostream<C,T>{
 public:
-  basic_httpbody_chunked_stream(shared_ptr<stream_socket> sock)
+  basic_httpbody_chunked_stream(pfi::lang::shared_ptr<stream_socket> sock)
     : basic_iostream<C,T>()
     , buf(sock){
     this->init(&buf);
@@ -381,7 +381,7 @@ private:
 template <class C, class T=char_traits<C> >
 class basic_httpbody_stream : public basic_iostream<C,T>{
 public:
-  basic_httpbody_stream(shared_ptr<stream_socket> sock, int64_t len)
+  basic_httpbody_stream(pfi::lang::shared_ptr<stream_socket> sock, int64_t len)
     : basic_iostream<C,T>()
     , buf(sock, len){
     this->init(&buf);
@@ -407,7 +407,7 @@ request::request(const string &method, const uri &u, int major_ver, int minor_ve
 {
 }
 
-request::request(shared_ptr<stream_socket> sock)
+request::request(pfi::lang::shared_ptr<stream_socket> sock)
   : method_("")
   , uri_("/")
   , version_(1,1)
@@ -439,11 +439,11 @@ request::request(shared_ptr<stream_socket> sock)
 
   // body
   if (cicmp(header_["Transfer-Encoding"],"chunked"))
-    stream=shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
+    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
   else if (header_["Content-Length"]!="")
-    stream=shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
+    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
   else
-    stream=shared_ptr<iostream>(new socketstream(sock));
+    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
 request::~request()
@@ -475,7 +475,7 @@ iostream &request::body()
   return *stream;
 }
 
-void request::send(shared_ptr<stream_socket> sock)
+void request::send(pfi::lang::shared_ptr<stream_socket> sock)
 {
   stringstream *ss=dynamic_cast<stringstream*>(stream.get());
   if (!ss) throw http_exception("body is not stringstream");
@@ -500,7 +500,7 @@ void request::send(shared_ptr<stream_socket> sock)
   if (sock->flush()>=0)
     throw http_exception("flush failed");
   if (dat.length()==0)
-    stream=shared_ptr<iostream>(new socketstream(sock));
+    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
 response::response()
@@ -519,7 +519,7 @@ response::response(int code, const string &reason, int major_ver, int minor_ver)
 {
 }
 
-response::response(shared_ptr<stream_socket> sock)
+response::response(pfi::lang::shared_ptr<stream_socket> sock)
 {
   // status-line
   {
@@ -547,11 +547,11 @@ response::response(shared_ptr<stream_socket> sock)
 
   // body
   if (cicmp(header_["Transfer-Encoding"],"chunked"))
-    stream=shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
+    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
   else if (header_["Content-Length"]!="")
-    stream=shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
+    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
   else
-    stream=shared_ptr<iostream>(new socketstream(sock));
+    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
 response::~response()
@@ -583,7 +583,7 @@ iostream &response::body()
   return *stream;
 }
 
-void response::send(shared_ptr<stream_socket> sock)
+void response::send(pfi::lang::shared_ptr<stream_socket> sock)
 {
   stringstream *ss=dynamic_cast<stringstream*>(stream.get());
   if (!ss) throw http_exception("body is not stringstream");
@@ -608,7 +608,7 @@ void response::send(shared_ptr<stream_socket> sock)
   if (sock->flush()>=0)
     throw http_exception("flush failed");
   if (dat.length()==0)
-    stream=shared_ptr<iostream>(new socketstream(sock));
+    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
 } // http

@@ -64,7 +64,7 @@ namespace suffix_array {
       }
     }
     {
-      typedef typeof(*sb) T;
+      typedef __typeof__(*sb) T;
       std::map<T, size_t> a;
       for(size_t i = n - 1; /* */ ; --i){
         a[*(sb+*(sa+i))] = i;

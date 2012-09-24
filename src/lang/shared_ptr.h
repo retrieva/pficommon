@@ -57,6 +57,9 @@ public:
 template <class T>
 class weak_ptr;
 
+template <class T>
+class enable_shared_from_this;
+
 template <class T, class /* dummy for compatibility */ = pfi::concurrent::threading_model::single_thread>
 class shared_ptr : public std::tr1::shared_ptr<T> {
   typedef std::tr1::shared_ptr<T> base;

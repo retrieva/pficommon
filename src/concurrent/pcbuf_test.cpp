@@ -149,26 +149,26 @@ TEST(pcbuf, normal)
   mutex producer_histgram_mutex, consumer_histgram_mutex;
 
   // start consumers
-  vector<shared_ptr<thread> > consumers(consumer_num);
+  vector<pfi::lang::shared_ptr<thread> > consumers(consumer_num);
   for (size_t i = 0; i < consumers.size(); i++) {
-    function<void(void)> f = bind(consumer_func,
-                                  &q,
-                                  &shutdown_flag,
-                                  &consumer_histgram,
-                                  &consumer_histgram_mutex);
+    pfi::lang::function<void(void)> f = bind(consumer_func,
+                                             &q,
+                                             &shutdown_flag,
+                                             &consumer_histgram,
+                                             &consumer_histgram_mutex);
     consumers[i].reset(new thread(f));
     ASSERT_TRUE(consumers[i]->start());
   }
 
   // start producers
-  vector<shared_ptr<thread> > producers(producer_num);
+  vector<pfi::lang::shared_ptr<thread> > producers(producer_num);
   for (size_t i = 0; i < producers.size(); i++) {
-    function<void(void)> f = bind(producer_func,
-                                  &q,
-                                  produced_data_min,
-                                  produced_data_max,
-                                  &producer_histgram,
-                                  &producer_histgram_mutex);
+    pfi::lang::function<void(void)> f = bind(producer_func,
+                                             &q,
+                                             produced_data_min,
+                                             produced_data_max,
+                                             &producer_histgram,
+                                             &producer_histgram_mutex);
     producers[i].reset(new thread(f));
     ASSERT_TRUE(producers[i]->start());
   }
