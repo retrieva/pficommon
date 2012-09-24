@@ -66,7 +66,7 @@ void rpc_server::add(const string &name, pfi::lang::shared_ptr<invoker_base> inv
 
 bool rpc_server::serv(uint16_t port, int nthreads)
 {
-  pfi::lang::shared_ptr<server_socket, threading_model::multi_thread> ssock(new server_socket());
+  pfi::lang::shared_ptr<server_socket> ssock(new server_socket());
   if (!ssock->create(port))
     return false;
 
@@ -80,7 +80,7 @@ bool rpc_server::serv(uint16_t port, int nthreads)
   return true;
 }
 
-void rpc_server::process(pfi::lang::shared_ptr<server_socket, threading_model::multi_thread> ssock)
+void rpc_server::process(pfi::lang::shared_ptr<server_socket> ssock)
 {
   for (;;){
     pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());

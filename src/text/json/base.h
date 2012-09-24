@@ -44,7 +44,6 @@
 
 #include "../../lang/shared_ptr.h"
 #include "../../data/string/ustring.h"
-#include "../../concurrent/threading_model.h"
 
 namespace pfi{
 namespace text{
@@ -131,7 +130,7 @@ public:
   static const bool is_read = false;
 
 private:
-  pfi::lang::shared_ptr<json_value, pfi::concurrent::threading_model::multi_thread> val;
+  pfi::lang::shared_ptr<json_value> val;
 };
 
 class json_value{

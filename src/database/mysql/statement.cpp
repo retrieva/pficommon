@@ -48,8 +48,7 @@ namespace pfi{
 namespace database{
 namespace mysql{
 
-mysql_statement::mysql_statement(pfi::lang::shared_ptr<mysql_connection_impl,
-                                 pfi::concurrent::threading_model::multi_thread> &conn,
+mysql_statement::mysql_statement(pfi::lang::shared_ptr<mysql_connection_impl> &conn,
                                  const string &query)
   :conn(conn),meta(NULL)
 {

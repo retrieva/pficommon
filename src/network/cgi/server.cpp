@@ -162,10 +162,10 @@ void run_server::run(bool sync)
       <<", timeout="<<ssock->timeout()<<endl;
 
   ths=vector<pfi::lang::shared_ptr<thread> >(thread_num);
-  vector<pfi::lang::shared_ptr<cgi, threading_model::multi_thread> > cgis(thread_num);
+  vector<pfi::lang::shared_ptr<cgi> > cgis(thread_num);
 
   for (int i=0; i<thread_num; i++){
-    cgis[i]=pfi::lang::shared_ptr<cgi, threading_model::multi_thread>(dynamic_cast<cgi*>(c.clone()));
+    cgis[i]=pfi::lang::shared_ptr<cgi>(dynamic_cast<cgi*>(c.clone()));
     ths[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&run_server::process, this, ssock, cgis[i])));
     if (!ths[i]->start()){
       ostringstream oss;
@@ -232,7 +232,7 @@ string str_to_upper(const string &s)
 }
 
 void run_server::process(socket_type ssock,
-                         pfi::lang::shared_ptr<cgi, threading_model::multi_thread> cc)
+                         pfi::lang::shared_ptr<cgi> cc)
 {
   for (;;){
     pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());
