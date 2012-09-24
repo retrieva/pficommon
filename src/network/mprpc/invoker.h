@@ -46,7 +46,7 @@ namespace mprpc {
 
 class responder {
 public:
-  responder(uint32_t msgid, pfi::lang::shared_ptr<rpc_stream> rs) :
+  responder(uint32_t msgid, const pfi::lang::shared_ptr<rpc_stream>& rs) :
     msgid(msgid), rs(rs) { }
 
 public:

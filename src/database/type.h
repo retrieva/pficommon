@@ -168,10 +168,10 @@ inline pfi::lang::shared_ptr<sql_value> to_sql(const pfi::system::time::calendar
 }
 
 template <class T>
-T from_sql(pfi::lang::shared_ptr<sql_value> v);
+T from_sql(const pfi::lang::shared_ptr<sql_value>& v);
 
 template <>
-inline bool from_sql(pfi::lang::shared_ptr<sql_value> v)
+inline bool from_sql(const pfi::lang::shared_ptr<sql_value>& v)
 {
   sql_bool *p=dynamic_cast<sql_bool*>(v.get());
   if (!p) throw database_error("from_sql: cannot convert to bool");
@@ -179,7 +179,7 @@ inline bool from_sql(pfi::lang::shared_ptr<sql_value> v)
 }
 
 template <>
-inline std::string from_sql(pfi::lang::shared_ptr<sql_value> v)
+inline std::string from_sql(const pfi::lang::shared_ptr<sql_value>& v)
 {
   sql_string *p=dynamic_cast<sql_string*>(v.get());
   if (!p) return "";
@@ -187,7 +187,7 @@ inline std::string from_sql(pfi::lang::shared_ptr<sql_value> v)
 }
 
 template <>
-inline int32_t from_sql(pfi::lang::shared_ptr<sql_value> v)
+inline int32_t from_sql(const pfi::lang::shared_ptr<sql_value>& v)
 {
   {
     sql_int32 *p=dynamic_cast<sql_int32*>(v.get());
@@ -210,7 +210,7 @@ inline int32_t from_sql(pfi::lang::shared_ptr<sql_value> v)
 }
 
 template <>
-inline int64_t from_sql(pfi::lang::shared_ptr<sql_value> v)
+inline int64_t from_sql(const pfi::lang::shared_ptr<sql_value>& v)
 {
   {
     sql_int64 *p=dynamic_cast<sql_int64*>(v.get());
@@ -226,7 +226,7 @@ inline int64_t from_sql(pfi::lang::shared_ptr<sql_value> v)
 }
 
 template <>
-inline double from_sql(pfi::lang::shared_ptr<sql_value> v)
+inline double from_sql(const pfi::lang::shared_ptr<sql_value>& v)
 {
   sql_float *p=dynamic_cast<sql_float*>(v.get());
   if (!p) throw database_error("from_sql: cannot convert to float");
@@ -234,7 +234,7 @@ inline double from_sql(pfi::lang::shared_ptr<sql_value> v)
 }
 
 template <>
-inline pfi::system::time::clock_time from_sql(pfi::lang::shared_ptr<sql_value> v)
+inline pfi::system::time::clock_time from_sql(const pfi::lang::shared_ptr<sql_value>& v)
 {
   sql_timestamp *p=dynamic_cast<sql_timestamp*>(v.get());
   if (!p) throw database_error("from_sql: cannot convert to clock_time");
@@ -242,7 +242,7 @@ inline pfi::system::time::clock_time from_sql(pfi::lang::shared_ptr<sql_value> v
 }
 
 template <>
-inline pfi::system::time::calendar_time from_sql(pfi::lang::shared_ptr<sql_value> v)
+inline pfi::system::time::calendar_time from_sql(const pfi::lang::shared_ptr<sql_value>& v)
 {
   sql_timestamp *p=dynamic_cast<sql_timestamp*>(v.get());
   if (!p) throw database_error("from_sql: cannot convert to clock_time");

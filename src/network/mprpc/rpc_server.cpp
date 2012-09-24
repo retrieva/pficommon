@@ -151,12 +151,12 @@ void rpc_server::process()
 }
 
 void rpc_server::add(const std::string &name,
-    pfi::lang::shared_ptr<invoker_base> invoker)
+                     const pfi::lang::shared_ptr<invoker_base>& invoker)
 {
   funcs[name] = invoker;
 }
 
-void rpc_server::process_request(rpc_request& req, pfi::lang::shared_ptr<rpc_stream> rs)
+void rpc_server::process_request(rpc_request& req, const pfi::lang::shared_ptr<rpc_stream>& rs)
 {
   responder res(req.msgid, rs);
 

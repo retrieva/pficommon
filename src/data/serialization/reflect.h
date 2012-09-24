@@ -113,7 +113,7 @@ public:
     this->name=name;
   }
 
-  void add(const std::string &name, pfi::lang::shared_ptr<type_rep> type){
+  void add(const std::string &name, const pfi::lang::shared_ptr<type_rep>& type){
     member.push_back(make_pair(name, type));
   }
 

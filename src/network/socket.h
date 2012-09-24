@@ -82,7 +82,7 @@ public:
   // bool set_...
 
   static void set_dns_resolver
-  (pfi::lang::shared_ptr<dns_resolver> resolver);
+  (const pfi::lang::shared_ptr<dns_resolver>& resolver);
 
 private:
   bool open();
