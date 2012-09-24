@@ -44,7 +44,7 @@ namespace concurrent{
 
 class thread::impl : noncopyable{
 public:
-  impl(const function<void()> &f);
+  impl(const pfi::lang::function<void()> &f);
   ~impl();
 
   bool start();
@@ -57,10 +57,10 @@ private:
   bool running;
   pthread_t tid;
 
-  function<void()> f;
+  pfi::lang::function<void()> f;
 };
 
-thread::thread(const function<void()> &f)
+thread::thread(const pfi::lang::function<void()> &f)
   :pimpl(new impl(f))
 {
 }
@@ -115,7 +115,7 @@ thread::tid_t thread::id()
 #endif
 }
 
-thread::impl::impl(const function<void()> &f)
+thread::impl::impl(const pfi::lang::function<void()> &f)
   : running(false)
   , tid(0)
   , f(f)
@@ -134,7 +134,7 @@ bool thread::impl::start()
   if (running) return false;
 
   running=true;
-  function<void()> *pf=new function<void()>(f);
+  pfi::lang::function<void()> *pf=new pfi::lang::function<void()>(f);
   int res=pthread_create(&tid,NULL,start_routine,(void*)pf);
   if (res!=0){
     delete pf;
@@ -177,7 +177,7 @@ void thread::impl::detach()
 
 void *thread::impl::start_routine(void *p)
 {
-  function<void()> *pf=reinterpret_cast<function<void()>*>(p);
+  pfi::lang::function<void()> *pf=reinterpret_cast<pfi::lang::function<void()>*>(p);
   (*pf)();
   delete pf;
   return NULL;

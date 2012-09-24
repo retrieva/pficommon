@@ -48,8 +48,7 @@ namespace pfi{
 namespace database{
 namespace mysql{
 
-mysql_statement::mysql_statement(shared_ptr<mysql_connection_impl,
-                                 pfi::concurrent::threading_model::multi_thread> &conn,
+mysql_statement::mysql_statement(pfi::lang::shared_ptr<mysql_connection_impl> &conn,
                                  const string &query)
   :conn(conn),meta(NULL)
 {
@@ -98,7 +97,7 @@ mysql_statement::~mysql_statement()
   mysql_stmt_close(stmt);
 }
 
-int mysql_statement::execute(const vector<shared_ptr<sql_value> > &args)
+int mysql_statement::execute(const vector<pfi::lang::shared_ptr<sql_value> > &args)
 {
   if (param_count!=args.size()){
     ostringstream msg;
@@ -146,7 +145,7 @@ int mysql_statement::execute(const vector<shared_ptr<sql_value> > &args)
   return 0;
 }
 
-bool mysql_statement::fetch_row(vector<shared_ptr<sql_value> > &row)
+bool mysql_statement::fetch_row(vector<pfi::lang::shared_ptr<sql_value> > &row)
 {
   static const size_t INIT_BUF_SIZE = 16*1024;
   

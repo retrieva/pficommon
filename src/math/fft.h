@@ -68,8 +68,8 @@ inline void fft_inner(Iterator a, Iterator b, int flip)
         Complex x=a[j]-a[k];
         a[j]+=a[k];
         //a[k]=w*x;
-        a[k].real()=w.real()*x.real()-w.imag()*x.imag();
-        a[k].imag()=w.real()*x.imag()+w.imag()*x.real();
+        a[k] = Complex(w.real()*x.real()-w.imag()*x.imag(),
+                       w.real()*x.imag()+w.imag()*x.real());
       }
     }
   }

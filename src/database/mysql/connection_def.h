@@ -83,8 +83,7 @@ private:
   int query(const std::string &sql);
   void reconnect();
 
-  pfi::lang::shared_ptr<mysql_connection_impl,
-    pfi::concurrent::threading_model::multi_thread> conn;
+  pfi::lang::shared_ptr<mysql_connection_impl> conn;
 };
 
 } // mysql

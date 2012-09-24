@@ -44,7 +44,7 @@ namespace pfi {
 namespace network {
 namespace mprpc {
 
-pfi::lang::shared_ptr<dns_resolver, pfi::concurrent::threading_model::multi_thread> socket::resolver;
+pfi::lang::shared_ptr<dns_resolver> socket::resolver;
 pfi::concurrent::r_mutex socket::resolver_m;
 
 
@@ -98,7 +98,7 @@ bool socket::listen(uint16_t port, int backlog)
 
 std::vector<ipv4_address> socket::resolve(const std::string& host, uint16_t port)
 {
-  pfi::lang::shared_ptr<dns_resolver, pfi::concurrent::threading_model::multi_thread> res;
+  pfi::lang::shared_ptr<dns_resolver> res;
   synchronized(resolver_m){
     if (!resolver) {
       resolver.reset( new normal_dns_resolver() );

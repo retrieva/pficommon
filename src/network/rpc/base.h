@@ -40,7 +40,6 @@
 #include "../../lang/function.h"
 #include "../../lang/shared_ptr.h"
 #include "../../concurrent/thread.h"
-#include "../../concurrent/threading_model.h"
 #include "../../data/serialization.h"
 #include "../../network/socket.h"
 #include "../../network/iostream.h"
@@ -71,8 +70,7 @@ private:
   void add(const std::string &name,
       pfi::lang::shared_ptr<invoker_base> invoker);
 
-  void process(pfi::lang::shared_ptr<server_socket,
-      pfi::concurrent::threading_model::multi_thread> sock);
+  void process(pfi::lang::shared_ptr<server_socket> sock);
 
   std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
 

@@ -348,25 +348,25 @@ TEST(serialization, vector) {
 
 TEST(serialization, reflect) {
   {
-    shared_ptr<type_rep> t=get_type<vector<uint16_t> >();
+    pfi::lang::shared_ptr<type_rep> t=get_type<vector<uint16_t> >();
     ostringstream oss;
     t->print(oss);
     EXPECT_EQ(oss.str(), "array<uint(2)>");
   }
   {
-    shared_ptr<type_rep> t=get_type<vector<int32_t> >();
+    pfi::lang::shared_ptr<type_rep> t=get_type<vector<int32_t> >();
     ostringstream oss;
     t->print(oss);
     EXPECT_EQ(oss.str(), "array<int(4)>");
   }
   {
-    shared_ptr<type_rep> t=get_type<map<int, string> >();
+    pfi::lang::shared_ptr<type_rep> t=get_type<map<int, string> >();
     ostringstream oss;
     t->print(oss);
     EXPECT_EQ(oss.str(), "map<int(4),string>");
   }
   {
-    shared_ptr<type_rep> t=get_type<vector<map<vector<int>, string> > >();
+    pfi::lang::shared_ptr<type_rep> t=get_type<vector<map<vector<int>, string> > >();
     ostringstream oss;
     t->print(oss);
     EXPECT_EQ(oss.str(), "array<map<array<int(4)>,string>>");
