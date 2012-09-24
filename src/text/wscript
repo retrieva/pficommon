@@ -17,7 +17,7 @@ def build(bld):
     target = 'pficommon_text',
     includes = '. json',
     vnum = bld.env['VERSION'],
-    use = 'pficommon_data pficommon_system pficommon_concurrent')
+    use = 'pficommon_data pficommon_system')
   
   bld.program(
     features = 'gtest',
