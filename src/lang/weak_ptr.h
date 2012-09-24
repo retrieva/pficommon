@@ -29,48 +29,48 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
-#define INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
+#ifndef INCLUDE_GUARD_PFI_LANG_WEAK_PTR_H_
+#define INCLUDE_GUARD_PFI_LANG_WEAK_PTR_H_
 
-#include <exception>
+#include <memory>
+#include <tr1/memory>
 
-#include "connection.h"
-#include "../lang/safe_bool.h"
+namespace pfi {
+namespace lang {
 
-namespace pfi{
-namespace database{
+template <class T, class TM>
+class shared_ptr;
 
-class committer : public pfi::lang::safe_bool<committer>{
-public:
-  // committer must not be copied because destructor
-  // must be called only once. Do not implement these functions.
-  committer(const committer&);
-  committer& operator=(const committer&);
+template <class T>
+class weak_ptr : public std::tr1::weak_ptr<T> {
+  typedef std::tr1::weak_ptr<T> base;
 
 public:
-  template<typename ThreadingModel>
-  committer(pfi::lang::shared_ptr<connection, ThreadingModel>& ptr)
-    :conn(ptr.get()){
-    conn->begin_transaction();
-  }
-  committer(connection *conn):conn(conn){
-    conn->begin_transaction();
+  weak_ptr() {}
+
+  template <class U, class UM>
+  weak_ptr(const shared_ptr<U, UM>& p) : base(p) {}
+
+  template <class U>
+  weak_ptr(const weak_ptr<U>& p) : base(p) {}
+
+  template <class U>
+  weak_ptr& operator=(const weak_ptr<U>& p) {
+    base::operator=(p);
+    return *this;
   }
 
-  ~committer(){
-    if (std::uncaught_exception()) conn->rollback();
-    else conn->commit();
+  template <class U, class UM>
+  weak_ptr& operator=(const shared_ptr<U, UM>& p) {
+    base::operator=(p);
+    return *this;
   }
 
-  bool bool_test() const{ return true; }
-
-private:
-  connection *conn;
+  shared_ptr<T> lock() const {
+    return shared_ptr<T>(base::lock());
+  }
 };
 
-} // database
+} // lang
 } // pfi
-
-#define transaction(conn) \
-  if (committer comm__ = committer(conn))
-#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_UTIL_H_
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_WEAK_PTR_H_
