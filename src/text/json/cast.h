@@ -448,7 +448,7 @@ template <class T>
 inline void serialize(json_iarchive_cast &js, std::vector<T> &v)
 {
   if (!is<json_array>(js.get()))
-    throw json_bad_cast<std::vector<std::string> >("attempted to convert to vector<string> from other than json_array.");
+    throw json_bad_cast<std::vector<T> >("attempted to convert to vector<T> from other than json_array.");
 
   typedef typename std::vector<T>::size_type size_t_;
   const size_t_ size = js.get().size();
