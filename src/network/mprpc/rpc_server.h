@@ -79,9 +79,9 @@ private:
   volatile bool serv_running;
 
   void add(const std::string &name,
-      pfi::lang::shared_ptr<invoker_base> invoker);
+           const pfi::lang::shared_ptr<invoker_base>& invoker);
 
-  void process_request(rpc_request& req, pfi::lang::shared_ptr<rpc_stream> rs);
+  void process_request(rpc_request& req, const pfi::lang::shared_ptr<rpc_stream>& rs);
 
   std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
 };

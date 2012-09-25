@@ -67,8 +67,8 @@ void serialize(Archive &ar, std::map<K, V, Compare, Allocator> &m)
 
 class map_type : public type_rep {
 public:
-  map_type(pfi::lang::shared_ptr<type_rep> key_type,
-           pfi::lang::shared_ptr<type_rep> value_type)
+  map_type(const pfi::lang::shared_ptr<type_rep>& key_type,
+           const pfi::lang::shared_ptr<type_rep>& value_type)
     : key_type_(key_type)
     , value_type_(value_type){
   }

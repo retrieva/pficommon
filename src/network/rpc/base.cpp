@@ -59,7 +59,7 @@ rpc_server::~rpc_server()
 {
 }
 
-void rpc_server::add(const string &name, pfi::lang::shared_ptr<invoker_base> invoker)
+void rpc_server::add(const string &name, const pfi::lang::shared_ptr<invoker_base>& invoker)
 {
   funcs[name]=invoker;
 }
@@ -80,7 +80,7 @@ bool rpc_server::serv(uint16_t port, int nthreads)
   return true;
 }
 
-void rpc_server::process(pfi::lang::shared_ptr<server_socket> ssock)
+void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
 {
   for (;;){
     pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());
@@ -178,7 +178,7 @@ pfi::lang::shared_ptr<socketstream> rpc_client::get_connection()
   return ss;
 }
 
-void rpc_client::return_connection(pfi::lang::shared_ptr<socketstream> css)
+void rpc_client::return_connection(const shared_ptr<socketstream>& css)
 {
   ss=css;
 }

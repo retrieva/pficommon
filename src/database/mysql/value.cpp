@@ -95,7 +95,7 @@ pfi::lang::shared_ptr<sql_value> from_bind(MYSQL_BIND &bind)
   return pfi::lang::shared_ptr<sql_value>(p);
 }
 
-size_t bind_length(pfi::lang::shared_ptr<sql_value> p)
+size_t bind_length(const pfi::lang::shared_ptr<sql_value>& p)
 {
   if (!p) return 0;
 
@@ -119,7 +119,7 @@ size_t bind_length(pfi::lang::shared_ptr<sql_value> p)
   }
 }
 
-void to_bind(pfi::lang::shared_ptr<sql_value> p, MYSQL_BIND &bind)
+void to_bind(const pfi::lang::shared_ptr<sql_value>& p, MYSQL_BIND &bind)
 {
   if (!p){
     bind.is_null=NULL;

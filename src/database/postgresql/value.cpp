@@ -122,7 +122,7 @@ shared_ptr<sql_value> str_to_sql(char *p, int len, int is_null, Oid oid)
   return shared_ptr<sql_value>(make_sql_value(p, len, t));
 }
 
-shared_ptr<string> sql_to_str(shared_ptr<sql_value> p)
+shared_ptr<string> sql_to_str(const pfi::lang::shared_ptr<sql_value>& p)
 {
   if (!p) return shared_ptr<string>();
 
