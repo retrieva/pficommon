@@ -106,7 +106,7 @@ private:
     r_mutex m;
   };
 
-  chan(pfi::lang::shared_ptr<link> l)
+  chan(const pfi::lang::shared_ptr<link>& l)
     :chans(l){
     synchronized(chans->m){
       chans->cs.insert(this);

@@ -44,9 +44,9 @@ namespace pfi{
 namespace database{
 namespace mysql{
 
-size_t bind_length(pfi::lang::shared_ptr<sql_value> p);
+size_t bind_length(const pfi::lang::shared_ptr<sql_value>& p);
 pfi::lang::shared_ptr<sql_value> from_bind(MYSQL_BIND &bind);
-void to_bind(pfi::lang::shared_ptr<sql_value> p, MYSQL_BIND &bind);
+void to_bind(const pfi::lang::shared_ptr<sql_value>& p, MYSQL_BIND &bind);
 
 } // postgresql
 } // database

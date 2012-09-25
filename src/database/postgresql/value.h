@@ -43,7 +43,7 @@ namespace postgresql{
 
 pfi::lang::shared_ptr<sql_value> str_to_sql(char *p, int len, int is_null, Oid oid);
 
-pfi::lang::shared_ptr<std::string> sql_to_str(pfi::lang::shared_ptr<sql_value> p);
+pfi::lang::shared_ptr<std::string> sql_to_str(const pfi::lang::shared_ptr<sql_value>& p);
 
 } // postgresql
 } // database

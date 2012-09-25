@@ -125,7 +125,7 @@ static bool socket_getline(stream_socket *sock, string *str, int line_limit)
   return sock->getline(*str, line_limit);
 }
 
-header::header(pfi::lang::shared_ptr<stream_socket> sock)
+header::header(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
   read_header(bind(&socket_getline, sock.get(), _1, line_limit));
 }
@@ -212,7 +212,7 @@ header::const_iterator header::end() const
   return dat.end();
 }
 
-void header::send(pfi::lang::shared_ptr<stream_socket> sock)
+void header::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
   for (int i=0;i<(int)dat.size();i++){
     string line=dat[i].first+": "+dat[i].second+"\r\n";
@@ -229,7 +229,7 @@ class basic_httpbody_chunked_streambuf : public basic_streambuf<C,T>{
 public:
   typedef C char_type;
 
-  basic_httpbody_chunked_streambuf(pfi::lang::shared_ptr<stream_socket> sock)
+  basic_httpbody_chunked_streambuf(const pfi::lang::shared_ptr<stream_socket>& sock)
     : sock(sock)
     , chunk_rest(0)
     , buf(buf_size)
@@ -335,7 +335,7 @@ class basic_httpbody_streambuf : public basic_streambuf<C,T>{
 public:
   typedef C char_type;
 
-  basic_httpbody_streambuf(pfi::lang::shared_ptr<stream_socket> sock, int64_t length)
+  basic_httpbody_streambuf(const pfi::lang::shared_ptr<stream_socket>& sock, int64_t length)
     : sock(sock)
     , rest(length)
     , buf(T::eof()){
@@ -369,7 +369,7 @@ private:
 template <class C, class T=char_traits<C> >
 class basic_httpbody_chunked_stream : public basic_iostream<C,T>{
 public:
-  basic_httpbody_chunked_stream(pfi::lang::shared_ptr<stream_socket> sock)
+  basic_httpbody_chunked_stream(const pfi::lang::shared_ptr<stream_socket>& sock)
     : basic_iostream<C,T>()
     , buf(sock){
     this->init(&buf);
@@ -381,7 +381,7 @@ private:
 template <class C, class T=char_traits<C> >
 class basic_httpbody_stream : public basic_iostream<C,T>{
 public:
-  basic_httpbody_stream(pfi::lang::shared_ptr<stream_socket> sock, int64_t len)
+  basic_httpbody_stream(const pfi::lang::shared_ptr<stream_socket>& sock, int64_t len)
     : basic_iostream<C,T>()
     , buf(sock, len){
     this->init(&buf);
@@ -407,7 +407,7 @@ request::request(const string &method, const uri &u, int major_ver, int minor_ve
 {
 }
 
-request::request(pfi::lang::shared_ptr<stream_socket> sock)
+request::request(const pfi::lang::shared_ptr<stream_socket>& sock)
   : method_("")
   , uri_("/")
   , version_(1,1)
@@ -475,7 +475,7 @@ iostream &request::body()
   return *stream;
 }
 
-void request::send(pfi::lang::shared_ptr<stream_socket> sock)
+void request::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
   stringstream *ss=dynamic_cast<stringstream*>(stream.get());
   if (!ss) throw http_exception("body is not stringstream");
@@ -519,7 +519,7 @@ response::response(int code, const string &reason, int major_ver, int minor_ver)
 {
 }
 
-response::response(pfi::lang::shared_ptr<stream_socket> sock)
+response::response(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
   // status-line
   {
@@ -583,7 +583,7 @@ iostream &response::body()
   return *stream;
 }
 
-void response::send(pfi::lang::shared_ptr<stream_socket> sock)
+void response::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
   stringstream *ss=dynamic_cast<stringstream*>(stream.get());
   if (!ss) throw http_exception("body is not stringstream");

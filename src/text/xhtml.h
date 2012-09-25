@@ -68,7 +68,7 @@ public:
     return attr_[key];
   }
 
-  void add_child(pfi::lang::shared_ptr<html_elem> elem){
+  void add_child(const pfi::lang::shared_ptr<html_elem>& elem){
     children_.push_back(elem);
   }
 

@@ -59,7 +59,7 @@ public:
   typedef dat_type::const_iterator const_iterator;
 
   header();
-  header(pfi::lang::shared_ptr<stream_socket> sock);
+  header(const pfi::lang::shared_ptr<stream_socket>& sock);
   header(std::istream &is);
 
   ~header();
@@ -79,7 +79,7 @@ public:
   iterator end();
   const_iterator end() const;
 
-  void send(pfi::lang::shared_ptr<stream_socket> sock);
+  void send(const pfi::lang::shared_ptr<stream_socket>& sock);
 
 private:
   void read_header(pfi::lang::function<bool(std::string*)> f);
@@ -102,7 +102,7 @@ public:
 class request{
 public:
   request(const std::string &method, const uri &u, int major_ver = 1, int minor_ver = 1);
-  request(pfi::lang::shared_ptr<stream_socket> sock);
+  request(const pfi::lang::shared_ptr<stream_socket>& sock);
 
   ~request();
 
@@ -115,7 +115,7 @@ public:
 
   // Send a request to socket
   // Don't call this method twice to same object.
-  void send(pfi::lang::shared_ptr<stream_socket> sock);
+  void send(const pfi::lang::shared_ptr<stream_socket>& sock);
 
 private:
   std::string method_;
@@ -130,7 +130,7 @@ class response{
 public:
   response();
   response(int code, const std::string &reason, int major_ver = 1, int minor_ver = 1);
-  response(pfi::lang::shared_ptr<stream_socket> sock);
+  response(const pfi::lang::shared_ptr<stream_socket>& sock);
 
   ~response();
 
@@ -143,7 +143,7 @@ public:
 
   // Send a response to socket
   // Don't call this method twice to same object.
-  void send(pfi::lang::shared_ptr<stream_socket> sock);
+  void send(const pfi::lang::shared_ptr<stream_socket>& sock);
 
 private:
   std::pair<int,int> version_;
