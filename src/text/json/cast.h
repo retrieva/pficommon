@@ -447,9 +447,16 @@ inline void serialize(json_iarchive_cast_with_default &js, std::map<std::string,
 template <class T>
 inline void serialize(json_iarchive_cast &js, std::vector<T> &v)
 {
-  v.resize(js.get().size());
-  for (size_t i=0; i<js.get().size(); i++)
-    from_json(js.get()[i], v[i]);
+  if (!is<json_array>(js.get()))
+    throw json_bad_cast<std::vector<std::string> >("attempted to convert to vector<string> from other than json_array.");
+
+  typedef typename std::vector<T>::size_type size_t_;
+  const size_t_ size = js.get().size();
+  std::vector<T> tmp(size);
+  for (size_t_ i = 0; i < size; ++i)
+    from_json(js.get()[i], tmp[i]);
+  using std::swap;
+  swap(v, tmp);
 }
 
 template <class T>
