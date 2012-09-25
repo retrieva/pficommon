@@ -294,6 +294,24 @@ TEST(json, from_json)
   }
 
   {
+    json j(new json_array());
+    j.add(new json_string("abc"));
+    j.add(new json_string("def"));
+
+    vector<string> v;
+    v.push_back("abc");
+    v.push_back("def");
+
+    EXPECT_EQ(v, json_cast<vector<string> >(j));
+  }
+
+  {
+    json j(new json_object);
+
+    EXPECT_THROW(json_cast<vector<string> >(j);, json_bad_cast<vector<string> >);
+  }
+
+  {
     json j(new json_object());
     j["abc"]=json(new json_float(1.23));
     j["hoge"]=json(new json_float(3.14));
