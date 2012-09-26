@@ -194,7 +194,6 @@ class utest(Task.Task):
             fu = getattr(self.generator.bld, 'all_test_paths')
         except AttributeError:
             fu = os.environ.copy()
-            self.generator.bld.all_test_paths = fu
 
             lst = []
             for g in self.generator.bld.groups:
@@ -212,6 +211,7 @@ class utest(Task.Task):
                 add_path(fu, lst, 'LD_LIBRARY_PATH')
             else:
                 add_path(fu, lst, 'LD_LIBRARY_PATH')
+            self.generator.bld.all_test_paths = fu
 
 
         if isinstance(Options.options.checkfilter, str):
