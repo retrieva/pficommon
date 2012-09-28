@@ -88,7 +88,7 @@ stream_socket::~stream_socket()
   close();
 }
 
-void stream_socket::set_dns_resolver(const shared_ptr<dns_resolver>& r)
+void stream_socket::set_dns_resolver(const pfi::lang::shared_ptr<dns_resolver>& r)
 {
   synchronized(resolver_m)
     resolver=r;

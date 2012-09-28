@@ -178,7 +178,7 @@ pfi::lang::shared_ptr<socketstream> rpc_client::get_connection()
   return ss;
 }
 
-void rpc_client::return_connection(const shared_ptr<socketstream>& css)
+void rpc_client::return_connection(const pfi::lang::shared_ptr<socketstream>& css)
 {
   ss=css;
 }
