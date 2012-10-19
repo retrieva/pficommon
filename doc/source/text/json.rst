@@ -186,9 +186,9 @@ operator<<およびoperator>>がオーバーライドされているので、
 .. code-block:: c++
 
   json js(new json_array());
-  js.add(new json_integer(1)):
-  js.add(new json_integer(2)):
-  js.add(new json_integer(3)):
+  js.add(new json_integer(1));
+  js.add(new json_integer(2));
+  js.add(new json_integer(3));
   
   stringstream ss;
   ss<<js; // [1,2,3]
@@ -204,9 +204,9 @@ pretty printもできる。
 .. code-block:: c++
 
   json js(new json_array());
-  js.add(new json_integer(1)):
-  js.add(new json_integer(2)):
-  js.add(new json_integer(3)):
+  js.add(new json_integer(1));
+  js.add(new json_integer(2));
+  js.add(new json_integer(3));
   
   cout<<pretty(js);
 
@@ -258,9 +258,9 @@ jsが型Tに合わないオブジェクトを含む場合、bad_cast例外が投
 .. code-block:: c++
 
   json js(new json_array());
-  js.add(new json_integer(1)):
-  js.add(new json_integer(2)):
-  js.add(new json_integer(3)):
+  js.add(new json_integer(1));
+  js.add(new json_integer(2));
+  js.add(new json_integer(3));
   
   vector<int> v;
   from_json(js, v); // {1, 2, 3}
@@ -297,7 +297,7 @@ jsが型Tに合わないオブジェクトを含む場合、bad_cast例外が投
     foo f;
     f.a=123;
     f.b="hoge";
-    f.c.x.push_back(1.4142):
+    f.c.x.push_back(1.4142);
     f.c.x.push_back(3.1415);
   
     cout<<to_json(f)<<endl; // {"a":123,"b":"hoge","c":{"x":[1.4142,3.1415]}}
