@@ -81,14 +81,14 @@ public:
   void end_object() {
     json obj(new json_object());
     int ix = ixs.top();
-    ixs.pop();
-    int jx = (int)stk.size();
+    int jx = stk.size();
     int sz = jx - ix;
     for (int i = 0; i < sz; i++)
       obj.add(key[key.size() - sz + i], stk[ix + i]);
-    stk.erase(stk.end() - sz, stk.end());
-    key.erase(key.end() - sz, key.end());
     stk.push_back(obj);
+    stk.erase(stk.end() - sz - 1, stk.end() - 1);
+    key.erase(key.end() - sz, key.end());
+    ixs.pop();
   }
   
   void start_array() {
@@ -97,13 +97,13 @@ public:
   void end_array() {
     json obj(new json_array());
     int ix = ixs.top();
-    ixs.pop();
     int jx = stk.size();
     int sz = jx - ix;
     for (int i = 0; i < sz; i++)
       obj.add(stk[ix + i]);
-    stk.erase(stk.end() - sz, stk.end());
     stk.push_back(obj);
+    stk.erase(stk.end() - sz - 1, stk.end() - 1);
+    ixs.pop();
   }
 
   std::vector<json> stk;
