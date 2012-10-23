@@ -40,11 +40,11 @@
 #include <string>
 #include <typeinfo>
 #include <vector>
-#include <map>
 #include <memory>
 
 #include "../../lang/shared_ptr.h"
 #include "../../data/string/ustring.h"
+#include "../../data/unordered_map.h"
 
 namespace pfi {
 namespace text {
@@ -90,8 +90,8 @@ public:
     Object,
   };
 
-  typedef std::map<std::string, json>::iterator iterator;
-  typedef std::map<std::string, json>::const_iterator const_iterator;
+  struct iterator;
+  struct const_iterator;
 
   json();
   json(json_value* p): val(p) {}
@@ -388,9 +388,9 @@ private:
   }
 
 public:
-  typedef std::map<std::string, json>::iterator iterator;
-  typedef std::map<std::string, json>::const_iterator const_iterator;
-  typedef std::map<std::string, json>::size_type size_type;
+  typedef pfi::data::unordered_map<std::string, json>::iterator iterator;
+  typedef pfi::data::unordered_map<std::string, json>::const_iterator const_iterator;
+  typedef pfi::data::unordered_map<std::string, json>::size_type size_type;
   
   json_object() {}
 
@@ -491,7 +491,7 @@ private:
     return obj.release();
   }
 
-  std::map<std::string, json> member;
+  pfi::data::unordered_map<std::string, json> member;
 };
 
 class json_bool : public json_value {
@@ -635,6 +635,34 @@ inline size_t json::size() const
 
   throw json_bad_cast<size_t>("You failed to use the json as an array or an object.");
 }
+
+struct json::iterator : json_object::iterator {
+private:
+  typedef json_object::iterator base_;
+
+public:
+  iterator() {}
+  iterator(const base_& it) : base_(it) {}
+  iterator& operator=(const base_& it) {
+    base_::operator=(it);
+    return *this;
+  }
+};
+
+struct json::const_iterator : json_object::const_iterator {
+private:
+  typedef json_object::const_iterator base_;
+
+public:
+  const_iterator() {}
+  template <class Other>
+  const_iterator(const Other& it) : base_(it) {}
+  template <class Other>
+  const_iterator& operator=(const Other& it) {
+    base_::operator=(it);
+    return *this;
+  }
+};
 
 inline json::iterator json::begin()
 {
