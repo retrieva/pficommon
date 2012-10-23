@@ -20,7 +20,8 @@ def build(bld):
       'singleton.h',
       'exception.h',
       'any.h',
-      'util.h'
+      'util.h',
+      'enable_if.h'
       ])
 
   bld.shlib(
