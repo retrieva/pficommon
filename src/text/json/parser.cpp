@@ -32,6 +32,7 @@
 #include "parser.h"
 
 #include <iostream>
+#include <new>
 #include <stack>
 #include <cmath>
 #include <cstring>
@@ -116,7 +117,8 @@ json_parser::json_parser(std::istream& is)
   : is(is), it(is), end(), lineno(1), charno(1), cbuf(-1)
 {
   buf_len = 256;
-  buf = (char*)malloc(buf_len);
+  if ((buf = (char*)malloc(buf_len)) == 0)
+    throw std::bad_alloc();
 }
 
 json_parser::~json_parser()
@@ -309,8 +311,11 @@ void json_parser::parse_string_prim(char*& buf, int& buf_len, int& str_len)
   for (;;) {
     if (p+8 >= buf+buf_len) {
       size_t adv = p - buf;
+      if (char* newbuf = (char*)realloc(buf, 2*buf_len))
+        buf = newbuf;
+      else
+        throw std::bad_alloc();
       buf_len *= 2;
-      buf = (char*)realloc(buf, buf_len);
       p = buf + adv;
     }
 
