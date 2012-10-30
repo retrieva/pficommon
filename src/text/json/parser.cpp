@@ -191,7 +191,7 @@ void json_parser::parse_object(callback& cb)
 
   smatch('{');
 
-  for (int i = 0; ; i++){
+  for (int i = 0; ; i++) {
     if (speek() == '}')
       break;
     if (i > 0)
@@ -216,7 +216,7 @@ void json_parser::parse_array(callback& cb)
 
   smatch('[');
   
-  for (int i = 0; ; i++){
+  for (int i = 0; ; i++) {
     if (speek() == ']')
       break;
     if (i > 0)
@@ -262,16 +262,16 @@ void json_parser::parse_number(callback& cb)
     }
   }
   
-  if (peek() == 'e' || peek() == 'E'){
+  if (peek() == 'e' || peek() == 'E') {
     is_frac = true;
     incr();
     
     int exp_sign = 1;
     
-    if (peek() == '+'){
+    if (peek() == '+') {
       incr();
     }
-    else if (peek() == '-'){
+    else if (peek() == '-') {
       exp_sign = -1;
       incr();
     }
