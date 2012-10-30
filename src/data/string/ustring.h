@@ -89,11 +89,11 @@ namespace string {
     int nbytes = 0;
 
     for (size_t i = 0; i < sizeof(head_masks)/sizeof(head_masks[0]); ++i)
-        if ((*in & head_masks[i]) == flag_bits[i]) {
-            ret = *in++ & tail_masks[i];
-            nbytes = i + 2;
-            break;
-        }
+      if ((*in & head_masks[i]) == flag_bits[i]) {
+        ret = *in++ & tail_masks[i];
+        nbytes = i + 2;
+        break;
+      }
 
     assert(nbytes);
 
