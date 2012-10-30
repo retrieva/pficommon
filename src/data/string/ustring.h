@@ -92,6 +92,7 @@ namespace string {
         if ((*in & head_masks[i]) == flag_bits[i]) {
             ret = *in++ & tail_masks[i];
             nbytes = i + 2;
+            break;
         }
 
     assert(nbytes);
