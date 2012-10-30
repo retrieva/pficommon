@@ -117,7 +117,7 @@ json_parser::json_parser(std::istream& is)
   : is(is), it(is), end(), lineno(1), charno(1), cbuf(-1)
 {
   buf_len = 256;
-  if ((buf = (char*)malloc(buf_len)) == 0)
+  if ((buf = static_cast<char*>(malloc(buf_len))) == 0)
     throw std::bad_alloc();
 }
 
@@ -311,7 +311,7 @@ void json_parser::parse_string_prim(char*& buf, int& buf_len, int& str_len)
   for (;;) {
     if (p+8 >= buf+buf_len) {
       size_t adv = p - buf;
-      if (char* newbuf = (char*)realloc(buf, 2*buf_len))
+      if (char* newbuf = static_cast<char*>(realloc(buf, 2*buf_len)))
         buf = newbuf;
       else
         throw std::bad_alloc();
