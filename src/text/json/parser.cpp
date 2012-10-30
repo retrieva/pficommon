@@ -286,7 +286,7 @@ void json_parser::parse_number(callback& cb)
       incr();
     }
     
-    frac *= std::pow(10.0, (double)exp_sign*exp);
+    frac *= std::pow(10.0, exp_sign*exp);
   }
 
   if (is_frac)
