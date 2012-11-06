@@ -39,34 +39,38 @@
 
 #include "syscall.h"
 
-using namespace std;
+namespace pfi {
+namespace system {
+namespace mmapper {
 
-namespace pfi{
-namespace system{
-namespace mmapper{
-
-int mmapper::open(const string& filename){
-  int r;
-  close();
-
-  NO_INTR(fd, ::open(filename.c_str(), O_RDWR));
-  if (FAILED(fd)) return -1;
+int mmapper::open(const std::string& filename)
+{
+  mmapper tmp;
+  NO_INTR(tmp.fd, ::open(filename.c_str(), O_RDWR));
+  if (FAILED(tmp.fd))
+    return -1;
 
   struct stat st_buf;
-  NO_INTR(r, fstat(fd, &st_buf));
-  if (FAILED(fd)) { close(); return -1; }
-  length = st_buf.st_size;
+  int r;
+  NO_INTR(r, fstat(tmp.fd, &st_buf));
+  if (FAILED(r))
+    return -1;
+  tmp.length = st_buf.st_size;
 
-  int prot = PROT_WRITE | PROT_READ;
-  void *p = NULL;
-  NO_INTR(p, mmap(NULL, length, prot, MAP_SHARED, fd, 0));
-  if (p == MAP_FAILED) { close(); return -1; }
-  ptr = (char*)p;
+  const int prot = PROT_WRITE | PROT_READ;
+  void* p;
+  NO_INTR(p, mmap(NULL, tmp.length, prot, MAP_SHARED, tmp.fd, 0));
+  if (p == MAP_FAILED)
+    return -1;
+  tmp.ptr = static_cast<char*>(p);
+
+  swap(tmp);
 
   return 0;
 }
 
-int mmapper::close(){
+int mmapper::close()
+{
   if (fd >= 0) {
     ::close(fd);
     fd = -1;

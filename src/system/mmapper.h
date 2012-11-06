@@ -32,16 +32,22 @@
 #ifndef INCLUDE_GUARD_PFI_SYSTEM_MMAPPER_H_
 #define INCLUDE_GUARD_PFI_SYSTEM_MMAPPER_H_
 
+#include <utility>
 #include <string>
 
-namespace pfi{
-namespace system{
-namespace mmapper{
+#include "../lang/noncopyable.h"
 
-class mmapper{
+namespace pfi {
+namespace system {
+namespace mmapper {
+
+class mmapper : pfi::lang::noncopyable {
 public:
-  mmapper() : ptr(NULL), length(0), fd(-1){}
-  ~mmapper(){ close(); }
+  typedef char* iterator;
+  typedef const char* const_iterator;
+
+  mmapper() : ptr(NULL), length(0), fd(-1) {}
+  ~mmapper() { close(); }
 
   char& operator[](size_t n) { return *(ptr + n); }
   const char& operator[](size_t n) const { return *(ptr + n); }
@@ -49,13 +55,22 @@ public:
   const char* begin() const { return ptr; }
   char* end() { return ptr + length; }
   const char* end() const { return ptr + length; }
+  const char* cbegin() const { return begin(); }
+  const char* cend() const { return end(); }
   size_t size() const { return length; }
+  bool is_open() const { return ptr; }
 
   int open(const std::string& filename);
   int close();
-  
+
+  void swap(mmapper& other) {
+    std::swap(ptr, other.ptr);
+    std::swap(length, other.length);
+    std::swap(fd, other.fd);
+  }
+
 private:
-  char *ptr;
+  char* ptr;
   size_t length;
   int fd;
 };
@@ -63,4 +78,13 @@ private:
 }
 }
 }
+
+namespace std {
+template <>
+void swap(pfi::system::mmapper::mmapper& x, pfi::system::mmapper::mmapper& y)
+{
+  x.swap(y);
+}
+}
+
 #endif // #ifndef INCLUDE_GUARD_PFI_SYSTEM_MMAPPER_H_
