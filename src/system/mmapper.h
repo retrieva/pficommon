@@ -35,14 +35,19 @@
 #include <utility>
 #include <string>
 
-namespace pfi{
-namespace system{
-namespace mmapper{
+#include "../lang/noncopyable.h"
 
-class mmapper{
+namespace pfi {
+namespace system {
+namespace mmapper {
+
+class mmapper : pfi::lang::noncopyable {
 public:
-  mmapper() : ptr(NULL), length(0), fd(-1){}
-  ~mmapper(){ close(); }
+  typedef char* iterator;
+  typedef const char* const_iterator;
+
+  mmapper() : ptr(NULL), length(0), fd(-1) {}
+  ~mmapper() { close(); }
 
   char& operator[](size_t n) { return *(ptr + n); }
   const char& operator[](size_t n) const { return *(ptr + n); }
@@ -50,6 +55,8 @@ public:
   const char* begin() const { return ptr; }
   char* end() { return ptr + length; }
   const char* end() const { return ptr + length; }
+  const char* cbegin() const { return begin(); }
+  const char* cend() const { return end(); }
   size_t size() const { return length; }
   bool is_open() const { return ptr; }
 
@@ -63,7 +70,7 @@ public:
   }
 
 private:
-  char *ptr;
+  char* ptr;
   size_t length;
   int fd;
 };
