@@ -32,6 +32,7 @@
 #ifndef INCLUDE_GUARD_PFI_SYSTEM_MMAPPER_H_
 #define INCLUDE_GUARD_PFI_SYSTEM_MMAPPER_H_
 
+#include <utility>
 #include <string>
 
 namespace pfi{
@@ -54,7 +55,13 @@ public:
 
   int open(const std::string& filename);
   int close();
-  
+
+  void swap(mmapper& other) {
+    std::swap(ptr, other.ptr);
+    std::swap(length, other.length);
+    std::swap(fd, other.fd);
+  }
+
 private:
   char *ptr;
   size_t length;
@@ -64,4 +71,13 @@ private:
 }
 }
 }
+
+namespace std {
+template <>
+void swap(pfi::system::mmapper::mmapper& x, pfi::system::mmapper::mmapper& y)
+{
+  x.swap(y);
+}
+}
+
 #endif // #ifndef INCLUDE_GUARD_PFI_SYSTEM_MMAPPER_H_

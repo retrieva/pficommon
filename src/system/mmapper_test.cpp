@@ -85,3 +85,31 @@ TEST(mmapper_test, file_not_found) {
   r = m.open("file_not_found.txt");
   EXPECT_EQ(r, -1);
 }
+
+TEST(mmapper_test, swap)
+{
+  {
+    std::ofstream fs("test.txt", std::ios::out | std::ios::trunc);
+    fs << "0123456789";
+  }
+  {
+    mmapper m;
+    int r = m.open("test.txt");
+    EXPECT_EQ(r, 0);
+    EXPECT_TRUE(m.is_open());
+
+    mmapper m2;
+    m2.swap(m);
+    EXPECT_FALSE(m.is_open());
+    EXPECT_TRUE(m2.is_open());
+    EXPECT_EQ(m2[0], '0');
+
+    swap(m, m2);
+    EXPECT_TRUE(m.is_open());
+    EXPECT_FALSE(m2.is_open());
+    EXPECT_EQ(m[0], '0');
+  }
+  {
+    unlink("test.txt");
+  }
+}
