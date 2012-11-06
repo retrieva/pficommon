@@ -50,6 +50,7 @@ public:
   char* end() { return ptr + length; }
   const char* end() const { return ptr + length; }
   size_t size() const { return length; }
+  bool is_open() const { return ptr; }
 
   int open(const std::string& filename);
   int close();
