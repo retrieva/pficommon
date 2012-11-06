@@ -111,7 +111,7 @@ private:
     return c;
   }
   void ss() {
-    while(safe_isspace(peek()))
+    while(it != end && safe_isspace(peek()))
       incr();
   }
 

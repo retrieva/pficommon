@@ -32,6 +32,9 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_STRING_USTRING_H_
 #define INCLUDE_GUARD_PFI_DATA_STRING_USTRING_H_
 
+#include <assert.h>
+#include <stddef.h>
+#include <stdlib.h>
 #include <string>
 
 namespace pfi {
@@ -73,35 +76,40 @@ namespace string {
   // char[] -> uchar conversion
   template <class InputIterator>
   uchar chars_to_uchar(InputIterator &in){
-    unsigned int cur = 0;
-    bool start = true;
-    while(*in) {
-      if((*in&0xC0) != 0x80){
-        if(!start){
-          return cur;
-        }else{
-          start = false;
-        }
-        if((*in&0xFC) == 0xFC){
-          cur = *in & 0x01;
-        }else if((*in&0xF8) == 0xF8){
-          cur = *in & 0x03;
-        }else if((*in&0xF0) == 0xF0){
-          cur = *in & 0x07;
-        }else if((*in&0xE0) == 0xE0){
-          cur = *in & 0x0F;
-        }else if((*in&0xC0) == 0xC0){
-          cur = *in & 0x1F;
-        }else{
-          cur = *in;
-        }
-      }else{
-        cur = cur * 64 + (*in&0x3F);
+    if (((*in) & 0x80) == 0) // U+0000 to U+007F
+      return *in++;
+
+    assert((*in & 0xFF) > 0xC0);
+
+    static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+    static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07, 0x03, 0x01 };
+    static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
+
+    uchar ret;
+    int nbytes = 0;
+
+    for (size_t i = 0; i < sizeof(head_masks)/sizeof(head_masks[0]); ++i)
+      if ((*in & head_masks[i]) == flag_bits[i]) {
+        ret = *in++ & tail_masks[i];
+        nbytes = i + 2;
+        break;
       }
-      ++in;
+
+    assert(nbytes);
+
+    for (int i = 1; i < nbytes; ++i) {
+      assert((*in & 0xC0) == 0x80);
+      ret <<= 6;
+      ret |= *in++ & 0x3F;
     }
-    if (!start) return cur;
-    return 0;
+
+    static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000, 0x200000, 0x40000000 };
+    static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF, 0x3FFFFFF, 0x7FFFFFFF };
+
+    assert(ret >= mins[nbytes]);
+    assert(ret <= maxs[nbytes]);
+
+    return ret;
   }
 
   // uchar -> char[] conversion

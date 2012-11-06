@@ -239,49 +239,50 @@ void json_parser::parse_number(callback& cb)
   }
   
   int64_t num = 0;
-  while(safe_isdigit(peek())) {
-    num = num*10 + peek() - '0';
+  while (it != end && safe_isdigit(peek())) {
+    num = num * 10 + peek() - '0';
     incr();
   }
   
   bool is_frac = false;
   double frac = num;
   
-  if (peek() == '.') {
+  if (it != end && peek() == '.'){
     is_frac = true;
     incr();
-    
+
     double keta = 0.1;
-    if (!safe_isdigit(peek()))
+    if (it != end && !safe_isdigit(peek()))
       error("after decimal-point, digit required.");
-    
-    while (safe_isdigit(peek())) {
+
+    while (it != end && safe_isdigit(peek())) {
       frac += (peek()-'0') * keta;
       incr();
       keta *= 0.1;
     }
   }
   
-  if (peek() == 'e' || peek() == 'E') {
+  if (it != end && (peek()=='e' || peek()=='E')) {
     is_frac = true;
     incr();
     
     int exp_sign = 1;
     
-    if (peek() == '+') {
-      incr();
-    }
-    else if (peek() == '-') {
-      exp_sign = -1;
-      incr();
+    if (it != end) {
+      if (peek() == '+') {
+        incr();
+      } else if (peek() == '-') {
+        exp_sign = -1;
+        incr();
+      }
     }
     
     int exp = 0;
     
-    if (!safe_isdigit(peek()))
+    if (it != end && !safe_isdigit(peek()))
       error("after exp, digit required.");
     
-    while (safe_isdigit(peek())) {
+    while (it != end && safe_isdigit(peek())) {
       exp = exp*10 + peek() - '0';
       incr();
     }
