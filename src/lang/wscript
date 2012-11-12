@@ -9,7 +9,7 @@ def build(bld):
       'bind.h', 'bind_mf.h', 'bind_template.h',
       'demangle.h',
       'mem_fn.h', 'mem_fn_def.h', 'mem_fn_cc.h', 'mem_fn_tmpl.h',
-      'function.h', 'function_def.h',
+      'function.h',
       'noncopyable.h',
       'ref.h',
       'safe_bool.h',
@@ -62,6 +62,12 @@ def build(bld):
     features = 'gtest',
     source = 'ref_test.cpp',
     target = 'ref_test',
+    includes = '.')
+
+  bld.program(
+    features = 'gtest',
+    source = 'function_test.cpp',
+    target = 'function_test',
     includes = '.')
 
   bld.recurse(subdirs)
