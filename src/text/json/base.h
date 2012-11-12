@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2012, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -428,7 +428,7 @@ public:
   }
 
   const json& operator[](const std::string& name) const {
-    std::map<std::string, json>::const_iterator p = member.find(name);
+    const_iterator p = member.find(name);
     if (p == member.end())
       throw std::out_of_range("json_object::operator[]");
     return p->second;
@@ -447,10 +447,9 @@ public:
   size_type size() const { return member.size(); }
 
   void print(std::ostream& os, bool escape) const {
-    typedef std::map<std::string, json>::const_iterator iter_t;
     bool fst = true;
     os << '{';
-    for (iter_t it = member.begin(), end = member.end(); it != end; ++it) {
+    for (const_iterator it = member.begin(), end = member.end(); it != end; ++it) {
       if (fst)
         fst = false;
       else
@@ -463,10 +462,9 @@ public:
   }
 
   void pretty(std::ostream& os, int level, bool escape) const {
-    typedef std::map<std::string, json>::const_iterator iter_t;
     bool fst = true;
     os << '{';
-    for (iter_t it = member.begin(), end = member.end(); it != end; ++it) {
+    for (const_iterator it = member.begin(), end = member.end(); it != end; ++it) {
       if (fst) {
         fst=false;
         os << std::endl;
