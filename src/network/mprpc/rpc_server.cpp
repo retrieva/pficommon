@@ -73,27 +73,45 @@ rpc_server::rpc_server(double timeout_sec) :
 
 rpc_server::~rpc_server() { }
 
+bool rpc_server::create(uint16_t port, int backlog)
+{
+  if (sock.get() >= 0)
+    close();
+
+  return basic_server::create(port, backlog);
+}
 
 bool rpc_server::serv(uint16_t port, int nthreads)
+{
+  if (!basic_server::create(port))
+    return false;
+  return run(nthreads);
+}
+
+bool rpc_server::run(int nthreads, bool sync)
 {
   using pfi::lang::shared_ptr;
   using pfi::concurrent::thread;
 
-  if (!basic_server::create(port))
+  if (sock.get() < 0 || serv_running)
     return false;
 
   serv_running = true;
-
-  std::vector<shared_ptr<thread> > ths(nthreads);
-  for (int i=0; i<nthreads; i++) {
-    ths[i] = shared_ptr<thread>(new thread(
+  serv_threads.resize(nthreads);
+  for (int i = 0; i < nthreads; i++) {
+    serv_threads[i] = shared_ptr<thread>(new thread(
           pfi::lang::bind(&rpc_server::process, this)));
-    if (!ths[i]->start()) return false;
+    if (!serv_threads[i]->start()) {
+      stop();
+      for (int j = 0; j < i; j++) {
+        serv_threads[j]->join();
+      }
+      return false;
+    }
   }
 
-  for (int i=0; i<nthreads; i++) {
-    ths[i]->join();
-  }
+  if (sync)
+    join();
 
   return true;
 }
@@ -107,6 +125,13 @@ void rpc_server::stop()
 {
   serv_running = false;
   close();
+}
+
+void rpc_server::join()
+{
+  for (size_t i = 0; i < serv_threads.size(); i++)
+    serv_threads[i]->join();
+  serv_threads.clear();
 }
 
 void rpc_server::process()
