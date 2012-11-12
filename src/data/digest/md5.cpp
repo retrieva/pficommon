@@ -137,25 +137,34 @@ bool operator<(const md5sum &a, const md5sum &b)
 
 ostream &operator<<(ostream &os, const md5sum &m)
 {
-  ios::fmtflags prev=os.flags();
-  os<<hex;
-  os<<setw(2)<<setfill('0')<<((m.a>> 0)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.a>> 8)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.a>>16)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.a>>24)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.b>> 0)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.b>> 8)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.b>>16)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.b>>24)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.c>> 0)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.c>> 8)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.c>>16)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.c>>24)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.d>> 0)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.d>> 8)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.d>>16)&0xff);
-  os<<setw(2)<<setfill('0')<<((m.d>>24)&0xff);
-  os.flags(prev);
+  const ios::fmtflags prev_flags = os.flags();
+  const char prev_fill = os.fill('0');
+  try {
+    os << hex;
+    os << setw(2) << ((m.a>> 0)&0xff);
+    os << setw(2) << ((m.a>> 8)&0xff);
+    os << setw(2) << ((m.a>>16)&0xff);
+    os << setw(2) << ((m.a>>24)&0xff);
+    os << setw(2) << ((m.b>> 0)&0xff);
+    os << setw(2) << ((m.b>> 8)&0xff);
+    os << setw(2) << ((m.b>>16)&0xff);
+    os << setw(2) << ((m.b>>24)&0xff);
+    os << setw(2) << ((m.c>> 0)&0xff);
+    os << setw(2) << ((m.c>> 8)&0xff);
+    os << setw(2) << ((m.c>>16)&0xff);
+    os << setw(2) << ((m.c>>24)&0xff);
+    os << setw(2) << ((m.d>> 0)&0xff);
+    os << setw(2) << ((m.d>> 8)&0xff);
+    os << setw(2) << ((m.d>>16)&0xff);
+    os << setw(2) << ((m.d>>24)&0xff);
+  } catch (...) {
+    os.flags(prev_flags);
+    os.fill(prev_fill);
+    throw;
+  }
+  os.flags(prev_flags);
+  os.fill(prev_fill);
+
   return os;
 }
 

@@ -46,7 +46,9 @@ TEST(md5, empty)
 {
   pfi::data::digest::md5sum md5("");
   ostringstream oss;
+  const char fill = oss.fill();
   oss << md5;
+  EXPECT_EQ(fill, oss.fill());
   string digest = oss.str();
   EXPECT_EQ("d41d8cd98f00b204e9800998ecf8427e", digest);
 }
