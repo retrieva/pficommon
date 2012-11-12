@@ -90,10 +90,11 @@ def build(bld):
       source = 'mprpc_test.cpp',
       target = 'mprpc_test',
       includes = '. mprpc',
-      use = 'pficommon_network pficommon_system pficommon_data')
+      use = 'pficommon_network pficommon_system pficommon_data MSGPACK')
 
     bld.program(
       features = 'gtest',
       source = 'include_test.cpp',
       target = 'include_test',
-      includes = '. mprpc')
+      includes = '. mprpc',
+      use = 'MSGPACK')
