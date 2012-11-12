@@ -58,4 +58,10 @@ def build(bld):
     target = 'shared_ptr_test',
     includes = '.')
 
+  bld.program(
+    features = 'gtest',
+    source = 'ref_test.cpp',
+    target = 'ref_test',
+    includes = '.')
+
   bld.recurse(subdirs)
