@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2012, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -36,81 +36,78 @@
 #include "../../data/serialization.h"
 #include "../../lang/safe_bool.h"
 
-namespace pfi{
-namespace data{
-namespace serialization{
+namespace pfi {
+namespace data {
+namespace serialization {
 
-class json_iarchive : public pfi::lang::safe_bool<json_iarchive>{
+class json_iarchive : public pfi::lang::safe_bool<json_iarchive> {
 public:
-  json_iarchive(std::istream &is)
-    : is(is) {
-  }
+  json_iarchive(std::istream& is) : is(is) {}
 
   template <class T>
-  void get(T &v){
+  void get(T& v) {
     is >> pfi::text::json::via_json(v);
   }
 
 private:
-  std::istream &is;
+  std::istream& is;
 };
 
 template <class T>
-json_iarchive &operator>>(json_iarchive &ar, T &v)
+json_iarchive& operator>>(json_iarchive& ar, T& v)
 {
   ar.get(v);
   return ar;
 }
 
 template <class T>
-inline json_iarchive &operator&(json_iarchive &ar, T &v)
+inline json_iarchive& operator&(json_iarchive& ar, T& v)
 {
   serialize<T>(ar, v);
   return ar;
 }
 
 template <class T>
-inline void serialize(json_iarchive &ar, T &v)
+inline void serialize(json_iarchive& ar, T& v)
 {
   ar.get(v);
 }
 
-class json_oarchive : public pfi::lang::safe_bool<json_oarchive>{
+class json_oarchive : public pfi::lang::safe_bool<json_oarchive> {
 public:
-  json_oarchive(std::ostream &os, bool pretty = false, bool escape = true)
-    : os(os)
-    , pretty(pretty)
-    , escape(escape) {
-  }
+  json_oarchive(std::ostream& os, bool pretty = false, bool escape = true)
+    : os(os), pretty(pretty), escape(escape)
+  {}
 
   template <class T>
-  void put(const T &v){
+  void put(const T& v) {
     pfi::text::json::gen_print(os, pfi::text::json::to_json(v), pretty, escape);
-    if (!pretty) os<<std::endl;
+    if (!pretty)
+      os << std::endl;
   }
 
 private:
-  std::ostream &os;
+  std::ostream& os;
   bool pretty;
   bool escape;
 };
 
 template <class T>
-json_oarchive &operator<<(json_oarchive &ar, const T &v)
+json_oarchive& operator<<(json_oarchive& ar, const T& v)
 {
   ar.put(v);
   return ar;
 }
 
 template <class T>
-inline json_oarchive &operator&(json_oarchive &ar, T &v)
+inline json_oarchive& operator&(json_oarchive& ar, T& v)
 {
   serialize<T>(ar, v);
   return ar;
 }
 
 template <class T>
-inline void serialize(json_oarchive &ar, T &v)
+inline void serialize(json_oarchive& ar, T& v)
 {
   ar.put(v);
 }
