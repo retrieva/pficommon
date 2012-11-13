@@ -88,6 +88,7 @@ public:
 
   binary_iarchive& read(char* p, int size) {
     is.read(p, size);
+    return *this;
   }
 
   bool bool_test() const {
