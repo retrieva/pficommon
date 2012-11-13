@@ -71,75 +71,32 @@ Archive& operator&(Archive& ar, const T& v)
 }
 
 class binary_iarchive : public pfi::lang::safe_bool<binary_iarchive> {
+  binary_iarchive(const binary_iarchive&);
+  binary_iarchive& operator=(const binary_iarchive&);
+
 public:
   binary_iarchive(std::istream& is)
-    : is(is), buf(is.rdbuf()), bad(false)
+    : is(is)
   {}
 
   static const bool is_read = true;
 
   template <int N>
-  void read(char* p) {
-    read(p, N);
+  binary_iarchive& read(char* p) {
+    return read(p, N);
   }
 
-  void read(char* p, int size) {
-    for (int i = 0; i < size-1; i++)
-      *p++ = buf->sbumpc();
-    int t = buf->sbumpc();
-    if (t == EOF)
-      bad = true;
-    *p++ = t;
+  binary_iarchive& read(char* p, int size) {
+    is.read(p, size);
   }
 
   bool bool_test() const {
-    return !bad /*&& !!is*/;
+    return is;
   }
 
 private:
   std::istream& is;
-  std::streambuf* buf;
-  bool bad;
 };
-
-template <>
-inline void binary_iarchive::read<1>(char* p)
-{
-  *p++ = buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
-
-template <>
-inline void binary_iarchive::read<2>(char* p)
-{
-  *p++=buf->sbumpc();
-  *p++=buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
-
-template <>
-inline void binary_iarchive::read<4>(char* p)
-{
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
-
-template <>
-inline void binary_iarchive::read<8>(char* p)
-{
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
 
 template <class T>
 binary_iarchive& operator>>(binary_iarchive& ar, T& v)
