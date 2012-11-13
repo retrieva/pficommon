@@ -47,22 +47,21 @@ namespace pfi {
 namespace text {
 namespace json {
 
+namespace detail {
+template <class To>
+To const& throw_json_bad_cast(const json& from)
+{
+    throw json_bad_cast<To>(std::string("Failed json_cast from ") + typeid(*from.get()).name() + " to " + typeid(To).name() + ".");
+};
+}
+
 template <class T>
 T json_cast_impl(const json& v);
 
 template <class T>
 T json_cast(const json& v)
 {
-  try {
-    return json_cast_impl<T>(v);
-  } catch (std::bad_cast& e) {
-    std::string message("Failed json_cast from ");
-    message += typeid(*v.get()).name();
-    message += " to ";
-    message += typeid(T).name();
-    message += '.';
-    throw json_bad_cast<T>(message);
-  }
+  return json_cast_impl<T>(v);
 }
 
 template <class T>
@@ -71,8 +70,10 @@ T json_cast_with_default(const json& js, const T& def = T());
 template <>
 inline long json_cast_impl(const json& js)
 {
-  const json_integer& p = dynamic_cast<const json_integer&>(*js.get());
-  return p.get();
+  if (const json_integer* p = dynamic_cast<const json_integer*>(js.get()))
+    return p->get();
+
+  return detail::throw_json_bad_cast<long>(js);
 }
 
 template <>
@@ -85,8 +86,10 @@ inline long json_cast_with_default(const json& js, const long& def)
 template <>
 inline long long json_cast_impl(const json& js)
 {
-  const json_integer& p = dynamic_cast<const json_integer&>(*js.get());
-  return p.get();
+  if (const json_integer* p = dynamic_cast<const json_integer*>(js.get()))
+    return p->get();
+
+  return detail::throw_json_bad_cast<long long>(js);
 }
 
 template <>
@@ -111,11 +114,12 @@ inline int json_cast_with_default(const json& js, const int& def)
 template <>
 inline float json_cast_impl(const json& js)
 {
-  const json_float* f = dynamic_cast<const json_float*>(js.get());
-  if (f)
-    return f->get();
-  const json_integer& i = dynamic_cast<const json_integer&>(*js.get());
-  return i.get();
+  if (const json_float* p = dynamic_cast<const json_float*>(js.get()))
+    return p->get();
+  if (const json_integer* p = dynamic_cast<const json_integer*>(js.get()))
+    return p->get();
+
+  return detail::throw_json_bad_cast<float>(js);
 }
 
 template <>
@@ -131,11 +135,12 @@ inline float json_cast_with_default(const json& js, const float& def)
 template <>
 inline double json_cast_impl(const json& js)
 {
-  const json_float* f = dynamic_cast<const json_float*>(js.get());
-  if (f)
-    return f->get();
-  const json_integer& i = dynamic_cast<const json_integer&>(*js.get());
-  return i.get();
+  if (const json_float* p = dynamic_cast<const json_float*>(js.get()))
+    return p->get();
+  if (const json_integer* p = dynamic_cast<const json_integer*>(js.get()))
+    return p->get();
+
+  return detail::throw_json_bad_cast<double>(js);
 }
 
 template <>
@@ -151,8 +156,10 @@ inline double json_cast_with_default(const json& js, const double& def)
 template <>
 inline std::string json_cast_impl(const json& js)
 {
-  const json_string& p = dynamic_cast<const json_string&>(*js.get());
-  return p.get();
+  if (const json_string* p = dynamic_cast<const json_string*>(js.get()))
+    return p->get();
+
+  return detail::throw_json_bad_cast<std::string>(js);
 }
 
 template <>
@@ -165,8 +172,10 @@ inline std::string json_cast_with_default(const json& js, const std::string& def
 template <>
 inline bool json_cast_impl(const json& js)
 {
-  const json_bool& p = dynamic_cast<const json_bool&>(*js.get());
-  return p.get();
+  if (const json_bool* p = dynamic_cast<const json_bool*>(js.get()))
+    return p->get();
+
+  return detail::throw_json_bad_cast<bool>(js);
 }
 
 template <>
