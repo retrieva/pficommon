@@ -190,8 +190,8 @@ binary_oarchive& operator<<(binary_oarchive& ar, const T& v)
 #define gen_serial_binary_oarchive(tt)				\
     inline void serialize(binary_oarchive& ar, tt n)		\
   {								\
-    n = pfi::system::endian::to_little(n);		\
-    ar.write<sizeof(n)>(reinterpret_cast<const char*>(&n)); \
+    n = pfi::system::endian::to_little(n);		        \
+    ar.write<sizeof(n)>(reinterpret_cast<const char*>(&n));     \
   }								\
 
 gen_serial_binary_oarchive(bool);
