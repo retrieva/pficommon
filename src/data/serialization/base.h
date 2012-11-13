@@ -139,22 +139,25 @@ gen_serial_binary_iarchive(long double);
 #undef gen_serial_binary_iarchive
 
 class binary_oarchive : public pfi::lang::safe_bool<binary_oarchive> {
+  binary_oarchive(const binary_oarchive&);
+  binary_oarchive& operator=(const binary_oarchive&);
+
 public:
   binary_oarchive(std::ostream& os)
-    : os(os), it(os)
+    : os(os)
   {}
   virtual ~binary_oarchive() {}
 
   static const bool is_read = false;
 
   template <int N>
-  void write(const char* p) {
-    write(p, N);
+  binary_oarchive& write(const char* p) {
+    return write(p, N);
   }
 
-  void write(const char* p, int size) {
-    for (int i = 0; i < size; i++)
-      *it = *p++;
+  binary_oarchive& write(const char* p, int size) {
+    os.write(p, size);
+    return *this;
   }
 
   void flush() {
@@ -167,44 +170,7 @@ public:
 
 private:
   std::ostream& os;
-  std::ostreambuf_iterator<char> it;
 };
-
-template <>
-inline void binary_oarchive::write<1>(const char* p)
-{
-  *it = *p++;
-}
-
-template <>
-inline void binary_oarchive::write<2>(const char* p)
-{
-  *it = *p++;
-  *it = *p++;
-}
-
-template <>
-inline void binary_oarchive::write<4>(const char *p)
-{
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-}
-
-template <>
-inline void binary_oarchive::write<8>(const char* p)
-{
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-  *it = *p++;
-}
-
 
 template <class T>
 binary_oarchive& operator<<(binary_oarchive& ar, T& v)
