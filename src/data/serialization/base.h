@@ -187,42 +187,27 @@ binary_oarchive& operator<<(binary_oarchive& ar, const T& v)
 }
 
 #define gen_serial_binary_oarchive(tt)				\
-    inline void serialize(binary_oarchive& ar, tt& n)		\
+    inline void serialize(binary_oarchive& ar, tt n)		\
   {								\
-    tt tmp = pfi::system::endian::to_little(n);		\
-    ar.write<sizeof(tmp)>(reinterpret_cast<const char*>(&tmp)); \
+    n = pfi::system::endian::to_little(n);		\
+    ar.write<sizeof(n)>(reinterpret_cast<const char*>(&n)); \
   }								\
 
 gen_serial_binary_oarchive(bool);
-gen_serial_binary_oarchive(const bool);
 gen_serial_binary_oarchive(char);
-gen_serial_binary_oarchive(const char);
 gen_serial_binary_oarchive(signed char);
-gen_serial_binary_oarchive(const signed char);
 gen_serial_binary_oarchive(unsigned char);
-gen_serial_binary_oarchive(const unsigned char);
 gen_serial_binary_oarchive(short);
-gen_serial_binary_oarchive(const short);
 gen_serial_binary_oarchive(unsigned short);
-gen_serial_binary_oarchive(const unsigned short);
 gen_serial_binary_oarchive(int);
-gen_serial_binary_oarchive(const int);
 gen_serial_binary_oarchive(unsigned int);
-gen_serial_binary_oarchive(const unsigned int);
 gen_serial_binary_oarchive(long);
-gen_serial_binary_oarchive(const long);
 gen_serial_binary_oarchive(unsigned long);
-gen_serial_binary_oarchive(const unsigned long);
 gen_serial_binary_oarchive(long long);
-gen_serial_binary_oarchive(const long long);
 gen_serial_binary_oarchive(unsigned long long);
-gen_serial_binary_oarchive(const unsigned long long);
 gen_serial_binary_oarchive(float);
-gen_serial_binary_oarchive(const float);
 gen_serial_binary_oarchive(double);
-gen_serial_binary_oarchive(const double);
 gen_serial_binary_oarchive(long double);
-gen_serial_binary_oarchive(const long double);
 
 #undef gen_serial_binary_oarchive
 
