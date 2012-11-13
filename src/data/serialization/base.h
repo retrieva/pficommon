@@ -113,7 +113,6 @@ binary_iarchive& operator>>(binary_iarchive& ar, const T& v)
 }
 
 #define gen_serial_binary_iarchive(tt)					\
-  template <>								\
   inline void serialize(binary_iarchive& ar, tt& n)			\
   {									\
     tt tmp;								\
