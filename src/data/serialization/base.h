@@ -187,7 +187,6 @@ binary_oarchive& operator<<(binary_oarchive& ar, const T& v)
 }
 
 #define gen_serial_binary_oarchive(tt)				\
-  template <>							\
     inline void serialize(binary_oarchive& ar, tt& n)		\
   {								\
     tt tmp = pfi::system::endian::to_little(n);		\
