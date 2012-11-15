@@ -29,6 +29,7 @@ def build(bld):
       'serialization/tr1_unordered_map.h',
       'serialization/unordered_set.h',
       'serialization/tr1_unordered_set.h',
+      'serialization/google_sparse_map.h',
       'serialization/pair.h',
       'serialization/iostream.h',
       'encoding/base64.h',

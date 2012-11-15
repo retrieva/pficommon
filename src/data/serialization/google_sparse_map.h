@@ -29,18 +29,43 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_H_
-#define INCLUDE_GUARD_PFI_DATA_SERIALIZATION_H_
+#ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_GOOGLE_SPARSE_MAP_H_
+#define INCLUDE_GUARD_PFI_DATA_SERIALIZATION_GOOGLE_SPARSE_MAP_H_
 
-#include "serialization/base.h"
-#include "serialization/array.h"
-#include "serialization/string.h"
-#include "serialization/vector.h"
-#include "serialization/deque.h"
-#include "serialization/list.h"
-#include "serialization/set.h"
-#include "serialization/map.h"
-#include "serialization/google_sparse_map.h"
+#include "base.h"
 
-#include "serialization/iostream.h"
-#endif // #ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_H_
+#include <google/sparse_hash_map>
+
+#include "pair.h"
+
+namespace pfi{
+namespace data{
+namespace serialization{
+
+template <class Archive, class K, class V, class H, class P, class A>
+void serialize(Archive &ar, google::sparse_hash_map<K, V, H, P, A> &m)
+{
+  uint32_t size=static_cast<uint32_t>(m.size());
+  ar & size;
+
+  if (ar.is_read){
+    m.clear();
+    while(size--){
+      std::pair<K,V> v;
+      ar & v;
+      m.insert(v);
+    }
+  }
+  else{
+    for (typename google::sparse_hash_map<K,V,H,P,A>::iterator p=m.begin();
+         p!=m.end();p++){
+      std::pair<K,V> v(*p);
+      ar & v;
+    }
+  }
+}
+
+} // serialization
+} // data
+} // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_DATA_SERIALIZATION_GOOGLE_SPARSE_MAP_H_
