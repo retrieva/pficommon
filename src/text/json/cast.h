@@ -51,7 +51,12 @@ namespace detail {
 template <class To>
 To const& throw_json_bad_cast(const json& from)
 {
-    throw json_bad_cast<To>(std::string("Failed json_cast from ") + typeid(*from.get()).name() + " to " + typeid(To).name() + ".");
+    std::string msg("Failed json_cast from ");
+    msg += typeid(*from.get()).name();
+    msg += " to ";
+    msg += typeid(To).name();
+    msg += '.';
+    throw json_bad_cast<To>(msg);
 }
 }
 
