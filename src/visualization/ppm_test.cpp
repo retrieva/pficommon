@@ -131,7 +131,7 @@ TEST(ppm,out_of_range_access_safety){
 
     for(int y=0;y<p.height();++y){
       for(int x=0;x<p.width();++x){
-        p(x,y)==p_orig(x,y);
+        EXPECT_EQ(p_orig(x,y), p(x,y));
       }
     }
   }

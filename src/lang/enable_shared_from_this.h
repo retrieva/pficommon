@@ -29,63 +29,46 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// *** THIS FILE MUST NOT BE INCLUDE DIRECTORY ***
-// THIS FILE IS INCLUDED BY "function.h"
+#ifndef INCLUDE_GUARD_PFI_LANG_ENABLE_SHARED_FROM_THIS_H_
+#define INCLUDE_GUARD_PFI_LANG_ENABLE_SHARED_FROM_THIS_H_
 
-template <class R TARG>
-class ARITY : public safe_bool<ARITY<R BARG> > { 
-public:
-  typedef R result_type;
+#include <memory>
+#include <tr1/memory>
+#include "shared_ptr.h"
 
-  R operator()(FARG) const {
-    return (*content)(RARG);
-  }
+namespace pfi {
+namespace lang {
 
-  ARITY()
-    :content(){
-  }
+template <class T>
+class enable_shared_from_this : public std::tr1::enable_shared_from_this<T> {
+  typedef std::tr1::enable_shared_from_this<T> base;
 
-  template <class Func>
-  ARITY(const Func &func)
-    :content(shared_ptr<placeholder>(new holder<Func>(func))){
-  }
-
-  template <class Func>
-  ARITY &operator=(const Func &func){
-    content=shared_ptr<placeholder>(new holder<Func>(func));
+protected:
+  enable_shared_from_this() {}
+  enable_shared_from_this(const enable_shared_from_this& x) : base(x) {}
+  enable_shared_from_this& operator=(const enable_shared_from_this& x) {
+    base::operator=(x);
     return *this;
   }
+  ~enable_shared_from_this() {}
 
-  bool bool_test() const {
-    return !!content;
-  }
-
-private:
-  class placeholder{
-  public:
-    virtual ~placeholder(){}
-    virtual R operator()(FARG)=0;
-  };
-
-  template <class Func>
-  class holder : public placeholder{
-  public:
-    holder(const Func &f) :f(f){}
-    R operator()(FARG){
-      return f(RARG);
-    }
-  private:
-    Func f;
-  };
-
-  shared_ptr<placeholder> content;
-};
-
-template <class R TARG>
-class function<R(AARG)> : public ARITY<R BARG>{
 public:
-  function() :ARITY<R BARG>() {}
-
-  template <class Func>
-  function(const Func &f) :ARITY<R BARG>(f) {}
+  shared_ptr<T> shared_from_this() {
+    try {
+      return shared_ptr<T>(base::shared_from_this());
+    } catch (std::tr1::bad_weak_ptr&) {
+      throw pfi::lang::bad_weak_ptr();
+    }
+  }
+  shared_ptr<const T> shared_from_this() const {
+    try {
+      return shared_ptr<const T>(base::shared_from_this());
+    } catch (std::tr1::bad_weak_ptr&) {
+      throw pfi::lang::bad_weak_ptr();
+    }
+  }
 };
+
+} // lang
+} // pfi
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_ENABLE_SHARED_FROM_THIS_H_

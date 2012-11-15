@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2012, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -32,23 +32,22 @@
 #include "parser.h"
 
 #include <iostream>
+#include <new>
 #include <stack>
 #include <cmath>
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 
 #include "../../lang/exception.h"
 
-namespace pfi{
-namespace text{
-namespace json{
+namespace pfi {
+namespace text {
+namespace json {
 
 class json_builder : public json_parser::callback {
 public:
-  ~json_builder() {
-  }
-
-  const json &get() const {
+  const json& get() const {
     if (stk.size() != 1)
       throw pfi::lang::parse_error();
     return stk[0];
@@ -70,42 +69,42 @@ public:
     stk.push_back(new json_float(val));
   }
 
-  void string(const char *val, size_t len) {
+  void string(const char* val, size_t len) {
     stk.push_back(new json_string(std::string(val, val+len)));
   }
 
   void start_object() {
     ixs.push(stk.size());
   }
-  void object_key(const char *val, size_t len) {
+  void object_key(const char* val, size_t len) {
     key.push_back(std::string(val, val+len));
   }
   void end_object() {
-    json_object *obj = new json_object();
+    json obj(new json_object());
     int ix = ixs.top();
-    ixs.pop();
-    int jx = (int)stk.size();
+    int jx = stk.size();
     int sz = jx - ix;
     for (int i = 0; i < sz; i++)
-      obj->add(key[key.size() - sz + i], stk[ix + i]);
-    stk.erase(stk.end() - sz, stk.end());
-    key.erase(key.end() - sz, key.end());
+      obj.add(key[key.size() - sz + i], stk[ix + i]);
     stk.push_back(obj);
+    stk.erase(stk.end() - sz - 1, stk.end() - 1);
+    key.erase(key.end() - sz, key.end());
+    ixs.pop();
   }
   
   void start_array() {
     ixs.push(stk.size());
   }
   void end_array() {
-    json_array *obj = new json_array();
+    json obj(new json_array());
     int ix = ixs.top();
-    ixs.pop();
-    int jx = (int)stk.size();
+    int jx = stk.size();
     int sz = jx - ix;
     for (int i = 0; i < sz; i++)
-      obj->add(stk[ix + i]);
-    stk.erase(stk.end() - sz, stk.end());
+      obj.add(stk[ix + i]);
     stk.push_back(obj);
+    stk.erase(stk.end() - sz - 1, stk.end() - 1);
+    ixs.pop();
   }
 
   std::vector<json> stk;
@@ -114,11 +113,12 @@ public:
   std::stack<int> ixs;
 };
 
-json_parser::json_parser(std::istream &is):
-  is(is), it(is), end(), lineno(1), charno(1), cbuf(-1)
+json_parser::json_parser(std::istream& is)
+  : is(is), it(is), end(), lineno(1), charno(1), cbuf(-1)
 {
   buf_len = 256;
-  buf = (char*)malloc(buf_len);
+  if ((buf = static_cast<char*>(malloc(buf_len))) == 0)
+    throw std::bad_alloc();
 }
 
 json_parser::~json_parser()
@@ -133,25 +133,26 @@ json json_parser::parse()
   return jb.get();
 }
 
-void json_parser::parse_stream(callback &cb)
+void json_parser::parse_stream(callback& cb)
 {
   ss();
-  if (it==end) throw lang::end_of_data("json_parser reached end of data");
+  if (it == end)
+    throw lang::end_of_data("json_parser reached end of data");
   return parse_impl(cb);
 }
 
-void json_parser::parse_impl(callback &cb)
+void json_parser::parse_impl(callback& cb)
 {
   ss();
-  switch(peek()){
+  switch(peek()) {
   case '{':
     parse_object(cb);
     return;
-    
+
   case '[':
     parse_array(cb);
     return;
-    
+
   case '0': case '1': case '2': case '3': case '4': 
   case '5': case '6': case '7': case '8': case '9': 
   case '-':
@@ -161,7 +162,7 @@ void json_parser::parse_impl(callback &cb)
   case '\"':
     parse_string(cb);
     return;
-    
+
   case 'f':
     parse_false(cb);
     return;
@@ -171,8 +172,8 @@ void json_parser::parse_impl(callback &cb)
   case 't':
     parse_true(cb);
     return;
-    
-  default:{
+
+  default: {
     char err_msg[64];
     snprintf(err_msg, sizeof(err_msg),
              "invalid char: \'%s\' (U+%04X)",
@@ -184,15 +185,17 @@ void json_parser::parse_impl(callback &cb)
   return; // dmy for supressing warning
 }
 
-void json_parser::parse_object(callback &cb)
+void json_parser::parse_object(callback& cb)
 {
   cb.start_object();
-  
+
   smatch('{');
 
-  for (int i=0; ; i++){
-    if (speek()=='}') break;
-    if (i>0) smatch(',');
+  for (int i = 0; ; i++) {
+    if (speek() == '}')
+      break;
+    if (i > 0)
+      smatch(',');
     
     ss();
     int len = 0;
@@ -207,15 +210,17 @@ void json_parser::parse_object(callback &cb)
   cb.end_object();
 }
 
-void json_parser::parse_array(callback &cb)
+void json_parser::parse_array(callback& cb)
 {
   cb.start_array();
 
   smatch('[');
   
-  for (int i=0; ; i++){
-    if (speek()==']') break;
-    if (i>0) smatch(',');
+  for (int i = 0; ; i++) {
+    if (speek() == ']')
+      break;
+    if (i > 0)
+      smatch(',');
     
     parse_impl(cb);
   }
@@ -225,63 +230,64 @@ void json_parser::parse_array(callback &cb)
   cb.end_array();
 }
 
-void json_parser::parse_number(callback &cb)
+void json_parser::parse_number(callback& cb)
 {
-  int sign=1;
-  if (peek()=='-'){
+  int sign = 1;
+  if (peek() == '-') {
     incr();
     sign=-1;
   }
   
-  int64_t num=0;
-  while(safe_isdigit(peek())){
-    num=num*10+peek()-'0';
+  int64_t num = 0;
+  while (it != end && safe_isdigit(peek())) {
+    num = num * 10 + peek() - '0';
     incr();
   }
   
-  bool is_frac=false;
-  double frac=num;
+  bool is_frac = false;
+  double frac = num;
   
-  if (peek()=='.'){
-    is_frac=true;
+  if (it != end && peek() == '.'){
+    is_frac = true;
     incr();
-    
-    double keta=0.1;
-    if (!safe_isdigit(peek()))
+
+    double keta = 0.1;
+    if (it != end && !safe_isdigit(peek()))
       error("after decimal-point, digit required.");
-    
-    while(safe_isdigit(peek())){
-      frac+=(peek()-'0')*keta;
+
+    while (it != end && safe_isdigit(peek())) {
+      frac += (peek()-'0') * keta;
       incr();
-      keta*=0.1;
+      keta *= 0.1;
     }
   }
   
-  if (peek()=='e' || peek()=='E'){
-    is_frac=true;
+  if (it != end && (peek()=='e' || peek()=='E')) {
+    is_frac = true;
     incr();
     
-    int exp_sign=1;
+    int exp_sign = 1;
     
-    if (peek()=='+'){
-      incr();
+    if (it != end) {
+      if (peek() == '+') {
+        incr();
+      } else if (peek() == '-') {
+        exp_sign = -1;
+        incr();
+      }
     }
-    else if (peek()=='-'){
-      exp_sign=-1;
-      incr();
-    }
     
-    int exp=0;
+    int exp = 0;
     
-    if (!safe_isdigit(peek()))
+    if (it != end && !safe_isdigit(peek()))
       error("after exp, digit required.");
     
-    while(safe_isdigit(peek())){
-      exp=exp*10+peek()-'0';
+    while (it != end && safe_isdigit(peek())) {
+      exp = exp*10 + peek() - '0';
       incr();
     }
     
-    frac*=std::pow(10.0, (double)exp_sign*exp);
+    frac *= std::pow(10.0, exp_sign*exp);
   }
 
   if (is_frac)
@@ -290,49 +296,53 @@ void json_parser::parse_number(callback &cb)
     cb.integer(sign*num);
 }
 
-void json_parser::parse_string(callback &cb)
+void json_parser::parse_string(callback& cb)
 {
   int len = 0;
   parse_string_prim(buf, buf_len, len);
   cb.string(buf, len);
 }
 
-void json_parser::parse_string_prim(char *&buf, int &buf_len, int &str_len)
+void json_parser::parse_string_prim(char*& buf, int& buf_len, int& str_len)
 {
-  char *p = buf;
+  char* p = buf;
 
   match('\"');
   
-  for (;;){
-    if (p+8>=buf+buf_len){
-      size_t adv=p-buf;
-      buf_len*=2;
-      buf=(char*)realloc(buf, buf_len);
-      p=buf+adv;
+  for (;;) {
+    if (p+8 >= buf+buf_len) {
+      size_t adv = p - buf;
+      if (char* newbuf = static_cast<char*>(realloc(buf, 2*buf_len)))
+        buf = newbuf;
+      else
+        throw std::bad_alloc();
+      buf_len *= 2;
+      p = buf + adv;
     }
 
-    if (peek()=='\"') break;
+    if (peek() == '\"')
+      break;
     
-    if (peek()=='\\'){
+    if (peek() == '\\') {
       incr();
 
-      int c=incr();
+      int c = incr();
       
-      switch(c){
-      case '\"': *p++='\"'; break;
-      case '\\': *p++='\\'; break;
-      case '/':  *p++='/';  break;
-      case 'b':  *p++='\b'; break;
-      case 'f':  *p++='\f'; break;
-      case 'n':  *p++='\n'; break;
-      case 'r':  *p++='\r'; break;
-      case 't':  *p++='\t'; break;
+      switch (c) {
+      case '\"': *p++ = '\"'; break;
+      case '\\': *p++ = '\\'; break;
+      case '/':  *p++ = '/';  break;
+      case 'b':  *p++ = '\b'; break;
+      case 'f':  *p++ = '\f'; break;
+      case 'n':  *p++ = '\n'; break;
+      case 'r':  *p++ = '\r'; break;
+      case 't':  *p++ = '\t'; break;
         
-      case 'u':{
-        int a=parse_hex();
-        int b=parse_hex();
-        int c=parse_hex();
-        int d=parse_hex();
+      case 'u': {
+        int a = parse_hex();
+        int b = parse_hex();
+        int c = parse_hex();
+        int d = parse_hex();
         pfi::data::string::uchar_to_chars((a<<12)|(b<<8)|(c<<4)|d, p);
         break;
       }
@@ -347,14 +357,14 @@ void json_parser::parse_string_prim(char *&buf, int &buf_len, int &str_len)
 
       }
     }
-    else{
-      int c=incr();
+    else {
+      int c = incr();
       
       if ((c>=0x20 && c<=0x21) ||
           (c>=0x23 && c<=0x5B) ||
           (c>=0x5D && c<=0x10FFFF))
         pfi::data::string::uchar_to_chars(c, p);
-      else{
+      else {
         char err_msg[64];
         snprintf(err_msg, sizeof(err_msg),
                  "unexpected unescaped char: \'%s\' (U+%04X)",
@@ -369,7 +379,7 @@ void json_parser::parse_string_prim(char *&buf, int &buf_len, int &str_len)
   str_len = p - buf;
 }
 
-void json_parser::parse_false(callback &cb)
+void json_parser::parse_false(callback& cb)
 {
   match('f');
   match('a');
@@ -379,7 +389,7 @@ void json_parser::parse_false(callback &cb)
   cb.boolean(false);
 }
 
-void json_parser::parse_null(callback &cb)
+void json_parser::parse_null(callback& cb)
 {
   match('n');
   match('u');
@@ -388,7 +398,7 @@ void json_parser::parse_null(callback &cb)
   cb.null();
 }
 
-void json_parser::parse_true(callback &cb)
+void json_parser::parse_true(callback& cb)
 {
   match('t');
   match('r');
@@ -397,7 +407,7 @@ void json_parser::parse_true(callback &cb)
   cb.boolean(true);
 }
 
-void json_parser::error(const std::string &msg)
+void json_parser::error(const std::string& msg)
 {
   std::string filename="<istream>";
   

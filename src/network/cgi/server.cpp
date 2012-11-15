@@ -161,12 +161,12 @@ void run_server::run(bool sync)
       <<", thread-num="<<thread_num
       <<", timeout="<<ssock->timeout()<<endl;
 
-  ths=vector<shared_ptr<thread> >(thread_num);
-  vector<shared_ptr<cgi, threading_model::multi_thread> > cgis(thread_num);
+  ths=vector<pfi::lang::shared_ptr<thread> >(thread_num);
+  vector<pfi::lang::shared_ptr<cgi> > cgis(thread_num);
 
   for (int i=0; i<thread_num; i++){
-    cgis[i]=shared_ptr<cgi, threading_model::multi_thread>(dynamic_cast<cgi*>(c.clone()));
-    ths[i]=shared_ptr<thread>(new thread(bind(&run_server::process, this, ssock, cgis[i])));
+    cgis[i]=pfi::lang::shared_ptr<cgi>(dynamic_cast<cgi*>(c.clone()));
+    ths[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&run_server::process, this, ssock, cgis[i])));
     if (!ths[i]->start()){
       ostringstream oss;
       oss<<"unable to start thread"<<endl;
@@ -185,7 +185,7 @@ void run_server::join()
   ths.clear();
 }
 
-static shared_ptr<http::response> gen_resp(stringstream &ss)
+static pfi::lang::shared_ptr<http::response> gen_resp(stringstream &ss)
 {
   http::header head(ss);
 
@@ -210,7 +210,7 @@ static shared_ptr<http::response> gen_resp(stringstream &ss)
     head.erase("status");
   }
   
-  shared_ptr<http::response> resp(new http::response(code, reason));
+  pfi::lang::shared_ptr<http::response> resp(new http::response(code, reason));
 
   head["Content-Type"]=content_type;
 
@@ -232,10 +232,10 @@ string str_to_upper(const string &s)
 }
 
 void run_server::process(socket_type ssock,
-                         shared_ptr<cgi, threading_model::multi_thread> cc)
+                         pfi::lang::shared_ptr<cgi> cc)
 {
   for (;;){
-    shared_ptr<stream_socket> sock(ssock->accept());
+    pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());
     if (!sock) continue;
 
     if (ssock->timeout()>0 && !sock->set_timeout(ssock->timeout()))
@@ -264,15 +264,15 @@ void run_server::process(socket_type ssock,
       env["SERVER_PORT"]=lexical_cast<string>(ssock->port());
       env["SERVER_NAME"]="localhost";
       env["SERVER_PROTOCOL"]="HTTP/1.1";
-      env["SERVER_SIGNATURE"]="pficommon/"PFICOMMON_VERSION" standalone web server";
-      env["SERVER_SOFTWARE"]="pficommon/"PFICOMMON_VERSION;
+      env["SERVER_SIGNATURE"]="pficommon/" PFICOMMON_VERSION " standalone web server";
+      env["SERVER_SOFTWARE"]="pficommon/" PFICOMMON_VERSION;
 
       env["CONTENT_LENGTH"]=req.head()["Content-Length"];
       env["CONTENT_TYPE"]=req.head()["Content-Type"];
 
       cc->exec(req.body(), sout, cerr, env);
 
-      shared_ptr<http::response> resp=gen_resp(sout);
+      pfi::lang::shared_ptr<http::response> resp=gen_resp(sout);
       resp->send(sock);
     }
     catch(const exception &e){

@@ -3,6 +3,7 @@
 #include "bind_mf.h"
 #include "cast.h"
 #include "demangle.h"
+#include "enable_shared_from_this.h"
 #include "exception.h"
 #include "function.h"
 #include "mem_fn_cc.h"
@@ -16,3 +17,4 @@
 #include "shared_ptr.h"
 #include "singleton.h"
 #include "util.h"
+#include "weak_ptr.h"

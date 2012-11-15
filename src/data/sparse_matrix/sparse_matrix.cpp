@@ -105,7 +105,8 @@ namespace sparse_matrix {
       ifs.read((char*)&rowNum,sizeof(int));
       rowInfos=vector<RowInfo>(rowNum);
       offsets=vector<int>(rowNum);
-      ifs.read((char*)&rowInfos[0],rowNum*sizeof(RowInfo));
+      if (rowNum > 0)
+        ifs.read((char*)&rowInfos[0],rowNum*sizeof(RowInfo));
       if (offsets.size()>0) {
         offsets[0]=0;
         for (int i=1;i<(int)offsets.size();++i) offsets[i]=offsets[i-1]+rowInfos[i-1].size;

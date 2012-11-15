@@ -32,168 +32,26 @@
 #ifndef INCLUDE_GUARD_PFI_LANG_FUNCTION_H_
 #define INCLUDE_GUARD_PFI_LANG_FUNCTION_H_
 
-#include "shared_ptr.h"
-#include "safe_bool.h"
+#include <tr1/functional>
 
-namespace pfi{
-namespace lang{
+namespace pfi {
+namespace lang {
 
-template <class T>
-class function{};
+template <class F>
+class function : public std::tr1::function<F> {
+  typedef std::tr1::function<F> base;
 
-#define ARITY function0
-#define TARG
-#define AARG
-#define BARG
-#define FARG
-#define RARG
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
+public:
+  function() {}
+  template <class Fn>
+  function (const Fn& f) : base(f) {}
 
-#define ARITY function1
-#define TARG ,class T0
-#define AARG T0
-#define BARG , T0
-#define FARG T0 t0
-#define RARG t0
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function2
-#define TARG , class T0, class T1
-#define AARG T0, T1
-#define BARG , T0, T1
-#define FARG T0 t0, T1 t1
-#define RARG t0, t1
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function3
-#define TARG , class T0, class T1, class T2
-#define AARG T0, T1, T2
-#define BARG , T0, T1, T2
-#define FARG T0 t0, T1 t1, T2 t2
-#define RARG t0, t1, t2
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function4
-#define TARG , class T0, class T1, class T2, class T3
-#define AARG T0, T1, T2, T3
-#define BARG , T0, T1, T2, T3
-#define FARG T0 t0, T1 t1, T2 t2, T3 t3
-#define RARG t0, t1, t2, t3
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function5
-#define TARG , class T0, class T1, class T2, class T3, class T4
-#define AARG T0, T1, T2, T3, T4
-#define BARG , T0, T1, T2, T3, T4
-#define FARG T0 t0, T1 t1, T2 t2, T3 t3, T4 t4
-#define RARG t0, t1, t2, t3, t4
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function6
-#define TARG , class T0, class T1, class T2, class T3, class T4, class T5
-#define AARG T0, T1, T2, T3, T4, T5
-#define BARG , T0, T1, T2, T3, T4, T5
-#define FARG T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5
-#define RARG t0, t1, t2, t3, t4, t5
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function7
-#define TARG , class T0, class T1, class T2, class T3, class T4, class T5, class T6
-#define AARG T0, T1, T2, T3, T4, T5, T6
-#define BARG , T0, T1, T2, T3, T4, T5, T6
-#define FARG T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6
-#define RARG t0, t1, t2, t3, t4, t5, t6
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function8
-#define TARG , class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7
-#define AARG T0, T1, T2, T3, T4, T5, T6, T7
-#define BARG , T0, T1, T2, T3, T4, T5, T6, T7
-#define FARG T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7
-#define RARG t0, t1, t2, t3, t4, t5, t6, t7
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function9
-#define TARG , class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8
-#define AARG T0, T1, T2, T3, T4, T5, T6, T7, T8
-#define BARG , T0, T1, T2, T3, T4, T5, T6, T7, T8
-#define FARG T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8
-#define RARG t0, t1, t2, t3, t4, t5, t6, t7, t8
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
-
-#define ARITY function10
-#define TARG , class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9
-#define AARG T0, T1, T2, T3, T4, T5, T6, T7, T8, T9
-#define BARG , T0, T1, T2, T3, T4, T5, T6, T7, T8, T9
-#define FARG T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9
-#define RARG t0, t1, t2, t3, t4, t5, t6, t7, t8, t9
-#include "function_def.h"
-#undef RARG
-#undef FARG
-#undef BARG
-#undef AARG
-#undef TARG
-#undef ARITY
+  template <class Fn>
+  function& operator=(const Fn& f) {
+    base::operator=(f);
+    return *this;
+  }
+};
 
 } // lang
 } // pfi

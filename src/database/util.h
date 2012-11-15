@@ -35,6 +35,7 @@
 #include <exception>
 
 #include "connection.h"
+#include "../lang/safe_bool.h"
 
 namespace pfi{
 namespace database{

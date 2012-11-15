@@ -35,7 +35,6 @@
 #include <vector>
 
 #include "../../concurrent/mutex.h"
-#include "../../concurrent/threading_model.h"
 #include "../../network/dns.h"
 #include "../../lang/shared_ptr.h"
 #include "../../lang/noncopyable.h"
@@ -79,8 +78,7 @@ private:
 
   static bool set_timeout_sockopt(int sock, int optname, double sec);
 
-  static pfi::lang::shared_ptr<dns_resolver,
-    pfi::concurrent::threading_model::multi_thread> resolver;
+  static pfi::lang::shared_ptr<dns_resolver> resolver;
   static pfi::concurrent::r_mutex resolver_m;
 };
 

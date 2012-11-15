@@ -53,7 +53,7 @@ void serialize(Archive &ar, std::vector<T, Allocator> &v)
 
 class array_type : public type_rep {
 public:
-  array_type(pfi::lang::shared_ptr<type_rep> type): type(type){}
+  array_type(const pfi::lang::shared_ptr<type_rep>& type): type(type){}
 
   void traverse(pfi::lang::function<void(type_rep*)> f){
     f(this);

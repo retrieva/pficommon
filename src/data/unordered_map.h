@@ -34,6 +34,8 @@
 
 #include "../pfi-config.h"
 
+#include <cmath>
+
 #if HAVE_UNORDERED_MAP
 #include <unordered_map>
 #elif HAVE_TR1_UNORDERED_MAP
@@ -70,6 +72,12 @@ public:
                 const typename Base::key_equal &eql = typename Base::key_equal(),
                 const typename Base::allocator_type &a = typename Base::allocator_type())
     : Base(f, l, n, hf, eql, a) {}
+
+#if HAVE_TR1_UNORDERED_SET
+  void reserve(typename Base::size_type n) {
+    this->rehash(std::ceil(n / this->max_load_factor()));
+  }
+#endif
 };
 
 template <class Key, class Tp,
@@ -83,18 +91,24 @@ class unordered_multimap :
 public:
   explicit
   unordered_multimap(typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
+                     const typename Base::hasher &hf = typename Base::hasher(),
+                     const typename Base::key_equal &eql = typename Base::key_equal(),
+                     const typename Base::allocator_type &a = typename Base::allocator_type())
     : Base(n, hf, eql, a) {}
 
   template <class InputIterator>
   unordered_multimap(InputIterator f, InputIterator l,
-                typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
+                     typename Base::size_type n = 10,
+                     const typename Base::hasher &hf = typename Base::hasher(),
+                     const typename Base::key_equal &eql = typename Base::key_equal(),
+                     const typename Base::allocator_type &a = typename Base::allocator_type())
     : Base(f, l, n, hf, eql, a) {}
+
+#if HAVE_TR1_UNORDERED_SET
+  void reserve(typename Base::size_type n) {
+    this->rehash(std::ceil(n / this->max_load_factor()));
+  }
+#endif
 };
 
 } // data

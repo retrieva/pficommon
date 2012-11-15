@@ -9,7 +9,6 @@ subdirs = [
   'math',
   'text',
   'visualization',
-  'util'
   ]
 
 def options(opt):
@@ -36,7 +35,6 @@ def build(bld):
       'pficommon_network',
       'pficommon_system',
       'pficommon_text',
-      'pficommon_util',
       'pficommon_visualization',
       ])
 

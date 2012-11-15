@@ -28,27 +28,49 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-// See also FOSS License Exception.
-// Link: http://www.mysql.com/about/legal/licensing/foss-exception/
 
-#ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_VALUE_H_
-#define INCLUDE_GUARD_PFI_DATABASE_MYSQL_VALUE_H_
+#ifndef INCLUDE_GUARD_PFI_LANG_WEAK_PTR_H_
+#define INCLUDE_GUARD_PFI_LANG_WEAK_PTR_H_
 
-#include <mysql.h>
+#include <memory>
+#include <tr1/memory>
 
-#include "../type.h"
-#include "../../lang/shared_ptr.h"
+namespace pfi {
+namespace lang {
 
-namespace pfi{
-namespace database{
-namespace mysql{
+template <class T, class TM>
+class shared_ptr;
 
-size_t bind_length(const pfi::lang::shared_ptr<sql_value>& p);
-pfi::lang::shared_ptr<sql_value> from_bind(MYSQL_BIND &bind);
-void to_bind(const pfi::lang::shared_ptr<sql_value>& p, MYSQL_BIND &bind);
+template <class T>
+class weak_ptr : public std::tr1::weak_ptr<T> {
+  typedef std::tr1::weak_ptr<T> base;
 
-} // postgresql
-} // database
+public:
+  weak_ptr() {}
+
+  template <class U, class UM>
+  weak_ptr(const shared_ptr<U, UM>& p) : base(p) {}
+
+  template <class U>
+  weak_ptr(const weak_ptr<U>& p) : base(p) {}
+
+  template <class U>
+  weak_ptr& operator=(const weak_ptr<U>& p) {
+    base::operator=(p);
+    return *this;
+  }
+
+  template <class U, class UM>
+  weak_ptr& operator=(const shared_ptr<U, UM>& p) {
+    base::operator=(p);
+    return *this;
+  }
+
+  shared_ptr<T> lock() const {
+    return shared_ptr<T>(base::lock());
+  }
+};
+
+} // lang
 } // pfi
-#endif // #ifndef INCLUDE_GUARD_PFI_DATABASE_MYSQL_VALUE_H_
+#endif // #ifndef INCLUDE_GUARD_PFI_LANG_WEAK_PTR_H_

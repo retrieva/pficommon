@@ -52,7 +52,7 @@ using namespace pfi::lang;
 
 
 template <class t>
-vector<t> moment(int max_mom, int size, function<t()> &val){
+vector<t> moment(int max_mom, int size, pfi::lang::function<t()> &val){
   vector<t> mom(max_mom,0);
   for(int i=0;i<size; ++i){
     t x=val(); // test
@@ -100,9 +100,9 @@ double gauss_diff(){
 
 TEST(random, time_seed){
   typedef pfi::math::random::random<mersenne_twister> mt;
-  shared_ptr<mt> r1(new mt);
+  pfi::lang::shared_ptr<mt> r1(new mt);
   usleep(5);
-  shared_ptr<mt> r2(new mt);
+  pfi::lang::shared_ptr<mt> r2(new mt);
   for(int i=0;i<10;++i){
     int x=r1->next_int(), y=r2->next_int();
     EXPECT_TRUE(x!=y) << "x=" << x << " " << "y=" << y << endl;
@@ -110,7 +110,7 @@ TEST(random, time_seed){
   
 }
 
-bool is_standard_deviation(function<double()> f, bool expectation=true){
+bool is_standard_deviation(pfi::lang::function<double()> f, bool expectation=true){
   // if f is standard deviation, it passes approx 99.99% probability.
 
   int size=1<<22;

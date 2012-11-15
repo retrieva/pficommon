@@ -59,20 +59,20 @@ rpc_server::~rpc_server()
 {
 }
 
-void rpc_server::add(const string &name, shared_ptr<invoker_base> invoker)
+void rpc_server::add(const string &name, const pfi::lang::shared_ptr<invoker_base>& invoker)
 {
   funcs[name]=invoker;
 }
 
 bool rpc_server::serv(uint16_t port, int nthreads)
 {
-  shared_ptr<server_socket, threading_model::multi_thread> ssock(new server_socket());
+  pfi::lang::shared_ptr<server_socket> ssock(new server_socket());
   if (!ssock->create(port))
     return false;
 
-  vector<shared_ptr<thread> > ths(nthreads);
+  vector<pfi::lang::shared_ptr<thread> > ths(nthreads);
   for (int i=0; i<nthreads; i++){
-    ths[i]=shared_ptr<thread>(new thread(bind(&rpc_server::process, this, ssock)));
+      ths[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&rpc_server::process, this, ssock)));
     if (!ths[i]->start()) return false;
   }
   for (int i=0; i<nthreads; i++)
@@ -80,10 +80,10 @@ bool rpc_server::serv(uint16_t port, int nthreads)
   return true;
 }
 
-void rpc_server::process(shared_ptr<server_socket, threading_model::multi_thread> ssock)
+void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
 {
   for (;;){
-    shared_ptr<stream_socket> sock(ssock->accept());
+    pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());
     if (!sock) continue;
     sock->set_nodelay(true);
 
@@ -137,11 +137,11 @@ rpc_client::~rpc_client()
 {
 }
 
-shared_ptr<socketstream> rpc_client::get_connection()
+pfi::lang::shared_ptr<socketstream> rpc_client::get_connection()
 {
   for (int i=0;i<2;i++){
     if (!ss || !(*ss)){
-      ss=shared_ptr<socketstream>(new socketstream(host, port));
+      ss=pfi::lang::shared_ptr<socketstream>(new socketstream(host, port));
       if (!(*ss)){
         ss.reset();
         continue;
@@ -178,7 +178,7 @@ shared_ptr<socketstream> rpc_client::get_connection()
   return ss;
 }
 
-void rpc_client::return_connection(shared_ptr<socketstream> css)
+void rpc_client::return_connection(const pfi::lang::shared_ptr<socketstream>& css)
 {
   ss=css;
 }

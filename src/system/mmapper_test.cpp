@@ -43,19 +43,20 @@ using namespace pfi::system::mmapper;
 
 TEST(mmapper_test, open_close_empty)
 {
-  int r;
   {
     ofstream ofs("test.file", std::ios::out | std::ios::trunc | std::ios::binary);
   }
   mmapper m;
-  r = m.open("test.file");
+  int r = m.open("test.file");
   EXPECT_EQ(r, -1);
+  EXPECT_FALSE(m.is_open());
   unlink("test.file");
 }
 
-TEST(mmapper_test, open_close) {
+TEST(mmapper_test, open_close)
+{
   {
-    FILE *f;
+    FILE* f;
     f = fopen("test.txt", "w+");
     EXPECT_TRUE(f != NULL);
     size_t s = fwrite("12345678", 1, 8, f);
@@ -67,10 +68,15 @@ TEST(mmapper_test, open_close) {
     mmapper m;
     r = m.open("test.txt");
     EXPECT_EQ(r, 0);
+    EXPECT_TRUE(m.is_open());
     EXPECT_EQ(m.size(), 8U);
     for (int i = 0; i < int(m.size()); i++)
       EXPECT_EQ(m[i], '1' + i);
     EXPECT_EQ(m.end() - m.begin(), 8);
+    EXPECT_EQ(m.cend() - m.cbegin(), 8);
+    EXPECT_EQ(m.cend() - m.begin(), 8);
+    for (mmapper::const_iterator it = m.cbegin(), end = m.cend(); it != end; ++it)
+      EXPECT_EQ(*it, '1' + (it - m.cbegin()));
     r = m.close();
     EXPECT_EQ(r, 0);
   }
@@ -79,9 +85,38 @@ TEST(mmapper_test, open_close) {
   }
 }
 
-TEST(mmapper_test, file_not_found) {
-  int r;
+TEST(mmapper_test, file_not_found)
+{
   mmapper m;
-  r = m.open("file_not_found.txt");
+  int r = m.open("file_not_found.txt");
   EXPECT_EQ(r, -1);
+  EXPECT_FALSE(m.is_open());
+}
+
+TEST(mmapper_test, swap)
+{
+  {
+    std::ofstream fs("test.txt", std::ios::out | std::ios::trunc);
+    fs << "0123456789";
+  }
+  {
+    mmapper m;
+    int r = m.open("test.txt");
+    EXPECT_EQ(r, 0);
+    EXPECT_TRUE(m.is_open());
+
+    mmapper m2;
+    m2.swap(m);
+    EXPECT_FALSE(m.is_open());
+    EXPECT_TRUE(m2.is_open());
+    EXPECT_EQ(m2[0], '0');
+
+    swap(m, m2);
+    EXPECT_TRUE(m.is_open());
+    EXPECT_FALSE(m2.is_open());
+    EXPECT_EQ(m[0], '0');
+  }
+  {
+    unlink("test.txt");
+  }
 }

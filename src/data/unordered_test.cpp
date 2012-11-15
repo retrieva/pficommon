@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2012, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -29,25 +29,35 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef INCLUDE_GUARD_PFI_UTIL_VALUE_SORT_H_
-#define INCLUDE_GUARD_PFI_UTIL_VALUE_SORT_H_
+#include <gtest/gtest.h>
 
-#include <cstdlib>
-#include <vector>
-#include <algorithm>
+#include "./unordered_set.h"
+#include "./unordered_map.h"
 
-namespace pfi {
-namespace util {
+TEST(unordered_test, reserve) {
+  std::size_t n = 10000;
 
-template<typename Key, typename Value>
-  std::vector<std::pair<Value,Key> > value_sort(const std::vector<std::pair<Key,Value> >& vs, size_t num) {
-  std::vector<std::pair<Value,Key> > res;
-  for (size_t i=0;i<vs.size();++i) res.push_back(std::make_pair(vs[i].second,vs[i].first));
-  num=std::min(num,vs.size());
-  partial_sort(res.begin(),res.begin()+num,res.end());
-  return res;
- }
+  {
+    pfi::data::unordered_set<int> us;
+    us.reserve(n);
+    EXPECT_GE(us.bucket_count(), std::ceil(n / us.max_load_factor()));
+  }
 
-} // util
-} // pfi
-#endif // #ifndef INCLUDE_GUARD_PFI_UTIL_VALUE_SORT_H_
+  {
+    pfi::data::unordered_multiset<int> ums;
+    ums.reserve(n);
+    EXPECT_GE(ums.bucket_count(), std::ceil(n / ums.max_load_factor()));
+  }
+
+  {
+    pfi::data::unordered_map<int, int> um;
+    um.reserve(n);
+    EXPECT_GE(um.bucket_count(), std::ceil(n / um.max_load_factor()));
+  }
+
+  {
+    pfi::data::unordered_multimap<int, int> umm;
+    umm.reserve(n);
+    EXPECT_GE(umm.bucket_count(), std::ceil(n / umm.max_load_factor()));
+  }
+}

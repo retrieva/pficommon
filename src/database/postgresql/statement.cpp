@@ -58,7 +58,7 @@ static string convert_query(const string &q)
   return oss.str();
 }
 
-postgresql_statement::postgresql_statement(shared_ptr<postgresql_connection_impl> conn,
+postgresql_statement::postgresql_statement(const pfi::lang::shared_ptr<postgresql_connection_impl>& conn,
                                            const string &query)
   : conn(conn)
 {

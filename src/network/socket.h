@@ -40,7 +40,6 @@
 #include "ipv4.h"
 #include "../lang/shared_ptr.h"
 #include "../concurrent/mutex.h"
-#include "../concurrent/threading_model.h"
 
 namespace pfi{
 namespace network{
@@ -83,7 +82,7 @@ public:
   // bool set_...
 
   static void set_dns_resolver
-  (pfi::lang::shared_ptr<dns_resolver, pfi::concurrent::threading_model::multi_thread> resolver);
+  (const pfi::lang::shared_ptr<dns_resolver>& resolver);
 
 private:
   bool open();
@@ -112,8 +111,7 @@ private:
   std::vector<unsigned char> wrbuf;
   int wrbuf_size;
 
-  static pfi::lang::shared_ptr<dns_resolver,
-                               pfi::concurrent::threading_model::multi_thread> resolver;
+  static pfi::lang::shared_ptr<dns_resolver> resolver;
   static pfi::concurrent::r_mutex resolver_m;
 };
 
