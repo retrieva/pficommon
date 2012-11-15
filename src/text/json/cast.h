@@ -52,7 +52,7 @@ template <class To>
 To const& throw_json_bad_cast(const json& from)
 {
     throw json_bad_cast<To>(std::string("Failed json_cast from ") + typeid(*from.get()).name() + " to " + typeid(To).name() + ".");
-};
+}
 }
 
 template <class T>
