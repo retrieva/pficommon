@@ -38,16 +38,6 @@
 namespace pfi{
 namespace math{
   const double pi = 4.0 * std::atan(1.0);
-  
-
-  /// returns \a init, but never get optimized
-  template<class t>
-  t unoptimized(t init){
-    std::FILE *fp = std::fopen("/dev/zero","r"); 
-    int zero=fgetc(fp);
-    std::fclose(fp);
-    return init+(t)zero;
-  }
 }
 }
 #endif // #ifndef INCLUDE_GUARD_PFI_MATH_CONSTANT_H_
