@@ -136,6 +136,11 @@ bool operator==(Iterator, dummy_end_iterator)
 }
 }
 
+#ifdef __GNUG__
+template <class InputIterator>
+uchar chars_to_uchar(InputIterator&) __attribute__((deprecated));
+#endif
+
 // char[] -> uchar conversion
 template <class InputIterator>
 uchar chars_to_uchar(InputIterator& in)
