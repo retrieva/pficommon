@@ -36,6 +36,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string>
+#include <stdexcept>
 
 namespace pfi {
 namespace data {
@@ -79,7 +80,11 @@ uchar chars_to_uchar(InputIterator &in) {
   if (((*in) & 0x80) == 0) // U+0000 to U+007F
     return *in++;
 
-  assert((*in & 0xFF) > 0xC0);
+  const unsigned c = *in & 0xFF;
+  if (c < 0xC2)
+    throw std::invalid_argument("Invalid UTF-8");
+  if (c > 0xFD)
+    throw std::invalid_argument("Invalid UTF-8");
 
   static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
   static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07, 0x03, 0x01 };
@@ -95,10 +100,12 @@ uchar chars_to_uchar(InputIterator &in) {
       break;
     }
 
-  assert(nbytes);
+  if (nbytes == 0)
+    throw std::invalid_argument("Invalid UTF-8");
 
   for (int i = 1; i < nbytes; ++i) {
-    assert((*in & 0xC0) == 0x80);
+    if ((*in & 0xC0) != 0x80)
+      throw std::invalid_argument("Invalid UTF-8");
     ret <<= 6;
     ret |= *in++ & 0x3F;
   }
@@ -106,8 +113,10 @@ uchar chars_to_uchar(InputIterator &in) {
   static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000, 0x200000, 0x40000000 };
   static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF, 0x3FFFFFF, 0x7FFFFFFF };
 
-  assert(ret >= mins[nbytes]);
-  assert(ret <= maxs[nbytes]);
+  if (ret < mins[nbytes])
+    throw std::invalid_argument("Invalid UTF-8");
+  if (ret > maxs[nbytes])
+    throw std::invalid_argument("Invalid UTF-8");
 
   return ret;
 }
