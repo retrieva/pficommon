@@ -113,13 +113,13 @@ binary_iarchive& operator>>(binary_iarchive& ar, const T& v)
   return ar;
 }
 
-#define gen_serial_binary_iarchive(tt)					\
-  inline void serialize(binary_iarchive& ar, tt& n)			\
-  {									\
-    tt tmp;								\
-    ar.read<sizeof(tmp)>(reinterpret_cast<char*>(&tmp));		\
-    if (ar) n = pfi::system::endian::from_little(tmp);			\
-  }									\
+#define gen_serial_binary_iarchive(tt) \
+  inline void serialize(binary_iarchive& ar, tt& n) \
+  { \
+    tt tmp; \
+    ar.read<sizeof(tmp)>(reinterpret_cast<char*>(&tmp)); \
+    if (ar) n = pfi::system::endian::from_little(tmp); \
+  }
 
 gen_serial_binary_iarchive(bool);
 gen_serial_binary_iarchive(char);
@@ -187,12 +187,12 @@ binary_oarchive& operator<<(binary_oarchive& ar, const T& v)
   return ar;
 }
 
-#define gen_serial_binary_oarchive(tt)				\
-    inline void serialize(binary_oarchive& ar, tt n)		\
-  {								\
-    n = pfi::system::endian::to_little(n);		        \
-    ar.write<sizeof(n)>(reinterpret_cast<const char*>(&n));     \
-  }								\
+#define gen_serial_binary_oarchive(tt) \
+    inline void serialize(binary_oarchive& ar, tt n) \
+  { \
+    n = pfi::system::endian::to_little(n); \
+    ar.write<sizeof(n)>(reinterpret_cast<const char*>(&n)); \
+  } \
 
 gen_serial_binary_oarchive(bool);
 gen_serial_binary_oarchive(char);
