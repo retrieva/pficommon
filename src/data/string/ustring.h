@@ -41,125 +41,125 @@ namespace pfi {
 namespace data {
 namespace string {
 
-  typedef unsigned int uchar;
+typedef unsigned int uchar;
 
-  class ustring : public std::basic_string<uchar> {
-  public:
-    ustring(){}
-    ustring(const ustring &s, size_type pos = 0, size_type n = npos)
-      : std::basic_string<uchar>(s, pos, npos) {}
-    ustring(const uchar *p)
-      : std::basic_string<uchar>(p) {}
-    ustring(const uchar *p, size_type n)
-      : std::basic_string<uchar>(p, n) {}
-    ustring(size_type n, uchar c)
-      : std::basic_string<uchar>(n, c) {}
+class ustring : public std::basic_string<uchar> {
+public:
+  ustring(){}
+  ustring(const ustring &s, size_type pos = 0, size_type n = npos)
+    : std::basic_string<uchar>(s, pos, npos) {}
+  ustring(const uchar *p)
+    : std::basic_string<uchar>(p) {}
+  ustring(const uchar *p, size_type n)
+    : std::basic_string<uchar>(p, n) {}
+  ustring(size_type n, uchar c)
+    : std::basic_string<uchar>(n, c) {}
 
-    template <class InputIterator>
-    ustring(InputIterator first, InputIterator last)
-      : std::basic_string<uchar>(first, last) {}
-
-    ustring(const std::basic_string<uchar> &str)
-      : std::basic_string<uchar>(str) {}
-  };
-  
-  // string <-> ustring conversion
-  ustring string_to_ustring(const char* p);
-  ustring string_to_ustring(const std::string& s);
-  std::string ustring_to_string(const ustring& us);
-
-  // get first character of string
-  uchar string_to_uchar(const char* p);
-  uchar string_to_uchar(const std::string& s);
-  std::string uchar_to_string(uchar uc);
-
-  // char[] -> uchar conversion
   template <class InputIterator>
-  uchar chars_to_uchar(InputIterator &in){
-    if (((*in) & 0x80) == 0) // U+0000 to U+007F
-      return *in++;
+  ustring(InputIterator first, InputIterator last)
+    : std::basic_string<uchar>(first, last) {}
 
-    assert((*in & 0xFF) > 0xC0);
+  ustring(const std::basic_string<uchar> &str)
+    : std::basic_string<uchar>(str) {}
+};
+  
+// string <-> ustring conversion
+ustring string_to_ustring(const char* p);
+ustring string_to_ustring(const std::string& s);
+std::string ustring_to_string(const ustring& us);
 
-    static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
-    static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07, 0x03, 0x01 };
-    static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
+// get first character of string
+uchar string_to_uchar(const char* p);
+uchar string_to_uchar(const std::string& s);
+std::string uchar_to_string(uchar uc);
 
-    uchar ret;
-    int nbytes = 0;
+// char[] -> uchar conversion
+template <class InputIterator>
+uchar chars_to_uchar(InputIterator &in) {
+  if (((*in) & 0x80) == 0) // U+0000 to U+007F
+    return *in++;
 
-    for (size_t i = 0; i < sizeof(head_masks)/sizeof(head_masks[0]); ++i)
-      if ((*in & head_masks[i]) == flag_bits[i]) {
-        ret = *in++ & tail_masks[i];
-        nbytes = i + 2;
-        break;
-      }
+  assert((*in & 0xFF) > 0xC0);
 
-    assert(nbytes);
+  static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+  static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07, 0x03, 0x01 };
+  static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
 
-    for (int i = 1; i < nbytes; ++i) {
-      assert((*in & 0xC0) == 0x80);
-      ret <<= 6;
-      ret |= *in++ & 0x3F;
+  uchar ret;
+  int nbytes = 0;
+
+  for (size_t i = 0; i < sizeof(head_masks)/sizeof(head_masks[0]); ++i)
+    if ((*in & head_masks[i]) == flag_bits[i]) {
+      ret = *in++ & tail_masks[i];
+      nbytes = i + 2;
+      break;
     }
 
-    static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000, 0x200000, 0x40000000 };
-    static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF, 0x3FFFFFF, 0x7FFFFFFF };
+  assert(nbytes);
 
-    assert(ret >= mins[nbytes]);
-    assert(ret <= maxs[nbytes]);
-
-    return ret;
+  for (int i = 1; i < nbytes; ++i) {
+    assert((*in & 0xC0) == 0x80);
+    ret <<= 6;
+    ret |= *in++ & 0x3F;
   }
 
-  // uchar -> char[] conversion
-  template <class OutputIterator>
-  void uchar_to_chars(uchar c, OutputIterator &out){
-    char b;
-    if(c <= 0x007f){
-      b = c;
-      *out++ = b;
-    }else if(0x0080 <= c && c <= 0x07ff){
-      b = c >> 6;
-      *out++ = (b | 0xc0);
-      b = c & 0x3f;
-      *out++ = b | 0x80;
-    }else if(0x0800 <= c && c <= 0xffff){
-      b = c >> 12;
-      *out++ = (b | 0xe0);
-      b = (c >> 6) & 0x3f;
-      *out++ = b | 0x80;
-      b = c & 0x3f;
-      *out++ = b | 0x80;
-    }else if(0x10000 <= c && c <= 0x10ffff){
-      b = c >> 18;
-      *out++ = (b | 0xf0);
-      b = (c >> 12) & 0x3f;
-      *out++ = b | 0x80;
-      b = (c >> 6) & 0x3f;
-      *out++ = b | 0x80;
-      b = c & 0x3f;
-      *out++ = b | 0x80;
-    }
+  static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000, 0x200000, 0x40000000 };
+  static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF, 0x3FFFFFF, 0x7FFFFFFF };
+
+  assert(ret >= mins[nbytes]);
+  assert(ret <= maxs[nbytes]);
+
+  return ret;
+}
+
+// uchar -> char[] conversion
+template <class OutputIterator>
+void uchar_to_chars(uchar c, OutputIterator &out){
+  char b;
+  if(c <= 0x007f) {
+    b = c;
+    *out++ = b;
+  } else if (0x0080 <= c && c <= 0x07ff) {
+    b = c >> 6;
+    *out++ = (b | 0xc0);
+    b = c & 0x3f;
+    *out++ = b | 0x80;
+  } else if (0x0800 <= c && c <= 0xffff) {
+    b = c >> 12;
+    *out++ = (b | 0xe0);
+    b = (c >> 6) & 0x3f;
+    *out++ = b | 0x80;
+    b = c & 0x3f;
+    *out++ = b | 0x80;
+  } else if (0x10000 <= c && c <= 0x10ffff) {
+    b = c >> 18;
+    *out++ = (b | 0xf0);
+    b = (c >> 12) & 0x3f;
+    *out++ = b | 0x80;
+    b = (c >> 6) & 0x3f;
+    *out++ = b | 0x80;
+    b = c & 0x3f;
+    *out++ = b | 0x80;
   }
+}
 
-  // utility
-  bool is_basic_latin(uchar uc);
-  bool is_alnum(uchar uc);
-  bool is_hiragana(uchar uc);
-  bool is_katakana(uchar uc);
-  bool is_kanji(uchar uc);
-  bool is_hankaku(uchar uc);
+// utility
+bool is_basic_latin(uchar uc);
+bool is_alnum(uchar uc);
+bool is_hiragana(uchar uc);
+bool is_katakana(uchar uc);
+bool is_kanji(uchar uc);
+bool is_hankaku(uchar uc);
 
-  std::string sanitize_utf8(const std::string& s);
-  ustring hankaku_to_zenkaku(const ustring& us);
-  ustring zenkaku_latin_to_basic_latin(const ustring& us);
-  ustring basic_latin_to_zenkaku_latin(const ustring& us);
-  uchar zenkaku_latin_to_basic_latin(uchar uc);
-  uchar basic_latin_to_zenkaku_latin(uchar uc);
+std::string sanitize_utf8(const std::string& s);
+ustring hankaku_to_zenkaku(const ustring& us);
+ustring zenkaku_latin_to_basic_latin(const ustring& us);
+ustring basic_latin_to_zenkaku_latin(const ustring& us);
+uchar zenkaku_latin_to_basic_latin(uchar uc);
+uchar basic_latin_to_zenkaku_latin(uchar uc);
 
-  std::ostream& operator<<(std::ostream& out, const ustring &str);
-  std::istream& operator>>(std::istream& in , ustring &str);
+std::ostream& operator<<(std::ostream& out, const ustring &str);
+std::istream& operator>>(std::istream& in , ustring &str);
 
 } // string
 } // data
