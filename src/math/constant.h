@@ -35,9 +35,9 @@
 #include <cmath>
 #include <cstdio>
 
-namespace pfi{
-namespace math{
-  const double pi = 4.0 * std::atan(1.0);
+namespace pfi {
+namespace math {
+const double pi = 4.0 * std::atan(1.0);
 }
 }
 #endif // #ifndef INCLUDE_GUARD_PFI_MATH_CONSTANT_H_
