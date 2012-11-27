@@ -398,3 +398,20 @@ TEST(serialization, stream){
     EXPECT_EQ(res.str(), "stream test");
   }
 }
+
+TEST(serialization, safe_bool) {
+  {
+    std::stringstream ss;
+    binary_oarchive oa(ss);
+    EXPECT_TRUE(oa);
+    ss.setstate(ios::badbit);
+    EXPECT_FALSE(oa);
+  }
+  {
+    std::stringstream ss;
+    binary_iarchive ia(ss);
+    EXPECT_TRUE(ia);
+    ss.setstate(ios::failbit);
+    EXPECT_FALSE(ia);
+  }
+}
