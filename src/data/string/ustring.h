@@ -74,9 +74,13 @@ uchar string_to_uchar(const char* p);
 uchar string_to_uchar(const std::string& s);
 std::string uchar_to_string(uchar uc);
 
-// char[] -> uchar conversion
-template <class InputIterator>
-uchar chars_to_uchar(InputIterator &in) {
+namespace detail {
+template <class InputIterator1, class InputIterator2>
+uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
+{
+  if (in == end)
+    throw std::invalid_argument("Empty string");
+
   if (((*in) & 0x80) == 0) // U+0000 to U+007F
     return *in++;
 
@@ -104,6 +108,8 @@ uchar chars_to_uchar(InputIterator &in) {
     throw std::invalid_argument("Invalid UTF-8");
 
   for (int i = 1; i < nbytes; ++i) {
+    if (in == end)
+      throw std::invalid_argument("Too short string");
     if ((*in & 0xC0) != 0x80)
       throw std::invalid_argument("Invalid UTF-8");
     ret <<= 6;
@@ -119,6 +125,28 @@ uchar chars_to_uchar(InputIterator &in) {
     throw std::invalid_argument("Invalid UTF-8");
 
   return ret;
+}
+
+struct dummy_end_iterator {};
+
+template <class Iterator>
+bool operator==(Iterator, dummy_end_iterator)
+{
+    return false;
+}
+}
+
+// char[] -> uchar conversion
+template <class InputIterator>
+uchar chars_to_uchar(InputIterator& in)
+{
+  return detail::chars_to_uchar_impl(in, detail::dummy_end_iterator());
+}
+
+template <class InputIterator>
+uchar chars_to_uchar(InputIterator& in, InputIterator end)
+{
+  return detail::chars_to_uchar_impl(in, end);
 }
 
 // uchar -> char[] conversion
