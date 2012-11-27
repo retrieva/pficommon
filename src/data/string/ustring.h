@@ -36,12 +36,13 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string>
+#include <stdint.h>
 
 namespace pfi {
 namespace data {
 namespace string {
 
-  typedef unsigned int uchar;
+  typedef uint32_t uchar;
 
   class ustring : public std::basic_string<uchar> {
   public:
