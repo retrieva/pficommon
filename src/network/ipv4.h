@@ -40,7 +40,6 @@ namespace network {
 class ipv4_address {
 public:
   ipv4_address();
-  ipv4_address(const ipv4_address& p);
 
   ipv4_address(unsigned char a,
                unsigned char b,

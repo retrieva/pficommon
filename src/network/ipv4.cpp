@@ -46,14 +46,6 @@ ipv4_address::ipv4_address()
   ip[3]=0;
 }
 
-ipv4_address::ipv4_address(const ipv4_address& p)
-{
-  ip[0]=p.ip[0];
-  ip[1]=p.ip[1];
-  ip[2]=p.ip[2];
-  ip[3]=p.ip[3];
-}
-
 ipv4_address::ipv4_address(unsigned char a,
                            unsigned char b,
                            unsigned char c,
