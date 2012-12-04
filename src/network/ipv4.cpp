@@ -35,8 +35,8 @@
 
 using namespace std;
 
-namespace pfi{
-namespace network{
+namespace pfi {
+namespace network {
 
 ipv4_address::ipv4_address()
 {
@@ -46,7 +46,7 @@ ipv4_address::ipv4_address()
   ip[3]=0;
 }
 
-ipv4_address::ipv4_address(const ipv4_address &p)
+ipv4_address::ipv4_address(const ipv4_address& p)
 {
   ip[0]=p.ip[0];
   ip[1]=p.ip[1];
@@ -55,9 +55,9 @@ ipv4_address::ipv4_address(const ipv4_address &p)
 }
 
 ipv4_address::ipv4_address(unsigned char a,
-    unsigned char b,
-    unsigned char c,
-    unsigned char d)
+                           unsigned char b,
+                           unsigned char c,
+                           unsigned char d)
 {
   ip[0]=a;
   ip[1]=b;
@@ -65,7 +65,7 @@ ipv4_address::ipv4_address(unsigned char a,
   ip[3]=d;
 }
 
-ipv4_address::ipv4_address(const string &s)
+ipv4_address::ipv4_address(const string& s)
 {
   int a=-1,b=-1,c=-1,d=-1;
   char x='\0',y='\0',z='\0';
@@ -91,7 +91,7 @@ ipv4_address::~ipv4_address()
 {
 }
 
-bool ipv4_address::operator==(const ipv4_address &p) const
+bool ipv4_address::operator==(const ipv4_address& p) const
 {
   return
     ip[0]==p.ip[0]&&
@@ -100,12 +100,12 @@ bool ipv4_address::operator==(const ipv4_address &p) const
     ip[3]==p.ip[3];
 }
 
-bool ipv4_address::operator!=(const ipv4_address &p) const
+bool ipv4_address::operator!=(const ipv4_address& p) const
 {
   return !(*this==p);
 }
 
-bool ipv4_address::operator<(const ipv4_address &p) const
+bool ipv4_address::operator<(const ipv4_address& p) const
 {
   if (ip[0]!=p.ip[0]) return ip[0]<p.ip[0];
   if (ip[1]!=p.ip[1]) return ip[1]<p.ip[1];

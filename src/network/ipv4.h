@@ -34,33 +34,33 @@
 
 #include <string>
 
-namespace pfi{
-namespace network{
+namespace pfi {
+namespace network {
 
-class ipv4_address{
+class ipv4_address {
 public:
   ipv4_address();
-  ipv4_address(const ipv4_address &p);
+  ipv4_address(const ipv4_address& p);
 
   ipv4_address(unsigned char a,
                unsigned char b,
                unsigned char c,
                unsigned char d);
 
-  explicit ipv4_address(const std::string &s);
+  explicit ipv4_address(const std::string& s);
 
   ~ipv4_address();
 
-  bool operator==(const ipv4_address &p) const;
-  bool operator!=(const ipv4_address &p) const;
-  bool operator< (const ipv4_address &p) const;
+  bool operator==(const ipv4_address& p) const;
+  bool operator!=(const ipv4_address& p) const;
+  bool operator<(const ipv4_address& p) const;
 
   const std::string to_string() const;
 
-  const static ipv4_address any;
-  const static ipv4_address broadcast;
-  const static ipv4_address loopback;
-  const static ipv4_address none;
+  static const ipv4_address any;
+  static const ipv4_address broadcast;
+  static const ipv4_address loopback;
+  static const ipv4_address none;
 
 private:
   unsigned char ip[4];
