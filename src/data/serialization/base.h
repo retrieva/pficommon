@@ -192,7 +192,7 @@ binary_oarchive& operator<<(binary_oarchive& ar, const T& v)
   { \
     n = pfi::system::endian::to_little(n); \
     ar.write<sizeof(n)>(reinterpret_cast<const char*>(&n)); \
-  } \
+  }
 
 gen_serial_binary_oarchive(bool);
 gen_serial_binary_oarchive(char);
