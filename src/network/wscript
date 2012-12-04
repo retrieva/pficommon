@@ -98,3 +98,10 @@ def build(bld):
       target = 'include_test',
       includes = '. mprpc',
       use = 'MSGPACK')
+
+  bld.program(
+    features = 'gtest',
+    source = 'ipv4_test.cpp',
+    target = 'ipv4_test',
+    includes = '. rpc',
+    use = 'pficommon_network')
