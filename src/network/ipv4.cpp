@@ -79,10 +79,6 @@ ipv4_address::ipv4_address(const string& s)
   ip[3]=(unsigned char)d;
 }
 
-ipv4_address::~ipv4_address()
-{
-}
-
 bool ipv4_address::operator==(const ipv4_address& p) const
 {
   return

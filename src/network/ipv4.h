@@ -48,8 +48,6 @@ public:
 
   explicit ipv4_address(const std::string& s);
 
-  ~ipv4_address();
-
   bool operator==(const ipv4_address& p) const;
   bool operator!=(const ipv4_address& p) const;
   bool operator<(const ipv4_address& p) const;
