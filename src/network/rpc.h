@@ -54,7 +54,7 @@
   }								\
   pfi::lang::function<__VA_ARGS__> call_##name;			\
   };								\
-  }								\
+  }
   
 #define RPC_GEN(ver, base, ...)						\
   namespace _server_impl{						\
@@ -75,6 +75,6 @@
   }									\
   };									\
   }									\
-  typedef _client_impl::base##_client base##_client;			\
+  typedef _client_impl::base##_client base##_client;
 
 #endif // #ifndef INCLUDE_GUARD_PFI_NETWORK_RPC_H_

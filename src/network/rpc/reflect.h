@@ -205,7 +205,7 @@ protected:
     mem[#name]=pfi::network::rpc::extract(function<ftype>()); \
   } \
   }; \
-  } \
+  }
 
 #define REFLECT_RPC_GEN(version, base, ...) \
   namespace _reflect{ \
