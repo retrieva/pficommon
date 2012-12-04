@@ -82,10 +82,7 @@ bool ipv4_address::operator!=(const ipv4_address& p) const
 
 bool ipv4_address::operator<(const ipv4_address& p) const
 {
-  if (ip[0]!=p.ip[0]) return ip[0]<p.ip[0];
-  if (ip[1]!=p.ip[1]) return ip[1]<p.ip[1];
-  if (ip[2]!=p.ip[2]) return ip[2]<p.ip[2];
-  return ip[3]<p.ip[3];
+  return std::lexicographical_compare(ip, ip+sizeof(ip), p.ip, p.ip+sizeof(p.ip));
 }
 
 const string ipv4_address::to_string() const
