@@ -85,7 +85,7 @@ bool ipv4_address::operator<(const ipv4_address& p) const
   return std::lexicographical_compare(ip, ip+sizeof(ip), p.ip, p.ip+sizeof(p.ip));
 }
 
-const string ipv4_address::to_string() const
+string ipv4_address::to_string() const
 {
   char buf[16];
   snprintf(buf, sizeof(buf), "%d.%d.%d.%d", int(ip[0]), int(ip[1]), int(ip[2]), int(ip[3]));

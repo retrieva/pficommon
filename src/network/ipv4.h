@@ -52,7 +52,7 @@ public:
   bool operator!=(const ipv4_address& p) const;
   bool operator<(const ipv4_address& p) const;
 
-  const std::string to_string() const;
+  std::string to_string() const;
 
   static const ipv4_address any;
   static const ipv4_address broadcast;
