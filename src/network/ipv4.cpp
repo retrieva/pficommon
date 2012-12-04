@@ -38,13 +38,7 @@ using namespace std;
 namespace pfi {
 namespace network {
 
-ipv4_address::ipv4_address()
-{
-  ip[0]=0;
-  ip[1]=0;
-  ip[2]=0;
-  ip[3]=0;
-}
+ipv4_address::ipv4_address() : ip() {}
 
 ipv4_address::ipv4_address(unsigned char a,
                            unsigned char b,
