@@ -90,9 +90,9 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
   if (c > 0xFD)
     throw std::invalid_argument("Invalid UTF-8");
 
-  static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
-  static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07, 0x03, 0x01 };
-  static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
+  static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8 };
+  static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07 };
+  static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0 };
 
   uchar ret;
   int nbytes = 0;
@@ -116,8 +116,8 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
     ret |= *in++ & 0x3F;
   }
 
-  static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000, 0x200000, 0x40000000 };
-  static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF, 0x3FFFFFF, 0x7FFFFFFF };
+  static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000 };
+  static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF };
 
   if (ret < mins[nbytes])
     throw std::invalid_argument("Invalid UTF-8");
