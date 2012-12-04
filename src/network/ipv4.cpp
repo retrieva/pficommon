@@ -31,6 +31,8 @@
 
 #include "ipv4.h"
 
+#include <stddef.h>
+#include <stdio.h>
 #include <sstream>
 
 using namespace std;
@@ -53,24 +55,18 @@ ipv4_address::ipv4_address(unsigned char a,
 
 ipv4_address::ipv4_address(const string& s)
 {
-  int a=-1,b=-1,c=-1,d=-1;
-  char x='\0',y='\0',z='\0';
-  istringstream iss(s);
-  if (!((iss>>a>>x>>b>>y>>c>>z>>d)&&
-        a>=0&&a<=255&&
-        b>=0&&b<=255&&
-        c>=0&&c<=255&&
-        d>=0&&d<=255&&
-        x=='.'&&
-        y=='.'&&
-        z=='.')){
-    *this=none;
+  int buf[4];
+  if (sscanf(s.c_str(), "%d.%d.%d.%d", &buf[0], &buf[1], &buf[2], &buf[3]) != 4) {
+    *this = none;
     return;
   }
-  ip[0]=(unsigned char)a;
-  ip[1]=(unsigned char)b;
-  ip[2]=(unsigned char)c;
-  ip[3]=(unsigned char)d;
+  for (size_t i = 0; i < sizeof(buf)/sizeof(buf[0]); ++i) {
+    ip[i] = buf[i];
+    if (buf[i] < 0 || buf[1] > 255) {
+      *this = none;
+      return;
+    }
+  }
 }
 
 bool ipv4_address::operator==(const ipv4_address& p) const
