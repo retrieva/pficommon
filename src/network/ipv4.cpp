@@ -62,7 +62,7 @@ ipv4_address::ipv4_address(const string& s)
   }
   for (size_t i = 0; i < sizeof(buf)/sizeof(buf[0]); ++i) {
     ip[i] = buf[i];
-    if (buf[i] < 0 || buf[1] > 255) {
+    if (buf[i] < 0 || buf[i] > 255) {
       *this = none;
       return;
     }
