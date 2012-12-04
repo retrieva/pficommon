@@ -31,65 +31,10 @@
 
 #include "ipv4.h"
 
-#include <stddef.h>
-#include <stdio.h>
-#include <algorithm>
-
 using namespace std;
 
 namespace pfi {
 namespace network {
-
-ipv4_address::ipv4_address() : ip() {}
-
-ipv4_address::ipv4_address(unsigned char a,
-                           unsigned char b,
-                           unsigned char c,
-                           unsigned char d)
-{
-  ip[0]=a;
-  ip[1]=b;
-  ip[2]=c;
-  ip[3]=d;
-}
-
-ipv4_address::ipv4_address(const string& s)
-{
-  int buf[4];
-  if (sscanf(s.c_str(), "%d.%d.%d.%d", &buf[0], &buf[1], &buf[2], &buf[3]) != 4) {
-    *this = none;
-    return;
-  }
-  for (size_t i = 0; i < sizeof(buf)/sizeof(buf[0]); ++i) {
-    ip[i] = buf[i];
-    if (buf[i] < 0 || buf[i] > 255) {
-      *this = none;
-      return;
-    }
-  }
-}
-
-bool ipv4_address::operator==(const ipv4_address& p) const
-{
-  return std::equal(ip, ip+sizeof(ip), p.ip);
-}
-
-bool ipv4_address::operator!=(const ipv4_address& p) const
-{
-  return !(*this==p);
-}
-
-bool ipv4_address::operator<(const ipv4_address& p) const
-{
-  return std::lexicographical_compare(ip, ip+sizeof(ip), p.ip, p.ip+sizeof(p.ip));
-}
-
-string ipv4_address::to_string() const
-{
-  char buf[16];
-  snprintf(buf, sizeof(buf), "%d.%d.%d.%d", int(ip[0]), int(ip[1]), int(ip[2]), int(ip[3]));
-  return buf;
-};
 
 const ipv4_address ipv4_address::any       = ipv4_address(  0,  0,  0,  0);
 const ipv4_address ipv4_address::broadcast = ipv4_address(255,255,255,255);

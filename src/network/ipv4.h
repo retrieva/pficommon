@@ -32,6 +32,9 @@
 #ifndef INCLUDE_GUARD_PFI_NETWORK_IPV4_H_
 #define INCLUDE_GUARD_PFI_NETWORK_IPV4_H_
 
+#include <stddef.h>
+#include <cstdio>
+#include <algorithm>
 #include <string>
 
 namespace pfi {
@@ -39,20 +42,49 @@ namespace network {
 
 class ipv4_address {
 public:
-  ipv4_address();
+  ipv4_address() : ip() {}
 
   ipv4_address(unsigned char a,
                unsigned char b,
                unsigned char c,
-               unsigned char d);
+               unsigned char d)
+  {
+    ip[0] = a;
+    ip[1] = b;
+    ip[2] = c;
+    ip[3] = d;
+  }
 
-  explicit ipv4_address(const std::string& s);
+  explicit ipv4_address(const std::string& s) {
+    int buf[4];
+    if (std::sscanf(s.c_str(), "%d.%d.%d.%d", &buf[0], &buf[1], &buf[2], &buf[3]) != 4) {
+      *this = none;
+      return;
+    }
+    for (size_t i = 0; i < sizeof(buf)/sizeof(buf[0]); ++i) {
+      ip[i] = buf[i];
+      if (buf[i] < 0 || buf[i] > 255) {
+        *this = none;
+        return;
+      }
+    }
+  }
 
-  bool operator==(const ipv4_address& p) const;
-  bool operator!=(const ipv4_address& p) const;
-  bool operator<(const ipv4_address& p) const;
+  bool operator==(const ipv4_address& p) const {
+    return std::equal(ip, ip+sizeof(ip), p.ip);
+  }
+  bool operator!=(const ipv4_address& p) const {
+    return !(*this == p);
+  }
+  bool operator<(const ipv4_address& p) const {
+    return std::lexicographical_compare(ip, ip+sizeof(ip), p.ip, p.ip+sizeof(p.ip));
+  }
 
-  std::string to_string() const;
+  std::string to_string() const {
+    char buf[16];
+    std::sprintf(buf, "%d.%d.%d.%d", int(ip[0]), int(ip[1]), int(ip[2]), int(ip[3]));
+    return buf;
+  }
 
   static const ipv4_address any;
   static const ipv4_address broadcast;
