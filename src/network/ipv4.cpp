@@ -87,9 +87,9 @@ bool ipv4_address::operator<(const ipv4_address& p) const
 
 const string ipv4_address::to_string() const
 {
-  ostringstream oss;
-  oss<<(int)ip[0]<<'.'<<(int)ip[1]<<'.'<<(int)ip[2]<<'.'<<(int)ip[3];
-  return oss.str();
+  char buf[16];
+  snprintf(buf, sizeof(buf), "%d.%d.%d.%d", int(ip[0]), int(ip[1]), int(ip[2]), int(ip[3]));
+  return buf;
 };
 
 const ipv4_address ipv4_address::any       = ipv4_address(  0,  0,  0,  0);
