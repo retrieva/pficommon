@@ -33,6 +33,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <algorithm>
 #include <sstream>
 
 using namespace std;
@@ -71,11 +72,7 @@ ipv4_address::ipv4_address(const string& s)
 
 bool ipv4_address::operator==(const ipv4_address& p) const
 {
-  return
-    ip[0]==p.ip[0]&&
-    ip[1]==p.ip[1]&&
-    ip[2]==p.ip[2]&&
-    ip[3]==p.ip[3];
+  return std::equal(ip, ip+sizeof(ip), p.ip);
 }
 
 bool ipv4_address::operator!=(const ipv4_address& p) const
