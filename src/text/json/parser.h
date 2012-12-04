@@ -97,7 +97,7 @@ private:
 
   int peek() {
     if (cbuf < 0)
-      cbuf = pfi::data::string::chars_to_uchar(it);
+      cbuf = pfi::data::string::chars_to_uchar(it, end);
     return cbuf;
   }
   int incr() {

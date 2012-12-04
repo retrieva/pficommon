@@ -291,8 +291,9 @@ public:
     os << '"';
     if (escape) {
       const char* p = dat.c_str();
+      const char* end = p + dat.size();
       while (*p) {
-        pfi::data::string::uchar uc = pfi::data::string::chars_to_uchar(p);
+        pfi::data::string::uchar uc = pfi::data::string::chars_to_uchar(p, end);
         print_char(os, uc);
       }
     } else {
