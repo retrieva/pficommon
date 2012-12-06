@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2012, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -35,19 +35,9 @@
 #include <cmath>
 #include <cstdio>
 
-namespace pfi{
-namespace math{
-  const double pi = 4.0 * std::atan(1.0);
-  
-
-  /// returns \a init, but never get optimized
-  template<class t>
-  t unoptimized(t init){
-    std::FILE *fp = std::fopen("/dev/zero","r"); 
-    int zero=fgetc(fp);
-    std::fclose(fp);
-    return init+(t)zero;
-  }
+namespace pfi {
+namespace math {
+const double pi = 4.0 * std::atan(1.0);
 }
 }
 #endif // #ifndef INCLUDE_GUARD_PFI_MATH_CONSTANT_H_
