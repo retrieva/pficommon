@@ -29,17 +29,68 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <gtest/gtest.h>
+
 #include "ipv4.h"
 
-using namespace std;
+using pfi::network::ipv4_address;
 
-namespace pfi {
-namespace network {
+TEST(ipv4_address, constructor)
+{
+  {
+    ipv4_address ip;
+    ipv4_address ip0000(0, 0, 0, 0);
+    EXPECT_EQ(ip0000, ip);
+  }
+  {
+    ipv4_address ip_from_ints(128, 128, 128, 128);
+    ipv4_address ip_from_string("128.128.128.128");
+    EXPECT_EQ(ip_from_ints, ip_from_string);
+  }
+}
 
-const ipv4_address ipv4_address::any       = ipv4_address(  0,  0,  0,  0);
-const ipv4_address ipv4_address::broadcast = ipv4_address(255,255,255,255);
-const ipv4_address ipv4_address::loopback  = ipv4_address(127,  0,  0,  1);
-const ipv4_address ipv4_address::none      = ipv4_address(255,255,255,255);
+TEST(ipv4_address, comparison)
+{
+  {
+    ipv4_address ip;
+    EXPECT_TRUE(ip == ip);
+    EXPECT_FALSE(ip != ip);
+    EXPECT_FALSE(ip < ip);
+  }
+  {
+    ipv4_address ip1(1, 1, 1, 1);
+    ipv4_address ip2(1, 1, 2, 0);
+    EXPECT_FALSE(ip1 == ip2);
+    EXPECT_TRUE(ip1 != ip2);
+    EXPECT_TRUE(ip1 < ip2);
+    EXPECT_FALSE(ip2 < ip1);
+  }
+  {
+    ipv4_address ip1(1, 1, 1, 1);
+    ipv4_address ip2(1, 2, 0, 1);
+    EXPECT_FALSE(ip1 == ip2);
+    EXPECT_TRUE(ip1 != ip2);
+    EXPECT_TRUE(ip1 < ip2);
+    EXPECT_FALSE(ip2 < ip1);
+  }
+  {
+    ipv4_address ip1(1, 1, 1, 1);
+    ipv4_address ip2(2, 0, 1, 1);
+    EXPECT_FALSE(ip1 == ip2);
+    EXPECT_TRUE(ip1 != ip2);
+    EXPECT_TRUE(ip1 < ip2);
+    EXPECT_FALSE(ip2 < ip1);
+  }
+}
 
-} // network
-} // pfi
+TEST(ipv4_address, to_string)
+{
+  {
+    ipv4_address ip;
+    EXPECT_EQ("0.0.0.0", ip.to_string());
+  }
+  {
+    ipv4_address ip(123, 123, 123, 123);
+    EXPECT_EQ("123.123.123.123", ip.to_string());
+  }
+}
