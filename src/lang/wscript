@@ -20,7 +20,8 @@ def build(bld):
       'singleton.h',
       'exception.h',
       'any.h',
-      'util.h'
+      'util.h',
+      'enable_if.h'
       ])
 
   bld.shlib(
@@ -68,6 +69,12 @@ def build(bld):
     features = 'gtest',
     source = 'function_test.cpp',
     target = 'function_test',
+    includes = '.')
+
+  bld.program(
+    features = 'gtest',
+    source = 'enable_if_test.cpp',
+    target = 'enable_if_test',
     includes = '.')
 
   bld.recurse(subdirs)
