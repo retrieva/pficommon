@@ -42,7 +42,7 @@ namespace file{
 
 class fd_stream : public std::iostream{
 public:
-  fd_stream(int fd)
+  explicit fd_stream(int fd)
     : std::iostream(&fb)
     , fb(fd, std::ios_base::in | std::ios_base::out){
   }
