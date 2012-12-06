@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2012, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -31,94 +31,10 @@
 
 #include "ipv4.h"
 
-#include <sstream>
-
 using namespace std;
 
-namespace pfi{
-namespace network{
-
-ipv4_address::ipv4_address()
-{
-  ip[0]=0;
-  ip[1]=0;
-  ip[2]=0;
-  ip[3]=0;
-}
-
-ipv4_address::ipv4_address(const ipv4_address &p)
-{
-  ip[0]=p.ip[0];
-  ip[1]=p.ip[1];
-  ip[2]=p.ip[2];
-  ip[3]=p.ip[3];
-}
-
-ipv4_address::ipv4_address(unsigned char a,
-    unsigned char b,
-    unsigned char c,
-    unsigned char d)
-{
-  ip[0]=a;
-  ip[1]=b;
-  ip[2]=c;
-  ip[3]=d;
-}
-
-ipv4_address::ipv4_address(const string &s)
-{
-  int a=-1,b=-1,c=-1,d=-1;
-  char x='\0',y='\0',z='\0';
-  istringstream iss(s);
-  if (!((iss>>a>>x>>b>>y>>c>>z>>d)&&
-        a>=0&&a<=255&&
-        b>=0&&b<=255&&
-        c>=0&&c<=255&&
-        d>=0&&d<=255&&
-        x=='.'&&
-        y=='.'&&
-        z=='.')){
-    *this=none;
-    return;
-  }
-  ip[0]=(unsigned char)a;
-  ip[1]=(unsigned char)b;
-  ip[2]=(unsigned char)c;
-  ip[3]=(unsigned char)d;
-}
-
-ipv4_address::~ipv4_address()
-{
-}
-
-bool ipv4_address::operator==(const ipv4_address &p) const
-{
-  return
-    ip[0]==p.ip[0]&&
-    ip[1]==p.ip[1]&&
-    ip[2]==p.ip[2]&&
-    ip[3]==p.ip[3];
-}
-
-bool ipv4_address::operator!=(const ipv4_address &p) const
-{
-  return !(*this==p);
-}
-
-bool ipv4_address::operator<(const ipv4_address &p) const
-{
-  if (ip[0]!=p.ip[0]) return ip[0]<p.ip[0];
-  if (ip[1]!=p.ip[1]) return ip[1]<p.ip[1];
-  if (ip[2]!=p.ip[2]) return ip[2]<p.ip[2];
-  return ip[3]<p.ip[3];
-}
-
-const string ipv4_address::to_string() const
-{
-  ostringstream oss;
-  oss<<(int)ip[0]<<'.'<<(int)ip[1]<<'.'<<(int)ip[2]<<'.'<<(int)ip[3];
-  return oss.str();
-};
+namespace pfi {
+namespace network {
 
 const ipv4_address ipv4_address::any       = ipv4_address(  0,  0,  0,  0);
 const ipv4_address ipv4_address::broadcast = ipv4_address(255,255,255,255);
