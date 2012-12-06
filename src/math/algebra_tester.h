@@ -46,7 +46,7 @@
                   << a << #OP12 << b << #OP23 << c << endl;		\
       }									\
     }									\
-  }									\
+  }
 
 #define TEST_ASSOCIATIVITY(CAPTION,N,T,G,OP,EXPECT_EQ)		\
   TEST_ASSOCIATIVITY3(CAPTION,N,T,T,T,G,G,G,OP,OP,EXPECT_EQ)	\
@@ -64,7 +64,7 @@
                   << ID << #OP << a << endl;				\
       }									\
     }									\
-  }									\
+  }
   
 #define TEST_INVERSE(CAPTION,N,TYPE,GEN,ID,OP,OPI,EXPECT_EQ)	\
   TEST(CAPTION,inverse){						\
@@ -79,7 +79,7 @@
                   << ID << #OPI << a << " is not " << a << endl;	\
       }									\
     }									\
-  }									\
+  }
 
 
   
@@ -93,7 +93,7 @@
                   << a << #OP << b << endl;				\
       }									\
     }									\
-  }									\
+  }
 
 #define TEST_COMMUTATIVITY(CAPTION,N,T,G,OP,EXPECT_EQ)			\
   TEST_COMMUTATIVITY2(CAPTION,N,T,T,G,G,OP,EXPECT_EQ)
@@ -125,10 +125,10 @@
                   << "c" #MUL "(a" #ADD "b)=" << rhs << endl;		\
       }									\
     }									\
-  }									\
+  }
 
 #define TEST_DISTRIBUTIVITY(CAPTION,N,T,G,ADD,MUL,EXPECT_EQ)	\
-  TEST_DISTRIBUTIVITY3(CAPTION,N,T,T,T,G,G,ADD,MUL,EXPECT_EQ)	\
+  TEST_DISTRIBUTIVITY3(CAPTION,N,T,T,T,G,G,ADD,MUL,EXPECT_EQ)
   
 
 /** is TYPE commutative ring
@@ -151,7 +151,7 @@
   TEST_COMMUTATIVITY(CAPTION ## _mul,N,TYPE,GEN,*,EXPECT_EQ)		\
                                                                         \
   TEST_DISTRIBUTIVITY(CAPTION ## _add_mul,N,TYPE,GEN,+,*,EXPECT_EQ)	\
-  TEST_DISTRIBUTIVITY(CAPTION ## _sub_mul,N,TYPE,GEN,-,*,EXPECT_EQ)	\
+  TEST_DISTRIBUTIVITY(CAPTION ## _sub_mul,N,TYPE,GEN,-,*,EXPECT_EQ)
 
 /** is TYPE field?
     CAPTION     unique caption
@@ -201,5 +201,4 @@
   TEST_DISTRIBUTIVITY3(CAPTION ## _vadd_smul,N,VT,ST,VT,VG,SG,+,*,V_EQ)	\
   TEST_DISTRIBUTIVITY3(CAPTION ## _sadd_smul,N,ST,VT,VT,SG,VG,+,*,V_EQ)	\
   TEST_ASSOCIATIVITY3(CAPTION ## _compatibility,N,ST,ST,VT,SG,SG,VG,*,*,V_EQ) \
-  TEST_IDENTITY(CAPTION ## _scalar_id,N,VT,VG,S1,*,V_EQ)		\
-  
+  TEST_IDENTITY(CAPTION ## _scalar_id,N,VT,VG,S1,*,V_EQ)
