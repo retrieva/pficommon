@@ -31,6 +31,8 @@
 
 #include "ustring.h"
 
+#include <stddef.h>
+#include <string.h>
 #include <iterator>
 
 using namespace std;
@@ -86,8 +88,9 @@ static int take_handakuten_tbl[]={
 };
 
 ustring string_to_ustring(const char* p) {
+  const char* const end = p + strlen(p);
   ustring res;
-  while(*p) res+=chars_to_uchar(p);
+  while(*p) res+=chars_to_uchar(p, end);
   return res;
 }
 
@@ -111,12 +114,15 @@ std::string uchar_to_string(uchar c){
 }
 
 uchar string_to_uchar(const char* p) {
-  return chars_to_uchar(p);
+  size_t n = 0;
+  while (p[n] && n < 6)
+    ++n;
+  return chars_to_uchar(p, p+n);
 }
 
 uchar string_to_uchar(const std::string& s) {
-  const char *p=s.c_str();
-  return chars_to_uchar(p);
+  std::string::const_iterator it = s.begin();
+  return chars_to_uchar(it, s.end());
 }
 
 bool is_basic_latin(uchar uc) {
