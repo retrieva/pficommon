@@ -38,132 +38,88 @@
 #include "../../lang/safe_bool.h"
 #include "../../system/endian_util.h"
 
-namespace pfi{
-namespace data{
-namespace serialization{
+namespace pfi {
+namespace data {
+namespace serialization {
 
-class access{
+class access {
 public:
   template<class Archive, class T>
-  static void serialize(Archive &ar, T &v){
+  static void serialize(Archive& ar, T& v) {
     v.serialize(ar);
   }
 };
 
 template <class Archive, class T>
-void serialize(Archive &ar, T &v)
+void serialize(Archive& ar, T& v)
 {
   access::serialize(ar, v);
 }
 
 template <class Archive, class T>
-Archive &operator&(Archive &ar, T &v)
+Archive& operator&(Archive& ar, T& v)
 {
   serialize(ar, v);
   return ar;
 }
 
 template <class Archive, class T>
-Archive &operator&(Archive &ar, const T &v)
+Archive& operator&(Archive& ar, const T& v)
 {
   serialize(ar, v);
   return ar;
 }
 
-class binary_iarchive : public pfi::lang::safe_bool<binary_iarchive>{
+class binary_iarchive : public pfi::lang::safe_bool<binary_iarchive> {
+  binary_iarchive(const binary_iarchive&);
+  binary_iarchive& operator=(const binary_iarchive&);
+
 public:
-  binary_iarchive(std::istream &is)
+  binary_iarchive(std::istream& is)
     : is(is)
-    , buf(is.rdbuf())
-    , bad(false){
-  }
+  {}
 
   static const bool is_read = true;
 
   template <int N>
-  void read(char *p){
-    read(p, N);
+  binary_iarchive& read(char* p) {
+    return read(p, N);
   }
 
-  void read(char *p, int size){
-    for (int i=0;i<size-1;i++)
-      *p++=buf->sbumpc();
-    int t=buf->sbumpc();
-    if (t==EOF) bad=true;
-    *p++=t;
+  binary_iarchive& read(char* p, int size) {
+    is.read(p, size);
+    return *this;
   }
 
-  bool bool_test() const{
-    return !bad /*&& !!is*/;
+  bool bool_test() const {
+    return is;
   }
 
 private:
-  std::istream &is;
-  std::streambuf *buf;
-  bool bad;
+  std::istream& is;
 };
 
-template <>
-inline void binary_iarchive::read<1>(char *p)
-{
-  *p++=buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
-
-template <>
-inline void binary_iarchive::read<2>(char *p)
-{
-  *p++=buf->sbumpc();
-  *p++=buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
-
-template <>
-inline void binary_iarchive::read<4>(char *p)
-{
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
-
-template <>
-inline void binary_iarchive::read<8>(char *p)
-{
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sbumpc();
-  *p++=buf->sgetc();
-  if (buf->sbumpc()==EOF) bad=true;
-}
-
 template <class T>
-binary_iarchive &operator>>(binary_iarchive &ar, T &v)
+binary_iarchive& operator>>(binary_iarchive& ar, T& v)
 {
   ar & v;
   return ar;
 }
 
 template <class T>
-binary_iarchive &operator>>(binary_iarchive &ar, const T &v)
+binary_iarchive& operator>>(binary_iarchive& ar, const T& v)
 {
   ar & v;
   return ar;
 }
 
-#define gen_serial_binary_iarchive(tt)					\
-  template <>								\
-  inline void serialize(binary_iarchive &ar, tt &n)			\
-  {									\
-    tt tmp;								\
-    ar.read<sizeof(tmp)>(reinterpret_cast<char*>(&tmp));		\
-    if (ar) n=pfi::system::endian::from_little(tmp);			\
-  }									\
+#define gen_serial_binary_iarchive(tt) \
+  inline void serialize(binary_iarchive& ar, tt& n) \
+  { \
+    tt tmp; \
+    ar.read<sizeof(tmp)>(reinterpret_cast<char*>(&tmp)); \
+    if (ar) n = pfi::system::endian::from_little(tmp); \
+  }
 
 gen_serial_binary_iarchive(bool);
 gen_serial_binary_iarchive(char);
@@ -183,129 +139,76 @@ gen_serial_binary_iarchive(long double);
 
 #undef gen_serial_binary_iarchive
 
-class binary_oarchive : public pfi::lang::safe_bool<binary_oarchive>{
-public:
-  binary_oarchive(std::ostream &os)
-    : os(os)
-    , it(os){
-  }
-  virtual ~binary_oarchive() {
+class binary_oarchive : public pfi::lang::safe_bool<binary_oarchive> {
+  binary_oarchive(const binary_oarchive&);
+  binary_oarchive& operator=(const binary_oarchive&);
 
-  }
+public:
+  binary_oarchive(std::ostream& os)
+    : os(os)
+  {}
+  virtual ~binary_oarchive() {}
 
   static const bool is_read = false;
 
-  template<int N>
-  void write(const char *p){
-    write(p, N);
+  template <int N>
+  binary_oarchive& write(const char* p) {
+    return write(p, N);
   }
 
-  void write(const char *p, int size){
-    for (int i=0;i<size;i++)
-      *it=*p++;
+  binary_oarchive& write(const char* p, int size) {
+    os.write(p, size);
+    return *this;
   }
 
-  void flush(){
+  void flush() {
     os.flush();
   }
 
-  bool bool_test() const{
-    return !!os;
+  bool bool_test() const {
+    return os;
   }
 
 private:
-  std::ostream &os;
-  std::ostreambuf_iterator<char> it;
+  std::ostream& os;
 };
 
-template <>
-inline void binary_oarchive::write<1>(const char *p)
-{
-  *it=*p++;
-}
-
-template <>
-inline void binary_oarchive::write<2>(const char *p)
-{
-  *it=*p++;
-  *it=*p++;
-}
-
-template <>
-inline void binary_oarchive::write<4>(const char *p)
-{
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-}
-
-template <>
-inline void binary_oarchive::write<8>(const char *p)
-{
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-  *it=*p++;
-}
-
-
 template <class T>
-binary_oarchive &operator<<(binary_oarchive &ar, T &v)
+binary_oarchive& operator<<(binary_oarchive& ar, T& v)
 {
   ar & v;
   return ar;
 }
 
 template <class T>
-binary_oarchive &operator<<(binary_oarchive &ar, const T &v)
+binary_oarchive& operator<<(binary_oarchive& ar, const T& v)
 {
   ar & v;
   return ar;
 }
 
-#define gen_serial_binary_oarchive(tt)				\
-  template <>							\
-    inline void serialize(binary_oarchive &ar, tt &n)		\
-  {								\
-    tt tmp=pfi::system::endian::to_little(n);		\
-    ar.write<sizeof(tmp)>(reinterpret_cast<const char*>(&tmp)); \
-  }								\
+#define gen_serial_binary_oarchive(tt) \
+    inline void serialize(binary_oarchive& ar, tt n) \
+  { \
+    n = pfi::system::endian::to_little(n); \
+    ar.write<sizeof(n)>(reinterpret_cast<const char*>(&n)); \
+  }
 
 gen_serial_binary_oarchive(bool);
-gen_serial_binary_oarchive(const bool);
 gen_serial_binary_oarchive(char);
-gen_serial_binary_oarchive(const char);
 gen_serial_binary_oarchive(signed char);
-gen_serial_binary_oarchive(const signed char);
 gen_serial_binary_oarchive(unsigned char);
-gen_serial_binary_oarchive(const unsigned char);
 gen_serial_binary_oarchive(short);
-gen_serial_binary_oarchive(const short);
 gen_serial_binary_oarchive(unsigned short);
-gen_serial_binary_oarchive(const unsigned short);
 gen_serial_binary_oarchive(int);
-gen_serial_binary_oarchive(const int);
 gen_serial_binary_oarchive(unsigned int);
-gen_serial_binary_oarchive(const unsigned int);
 gen_serial_binary_oarchive(long);
-gen_serial_binary_oarchive(const long);
 gen_serial_binary_oarchive(unsigned long);
-gen_serial_binary_oarchive(const unsigned long);
 gen_serial_binary_oarchive(long long);
-gen_serial_binary_oarchive(const long long);
 gen_serial_binary_oarchive(unsigned long long);
-gen_serial_binary_oarchive(const unsigned long long);
 gen_serial_binary_oarchive(float);
-gen_serial_binary_oarchive(const float);
 gen_serial_binary_oarchive(double);
-gen_serial_binary_oarchive(const double);
 gen_serial_binary_oarchive(long double);
-gen_serial_binary_oarchive(const long double);
 
 #undef gen_serial_binary_oarchive
 
