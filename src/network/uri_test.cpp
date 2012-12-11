@@ -83,3 +83,21 @@ TEST(uri, encode)
   const std::string pfi_actual = net::uri_encode("ピーFI");
   EXPECT_TRUE(equal_percent_encoded_string(pfi_expected, pfi_actual));
 }
+
+TEST(uri, decode)
+{
+  EXPECT_EQ("", net::uri_decode(""));
+
+  EXPECT_EQ("abcdefghijklmnopqrstuvwxyz", net::uri_decode("abcdefghijklmnopqrstuvwxyz"));
+  EXPECT_EQ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", net::uri_decode("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+  EXPECT_EQ("-_.~", net::uri_decode("-_.~"));
+
+  const std::string abc_expected = "A:B/C";
+  const std::string abc_actual = net::uri_decode("A%3aB%2FC");
+  EXPECT_EQ(abc_expected, abc_actual);
+
+  const std::string pfi_expected = "ピーFI";
+  const std::string pfi_actual = net::uri_decode("%E3%83%94%E3%83%BcFI");
+  EXPECT_TRUE(equal_percent_encoded_string(pfi_expected, pfi_actual));
+
+}
