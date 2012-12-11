@@ -57,10 +57,11 @@ std::string uri_encode(const std::string &s)
 {
   ostringstream oss;
   for (int i=0;i<(int)s.length();i++){
-    if (isalpha(s[i])||
+    if (isalnum(s[i])||
         s[i]=='-'||
         s[i]=='_'||
-        s[i]=='.')
+        s[i]=='.'||
+        s[i]=='~')
       oss<<s[i];
     else if (s[i]==' ')
       oss<<'+';
