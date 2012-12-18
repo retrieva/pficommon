@@ -57,3 +57,17 @@ TEST(uri, class)
   EXPECT_EQ("q=1234&r=5678", complex.query());
   EXPECT_EQ("n42", complex.fragment());
 }
+
+#include <sstream>
+#include <string>
+
+TEST(uri, output_operator)
+{
+  std::string uri_string("http://u:p@example.com:80/a/b/c/?p=123&q=456#n");
+  pfi::network::uri uri(uri_string);
+
+  std::ostringstream oss;
+  oss << uri;
+
+  EXPECT_EQ(uri_string, oss.str());
+}
