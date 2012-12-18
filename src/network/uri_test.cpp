@@ -128,6 +128,28 @@ TEST(uri, class)
   EXPECT_EQ("n42", complex.fragment());
 }
 
+TEST(uri, authority)
+{
+  using pfi::network::uri;
+
+  {
+    uri no_userinfo_no_port("http://www.google.com/");
+    EXPECT_EQ("www.google.com", no_userinfo_no_port.authority());
+  }
+  {
+    uri no_userinfo_port("http://www.google.com:8080/");
+    EXPECT_EQ("www.google.com:8080", no_userinfo_port.authority());
+  }
+  {
+    uri userinfo_no_port("http://user:pass@www.google.com/");
+    EXPECT_EQ("user:pass@www.google.com", userinfo_no_port.authority());
+  }
+  {
+    uri userinfo_port("http://user:pass@www.google.com:8080/");
+    EXPECT_EQ("user:pass@www.google.com:8080", userinfo_port.authority());
+  }
+}
+
 #include <sstream>
 #include <string>
 
