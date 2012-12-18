@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2012, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -101,5 +101,29 @@ TEST(uri, decode)
   const std::string pfi_expected = "ピーFI";
   const std::string pfi_actual = net::uri_decode("%E3%83%94%E3%83%BcFI");
   EXPECT_TRUE(equal_percent_encoded_string(pfi_expected, pfi_actual));
+}
 
+TEST(uri, class)
+{
+  using pfi::network::uri;
+
+  uri pfi("http://preferred.jp/product/sedue/");
+  EXPECT_EQ("http", pfi.scheme());
+  EXPECT_EQ("preferred.jp", pfi.authority());
+  EXPECT_TRUE(pfi.userinfo().empty());
+  EXPECT_EQ("preferred.jp", pfi.host());
+  EXPECT_TRUE(pfi.port().empty());
+  EXPECT_EQ("/product/sedue/", pfi.path());
+  EXPECT_TRUE(pfi.query().empty());
+  EXPECT_TRUE(pfi.fragment().empty());
+
+  uri complex("http://user:pass@a.com:80/aoeu/htns?q=1234&r=5678#n42");
+  EXPECT_EQ("http", complex.scheme());
+  EXPECT_EQ("user:pass@a.com:80", complex.authority());
+  EXPECT_EQ("user:pass", complex.userinfo());
+  EXPECT_EQ("a.com", complex.host());
+  EXPECT_EQ("80", complex.port());
+  EXPECT_EQ("/aoeu/htns", complex.path());
+  EXPECT_EQ("q=1234&r=5678", complex.query());
+  EXPECT_EQ("n42", complex.fragment());
 }
