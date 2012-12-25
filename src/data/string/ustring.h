@@ -49,7 +49,7 @@ class ustring : public std::basic_string<uchar> {
 public:
   ustring(){}
   ustring(const ustring &s, size_type pos = 0, size_type n = npos)
-    : std::basic_string<uchar>(s, pos, npos) {}
+    : std::basic_string<uchar>(s, pos, n) {}
   ustring(const uchar *p)
     : std::basic_string<uchar>(p) {}
   ustring(const uchar *p, size_type n)
