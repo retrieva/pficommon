@@ -1,4 +1,4 @@
-import Options
+from waflib import Options
 
 def options(opt):
   opt.add_option('--disable-fcgi',
