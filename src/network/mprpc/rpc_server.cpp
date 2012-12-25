@@ -158,7 +158,7 @@ void rpc_server::process()
         if(!rs->receive(&msg)) {
           break;
         }
-      } catch (const rpc_timeout_error&) {
+      } catch (rpc_timeout_error&) {
         break;
       }
 
@@ -169,7 +169,7 @@ void rpc_server::process()
       rpc_request req(msg);
       try {
         process_request(req, rs);
-      } catch (const rpc_error&e) {
+      } catch (rpc_error&) {
       }
     }
   }
@@ -195,8 +195,8 @@ void rpc_server::process_request(rpc_request& req, const pfi::lang::shared_ptr<r
 
   try {
     fun->second->invoke(req, res);
-  } catch (const rpc_error &e) {
-  } catch (const std::exception &e) {
+  } catch (rpc_error&) {
+  } catch (std::exception& e) {
     res.send_error(std::string(e.what()));
   }
 }
