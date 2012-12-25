@@ -87,7 +87,7 @@ public:
     Bool,
     String,
     Array,
-    Object,
+    Object
   };
 
   struct iterator;
