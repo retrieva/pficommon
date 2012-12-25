@@ -3,8 +3,8 @@
 *.pyc
 .waf*
 build/
-.lock-wafbuild
 .unittest-gtest/
+/.lock-waf*
 
 # GNU GLOBAL
 GPATH
