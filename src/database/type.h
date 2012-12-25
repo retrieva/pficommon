@@ -50,7 +50,7 @@ enum sql_type{
   SQL_INT64,
   SQL_FLOAT,
   SQL_TIMESTAMP,
-  SQL_UNKNOWN,
+  SQL_UNKNOWN
 };
 
 class sql_value{
