@@ -76,7 +76,7 @@ int main()
         <<<ADDREFLECTS>>>
         infos[i].f(refs, outname);
       }
-      catch(const exception &e){
+      catch(exception& e){
         cerr<<"generate error: "<<e.what()<<endl;
         unlink(outname.c_str());
       }

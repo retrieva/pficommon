@@ -154,7 +154,7 @@ int mysql_connection::run(const string &sql,
     pfi::lang::shared_ptr<statement> stat(prepare(sql));
     return stat->execute(args);
   }
-  catch (const connection_error &e) {
+  catch (connection_error&) {
     reconnect(); // this function rethrows an exception if necessary
   }
 
@@ -167,7 +167,7 @@ statement *mysql_connection::prepare(const string &sql)
   try {
     return new mysql_statement(conn, sql);
   }
-  catch (const connection_error &e) {
+  catch (connection_error&) {
     reconnect();
   }
   return new mysql_statement(conn, sql);

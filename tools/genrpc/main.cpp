@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
       for (string name; iss>>name; )
         names.push_back(name);
     }
-    catch(const runtime_error &e){
+    catch(runtime_error& e){
       cout<<string("name extract failed: ")+e.what()<<endl;
       return 0;
     }
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
   try{
     (void)eval_cpp(tmpl, compiler_options);
   }
-  catch(const runtime_error &e){
+  catch(runtime_error& e){
     cout<<"generate error: "<<e.what()<<endl;
     return 0;
   }
