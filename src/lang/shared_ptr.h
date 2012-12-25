@@ -47,7 +47,7 @@ class single_thread;
 
 namespace lang {
 
-class bad_weak_ptr : std::exception {
+class bad_weak_ptr : public std::exception {
 public:
   const char* what() const throw() {
     return "pfi::lang::bad_weak_ptr";
