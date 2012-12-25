@@ -722,7 +722,7 @@ bool uri::parse_path_rootless(const char *&p)
   return true;
 }
 
-bool uri::parse_path_empty(const char *&p)
+bool uri::parse_path_empty(const char*&)
 {
   path_="";
   return true;

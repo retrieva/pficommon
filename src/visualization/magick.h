@@ -154,7 +154,7 @@ public:
   
   /// read from istream
   /// this method is not implemented
-  virtual bool read(std::istream &cin){
+  virtual bool read(std::istream&){
     return false;
   }
 
