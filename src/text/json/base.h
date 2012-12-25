@@ -141,7 +141,7 @@ public:
   virtual json::json_type_t type() const = 0;
 
   virtual void print(std::ostream& os, bool escape) const = 0;
-  virtual void pretty(std::ostream& os, int level, bool escape) const {
+  virtual void pretty(std::ostream& os, int /* level */, bool escape) const {
     print(os, escape);
   }
 
@@ -231,7 +231,7 @@ public:
 
   int64_t get() const { return dat; }
 
-  void print(std::ostream& os, bool escape) const {
+  void print(std::ostream& os, bool /* escape */) const {
     os << dat;
   }
 
@@ -253,7 +253,7 @@ public:
 
   double get() const { return dat; }
 
-  void print(std::ostream& os, bool escape) const {
+  void print(std::ostream& os, bool /* escape */) const {
     const std::streamsize prec = os.precision();
     try {
       os << std::setprecision(12)
@@ -505,7 +505,7 @@ public:
 
   bool get() const { return dat; }
 
-  void print(std::ostream& os, bool escape) const {
+  void print(std::ostream& os, bool /* escape */) const {
     os << (dat ? "true" : "false");
   }
 
@@ -525,7 +525,7 @@ public:
     return json::Null;
   }
 
-  void print(std::ostream& os, bool escape) const {
+  void print(std::ostream& os, bool /* escape */) const {
     os << "null";
   }
 

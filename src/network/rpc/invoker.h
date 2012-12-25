@@ -60,7 +60,7 @@ public:
   typedef pfi::lang::function<R()> func_type;
   invoker0(const func_type &f):f(f){}
 
-  void invoke(pfi::data::serialization::binary_iarchive &ia, pfi::data::serialization::binary_oarchive &oa){
+  void invoke(pfi::data::serialization::binary_iarchive&, pfi::data::serialization::binary_oarchive& oa){
     R ret=f();
     std::string ok("OK"); oa << ok;
     oa << ret;

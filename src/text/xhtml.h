@@ -52,7 +52,7 @@ public:
   virtual void render(std::ostream &os) const =0;
   void pretty(std::ostream &os) const { pretty(os, 0); }
 
-  virtual void pretty(std::ostream &os, int indent) const { render(os); }
+  virtual void pretty(std::ostream &os, int /* indent */) const { render(os); }
 };
 
 class tag_elem : public html_elem{

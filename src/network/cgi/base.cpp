@@ -54,10 +54,10 @@ void cgi::set_max_content_length(size_t length)
   max_content_length=length;
 }
 
-void cgi::exec(istream &in,
-               ostream &out,
-               ostream &err,
-               const map<string, string> &cenv)
+void cgi::exec(istream& in,
+               ostream& out,
+               ostream& /* err */,
+               const map<string, string>& cenv)
 {
   env=cenv;
   map<string,string>().swap(query);

@@ -65,7 +65,7 @@ inline void reverse(char *p)
 }
 
 template <>
-inline void reverse<1>(char *p)
+inline void reverse<1>(char*)
 {
 }
 

@@ -77,13 +77,13 @@ bool operator==(bool b, const safe_bool<T> &rhs)
 }
 
 template <class T, class U>
-void operator==(const safe_bool<T> &lhs, const safe_bool<U> &rhs)
+void operator==(const safe_bool<T>& lhs, const safe_bool<U>&)
 {
   lhs.this_type_does_not_support_comparisons();
 }
 
 template <class T, class U>
-void operator!=(const safe_bool<T> &lhs, const safe_bool<U> &rhs)
+void operator!=(const safe_bool<T>& lhs, const safe_bool<U>&)
 {
   lhs.this_type_does_not_support_comparisons();
 }
