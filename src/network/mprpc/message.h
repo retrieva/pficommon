@@ -197,7 +197,7 @@ private:
 
 enum error_code {
   METHOD_NOT_FOUND = 1,
-  TYPE_MISMATCH    = 2,
+  TYPE_MISMATCH    = 2
 };
 
 
