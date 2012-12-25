@@ -275,7 +275,7 @@ void run_server::process(socket_type ssock,
       pfi::lang::shared_ptr<http::response> resp=gen_resp(sout);
       resp->send(sock);
     }
-    catch(const exception &e){
+    catch(exception&){
     }
   }
 }

@@ -90,7 +90,7 @@ vector<ipv4_address> normal_dns_resolver::resolve(const string &host, uint16_t p
 
     return ret;
   }
-  catch(const std::bad_cast &){
+  catch(std::bad_cast&){
     // never come
     return vector<ipv4_address>();
   }
