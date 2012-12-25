@@ -376,17 +376,16 @@ private:
 
 class json_object : public json_value {
 private:
-  template <typename T>
-  static inline T return_fst(T v1, T v2)
-  {
-    return v1;
-  }
-
-  template<typename T>
-  static inline T return_snd(T v1, T v2)
-  {
-    return v2;
-  }
+  struct return_second {
+    template <class T, class U>
+    U& operator()(const T&, U& x) const {
+      return x;
+    }
+    template <class T, class U>
+    const U& operator()(const T&, const U& x) const {
+      return x;
+    }
+  };
 
 public:
   typedef pfi::data::unordered_map<std::string, json>::iterator iterator;
@@ -421,7 +420,7 @@ public:
   }
 
   json_object* merge(json_object* obj) const {
-    return merge_with(obj, &return_snd<json>);
+    return merge_with(obj, return_second());
   }
 
   json& operator[](const std::string& name) {
