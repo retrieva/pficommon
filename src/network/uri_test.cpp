@@ -73,6 +73,7 @@ TEST(uri, encode)
 
   EXPECT_EQ("abcdefghijklmnopqrstuvwxyz", net::uri_encode("abcdefghijklmnopqrstuvwxyz"));
   EXPECT_EQ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", net::uri_encode("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+  EXPECT_EQ("0123456789", net::uri_encode("0123456789"));
   EXPECT_EQ("-_.~", net::uri_encode("-_.~"));
 
   const std::string abc_expected = "A%3AB%2FC";
@@ -90,6 +91,7 @@ TEST(uri, decode)
 
   EXPECT_EQ("abcdefghijklmnopqrstuvwxyz", net::uri_decode("abcdefghijklmnopqrstuvwxyz"));
   EXPECT_EQ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", net::uri_decode("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+  EXPECT_EQ("0123456789", net::uri_decode("0123456789"));
   EXPECT_EQ("-_.~", net::uri_decode("-_.~"));
 
   const std::string abc_expected = "A:B/C";
