@@ -81,7 +81,7 @@ private:
 
 namespace std {
 template <>
-void swap(pfi::system::mmapper::mmapper& x, pfi::system::mmapper::mmapper& y)
+inline void swap(pfi::system::mmapper::mmapper& x, pfi::system::mmapper::mmapper& y)
 {
   x.swap(y);
 }
