@@ -4,7 +4,7 @@ VERSION = '1.3.1'
 top = '.'
 out = 'build'
 
-import Options
+from waflib import Options
 import sys
 import os
 import re
@@ -20,9 +20,9 @@ def options(opt):
   opt.recurse(subdirs)
 
 def configure(conf):
-  conf.check_tool('compiler_cxx')
-  conf.check_tool('unittest_gtest')
-  conf.check_tool('gnu_dirs')
+  conf.load('compiler_cxx')
+  conf.load('unittest_gtest')
+  conf.load('gnu_dirs')
 
   env = conf.env
   ver = env.CC_VERSION
