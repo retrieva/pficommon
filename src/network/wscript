@@ -105,3 +105,10 @@ def build(bld):
     target = 'ipv4_test',
     includes = '. rpc',
     use = 'pficommon_network')
+
+  bld.program(
+    features = 'gtest',
+    source = 'uri_test.cpp',
+    target = 'uri_test',
+    includes = '.',
+    use = 'pficommon_network')
