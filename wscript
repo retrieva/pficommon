@@ -25,15 +25,10 @@ def configure(conf):
   conf.load('gnu_dirs')
 
   env = conf.env
+  env.append_unique('CXXFLAGS', ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer'])
   ver = env.CC_VERSION
-  if env.COMPILER_CXX == 'g++' and int(ver[0]) >= 4 and int(ver[1]) >= 6:
-    env.append_unique(
-      'CXXFLAGS',
-      ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer'])
-  else:
-    env.append_unique(
-      'CXXFLAGS',
-      ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer', '-D_FORTIFY_SOURCE=1'])
+  if env.COMPILER_CXX != 'g++' or int(ver[0]) < 4 or (int(ver[0]) == 4 and int(ver[1]) < 6):
+    env.append_unique('CXXFLAGS', '-D_FORTIFY_SOURCE=1')
 
   env.HPREFIX = env.PREFIX + '/include/pficommon'
 
