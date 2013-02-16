@@ -34,6 +34,8 @@
 #include <iostream>
 #include <new>
 #include <stack>
+#include <cerrno>
+#include <climits>
 #include <cmath>
 #include <cstring>
 #include <cstdio>
@@ -232,68 +234,72 @@ void json_parser::parse_array(callback& cb)
 
 void json_parser::parse_number(callback& cb)
 {
-  int sign = 1;
-  if (peek() == '-') {
-    incr();
-    sign=-1;
-  }
-  
-  int64_t num = 0;
-  while (it != end && safe_isdigit(peek())) {
-    num = num * 10 + peek() - '0';
-    incr();
-  }
-  
+  std::string src;
   bool is_frac = false;
-  double frac = num;
-  
-  if (it != end && peek() == '.'){
-    is_frac = true;
+
+  if (it != end && peek() == '-') {
+    src += '-';
     incr();
+  }
 
-    double keta = 0.1;
-    if (it != end && !safe_isdigit(peek()))
-      error("after decimal-point, digit required.");
+  while (it != end && safe_isdigit(peek())) {
+    src += peek();
+    incr();
+  }
 
+  if (it != end && peek() == '.') {
+    is_frac = true;
+    src += '.';
+    incr();
     while (it != end && safe_isdigit(peek())) {
-      frac += (peek()-'0') * keta;
+      src += peek();
       incr();
-      keta *= 0.1;
     }
   }
-  
-  if (it != end && (peek()=='e' || peek()=='E')) {
+
+  if (it != end && (peek() == 'e' || peek() == 'E')) {
     is_frac = true;
+    src += peek();
     incr();
-    
-    int exp_sign = 1;
-    
-    if (it != end) {
-      if (peek() == '+') {
-        incr();
-      } else if (peek() == '-') {
-        exp_sign = -1;
-        incr();
-      }
-    }
-    
-    int exp = 0;
-    
-    if (it != end && !safe_isdigit(peek()))
+
+    if (it == end)
       error("after exp, digit required.");
-    
-    while (it != end && safe_isdigit(peek())) {
-      exp = exp*10 + peek() - '0';
+
+    if (peek()=='+' || peek()== '-') {
+      src += peek();
       incr();
     }
-    
-    frac *= std::pow(10.0, exp_sign*exp);
   }
 
-  if (is_frac)
-    cb.number(sign*frac);
-  else
-    cb.integer(sign*num);
+  while (it != end && safe_isdigit(peek())) {
+    src += peek();
+    incr();
+  }
+
+  const char *srcptr = src.c_str();
+  char *endptr;
+
+  if (is_frac) {
+    double num = strtod(srcptr, &endptr);
+    if (errno == ERANGE) {
+      if (num == HUGE_VALF || num == HUGE_VALL)
+        error("strtod overflow range over. Too huge value for double.");
+      else if (num == 0.0)
+        error("strtod underflow range over.");
+      error("strtod range over.");
+    }
+    cb.number(num);
+  } else {
+    int64_t num = strtoll(srcptr, &endptr, 10);
+    if (errno == ERANGE) {
+      if (num == LLONG_MAX || num == LLONG_MIN)
+        error("strtoll overflow range over. Too huge value for int64_t.");
+      else if (num == 0)
+        error("strtoll underflow range over.");
+      error("strtoll range over.");
+    }
+    cb.integer(num);
+  }
 }
 
 void json_parser::parse_string(callback& cb)
