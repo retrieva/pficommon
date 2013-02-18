@@ -722,6 +722,16 @@ TEST(json, parse)
   }
 }
 
+TEST(json, bignum_parse)
+{
+  {
+    // 36893488147419103233 == 2^65 + 1
+    istringstream iss("36893488147419103233e0");
+    json j;iss>>j;
+    EXPECT_DOUBLE_EQ(36893488147419103233e0, json_cast<double>(j));
+  }
+}
+
 TEST(json, pretty)
 {
   {
