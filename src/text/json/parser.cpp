@@ -276,8 +276,8 @@ void json_parser::parse_number(callback& cb)
     incr();
   }
 
-  const char *srcptr = src.c_str();
-  char *endptr;
+  const char* srcptr = src.c_str();
+  char* endptr;
 
   if (is_frac) {
     errno = 0;
