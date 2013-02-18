@@ -30,11 +30,13 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
+#include <stdint.h>
 
 #include "json.h"
 
 #include <iostream>
 #include <cmath>
+#include <climits>
 
 #include "../lang/bind.h"
 #include "../lang/cast.h"
@@ -1139,4 +1141,19 @@ TEST(json, escape_ctrl)
   std::ostringstream os2;
   os2<<j;
   EXPECT_EQ("\"\\u0003\"", os2.str());
+}
+
+TEST(json, invalid_json_num)
+{
+  { // LLONG_MAX + 1
+    istringstream iss(std::string("9223372036854775808"));
+    json j;
+    EXPECT_THROW(iss>>j, pfi::lang::parse_error);
+  }
+
+  { // LLONG_MIN - 1
+    istringstream iss(std::string("-9223372036854775809"));
+    json j;
+    EXPECT_THROW(iss>>j, pfi::lang::parse_error);
+  }
 }
