@@ -280,6 +280,7 @@ void json_parser::parse_number(callback& cb)
   char *endptr;
 
   if (is_frac) {
+    errno = 0;
     double num = strtod(srcptr, &endptr);
     if (errno == ERANGE) {
       if (num == HUGE_VALF || num == HUGE_VALL)
@@ -290,6 +291,7 @@ void json_parser::parse_number(callback& cb)
     }
     cb.number(num);
   } else {
+    errno = 0;
     int64_t num = strtoll(srcptr, &endptr, 10);
     if (errno == ERANGE) {
       if (num == LLONG_MAX || num == LLONG_MIN)
