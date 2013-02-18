@@ -265,7 +265,7 @@ void json_parser::parse_number(callback& cb)
     if (it == end)
       error("after exp, digit required.");
 
-    if (peek()=='+' || peek()== '-') {
+    if (peek() == '+' || peek() == '-') {
       src += peek();
       incr();
     }
