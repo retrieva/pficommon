@@ -22,6 +22,7 @@ def build(bld):
       'any.h',
       'util.h',
       'enable_if.h'
+      'type_traits.h'
       ])
 
   bld.shlib(
@@ -75,6 +76,12 @@ def build(bld):
     features = 'gtest',
     source = 'enable_if_test.cpp',
     target = 'enable_if_test',
+    includes = '.')
+
+  bld.program(
+    features = 'gtest',
+    source = 'type_traits_test.cpp',
+    target = 'type_traits_test',
     includes = '.')
 
   bld.recurse(subdirs)
