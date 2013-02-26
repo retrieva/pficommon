@@ -44,9 +44,9 @@ namespace data {
  * @brief Key to ID dictionary class
  */
 template<typename Key,
-  class Hash = hash<Key>,
-  class EqualKey = std::equal_to<Key>,
-  class Alloc = std::allocator<std::pair<const Key, int> > >
+         class Hash = hash<Key>,
+         class EqualKey = std::equal_to<Key>,
+         class Alloc = std::allocator<std::pair<const Key, int> > >
 class intern {
   typedef unordered_map<Key, int, Hash, EqualKey, Alloc> map_t;
 
@@ -55,7 +55,7 @@ public:
    * @brief is it empty
    */
   bool empty() const {
-    return tbl.size()==0&&lbt.size()==0;
+    return tbl.empty();
   }
 
   /**
@@ -78,8 +78,9 @@ public:
    * @param Key
    */
   int key2id_nogen(const Key& key) const {
-    typename map_t::const_iterator it=tbl.find(key);
-    if (it!=tbl.end()) return it->second;
+    typename map_t::const_iterator it = tbl.find(key);
+    if (it != tbl.end())
+      return it->second;
     return -1;
   }
 
@@ -88,12 +89,14 @@ public:
    * @param Key
    * @param create new entry if missing
    */
-  int key2id(const Key& key, bool gen=true) {
-    typename map_t::const_iterator it=tbl.find(key);
-    if (it!=tbl.end()) return it->second;
-    if (gen==false) return -1;
-    int id=tbl.size();
-    tbl.insert(std::make_pair(key,id));
+  int key2id(const Key& key, bool gen = true) {
+    typename map_t::const_iterator it = tbl.find(key);
+    if (it != tbl.end())
+      return it->second;
+    if (!gen)
+      return -1;
+    int id = tbl.size();
+    tbl.insert(std::make_pair(key, id));
     lbt.push_back(key);
     return id;
   }
@@ -110,7 +113,7 @@ public:
    * @brief return is key exist?
    */
   bool exist_key(const Key& key) const {
-    return tbl.count(key)==true;
+    return tbl.count(key);
   }
   /**
    * @brief return is id exist?
