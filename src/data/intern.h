@@ -132,13 +132,15 @@ private:
   friend class pfi::data::serialization::access;
   template<class Ar>
   void serialize(Ar& ar) {
-    ar & tbl;
     if (ar.is_read) {
-      lbt.clear();
-      lbt.resize(tbl.size());
-      for (typename map_t::iterator it=tbl.begin();it!=tbl.end();++it) {
-        lbt[it->second]=it->first;
-      }
+      intern tmp;
+      ar & tmp.tbl;
+      tmp.lbt.resize(tmp.tbl.size());
+      for (typename map_t::iterator it = tmp.tbl.begin(); it != tmp.tbl.end(); ++it)
+        tmp.lbt[it->second] = it->first;
+      swap(tmp);
+    } else {
+      ar & tbl;
     }
   }
 
