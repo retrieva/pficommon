@@ -50,7 +50,7 @@ config_file::config_file(const string& filename)
   init(filename, ifs);
 }
 
-config_file::config_file(const istream& is)
+config_file::config_file(istream& is)
 {
   init("", is);
 }
@@ -74,9 +74,8 @@ static const char* skip_spaces(const char* p)
   return p;
 }
 
-void config_file::init(const string& filename, const istream& cis)
+void config_file::init(const string& filename, istream& is)
 {
-  istream& is = const_cast<istream&>(cis);
   string cur_sect;
 
   int lineno = 1;

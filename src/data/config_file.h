@@ -42,7 +42,7 @@ namespace data {
 class config_file {
 public:
   explicit config_file(const std::string& filename);
-  explicit config_file(const std::istream& is);
+  explicit config_file(std::istream& is);
 
   class section {
   public:
@@ -100,7 +100,7 @@ public:
   const_iterator end() const { return dat.end(); }
 
 private:
-  void init(const std::string& filename, const std::istream& cis);
+  void init(const std::string& filename, std::istream& is);
 
   std::map<std::string, section> dat;
 };
