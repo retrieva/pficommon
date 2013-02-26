@@ -31,7 +31,10 @@
 
 #include "config_file.h"
 
+#include <cctype>
 #include <cstring>
+#include <fstream>
+#include <string>
 
 #include "../lang/exception.h"
 
