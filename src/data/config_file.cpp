@@ -38,76 +38,81 @@
 using namespace std;
 using namespace pfi::lang;
 
-namespace pfi{
-namespace data{
+namespace pfi {
+namespace data {
 
-config_file::config_file(const string &filename)
+config_file::config_file(const string& filename)
 {
   ifstream ifs(filename.c_str());
   init(filename, ifs);
 }
 
-config_file::config_file(const istream &is)
+config_file::config_file(const istream& is)
 {
   init("", is);
 }
 
-static string trim(const string &s)
+static string trim(const string& s)
 {
-  int st=0, ed=s.length()-1;
-  while(st<(int)s.length() && isspace(s[st])) st++;
-  while(ed>=0 && isspace(s[ed])) ed--;
-  if (st>ed) return string("");
+  int st = 0, ed = s.length()-1;
+  while (st < (int)s.length() && isspace(s[st]))
+    ++st;
+  while (ed >= 0 && isspace(s[ed]))
+    --ed;
+  if (st > ed)
+    return "";
   return s.substr(st, ed-st+1);
 }
 
-static const char *skip_spaces(const char *p)
+static const char* skip_spaces(const char* p)
 {
-  while(isspace(*p)) p++;
+  while (isspace(*p))
+    ++p;
   return p;
 }
 
-void config_file::init(const string &filename, const istream &cis)
+void config_file::init(const string& filename, const istream& cis)
 {
-  istream &is=const_cast<istream&>(cis);
+  istream& is = const_cast<istream&>(cis);
   string cur_sect;
-  
-  int lineno=1;
-  for (string line; getline(is, line); lineno++){
-    const char *p=line.c_str(), *st=p;
-    p=skip_spaces(p);
-    
+
+  int lineno = 1;
+  for (string line; getline(is, line); ++lineno) {
+    const char* p = line.c_str();
+    const char* st = p;
+    p = skip_spaces(p);
+
     if (*p=='\0') continue;
     if (*p==';') continue;
-    
-    if (*p=='['){
-      const char *q=strchr(p, ']');
-      if (q==NULL)
+
+    if (*p=='[') {
+      const char* q = strchr(p, ']');
+      if (q == NULL)
         throw parse_error(filename, lineno, line.length(), "']' missing");
-      cur_sect=string(p+1, q);
-      q=skip_spaces(q+1);
-      if (*q!='\0') 
+      cur_sect = string(p+1, q);
+      q = skip_spaces(q+1);
+      if (*q != '\0') 
         throw parse_error(filename, lineno, q-st, "invalid character");
-      
+
       (void)dat[cur_sect];
-      
+
       continue;
     }
-    
-    const char *q=strchr(p, '=');
-    if (q==NULL)
+
+    const char* q = strchr(p, '=');
+    if (q == NULL)
       throw parse_error(filename, lineno, line.length(), "'=' missing");
-    
+
     string key(trim(string(p, q)));
-    string val(trim(string(q+1)));
-    
-    if (val.length()>=2){
-      if (val[0]=='\"' &&
-          val[val.length()-1]=='\"')
-        val=val.substr(1, val.length()-2);
+    string val(trim(q+1));
+
+    if (val.length() >= 2) {
+      if (val[0] == '"' &&
+          val[val.length()-1] == '"')
+        val.assign(val, 1, val.length()-2);
     }
-    
-    dat[cur_sect][key]=val;
+
+    dat[cur_sect][key] = val;
   }
 }
 
