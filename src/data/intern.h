@@ -122,6 +122,11 @@ public:
     return id >= 0 && id < (int)lbt.size();
   }
 
+  void swap(intern& other) {
+    tbl.swap(other.tbl);
+    lbt.swap(other.lbt);
+  }
+
 private:
 
   friend class pfi::data::serialization::access;
@@ -140,6 +145,13 @@ private:
   map_t tbl; // key to ID
   std::vector<Key> lbt;	   // ID to key
 };
+
+template <typename Key, class Hash, class EqualKey, class Alloc>
+void swap(intern<Key, Hash, EqualKey, Alloc>& x, intern<Key, Hash, EqualKey, Alloc>& y)
+{
+  x.swap(y);
+}
+
 } // data
 } // pfi
 
