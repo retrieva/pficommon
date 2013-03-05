@@ -36,12 +36,12 @@
 #include "../lang/scoped_ptr.h"
 #include "../lang/noncopyable.h"
 
-namespace pfi{
-namespace concurrent{
+namespace pfi {
+namespace concurrent {
 
 class thread : pfi::lang::noncopyable {
 public:
-  thread(const pfi::lang::function<void()> &f);
+  thread(const pfi::lang::function<void ()>& f);
   ~thread();
 
   bool start();

@@ -39,12 +39,12 @@
 using namespace pfi::lang;
 using namespace std;
 
-namespace pfi{
-namespace concurrent{
+namespace pfi {
+namespace concurrent {
 
-class thread::impl : noncopyable{
+class thread::impl : noncopyable {
 public:
-  impl(const pfi::lang::function<void()> &f);
+  impl(const pfi::lang::function<void()>& f);
   ~impl();
 
   bool start();
@@ -52,16 +52,16 @@ public:
   void detach();
 
 private:
-  static void *start_routine(void *p);
+  static void* start_routine(void* p);
 
   bool running;
   pthread_t tid;
 
-  pfi::lang::function<void()> f;
+  pfi::lang::function<void ()> f;
 };
 
-thread::thread(const pfi::lang::function<void()> &f)
-  :pimpl(new impl(f))
+thread::thread(const pfi::lang::function<void ()>& f)
+  : pimpl(new impl(f))
 {
 }
 
@@ -95,15 +95,15 @@ void thread::yield()
 
 bool thread::sleep(double sec)
 {
-  timespec req={},rem={};
+  timespec req = {}, rem = {};
 
-  sec=max(0.0,sec);
+  sec = max(0.0,sec);
 
-  req.tv_sec=max((time_t)0,(time_t)sec);
-  req.tv_nsec=max(0l,min(999999999l,(long)((sec-req.tv_sec)*1000000000.0)));
+  req.tv_sec = max<time_t>(0, sec);
+  req.tv_nsec = max<long>(0, min<long>(999999999, (sec - req.tv_sec) * 1000000000.0));
 
-  int err=nanosleep(&req,&rem);
-  return err==0;
+  int err = nanosleep(&req, &rem);
+  return err == 0;
 }
 
 thread::tid_t thread::id()
@@ -115,7 +115,7 @@ thread::tid_t thread::id()
 #endif
 }
 
-thread::impl::impl(const pfi::lang::function<void()> &f)
+thread::impl::impl(const pfi::lang::function<void ()>& f)
   : running(false)
   , tid(0)
   , f(f)
@@ -133,13 +133,13 @@ bool thread::impl::start()
   if (!f) return false;
   if (running) return false;
 
-  running=true;
-  pfi::lang::function<void()> *pf=new pfi::lang::function<void()>(f);
-  int res=pthread_create(&tid,NULL,start_routine,(void*)pf);
-  if (res!=0){
+  running = true;
+  pfi::lang::function<void ()>* pf = new pfi::lang::function<void()>(f);
+  int res = pthread_create(&tid, NULL, start_routine, pf);
+  if (res != 0){
     delete pf;
-    tid=0;
-    running=false;
+    tid = 0;
+    running = false;
     return false;
   }
 
@@ -150,13 +150,13 @@ bool thread::impl::join()
 {
   if (!running) return false;
 
-  int res=pthread_join(tid,NULL);
-  if (res!=0){
+  int res = pthread_join(tid,NULL);
+  if (res != 0) {
     return false;
   }
 
-  running=false;
-  tid=0;
+  running = false;
+  tid = 0;
 
   return true;
 }
@@ -166,18 +166,18 @@ void thread::impl::detach()
   if (!running) return;
 
   // pthread_detach always success as long as tid is correct.
-  int res=pthread_detach(tid);
-  if (res!=0){
+  int res = pthread_detach(tid);
+  if (res != 0) {
     // it may not fail
     return;
   }
-  running=false;
-  tid=0;
+  running = false;
+  tid = 0;
 }
 
-void *thread::impl::start_routine(void *p)
+void* thread::impl::start_routine(void* p)
 {
-  pfi::lang::function<void()> *pf=reinterpret_cast<pfi::lang::function<void()>*>(p);
+  pfi::lang::function<void ()>* pf = reinterpret_cast<pfi::lang::function<void()>*>(p);
   (*pf)();
   delete pf;
   return NULL;
