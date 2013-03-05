@@ -41,7 +41,7 @@ namespace concurrent {
 
 class thread : pfi::lang::noncopyable {
 public:
-  thread(const pfi::lang::function<void ()>& f);
+  explicit thread(const pfi::lang::function<void ()>& f);
   ~thread();
 
   bool start();

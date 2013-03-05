@@ -44,7 +44,7 @@ namespace concurrent {
 
 class thread::impl : noncopyable {
 public:
-  impl(const pfi::lang::function<void()>& f);
+  explicit impl(const pfi::lang::function<void()>& f);
   ~impl();
 
   bool start();
