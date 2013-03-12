@@ -43,16 +43,16 @@
 #include "../../lang/function.h"
 #include "../../network/socket.h"
 
-namespace pfi{
-namespace network{
-namespace http{
+namespace pfi {
+namespace network {
+namespace http {
 
-class http_exception : public std::runtime_error{
+class http_exception : public std::runtime_error {
 public:
-  http_exception(const std::string &reason): runtime_error(reason){}
+  http_exception(const std::string& reason) : runtime_error(reason) {}
 };
 
-class header{
+class header {
 public:
   typedef std::vector<std::pair<std::string,std::string> > dat_type;
   typedef dat_type::iterator iterator;
@@ -60,18 +60,18 @@ public:
 
   header();
   header(const pfi::lang::shared_ptr<stream_socket>& sock);
-  header(std::istream &is);
+  header(std::istream& is);
 
   ~header();
 
   bool has_key(const std::string &key) const;
 
-  const std::string &get(const std::string &key);
-  void set(const std::string &key, const std::string &val);
-  void erase(const std::string &key);
+  const std::string& get(const std::string& key);
+  void set(const std::string& key, const std::string& val);
+  void erase(const std::string& key);
 
-  std::string &operator[](const std::string &key);
-  const std::string &operator[](const std::string &key) const;
+  std::string& operator[](const std::string& key);
+  const std::string& operator[](const std::string& key) const;
 
   iterator begin();
   const_iterator begin() const;
@@ -82,12 +82,12 @@ public:
   void send(const pfi::lang::shared_ptr<stream_socket>& sock);
 
 private:
-  void read_header(pfi::lang::function<bool(std::string*)> f);
+  void read_header(pfi::lang::function<bool (std::string*)> f);
 
   std::vector<std::pair<std::string,std::string> > dat;
 };
 
-class method{
+class method {
 public:
   static const std::string get;
   static const std::string post;
@@ -99,19 +99,19 @@ public:
   static const std::string options;
 };
 
-class request{
+class request {
 public:
-  request(const std::string &method, const uri &u, int major_ver = 1, int minor_ver = 1);
+  request(const std::string& method, const uri& u, int major_ver = 1, int minor_ver = 1);
   request(const pfi::lang::shared_ptr<stream_socket>& sock);
 
   ~request();
 
-  const std::string &method() const;
-  const pfi::network::uri &path() const;
-  const std::pair<int,int> &version() const;
+  const std::string& method() const;
+  const pfi::network::uri& path() const;
+  const std::pair<int,int>& version() const;
 
-  header &head();
-  std::iostream &body();
+  header& head();
+  std::iostream& body();
 
   // Send a request to socket
   // Don't call this method twice to same object.
@@ -126,27 +126,27 @@ private:
   pfi::lang::shared_ptr<std::iostream> stream;
 };
 
-class response{
+class response {
 public:
   response();
-  response(int code, const std::string &reason, int major_ver = 1, int minor_ver = 1);
+  response(int code, const std::string& reason, int major_ver = 1, int minor_ver = 1);
   response(const pfi::lang::shared_ptr<stream_socket>& sock);
 
   ~response();
 
-  const std::pair<int,int> &version() const;
+  const std::pair<int, int>& version() const;
   int code() const;
-  const std::string &reason() const;
+  const std::string& reason() const;
 
-  header &head();
-  std::iostream &body();
+  header& head();
+  std::iostream& body();
 
   // Send a response to socket
   // Don't call this method twice to same object.
   void send(const pfi::lang::shared_ptr<stream_socket>& sock);
 
 private:
-  std::pair<int,int> version_;
+  std::pair<int, int> version_;
   int code_;
   std::string reason_;
 
