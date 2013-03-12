@@ -49,7 +49,7 @@ namespace http {
 
 class http_exception : public std::runtime_error {
 public:
-  http_exception(const std::string& reason) : runtime_error(reason) {}
+  explicit http_exception(const std::string& reason) : runtime_error(reason) {}
 };
 
 class header {
