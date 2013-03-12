@@ -52,7 +52,7 @@ static bool cicmp(const string& s, const string& t)
 {
   if (s.length() != t.length()) return false;
 
-  for (int i = 0; i < (int)s.length(); i++)
+  for (size_t i = 0; i < s.length(); i++)
     if (tolower(s[i]) != tolower(t[i]))
       return false;
   return true;
@@ -73,7 +73,7 @@ void header::read_header(pfi::lang::function<bool (string*)> f)
   bool cont = true;
   while (cont) {
     // field-name ":" [field-value]
-    for (int i = 0; i < (int)line.length(); i++) {
+    for (size_t i = 0; i < line.length(); i++) {
       if (line[i] != ':') {
         key += line[i];
       } else {
@@ -99,7 +99,7 @@ void header::read_header(pfi::lang::function<bool (string*)> f)
       }
       if (isspace(line[0])) {
         // LWS
-        for (int i = 0; i < (int)line.length(); i++) {
+        for (size_t i = 0; i < line.length(); i++) {
           if (val.length() > 0 &&
               isspace(val[val.length()-1]) &&
               isspace(line[i]));
@@ -111,8 +111,8 @@ void header::read_header(pfi::lang::function<bool (string*)> f)
         break;
     }
 
-    int st = 0;
-    while (st < (int)val.length() && isspace(val[st])) st++;
+    size_t st = 0;
+    while (st < val.length() && isspace(val[st])) st++;
 
     set(key, val.substr(st));
     key = "";
@@ -146,7 +146,7 @@ header::~header()
 
 bool header::has_key(const string& key) const
 {
-  for (int i = 0; i < (int)dat.size(); i++)
+  for (size_t i = 0; i < dat.size(); i++)
     if (cicmp(dat[i].first, key))
       return true;
   return false;
@@ -174,7 +174,7 @@ void header::erase(const string& key)
 
 std::string& header::operator[](const string& key)
 {
-  for (int i = 0; i < (int)dat.size(); i++)
+  for (size_t i = 0; i < dat.size(); i++)
     if (cicmp(dat[i].first, key))
       return dat[i].second;
 
@@ -184,7 +184,7 @@ std::string& header::operator[](const string& key)
 
 const std::string& header::operator[](const string& key) const
 {
-  for (int i = 0; i < (int)dat.size(); i++)
+  for (size_t i = 0; i < dat.size(); i++)
     if (cicmp(dat[i].first,key))
       return dat[i].second;
 
@@ -214,7 +214,7 @@ header::const_iterator header::end() const
 
 void header::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
-  for (int i = 0; i < (int)dat.size(); i++) {
+  for (size_t i = 0; i < dat.size(); i++) {
     string line = dat[i].first + ": " + dat[i].second + "\r\n";
     if (!sock->puts(line))
       throw http_exception("cannot send header");
@@ -424,7 +424,7 @@ request::request(const pfi::lang::shared_ptr<stream_socket>& sock)
     iss >> method_ >> uri_s >> ver;
     uri_ = pfi::network::uri(uri_s);
 
-    for (int i = 0; i < (int)ver.length(); i++)
+    for (size_t i = 0; i < ver.length(); i++)
       ver[i] = toupper(ver[i]);
 
     int ma, mi;
@@ -530,7 +530,7 @@ response::response(const pfi::lang::shared_ptr<stream_socket>& sock)
 
     getline(iss, reason_);
 
-    for (int i = 0; i < (int)ver.length(); i++)
+    for (size_t i = 0; i < ver.length(); i++)
       ver[i] = toupper(ver[i]);
 
     int ma, mi;
