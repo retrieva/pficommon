@@ -54,7 +54,7 @@ public:
 
 class header {
 public:
-  typedef std::vector<std::pair<std::string,std::string> > dat_type;
+  typedef std::vector<std::pair<std::string, std::string> > dat_type;
   typedef dat_type::iterator iterator;
   typedef dat_type::const_iterator const_iterator;
 

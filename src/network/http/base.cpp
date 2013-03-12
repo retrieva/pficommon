@@ -41,19 +41,19 @@
 using namespace std;
 using namespace pfi::lang;
 
-const static int buf_size=4096;
-const static int line_limit=4096;
+const static int buf_size = 4096;
+const static int line_limit = 4096;
 
-namespace pfi{
-namespace network{
-namespace http{
+namespace pfi {
+namespace network {
+namespace http {
 
-static bool cicmp(const string &s, const string &t)
+static bool cicmp(const string& s, const string& t)
 {
-  if (s.length()!=t.length()) return false;
+  if (s.length() != t.length()) return false;
 
-  for (int i=0;i<(int)s.length();i++)
-    if (tolower(s[i])!=tolower(t[i]))
+  for (int i = 0; i < (int)s.length(); i++)
+    if (tolower(s[i]) != tolower(t[i]))
       return false;
   return true;
 }
@@ -62,65 +62,65 @@ header::header()
 {
 }
 
-void header::read_header(pfi::lang::function<bool(string*)> f)
+void header::read_header(pfi::lang::function<bool (string*)> f)
 {
   string line, key, val;
   if (!f(&line))
     throw http_exception("invalid header");
 
-  if (line.length()==0) return;
+  if (line.length() == 0) return;
 
-  bool cont=true;
-  while(cont){
+  bool cont = true;
+  while (cont) {
     // field-name ":" [field-value]
-    for (int i=0;i<(int)line.length();i++){
-      if (line[i]!=':'){
-        key+=line[i];
-      }
-      else{
-        int ed=key.length();
-        while(ed>0&&isspace(key[ed-1])) ed--;
-        key=key.substr(0,ed);
+    for (int i = 0; i < (int)line.length(); i++) {
+      if (line[i] != ':') {
+        key += line[i];
+      } else {
+        int ed = key.length();
+        while (ed > 0 && isspace(key[ed-1]))
+          ed--;
+        key = key.substr(0,ed);
 
-        val=line.substr(i+1);
+        val = line.substr(i+1);
         break;
       }
     }
 
     // LWS
-    for (;;){
-      if (!f(&line)){
-        cont=false;
+    for (;;) {
+      if (!f(&line)) {
+        cont = false;
         break;
       }
-      if (line.length()==0||line=="\r"){
-        cont=false;
+      if (line.length() == 0 || line == "\r") {
+        cont = false;
         break;
       }
-      if (isspace(line[0])){
+      if (isspace(line[0])) {
         // LWS
-        for (int i=0;i<(int)line.length();i++){
-          if (val.length()>0 &&
+        for (int i = 0; i < (int)line.length(); i++) {
+          if (val.length() > 0 &&
               isspace(val[val.length()-1]) &&
               isspace(line[i]));
           else
-            val+=line[i];
+            val += line[i];
         }
       }
       else
         break;
     }
 
-    int st=0;
-    while(st<(int)val.length() && isspace(val[st])) st++;
+    int st = 0;
+    while (st < (int)val.length() && isspace(val[st])) st++;
 
     set(key, val.substr(st));
-    key="";
-    val="";
+    key = "";
+    val = "";
   }
 }
 
-static bool socket_getline(stream_socket *sock, string *str, int line_limit)
+static bool socket_getline(stream_socket* sock, string* str, int line_limit)
 {
   return sock->getline(*str, line_limit);
 }
@@ -130,12 +130,12 @@ header::header(const pfi::lang::shared_ptr<stream_socket>& sock)
   read_header(bind(&socket_getline, sock.get(), _1, line_limit));
 }
 
-static bool istream_getline(istream *is, string *str)
+static bool istream_getline(istream* is, string* str)
 {
-  return !!getline(*is, *str);
+  return getline(*is, *str);
 }
 
-header::header(istream &is)
+header::header(istream& is)
 {
   read_header(bind(&istream_getline, &is, _1));
 }
@@ -144,47 +144,47 @@ header::~header()
 {
 }
 
-bool header::has_key(const string &key) const
+bool header::has_key(const string& key) const
 {
-  for (int i=0;i<(int)dat.size();i++)
-    if (cicmp(dat[i].first,key))
+  for (int i = 0; i < (int)dat.size(); i++)
+    if (cicmp(dat[i].first, key))
       return true;
   return false;
 }
 
-const string &header::get(const string &key)
+const string& header::get(const string& key)
 {
   return (*this)[key];
 }
 
-void header::set(const string &key, const string &val)
+void header::set(const string& key, const string& val)
 {
   (*this)[key]=val;
 }
 
-void header::erase(const string &key)
+void header::erase(const string& key)
 {
-  for (iterator it=dat.begin();it!=dat.end();it++){
-    if (cicmp(it->first,key)){
+  for (iterator it = dat.begin(); it != dat.end(); ++it) {
+    if (cicmp(it->first,key)) {
       dat.erase(it);
       return;
     }
   }
 }
 
-std::string &header::operator[](const string &key)
+std::string& header::operator[](const string& key)
 {
-  for (int i=0;i<(int)dat.size();i++)
-    if (cicmp(dat[i].first,key))
+  for (int i = 0; i < (int)dat.size(); i++)
+    if (cicmp(dat[i].first, key))
       return dat[i].second;
 
   dat.push_back(make_pair(key,""));
   return dat.back().second;
 }
 
-const std::string &header::operator[](const string &key) const
+const std::string& header::operator[](const string& key) const
 {
-  for (int i=0;i<(int)dat.size();i++)
+  for (int i = 0; i < (int)dat.size(); i++)
     if (cicmp(dat[i].first,key))
       return dat[i].second;
 
@@ -214,8 +214,8 @@ header::const_iterator header::end() const
 
 void header::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
-  for (int i=0;i<(int)dat.size();i++){
-    string line=dat[i].first+": "+dat[i].second+"\r\n";
+  for (int i = 0; i < (int)dat.size(); i++) {
+    string line = dat[i].first + ": " + dat[i].second + "\r\n";
     if (!sock->puts(line))
       throw http_exception("cannot send header");
   }
@@ -224,57 +224,60 @@ void header::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 
 // only support under C=char.
 
-template <class C, class T=char_traits<C> >
-class basic_httpbody_chunked_streambuf : public basic_streambuf<C,T>{
+template <class C, class T = char_traits<C> >
+class basic_httpbody_chunked_streambuf : public basic_streambuf<C, T> {
 public:
   typedef C char_type;
 
   basic_httpbody_chunked_streambuf(const pfi::lang::shared_ptr<stream_socket>& sock)
-    : sock(sock)
-    , chunk_rest(0)
-    , buf(buf_size)
-    , buf_pos(0), buf_end(0){
-  }
-  ~basic_httpbody_chunked_streambuf(){
-  }
+    : sock(sock),
+      chunk_rest(0),
+      buf(buf_size),
+      buf_pos(0),
+      buf_end(0)
+  {}
 
-  int uflow(){
-    int ret=underflow();
+  ~basic_httpbody_chunked_streambuf() {}
+
+  int uflow() {
+    int ret = underflow();
     inc();
     return ret;
   }
 
-  int underflow(){
-    if (empty()) fill();
-    if (empty()) return T::eof();
+  int underflow() {
+    if (empty())
+      fill();
+    if (empty())
+      return T::eof();
     return buf[buf_pos];
   }
 
 private:
-  void shutdown(){
+  void shutdown() {
     sock.reset();
-    chunk_rest=0;
-    buf_pos=0;
-    buf_end=0;
+    chunk_rest = 0;
+    buf_pos = 0;
+    buf_end = 0;
   }
 
-  bool empty() const{
-    return buf_pos>=buf_end;
+  bool empty() const {
+    return buf_pos >= buf_end;
   }
 
-  void inc(){
+  void inc() {
     if (!empty()) buf_pos++;
   }
 
-  void fill(){
+  void fill() {
     if (!sock) return;
 
-    if (chunk_rest==0)
+    if (chunk_rest == 0)
       read_chunk_size();
 
-    if (chunk_rest==0){ // last chunk
+    if (chunk_rest == 0) { // last chunk
       // skip trailer
-      if (sock){
+      if (sock) {
         for (string line;
              sock->getline(line,line_limit) && line.length()>0;);
       }
@@ -282,36 +285,35 @@ private:
       return;
     }
 
-    int cur=min(chunk_rest, buf_size);
-    int rbyte=sock->read(&buf[0], cur);
+    int cur = min(chunk_rest, buf_size);
+    int rbyte = sock->read(&buf[0], cur);
 
-    if (rbyte!=cur){
+    if (rbyte != cur) {
       shutdown();
       return;
     }
 
-    buf_pos=0;
-    buf_end=cur;
-    chunk_rest-=cur;
+    buf_pos = 0;
+    buf_end = cur;
+    chunk_rest -= cur;
 
-    if (chunk_rest==0){
-      char c=sock->getc();
-      if (c=='\r'){
-        c=sock->getc();
-        if (c!='\n')
+    if (chunk_rest == 0) {
+      char c = sock->getc();
+      if (c == '\r'){
+        c = sock->getc();
+        if (c != '\n')
           throw http_exception("invalid chunk footer");
       }
-      else if (c=='\n');
-      else
+      else if (c != '\n')
         throw http_exception("invalid chunk footer");
     }
   }
 
-  void read_chunk_size(){
+  void read_chunk_size() {
     if (!sock) return;
 
     string line;
-    if (!sock->getline(line, line_limit)){
+    if (!sock->getline(line, line_limit)) {
       shutdown();
       return;
     }
@@ -319,7 +321,7 @@ private:
     // line = chunk-size [chunk-extension] CRLF
 
     istringstream iss(line);
-    iss>>hex>>chunk_rest;
+    iss >> hex >> chunk_rest;
   }
 
   pfi::lang::shared_ptr<stream_socket> sock;
@@ -330,30 +332,31 @@ private:
   int buf_pos, buf_end;
 };
 
-template <class C, class T=char_traits<C> >
-class basic_httpbody_streambuf : public basic_streambuf<C,T>{
+template <class C, class T = char_traits<C> >
+class basic_httpbody_streambuf : public basic_streambuf<C, T> {
 public:
   typedef C char_type;
 
   basic_httpbody_streambuf(const pfi::lang::shared_ptr<stream_socket>& sock, int64_t length)
-    : sock(sock)
-    , rest(length)
-    , buf(T::eof()){
-  }
-  ~basic_httpbody_streambuf(){
-  }
+    : sock(sock),
+      rest(length),
+      buf(T::eof())
+  {}
 
-  int uflow(){
-    int ret=underflow();
-    buf=T::eof();
+  ~basic_httpbody_streambuf() {}
+
+  int uflow() {
+    int ret = underflow();
+    buf = T::eof();
     return ret;
   }
 
-  int underflow(){
-    if (buf==T::eof()){
-      if (!sock) return T::eof();
-      buf=sock->getc();
-      if (--rest==0)
+  int underflow() {
+    if (buf == T::eof()) {
+      if (!sock)
+        return T::eof();
+      buf = sock->getc();
+      if (--rest == 0)
         sock.reset();
     }
     return buf;
@@ -366,28 +369,30 @@ private:
   int buf;
 };
 
-template <class C, class T=char_traits<C> >
-class basic_httpbody_chunked_stream : public basic_iostream<C,T>{
+template <class C, class T = char_traits<C> >
+class basic_httpbody_chunked_stream : public basic_iostream<C, T> {
 public:
   basic_httpbody_chunked_stream(const pfi::lang::shared_ptr<stream_socket>& sock)
-    : basic_iostream<C,T>()
-    , buf(sock){
+    : basic_iostream<C,T>(), buf(sock)
+  {
     this->init(&buf);
   }
+
 private:
-  basic_httpbody_chunked_streambuf<C,T> buf;
+  basic_httpbody_chunked_streambuf<C, T> buf;
 };
 
-template <class C, class T=char_traits<C> >
-class basic_httpbody_stream : public basic_iostream<C,T>{
+template <class C, class T = char_traits<C> >
+class basic_httpbody_stream : public basic_iostream<C, T> {
 public:
   basic_httpbody_stream(const pfi::lang::shared_ptr<stream_socket>& sock, int64_t len)
-    : basic_iostream<C,T>()
-    , buf(sock, len){
+    : basic_iostream<C,T>(),
+      buf(sock, len)
+  {
     this->init(&buf);
   }
 private:
-  basic_httpbody_streambuf<C,T> buf;
+  basic_httpbody_streambuf<C, T> buf;
 };
 
 const string method::get     = "GET";
@@ -399,19 +404,18 @@ const string method::trace   = "TRACE";
 const string method::connect = "CONNECT";
 const string method::options = "OPTIONS";
 
-request::request(const string &method, const uri &u, int major_ver, int minor_ver)
-  : method_(method)
-  , uri_(u)
-  , version_(major_ver,minor_ver)
-  , stream(new stringstream())
-{
-}
+request::request(const string& method, const uri& u, int major_ver, int minor_ver)
+  : method_(method),
+    uri_(u),
+    version_(major_ver,minor_ver),
+    stream(new stringstream())
+{}
 
 request::request(const pfi::lang::shared_ptr<stream_socket>& sock)
-  : method_("")
-  , uri_("/")
-  , version_(1,1)
-  , stream()
+  : method_(""),
+    uri_("/"),
+    version_(1,1),
+    stream()
 {
   // Request-Line
   {
@@ -421,103 +425,100 @@ request::request(const pfi::lang::shared_ptr<stream_socket>& sock)
     istringstream iss(head);
     string uri_s;
     string ver;
-    iss>>method_>>uri_s>>ver;
-    uri_=pfi::network::uri(uri_s);
+    iss >> method_ >> uri_s >> ver;
+    uri_ = pfi::network::uri(uri_s);
 
-    for (int i=0;i<(int)ver.length();i++)
-      ver[i]=toupper(ver[i]);
+    for (int i = 0; i < (int)ver.length(); i++)
+      ver[i] = toupper(ver[i]);
 
     int ma, mi;
-    if (sscanf(ver.c_str(),"HTTP/%d.%d",&ma,&mi)!=2)
+    if (sscanf(ver.c_str(), "HTTP/%d.%d", &ma, &mi) != 2)
       throw http_exception("invalid request-line");
 
-    version_=make_pair(ma,mi);
+    version_ = make_pair(ma,mi);
   }
 
   // header
-  header_=header(sock);
+  header_ = header(sock);
 
   // body
-  if (cicmp(header_["Transfer-Encoding"],"chunked"))
-    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
-  else if (header_["Content-Length"]!="")
-    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
+  if (cicmp(header_["Transfer-Encoding"], "chunked"))
+    stream = pfi::lang::shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
+  else if (header_["Content-Length"] != "")
+    stream = pfi::lang::shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
   else
-    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
+    stream = pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
-request::~request()
-{
-}
+request::~request() {}
 
-const string &request::method() const
+const string& request::method() const
 {
   return method_;
 }
 
-const uri &request::path() const
+const uri& request::path() const
 {
   return uri_;
 }
 
-const pair<int,int> &request::version() const
+const pair<int,int>& request::version() const
 {
   return version_;
 }
 
-header &request::head()
+header& request::head()
 {
   return header_;
 }
 
-iostream &request::body()
+iostream& request::body()
 {
   return *stream;
 }
 
 void request::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
-  stringstream *ss=dynamic_cast<stringstream*>(stream.get());
-  if (!ss) throw http_exception("body is not stringstream");
-  string dat=ss->str();
+  stringstream* ss = dynamic_cast<stringstream*>(stream.get());
+  if (!ss)
+    throw http_exception("body is not stringstream");
+  string dat = ss->str();
 
-  string req_line=
-    method_+" "+
-    lexical_cast<string>(uri_)+" "+
-    "HTTP/"+lexical_cast<string>(version_.first)+"."+lexical_cast<string>(version_.second)+"\r\n";
+  string req_line =
+    method_ + " " +
+    lexical_cast<string>(uri_) + " " +
+    "HTTP/" + lexical_cast<string>(version_.first) + "." + lexical_cast<string>(version_.second) + "\r\n";
 
   if (!sock->puts(req_line))
     throw http_exception("cannot send reqest-line");
 
-  if (!header_.has_key("Content-Length") && dat.length()>0)
-    header_["Content-Length"]=lexical_cast<string>(dat.length());
+  if (!header_.has_key("Content-Length") && dat.length() > 0)
+    header_["Content-Length"] = lexical_cast<string>(dat.length());
   header_.send(sock);
 
-  if (dat.length()>0){
+  if (dat.length() > 0) {
     if (!sock->puts(dat))
       throw http_exception("cannot send body");
   }
-  if (sock->flush()>=0)
+  if (sock->flush() >= 0)
     throw http_exception("flush failed");
-  if (dat.length()==0)
-    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
+  if (dat.length() == 0)
+    stream = pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
 response::response()
-  : version_(1,1)
-  , code_(0)
-  , reason_("")
-  , stream(new stringstream())
-{
-}
+  : version_(1, 1),
+    code_(0),
+    reason_(""),
+    stream(new stringstream())
+{}
 
 response::response(int code, const string &reason, int major_ver, int minor_ver)
-  : version_(major_ver, minor_ver)
-  , code_(code)
-  , reason_(reason)
-  , stream(new stringstream())
-{
-}
+  : version_(major_ver, minor_ver),
+    code_(code),
+    reason_(reason),
+    stream(new stringstream())
+{}
 
 response::response(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
@@ -529,36 +530,34 @@ response::response(const pfi::lang::shared_ptr<stream_socket>& sock)
     
     istringstream iss(line);
     string ver;
-    iss>>ver>>ws>>code_>>ws;
+    iss >> ver >> ws >> code_ >> ws;
 
-    getline(iss,reason_);
+    getline(iss, reason_);
 
-    for (int i=0;i<(int)ver.length();i++)
-      ver[i]=toupper(ver[i]);
+    for (int i = 0; i < (int)ver.length(); i++)
+      ver[i] = toupper(ver[i]);
 
     int ma, mi;
-    if (sscanf(ver.c_str(), "HTTP/%d.%d", &ma, &mi)!=2)
+    if (sscanf(ver.c_str(), "HTTP/%d.%d", &ma, &mi) != 2)
       throw http_exception("invalid status-line");
-    version_=make_pair(ma, mi);
+    version_ = make_pair(ma, mi);
   }
 
   // header
-  header_=header(sock);
+  header_ = header(sock);
 
   // body
-  if (cicmp(header_["Transfer-Encoding"],"chunked"))
-    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
-  else if (header_["Content-Length"]!="")
-    stream=pfi::lang::shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
+  if (cicmp(header_["Transfer-Encoding"], "chunked"))
+    stream = pfi::lang::shared_ptr<iostream>(new basic_httpbody_chunked_stream<char>(sock));
+  else if (header_["Content-Length"] != "")
+    stream = pfi::lang::shared_ptr<iostream>(new basic_httpbody_stream<char>(sock, lexical_cast<int64_t>(header_["Content-Length"])));
   else
-    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
+    stream = pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
-response::~response()
-{
-}
+response::~response() {}
 
-const pair<int,int> &response::version() const
+const pair<int,int>& response::version() const
 {
   return version_;
 }
@@ -568,47 +567,48 @@ int response::code() const
   return code_;
 }
 
-const string &response::reason() const
+const string& response::reason() const
 {
   return reason_;
 }
 
-header &response::head()
+header& response::head()
 {
   return header_;
 }
 
-iostream &response::body()
+iostream& response::body()
 {
   return *stream;
 }
 
 void response::send(const pfi::lang::shared_ptr<stream_socket>& sock)
 {
-  stringstream *ss=dynamic_cast<stringstream*>(stream.get());
-  if (!ss) throw http_exception("body is not stringstream");
-  string dat=ss->str();
+  stringstream* ss = dynamic_cast<stringstream*>(stream.get());
+  if (!ss)
+    throw http_exception("body is not stringstream");
+  string dat = ss->str();
 
-  string resp_line=
-    "HTTP/"+lexical_cast<string>(version_.first)+"."+lexical_cast<string>(version_.second)+" "+
-    lexical_cast<string>(code_)+" "+
-    reason_+"\r\n";
+  string resp_line =
+    "HTTP/" + lexical_cast<string>(version_.first) + "." + lexical_cast<string>(version_.second) + " " +
+    lexical_cast<string>(code_) + " " +
+    reason_ + "\r\n";
 
   if (!sock->puts(resp_line))
     throw http_exception("cannot send response-line");
 
-  if (!header_.has_key("Content-Length") && dat.length()>0)
-    header_["Content-Length"]=lexical_cast<string>(dat.length());
+  if (!header_.has_key("Content-Length") && dat.length() > 0)
+    header_["Content-Length"] = lexical_cast<string>(dat.length());
   header_.send(sock);
 
-  if (dat.length()>0){
+  if (dat.length() > 0) {
     if (!sock->puts(dat))
       throw http_exception("cannot send body");
   }
-  if (sock->flush()>=0)
+  if (sock->flush() >= 0)
     throw http_exception("flush failed");
-  if (dat.length()==0)
-    stream=pfi::lang::shared_ptr<iostream>(new socketstream(sock));
+  if (dat.length() == 0)
+    stream = pfi::lang::shared_ptr<iostream>(new socketstream(sock));
 }
 
 } // http
