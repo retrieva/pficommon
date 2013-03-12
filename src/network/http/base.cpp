@@ -237,8 +237,6 @@ public:
       buf_end(0)
   {}
 
-  ~basic_httpbody_chunked_streambuf() {}
-
   int uflow() {
     int ret = underflow();
     inc();
@@ -342,8 +340,6 @@ public:
       rest(length),
       buf(T::eof())
   {}
-
-  ~basic_httpbody_streambuf() {}
 
   int uflow() {
     int ret = underflow();
