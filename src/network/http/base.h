@@ -59,8 +59,8 @@ public:
   typedef dat_type::const_iterator const_iterator;
 
   header();
-  header(const pfi::lang::shared_ptr<stream_socket>& sock);
-  header(std::istream& is);
+  explicit header(const pfi::lang::shared_ptr<stream_socket>& sock);
+  explicit header(std::istream& is);
 
   ~header();
 
@@ -102,7 +102,7 @@ public:
 class request {
 public:
   request(const std::string& method, const uri& u, int major_ver = 1, int minor_ver = 1);
-  request(const pfi::lang::shared_ptr<stream_socket>& sock);
+  explicit request(const pfi::lang::shared_ptr<stream_socket>& sock);
 
   ~request();
 
@@ -130,7 +130,7 @@ class response {
 public:
   response();
   response(int code, const std::string& reason, int major_ver = 1, int minor_ver = 1);
-  response(const pfi::lang::shared_ptr<stream_socket>& sock);
+  explicit response(const pfi::lang::shared_ptr<stream_socket>& sock);
 
   ~response();
 

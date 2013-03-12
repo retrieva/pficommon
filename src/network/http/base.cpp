@@ -229,7 +229,7 @@ class basic_httpbody_chunked_streambuf : public basic_streambuf<C, T> {
 public:
   typedef C char_type;
 
-  basic_httpbody_chunked_streambuf(const pfi::lang::shared_ptr<stream_socket>& sock)
+  explicit basic_httpbody_chunked_streambuf(const pfi::lang::shared_ptr<stream_socket>& sock)
     : sock(sock),
       chunk_rest(0),
       buf(buf_size),
@@ -372,7 +372,7 @@ private:
 template <class C, class T = char_traits<C> >
 class basic_httpbody_chunked_stream : public basic_iostream<C, T> {
 public:
-  basic_httpbody_chunked_stream(const pfi::lang::shared_ptr<stream_socket>& sock)
+  explicit basic_httpbody_chunked_stream(const pfi::lang::shared_ptr<stream_socket>& sock)
     : basic_iostream<C,T>(), buf(sock)
   {
     this->init(&buf);
