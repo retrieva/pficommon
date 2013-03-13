@@ -38,21 +38,22 @@
 
 #include "../../data/encoding/base64.h"
 
-namespace pfi{
-namespace network{
-namespace http{
+namespace pfi {
+namespace network {
+namespace http {
 
 template <class C, class T = std::char_traits<C> >
-class basic_httpstreambuf : public std::basic_streambuf<C,T>{
+class basic_httpstreambuf : public std::basic_streambuf<C, T> {
 public:
-  basic_httpstreambuf(const std::string &url)
-    : buf(T::eof()){
+  basic_httpstreambuf(const std::string& url)
+    : buf(T::eof()) 
+  {
     uri u(url);
-    if (u.scheme()!="http" &&
-        u.scheme()!="")
+    if (u.scheme() != "http" &&
+        u.scheme() != "")
       throw http::http_exception("scheme is invalid");
 
-    int port=u.port()==""?80:pfi::lang::lexical_cast<int>(u.port());
+    int port = u.port() == "" ? 80 : pfi::lang::lexical_cast<int>(u.port());
 
     pfi::lang::shared_ptr<stream_socket> sock(new stream_socket());
 
@@ -60,32 +61,32 @@ public:
       throw http_exception("cannot connect to host");
 
     request rq(method::get, u);
-    rq.head()["Host"]=u.host();
-    rq.head()["Connection"]="close";
+    rq.head()["Host"] = u.host();
+    rq.head()["Connection"] = "close";
 
-    if (u.userinfo()!="")
-      rq.head()["Authorization"]="Basic "+pfi::data::encoding::base64_encode(u.userinfo());
+    if (u.userinfo() != "")
+      rq.head()["Authorization"] = "Basic " + pfi::data::encoding::base64_encode(u.userinfo());
 
     rq.send(sock);
 
-    resp=response(sock);
+    resp = response(sock);
   }
-  ~basic_httpstreambuf(){
+  ~basic_httpstreambuf() {
   }
 
-  int uflow(){
-    int ret=underflow();
-    buf=T::eof();
+  int uflow() {
+    int ret = underflow();
+    buf = T::eof();
     return ret;
   }
 
-  int underflow(){
-    if (buf==T::eof())
-      buf=resp.body().get();
+  int underflow() {
+    if (buf == T::eof())
+      buf = resp.body().get();
     return buf;
   }
 
-  header &head(){
+  header& head() {
     return resp.head();
   }
 
@@ -95,21 +96,22 @@ private:
 };
 
 template <class C, class T = std::char_traits<C> >
-class basic_httpstream : public std::basic_istream<C,T>{
+class basic_httpstream : public std::basic_istream<C, T> {
 public:
-  basic_httpstream(const std::string &url)
-    : buf(url){
+  basic_httpstream(const std::string& url)
+    : buf(url)
+  {
     this->init(&buf);
   }
-  ~basic_httpstream(){
+  ~basic_httpstream() {
   }
 
-  header &head(){
+  header& head() {
     return buf.head();
   }
 
 private:
-  basic_httpstreambuf<C,T> buf;
+  basic_httpstreambuf<C, T> buf;
 };
 
 typedef basic_httpstream<char> httpstream;
