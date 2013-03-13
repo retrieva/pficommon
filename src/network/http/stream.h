@@ -45,7 +45,7 @@ namespace http {
 template <class C, class T = std::char_traits<C> >
 class basic_httpstreambuf : public std::basic_streambuf<C, T> {
 public:
-  basic_httpstreambuf(const std::string& url)
+  explicit basic_httpstreambuf(const std::string& url)
     : buf(T::eof()) 
   {
     uri u(url);
@@ -98,7 +98,7 @@ private:
 template <class C, class T = std::char_traits<C> >
 class basic_httpstream : public std::basic_istream<C, T> {
 public:
-  basic_httpstream(const std::string& url)
+  explicit basic_httpstream(const std::string& url)
     : buf(url)
   {
     this->init(&buf);
