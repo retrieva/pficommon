@@ -3,7 +3,7 @@
 *.pyc
 .waf*
 build/
-.lock-wafbuild
+.lock-waf*
 .unittest-gtest/
 
 # GNU GLOBAL
