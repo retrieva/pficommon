@@ -71,8 +71,6 @@ public:
 
     resp = response(sock);
   }
-  ~basic_httpstreambuf() {
-  }
 
   int uflow() {
     int ret = underflow();
@@ -102,8 +100,6 @@ public:
     : buf(url)
   {
     this->init(&buf);
-  }
-  ~basic_httpstream() {
   }
 
   header& head() {
