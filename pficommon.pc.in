@@ -7,4 +7,4 @@ Name: @PACKAGE@
 Description: Preferred Infrastructure common library.
 Version: @VERSION@
 Cflags: -I${includedir}
-Libs: -L${libdir} @libs@
+Libs: -L${libdir} @libs@ -lpthread
