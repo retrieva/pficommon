@@ -566,9 +566,9 @@ bool uri::parse_ipv6_9(const char *&p)
 bool uri::parse_h16(const char *&p)
 {
   if (!isxdigit(*p++)) return false;
-  if (!isxdigit(*p)) p++;
-  if (!isxdigit(*p)) p++;
-  if (!isxdigit(*p)) p++;
+  if (!isxdigit(*p++)) return false; 
+  if (!isxdigit(*p++)) return false;
+  if (!isxdigit(*p++)) return false;
   return true;
 }
 
