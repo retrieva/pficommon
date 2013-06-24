@@ -1,4 +1,4 @@
-// Copyright (c)2008-2011, Preferred Infrastructure Inc.
+// Copyright (c)2008-2013, Preferred Infrastructure Inc.
 // 
 // All rights reserved.
 // 
@@ -36,12 +36,12 @@
 #include "../lang/scoped_ptr.h"
 #include "../lang/noncopyable.h"
 
-namespace pfi{
-namespace concurrent{
+namespace pfi {
+namespace concurrent {
 
 class thread : pfi::lang::noncopyable {
 public:
-  thread(const pfi::lang::function<void()> &f);
+  explicit thread(const pfi::lang::function<void ()>& f);
   ~thread();
 
   bool start();
