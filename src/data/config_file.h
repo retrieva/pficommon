@@ -32,43 +32,41 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_CONFIG_FILE_H_
 #define INCLUDE_GUARD_PFI_DATA_CONFIG_FILE_H_
 
-#include <stdexcept>
-#include <iostream>
-#include <fstream>
+#include <istream>
 #include <string>
 #include <map>
 
-namespace pfi{
-namespace data{
+namespace pfi {
+namespace data {
 
-class config_file{
+class config_file {
 public:
-  explicit config_file(const std::string &filename);
-  explicit config_file(const std::istream &is);
+  explicit config_file(const std::string& filename);
+  explicit config_file(std::istream& is);
 
-  class section{
+  class section {
   public:
     typedef std::map<std::string, std::string>::iterator iterator;
     typedef std::map<std::string, std::string>::const_iterator const_iterator;
 
-    section(){}
+    section() {}
 
-    std::string &operator[](const std::string &key){
+    std::string& operator[](const std::string& key) {
       return dat[key];
     }
-    const std::string &operator[](const std::string &key) const{
+    const std::string& operator[](const std::string& key) const {
       static const std::string empty("");
-      const_iterator p=dat.find(key);
-      if (p!=dat.end())
+      const_iterator p = dat.find(key);
+      if (p != dat.end())
         return p->second;
       return empty;
     }
 
-    iterator find(const std::string &key){ return dat.find(key); }
-    const_iterator find(const std::string &key) const{ return dat.find(key); }
+    iterator find(const std::string& key) { return dat.find(key); }
+    const_iterator find(const std::string& key) const { return dat.find(key); }
 
-    iterator begin(){ return dat.begin(); }
-    iterator end(){ return dat.end(); }
+    iterator begin() { return dat.begin(); }
+    iterator end() { return dat.end(); }
 
     const_iterator begin() const { return dat.begin(); }
     const_iterator end() const { return dat.end(); }
@@ -80,29 +78,29 @@ public:
   typedef std::map<std::string, section>::iterator iterator;
   typedef std::map<std::string, section>::const_iterator const_iterator;
 
-  section &operator[](const std::string &sec){
+  section& operator[](const std::string& sec) {
     return dat[sec];
   }
 
-  const section &operator[](const std::string &sec) const{
+  const section& operator[](const std::string& sec) const {
     static const section empty;
-    const_iterator p=dat.find(sec);
-    if (p!=dat.end())
+    const_iterator p = dat.find(sec);
+    if (p != dat.end())
       return p->second;
     return empty;
   }
 
-  iterator find(const std::string &sec){ return dat.find(sec); }
-  const_iterator find(const std::string &sec) const{ return dat.find(sec); }
+  iterator find(const std::string& sec) { return dat.find(sec); }
+  const_iterator find(const std::string& sec) const { return dat.find(sec); }
 
-  iterator begin(){ return dat.begin(); }
-  iterator end(){ return dat.end(); }
+  iterator begin() { return dat.begin(); }
+  iterator end() { return dat.end(); }
 
   const_iterator begin() const { return dat.begin(); }
   const_iterator end() const { return dat.end(); }
 
 private:
-  void init(const std::string &filename, const std::istream &cis);
+  void init(const std::string& filename, std::istream& is);
 
   std::map<std::string, section> dat;
 };
