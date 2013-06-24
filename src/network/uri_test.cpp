@@ -126,6 +126,10 @@ TEST(uri, class)
   EXPECT_EQ("/aoeu/htns", complex.path());
   EXPECT_EQ("q=1234&r=5678", complex.query());
   EXPECT_EQ("n42", complex.fragment());
+
+  uri ipv6("http://[2001:0DB8:0000:CD30:0123:4567:89AB:CDEF]/");
+  EXPECT_EQ("http", ipv6.scheme());
+  EXPECT_EQ("[2001:0DB8:0000:CD30:0123:4567:89AB:CDEF]", ipv6.host());
 }
 
 TEST(uri, authority)
