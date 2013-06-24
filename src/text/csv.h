@@ -124,10 +124,10 @@ private:
             if (bufcnt>=buf.size()) extend();
             buf[bufcnt++]=*p++;
           }
-          while(*p && *p!=',' && *p!='\n') p++;
+          while(p != q && *p!=',' && *p!='\n') p++;
         }
         else{
-          while(*p && *p!=',' && *p!='\r' && *p!='\n'){
+          while(p != q && *p!=',' && *p!='\r' && *p!='\n'){
             if (bufcnt>=buf.size()) extend();
             buf[bufcnt++]=*p++;
           }
@@ -135,7 +135,7 @@ private:
 
         buf[bufcnt++]='\0';
         cur.push_back(&buf[start]);
-        if (!*p) break;
+        if (p == q) break;
         if (*p=='\r') p++;
         if (*p=='\n'){ p++; break; }
         p++;
