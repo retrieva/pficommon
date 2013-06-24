@@ -67,14 +67,6 @@ public:
       need_unlock=true;
   }
 
-  scoped_lock(const scoped_lock &lk)
-    : pfi::lang::safe_bool<scoped_lock>(lk)
-    , l(lk.l)
-    , lp(lk.lp)
-    , need_unlock(lk.need_unlock) {
-    lk.need_unlock=false;
-  }
-
   ~scoped_lock(){
     if (need_unlock){
       if (l)
@@ -97,6 +89,12 @@ private:
 } // concurrent
 } // pfi
 
+#ifdef __GNUG__
 #define synchronized(m) \
-  if (pfi::concurrent::scoped_lock __LOCK__=pfi::concurrent::scoped_lock(m))
+  if (const pfi::concurrent::scoped_lock& lock_93259F69_879A_4BB1_9B8C_3AF8923289F8 __attribute__((__unused__)) = pfi::concurrent::scoped_lock(m))
+#else
+#define synchronized(m) \
+  if (const pfi::concurrent::scoped_lock& lock_93259F69_879A_4BB1_9B8C_3AF8923289F8 = pfi::concurrent::scoped_lock(m))
+#endif
+
 #endif // #ifndef INCLUDE_GUARD_PFI_CONCURRENT_LOCK_H_
