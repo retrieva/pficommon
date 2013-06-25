@@ -650,6 +650,11 @@ TEST(json, is)
 TEST(json, parse)
 {
   {
+    istringstream iss("1");
+    json j;iss>>j;
+    EXPECT_EQ(1, json_cast<int>(j));
+  }
+  {
     istringstream iss("123");
     json j;iss>>j;
     EXPECT_EQ(123, json_cast<int>(j));

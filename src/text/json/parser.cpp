@@ -138,7 +138,7 @@ json json_parser::parse()
 void json_parser::parse_stream(callback& cb)
 {
   ss();
-  if (it == end)
+  if (cbuf < 0 && it == end)
     throw lang::end_of_data("json_parser reached end of data");
   return parse_impl(cb);
 }
@@ -237,12 +237,12 @@ void json_parser::parse_number(callback& cb)
   std::string src;
   bool is_frac = false;
 
-  if (it != end && peek() == '-') {
+  if (peek() == '-') {
     src += '-';
     incr();
   }
 
-  while (it != end && safe_isdigit(peek())) {
+  while ((cbuf != -1 || it != end) && safe_isdigit(peek())) {
     src += peek();
     incr();
   }
