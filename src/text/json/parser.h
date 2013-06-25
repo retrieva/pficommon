@@ -97,7 +97,10 @@ private:
 
   int peek() {
     if (cbuf < 0)
-      cbuf = pfi::data::string::chars_to_uchar(it, end);
+      if (it != end)
+        cbuf = pfi::data::string::chars_to_uchar(it, end);
+      else
+        throw pfi::lang::end_of_data("json_parser reached end of data");
     return cbuf;
   }
   int incr() {
