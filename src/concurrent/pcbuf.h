@@ -53,8 +53,10 @@ public:
   }
 
   size_t size() const{
-    synchronized(m){
-      return q.size();
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock)
+        return q.size();
     }
     return 0; /* NOTREACHED */
   }
@@ -64,58 +66,78 @@ public:
   }
 
   bool empty() const{
-    synchronized(m){
-      return q.empty();
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock)
+        return q.empty();
     }
     return false; /* NOTREACHED */
   }
 
   void clear(){
-    synchronized(m){
-      q.clear();
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock)
+        q.clear();
     }
     cond.notify_all();
   }
 
   void push(const T& value){
-    synchronized(m){
-      while (q.size() >= cap) cond.wait(m);
-      q.push_back(value);
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (q.size() >= cap)
+          cond.wait(m);
+        q.push_back(value);
+      }
     }
     cond.notify_all();
   }
 
   bool push(const T& value, double second){
     double start = static_cast<double>(system::time::get_clock_time());
-    synchronized(m){
-      while (q.size() >= cap){
-        second -= static_cast<double>(system::time::get_clock_time()) - start;
-        if (second <= 0 || !cond.wait(m, second)) return false;
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (q.size() >= cap) {
+          second -= static_cast<double>(system::time::get_clock_time()) - start;
+          if (second <= 0 || !cond.wait(m, second))
+            return false;
+        }
+        q.push_back(value);
       }
-      q.push_back(value);
     }
     cond.notify_all();
     return true;
   }
 
   void pop(T& value){
-    synchronized(m){
-      while (q.empty()) cond.wait(m);
-      value = q.front();
-      q.pop_front();
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (q.empty())
+          cond.wait(m);
+        value = q.front();
+        q.pop_front();
+      }
     }
     cond.notify_all();
   }
 
   bool pop(T& value, double second){
     double start = static_cast<double>(system::time::get_clock_time());
-    synchronized(m){
-      while (q.empty()){
-        second -= static_cast<double>(system::time::get_clock_time()) - start;
-        if (second <= 0 || !cond.wait(m, second)) return false;
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (q.empty()) {
+          second -= static_cast<double>(system::time::get_clock_time()) - start;
+          if (second <= 0 || !cond.wait(m, second))
+            return false;
+        }
+        value = q.front();
+        q.pop_front();
       }
-      value = q.front();
-      q.pop_front();
     }
     cond.notify_all();
     return true;

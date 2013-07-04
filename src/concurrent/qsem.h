@@ -51,21 +51,26 @@ public:
   }
 
   bool wait(int q=1){
-    synchronized(m){
-      while(quantity<q) cond.wait(m);
-      quantity--;
-      return true;
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (quantity < q)
+          cond.wait(m);
+        quantity--;
+        return true;
+      }
     }
-    else
-      return false;
+    return false;
   }
 
   bool signal(int q=1){
-    synchronized(m){
-      quantity+=q;
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock)
+        quantity += q;
+      else
+        return false;
     }
-    else
-      return false;
     cond.notify_all();
     return true;
   }

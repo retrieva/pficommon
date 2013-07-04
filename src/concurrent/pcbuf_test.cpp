@@ -77,9 +77,24 @@ TEST(pcbuf, push_timeout)
 class flag : pfi::lang::noncopyable {
 public:
   flag() : f(false) {}
-  operator bool() const { synchronized(m) return f; return false; /* NOTREACHED */ }
-  void set() { synchronized(m) f = true; }
-  void reset() { synchronized(m) f = false; }
+  operator bool() const {
+    pfi::concurrent::scoped_lock lock(m);
+    if (lock)
+      return f;
+
+    /* NOTREACHED */
+    return false;
+  }
+  void set() {
+    pfi::concurrent::scoped_lock lock(m);
+    if (lock)
+      f = true;
+  }
+  void reset() {
+    pfi::concurrent::scoped_lock lock(m);
+    if (lock)
+      f = false;
+  }
 
 private:
 
@@ -100,7 +115,8 @@ void producer_func(pcbuf<int>* q_ptr, int min, int max,
     local_histgram[i]++;
   }
 
-  synchronized(histgram_mutex) {
+  pfi::concurrent::scoped_lock lock(histgram_mutex);
+  if (lock) {
     for (map<int, int>::const_iterator
            it = local_histgram.begin(), end = local_histgram.end();
          it != end; ++it) {
@@ -125,7 +141,8 @@ void consumer_func(pcbuf<int>* q_ptr, flag* shutdown_flag_ptr,
     }
   }
 
-  synchronized(histgram_mutex) {
+  pfi::concurrent::scoped_lock lock(histgram_mutex);
+  if (lock) {
     for (map<int, int>::const_iterator
            it = local_histgram.begin(), end = local_histgram.end();
          it != end; ++it) {
@@ -187,12 +204,16 @@ TEST(pcbuf, normal)
 
   // check result
   ASSERT_TRUE(q.empty());
-  synchronized (producer_histgram_mutex) synchronized (consumer_histgram_mutex) {
-    ASSERT_EQ(producer_histgram.size(), consumer_histgram.size());
-    for (map<int, int>::const_iterator
-           it = producer_histgram.begin(), end = producer_histgram.end();
-         it != end; ++it) {
-      EXPECT_EQ(it->second, consumer_histgram[it->first]);
+  pfi::concurrent::scoped_lock lock_producer(producer_histgram_mutex);
+  if (lock_producer) {
+    pfi::concurrent::scoped_lock lock_consumer(consumer_histgram_mutex);
+    if (lock_consumer) {
+      ASSERT_EQ(producer_histgram.size(), consumer_histgram.size());
+      for (map<int, int>::const_iterator
+             it = producer_histgram.begin(), end = producer_histgram.end();
+           it != end; ++it) {
+        EXPECT_EQ(it->second, consumer_histgram[it->first]);
+      }
     }
   }
 }

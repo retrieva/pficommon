@@ -52,46 +52,66 @@ public:
 
   T take(){
     T ret=T();
-    synchronized(m){
-      while (!p) cond.wait(m);
-      ret=*p;
-      p.reset();
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (!p)
+          cond.wait(m);
+        ret = *p;
+        p.reset();
+      }
     }
     cond.notify_all();
     return ret;
   }
 
   void put(const T &r){
-    synchronized(m){
-      while (p) cond.wait(m);
-      p.reset(new T(r));
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (p)
+          cond.wait(m);
+        p.reset(new T(r));
+      }
     }
     cond.notify_all();
   }
 
   T read(){
-    synchronized(m){
-      while (!p) cond.wait(m);
-      return *p;
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        while (!p)
+          cond.wait(m);
+        return *p;
+      }
     }
     /* NOTREACHED */
     return *p;
   }
 
   bool try_take(T &ret){
-    synchronized(m){
-      if (!p) return false;
-      ret=*p;
-      p.reset();
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        if (!p)
+          return false;
+        ret = *p;
+        p.reset();
+      }
     }
     cond.notify_all();
     return true;
   }
 
   bool try_put(const T &r){
-    synchronized(m){
-      if (p) return false;
-      p.reset(new T(r));
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        if (p)
+          return false;
+        p.reset(new T(r));
+      }
     }
     cond.notify_all();
     return true;
@@ -99,17 +119,23 @@ public:
 
   T swap(const T &r){
     T ret=T();
-    synchronized(m){
-      ret=take();
-      put(r);
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        ret = take();
+        put(r);
+      }
     }
     cond.notify_all();
     return ret;
   }
 
   bool empty() const {
-    synchronized(m) {
-      return !p;
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        return !p;
+      }
     }
     /* NOTREACHED */
     return !p;

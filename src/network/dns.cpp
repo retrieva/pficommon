@@ -154,7 +154,8 @@ cached_dns_resolver::impl::~impl()
 
 void cached_dns_resolver::impl::clear_cache()
 {
-  synchronized(m){
+  pfi::concurrent::scoped_lock lock(m);
+  if (lock) {
     cache.clear();
     access_time.clear();
   }
@@ -162,7 +163,8 @@ void cached_dns_resolver::impl::clear_cache()
 
 void cached_dns_resolver::impl::delete_cache(const string &host, uint16_t port)
 {
-  synchronized(m){
+  pfi::concurrent::scoped_lock lock(m);
+  if (lock) {
     pair<string,uint16_t> key(host,port);
     time_t del_time=cache[key].second;
     access_time.erase(make_pair(del_time,key));
@@ -179,22 +181,25 @@ vector<ipv4_address> cached_dns_resolver::impl::resolve(const string &host, uint
 
   pair<string,uint16_t> key(host,port);
 
-  synchronized(m){
-    // hit cache
-    if (cache.count(key)!=0){
-      // last access time
-      access_time.erase(make_pair(cache[key].second,key));
-      access_time.insert(make_pair(cur,key));
-      cache[key].second=cur;
+  {
+    pfi::concurrent::scoped_lock lock(m);
+    if (lock) {
+      // hit cache
+      if (cache.count(key) != 0) {
+        // last access time
+        access_time.erase(make_pair(cache[key].second, key));
+        access_time.insert(make_pair(cur, key));
+        cache[key].second = cur;
 
-      // is not expire
-      if (cur-cache[key].second<expire_second){
-        return cache[key].first;
+        // is not expire
+        if (cur-cache[key].second < expire_second) {
+          return cache[key].first;
+        }
+
+        // expire, so delete cache
+        access_time.erase(make_pair(cur, key));
+        cache.erase(key);
       }
-
-      // expire, so delete cache
-      access_time.erase(make_pair(cur,key));
-      cache.erase(key);
     }
   }
 
@@ -202,19 +207,22 @@ vector<ipv4_address> cached_dns_resolver::impl::resolve(const string &host, uint
   // it might be do concurrent
   vector<ipv4_address> ret=norm.resolve(host,port);
 
-  synchronized(m){
-    // is cache full?
-    while ((int)cache.size()>=max_size){
-      assert(access_time.size()==cache.size());
-      // oldest entry must be head, so delete it
-      pair<string,uint16_t> del_key=access_time.begin()->second;
-      cache.erase(del_key);
-      access_time.erase(access_time.begin());
-    }
+  {
+    pfi::concurrent::scoped_lock lock(m);
+    if (lock) {
+      // is cache full?
+      while ((int)cache.size() >= max_size) {
+        assert(access_time.size() == cache.size());
+        // oldest entry must be head, so delete it
+        pair<string,uint16_t> del_key = access_time.begin()->second;
+        cache.erase(del_key);
+        access_time.erase(access_time.begin());
+      }
 
-    // register to cache
-    access_time.insert(make_pair(cur,key));
-    cache[key]=make_pair(ret,cur);
+      // register to cache
+      access_time.insert(make_pair(cur, key));
+      cache[key] = make_pair(ret, cur);
+    }
   }
 
   return ret;

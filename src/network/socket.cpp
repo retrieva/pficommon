@@ -90,8 +90,9 @@ stream_socket::~stream_socket()
 
 void stream_socket::set_dns_resolver(const pfi::lang::shared_ptr<dns_resolver>& r)
 {
-  synchronized(resolver_m)
-    resolver=r;
+  pfi::concurrent::scoped_lock lock(resolver_m);
+  if (lock)
+    resolver = r;
 }
 
 bool stream_socket::connect(const string &host, uint16_t port_num)
@@ -106,11 +107,13 @@ bool stream_socket::connect(const string &host, uint16_t port_num)
   }
 
   pfi::lang::shared_ptr<dns_resolver> res;
-  synchronized(resolver_m){
-    if (!resolver)
-      set_dns_resolver(pfi::lang::shared_ptr<dns_resolver>
-          (new normal_dns_resolver()));
-    res=resolver;
+  {
+    pfi::concurrent::scoped_lock lock(resolver_m);
+    if (lock) {
+      if (!resolver)
+        set_dns_resolver(pfi::lang::shared_ptr<dns_resolver>(new normal_dns_resolver()));
+      res = resolver;
+    }
   }
   vector<ipv4_address> ips=res->resolve(host, port_num);
 

@@ -54,7 +54,8 @@ public:
   }
 
   ~chan(){
-    synchronized(chans->m){
+    pfi::concurrent::scoped_lock lock(chans->m);
+    if (lock) {
       chans->cs.erase(this);
     }
   }
@@ -79,21 +80,28 @@ public:
   }
 
   void unget(const T &r){
-    synchronized(m){
-      dat.push_front(r);
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        dat.push_front(r);
+      }
     }
     cond.notify_all();
   }
 
   int size() const{
-    synchronized(m){
-      return dat.size();
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        return dat.size();
+      }
     }
     return 0;
   }
 
   bool empty() const{
-    synchronized(m){
+    pfi::concurrent::scoped_lock lock(m);
+    if (lock) {
       return dat.empty();
     }
     return false;
@@ -108,14 +116,18 @@ private:
 
   chan(const pfi::lang::shared_ptr<link>& l)
     :chans(l){
-    synchronized(chans->m){
+    pfi::concurrent::scoped_lock lock(chans->m);
+    if (lock) {
       chans->cs.insert(this);
     }
   }
 
   void put(const T &r){
-    synchronized(m){
-      dat.push_back(r);
+    {
+      pfi::concurrent::scoped_lock lock(m);
+      if (lock) {
+        dat.push_back(r);
+      }
     }
     cond.notify_all();
   }
