@@ -99,11 +99,14 @@ bool socket::listen(uint16_t port, int backlog)
 std::vector<ipv4_address> socket::resolve(const std::string& host, uint16_t port)
 {
   pfi::lang::shared_ptr<dns_resolver> res;
-  synchronized(resolver_m){
-    if (!resolver) {
-      resolver.reset( new normal_dns_resolver() );
+  {
+    pfi::concurrent::scoped_lock lock(resolver_m);
+    if (lock) {
+      if (!resolver) {
+        resolver.reset( new normal_dns_resolver() );
+      }
+      res = resolver;
     }
-    res = resolver;
   }
   return res->resolve(host, port);
 }
