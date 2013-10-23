@@ -759,14 +759,14 @@ inline void gen_print(std::ostream& os, const T& js, bool pretty, bool escape)
 }
 
 template <class T>
-inline void gen_print(std::ostream& os, const pretty_tag<T>& js, bool pretty, bool escape)
+inline void gen_print(std::ostream& os, const pretty_tag<T>& js, bool /*pretty*/, bool escape)
 {
   gen_print(os, js.dat, true, escape);
 }
 
 
 template <class T>
-inline void gen_print(std::ostream& os, const without_escape_tag<T>& js, bool pretty, bool escape)
+inline void gen_print(std::ostream& os, const without_escape_tag<T>& js, bool pretty, bool /*escape*/)
 {
   gen_print(os, js.dat, pretty, false);
 }
