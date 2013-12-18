@@ -165,7 +165,7 @@ jsonオブジェクトをハンドルするための型
 
   json js(new json_object());
   js["abc"]=json(new json_integer(123));
-  js["bcd"]=json(new json_flaot(3.14));
+  js["bcd"]=json(new json_float(3.14));
   js["cde"]=json(new json_string("appuppupuepue"));
   js["def"]=json(new json_bool(true));
 
