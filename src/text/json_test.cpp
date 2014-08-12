@@ -347,9 +347,9 @@ TEST(json, from_json)
     pfi::data::unordered_map<string, float> m
         = json_cast<pfi::data::unordered_map<string, float> >(j);
     ASSERT_EQ(1u, m.count("abc"));
-    ASSERT_FLOAT_EQ(1.23, m["abc"]);
+    EXPECT_FLOAT_EQ(1.23, m["abc"]);
     ASSERT_EQ(1u, m.count("hoge"));
-    ASSERT_FLOAT_EQ(3.14, m["hoge"]);
+    EXPECT_FLOAT_EQ(3.14, m["hoge"]);
   }
 
   {
@@ -360,9 +360,9 @@ TEST(json, from_json)
     pfi::data::unordered_map<string, float> m
         = json_cast<pfi::data::unordered_map<string, float> >(j);
     ASSERT_EQ(1u, m.count("abc"));
-    ASSERT_FLOAT_EQ(1.23, m["abc"]);
+    EXPECT_FLOAT_EQ(1.23, m["abc"]);
     ASSERT_EQ(1u, m.count("hoge"));
-    ASSERT_FLOAT_EQ(3.14, m["hoge"]);
+    EXPECT_FLOAT_EQ(3.14, m["hoge"]);
   }
 }
 
