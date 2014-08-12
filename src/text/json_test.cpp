@@ -346,6 +346,8 @@ TEST(json, from_json)
 
     pfi::data::unordered_map<string, float> m
         = json_cast<pfi::data::unordered_map<string, float> >(j);
+
+    EXPECT_EQ(2u, m.size());
     ASSERT_EQ(1u, m.count("abc"));
     EXPECT_FLOAT_EQ(1.23, m["abc"]);
     ASSERT_EQ(1u, m.count("hoge"));
@@ -359,6 +361,8 @@ TEST(json, from_json)
 
     pfi::data::unordered_map<string, float> m
         = json_cast<pfi::data::unordered_map<string, float> >(j);
+
+    EXPECT_EQ(2u, m.size());
     ASSERT_EQ(1u, m.count("abc"));
     EXPECT_FLOAT_EQ(1.23, m["abc"]);
     ASSERT_EQ(1u, m.count("hoge"));
@@ -932,6 +936,7 @@ TEST(json, with_default)
     mm["def"]=456;
     pfi::data::unordered_map<string, int> nn=json_cast_with_default(js, mm);
 
+    EXPECT_EQ(2u, nn.size());
     ASSERT_EQ(1u, nn.count("abc"));
     EXPECT_EQ(987, nn["abc"]);
     ASSERT_EQ(1u, nn.count("def"));
