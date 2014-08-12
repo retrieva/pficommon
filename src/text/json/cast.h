@@ -473,6 +473,34 @@ inline void serialize(json_iarchive_cast_with_default& js, std::map<std::string,
   swap(v, tmp);
 }
 
+template <class V, class H, class P, class A>
+inline void serialize(json_iarchive_cast& js, pfi::data::unordered_map<std::string, V, H, P, A>& v)
+{
+  pfi::data::unordered_map<std::string, V, H, P, A> tmp;
+  typedef json::const_iterator iter_t;
+  for (iter_t it = js.get().begin(), end = js.get().end(); it != end; ++it)
+    from_json(it->second, tmp[it->first]);
+
+  using std::swap;
+  swap(v, tmp);
+}
+
+template <class V, class H, class P, class A>
+inline void serialize(json_iarchive_cast_with_default& js, pfi::data::unordered_map<std::string, V, H, P, A>& v)
+{
+  if (!is<json_object>(js.get()))
+    return;
+
+  pfi::data::unordered_map<std::string, V, H, P, A> tmp = v;
+  typedef json::const_iterator iter_t;
+  for (iter_t it = js.get().begin(), end = js.get().end(); it != end; ++it)
+    from_json_with_default(it->second, tmp[it->first]);
+
+  using std::swap;
+  swap(v, tmp);
+}
+
+
 template <class T>
 inline void serialize(json_iarchive_cast& js, std::vector<T>& v)
 {
