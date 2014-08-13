@@ -338,6 +338,36 @@ TEST(json, from_json)
 
     EXPECT_EQ(true, (mm==json_cast<map<string, float> >(j)));
   }
+
+  {
+    json j(new json_object());
+    j["abc"]=json(new json_float(1.23));
+    j["hoge"]=json(new json_float(3.14));
+
+    pfi::data::unordered_map<string, float> m
+        = json_cast<pfi::data::unordered_map<string, float> >(j);
+
+    EXPECT_EQ(2u, m.size());
+    ASSERT_EQ(1u, m.count("abc"));
+    EXPECT_FLOAT_EQ(1.23, m["abc"]);
+    ASSERT_EQ(1u, m.count("hoge"));
+    EXPECT_FLOAT_EQ(3.14, m["hoge"]);
+  }
+
+  {
+    json j(new json_object());
+    j["abc"]=json(new json_float(1.23));
+    j["hoge"]=json(new json_float(3.14));
+
+    pfi::data::unordered_map<string, float> m
+        = json_cast<pfi::data::unordered_map<string, float> >(j);
+
+    EXPECT_EQ(2u, m.size());
+    ASSERT_EQ(1u, m.count("abc"));
+    EXPECT_FLOAT_EQ(1.23, m["abc"]);
+    ASSERT_EQ(1u, m.count("hoge"));
+    EXPECT_FLOAT_EQ(3.14, m["hoge"]);
+  }
 }
 
 TEST(json, merge)
@@ -895,6 +925,22 @@ TEST(json, with_default)
 
     mm["abc"]=987;
     EXPECT_EQ(mm==nn, true);
+  }
+  {
+    json js;
+    istringstream iss("{\"abc\": 987}");
+    iss>>js;
+
+    pfi::data::unordered_map<string, int> mm;
+    mm["abc"]=123;
+    mm["def"]=456;
+    pfi::data::unordered_map<string, int> nn=json_cast_with_default(js, mm);
+
+    EXPECT_EQ(2u, nn.size());
+    ASSERT_EQ(1u, nn.count("abc"));
+    EXPECT_EQ(987, nn["abc"]);
+    ASSERT_EQ(1u, nn.count("def"));
+    EXPECT_EQ(456, nn["def"]);
   }
   {
     example3 n;
