@@ -245,7 +245,11 @@ private:
 
 class json_float : public json_number{
 public:
-  json_float(double d) : dat(d) {}
+  json_float(double d) : dat(d) {
+    if (!std::isfinite(d)) {
+      throw std::invalid_argument("value of json float must be finite");
+    }
+  }
 
   json::json_type_t type() const {
     return json::Float;
