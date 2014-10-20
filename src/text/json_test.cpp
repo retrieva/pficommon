@@ -1213,11 +1213,11 @@ TEST(json, finite)
 {
   EXPECT_THROW(
       json j(new json_float(1.0 / 0.0)),
-      std::invalid_argument);
+      json_bad_cast<json_float>);
   EXPECT_THROW(
       json j(new json_float(-1.0 / 0.0)),
-      std::invalid_argument);
+      json_bad_cast<json_float>);
   EXPECT_THROW(
       json j(new json_float(0.0 / 0.0)),
-      std::invalid_argument);
+      json_bad_cast<json_float>);
 }
