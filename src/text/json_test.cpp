@@ -1208,3 +1208,16 @@ TEST(json, invalid_json_num)
     EXPECT_THROW(iss>>j, pfi::lang::parse_error);
   }
 }
+
+TEST(json, finite)
+{
+  EXPECT_THROW(
+      json j(new json_float(1.0 / 0.0)),
+      json_bad_cast<json_float>);
+  EXPECT_THROW(
+      json j(new json_float(-1.0 / 0.0)),
+      json_bad_cast<json_float>);
+  EXPECT_THROW(
+      json j(new json_float(0.0 / 0.0)),
+      json_bad_cast<json_float>);
+}
