@@ -161,12 +161,14 @@ void run_server::run(bool sync)
       <<", thread-num="<<thread_num
       <<", timeout="<<ssock->timeout()<<endl;
 
-  ths=vector<pfi::lang::shared_ptr<thread> >(thread_num);
+  ths.clear();
   vector<pfi::lang::shared_ptr<cgi> > cgis(thread_num);
 
   for (int i=0; i<thread_num; i++){
     cgis[i]=pfi::lang::shared_ptr<cgi>(dynamic_cast<cgi*>(c.clone()));
-    ths[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&run_server::process, this, ssock, cgis[i])));
+  }
+  for (int i=0; i<thread_num; i++) {
+    ths.push_back(pfi::lang::shared_ptr<thread>(new thread(bind(&run_server::process, this, ssock, cgis[i]))));
     if (!ths[i]->start()){
       ostringstream oss;
       oss<<"unable to start thread"<<endl;
