@@ -68,6 +68,21 @@ template<typename T> void check(binary_iarchive& ia, T expected) {
   EXPECT_EQ(t,expected);
 }
 
+struct has_ptr_allocated_in_default_constructor {
+  has_ptr_allocated_in_default_constructor() : p(new int) {}
+
+  template <class Archive>
+  void serialize(Archive& ar) {
+    ar & *p;
+  }
+
+  bool operator==(has_ptr_allocated_in_default_constructor const& rhs) const {
+    return *p == *rhs.p;
+  }
+
+  pfi::lang::shared_ptr<int> p;
+};
+
 
 TEST(serialization, serial) {
   // TODO: float, double, long double's test
@@ -141,6 +156,29 @@ TEST(serialization, deque) {
   }
   EXPECT_EQ(vs1.size(),vs2.size());
   for (deque<int>::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
+}
+
+TEST(serialization, deque_with_ptr) {
+  srandom(time(NULL));
+  typedef deque<has_ptr_allocated_in_default_constructor> dq;
+  dq vs1,vs2;
+  for (size_t i = 0; i < N; ++i) {
+    has_ptr_allocated_in_default_constructor x;
+    *x.p = random();
+    vs1.push_back(x);
+  }
+  {
+    ofstream ofs("./tmp");
+    binary_oarchive oa(ofs);
+    oa<<vs1;
+  }
+  {
+    ifstream ifs("./tmp");
+    binary_iarchive ia(ifs);
+    ia>>vs2;
+  }
+  EXPECT_EQ(vs1.size(),vs2.size());
+  for (dq::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
 }
 
 TEST(serialization, list) {
