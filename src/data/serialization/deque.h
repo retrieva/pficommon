@@ -53,8 +53,10 @@ void serialize(Archive &ar, std::deque<T, Allocator> &v)
       ar & v[i];
     }
     for (size_t i = v.size(); i < size; ++i) {
+#pragma GCC diagnostic ignored "-Wall"
       T t;
       ar & t;
+#pragma GCC diagnostic pop
       v.push_back(t);
     }
   } else {
