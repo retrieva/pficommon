@@ -34,6 +34,7 @@
 
 #include "base.h"
 
+#include <algorithm> // std::min
 #include <list>
 
 namespace pfi{
@@ -43,13 +44,25 @@ namespace serialization{
 template <class Archive, class T, class Allocator>
 void serialize(Archive &ar, std::list<T, Allocator> &v)
 {
-  uint32_t size=static_cast<uint32_t>(v.size());
+  uint32_t size = v.size();
   ar & size;
 
-  v.resize(size);
-  for (typename std::list<T, Allocator>::iterator p=v.begin();
-       p!=v.end();p++)
-    ar & *p;
+  typedef typename std::list<T, Allocator>::iterator iter_t;
+  if (ar.is_read) {
+    v.resize(std::min<size_t>(size, v.size()));
+    for (iter_t it = v.begin(); it != v.end(); ++it) {
+      ar & *it;
+    }
+    for (size_t i = v.size(); i < size; ++i) {
+      T t;
+      ar & t;
+      v.push_back(t);
+    }
+  } else {
+    for (iter_t it = v.begin(); it != v.end(); ++it) {
+      ar & *it;
+    }
+  }
 }
 
 } // serializatin

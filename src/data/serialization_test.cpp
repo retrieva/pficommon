@@ -199,6 +199,29 @@ TEST(serialization, list) {
   for (list<int>::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
 }
 
+TEST(serialization, list_with_ptr) {
+  srandom(time(NULL));
+  typedef list<has_ptr_allocated_in_default_constructor> ls;
+  ls vs1,vs2;
+  for (size_t i = 0; i < N; ++i) {
+    has_ptr_allocated_in_default_constructor x;
+    *x.p = random();
+    vs1.push_back(x);
+  }
+  {
+    ofstream ofs("./tmp");
+    binary_oarchive oa(ofs);
+    oa<<vs1;
+  }
+  {
+    ifstream ifs("./tmp");
+    binary_iarchive ia(ifs);
+    ia>>vs2;
+  }
+  EXPECT_EQ(vs1.size(),vs2.size());
+  for (ls::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
+}
+
 TEST(serialization, map) {
   srandom(time(NULL));
   map<int,int> vs1,vs2;
