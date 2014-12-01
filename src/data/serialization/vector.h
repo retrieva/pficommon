@@ -34,6 +34,7 @@
 
 #include "base.h"
 
+#include <algorithm> // std::min
 #include <vector>
 
 namespace pfi{
@@ -43,12 +44,25 @@ namespace serialization{
 template <class Archive, class T, class Allocator>
 void serialize(Archive &ar, std::vector<T, Allocator> &v)
 {
-  uint32_t size=static_cast<uint32_t>(v.size());
+  uint32_t size = v.size();
   ar & size;
 
-  v.resize(size);
-  for (uint32_t i=0;i<size;i++)
-    ar & v[i];
+  if (ar.is_read) {
+    v.reserve(size);
+    v.resize(std::min<size_t>(size, v.size()));
+    for (size_t i = 0; i < v.size(); ++i) {
+      ar & v[i];
+    }
+    for (size_t i = v.size(); i < size; ++i) {
+      T t;
+      ar & t;
+      v.push_back(t);
+    }
+  } else {
+    for (size_t i = 0; i < size; ++i) {
+      ar & v[i];
+    }
+  }
 }
 
 class array_type : public type_rep {
