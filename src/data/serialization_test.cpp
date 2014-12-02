@@ -80,6 +80,17 @@ struct has_ptr_allocated_in_default_constructor {
     return *p == *rhs.p;
   }
 
+  template <class Container>
+  static Container random_container(size_t size) {
+    Container ret;
+    for (size_t i = 0; i < size; ++i) {
+      has_ptr_allocated_in_default_constructor x;
+      *x.p = random();
+      ret.push_back(x);
+    }
+    return ret;
+  }
+
   pfi::lang::shared_ptr<int> p;
 };
 
@@ -160,19 +171,10 @@ TEST(serialization, deque) {
 
 TEST(serialization, deque_with_ptr) {
   srandom(time(NULL));
-  typedef deque<has_ptr_allocated_in_default_constructor> dq;
-  dq vs1;
-  for (size_t i = 0; i < N; ++i) {
-    has_ptr_allocated_in_default_constructor x;
-    *x.p = random();
-    vs1.push_back(x);
-  }
-  dq vs2;
-  for (size_t i = 0; i < N/2; ++i) { // TODO: replace N/2 with some parameter
-    has_ptr_allocated_in_default_constructor x;
-    *x.p = random();
-    vs2.push_back(x);
-  }
+  typedef has_ptr_allocated_in_default_constructor ptr_t;
+  typedef deque<ptr_t> dq;
+  dq vs1 = ptr_t::random_container<dq>(N);
+  dq vs2 = ptr_t::random_container<dq>(N/2); // TODO: replace N/2 with some parameter
   {
     ofstream ofs("./tmp");
     binary_oarchive oa(ofs);
@@ -207,19 +209,10 @@ TEST(serialization, list) {
 
 TEST(serialization, list_with_ptr) {
   srandom(time(NULL));
-  typedef list<has_ptr_allocated_in_default_constructor> ls;
-  ls vs1;
-  for (size_t i = 0; i < N; ++i) {
-    has_ptr_allocated_in_default_constructor x;
-    *x.p = random();
-    vs1.push_back(x);
-  }
-  ls vs2;
-  for (size_t i = 0; i < N/2; ++i) { // TODO: replace N/2 with some parameter
-    has_ptr_allocated_in_default_constructor x;
-    *x.p = random();
-    vs2.push_back(x);
-  }
+  typedef has_ptr_allocated_in_default_constructor ptr_t;
+  typedef list<ptr_t> ls;
+  ls vs1 = ptr_t::random_container<ls>(N);
+  ls vs2 = ptr_t::random_container<ls>(N/2); // TODO: replace N/2 with some parameter
   {
     ofstream ofs("./tmp");
     binary_oarchive oa(ofs);
@@ -421,19 +414,10 @@ TEST(serialization, vector) {
 
 TEST(serialization, vector_with_ptr) {
   srandom(time(NULL));
-  typedef vector<has_ptr_allocated_in_default_constructor> vec;
-  vec vs1;
-  for (size_t i = 0; i < N; ++i) {
-    has_ptr_allocated_in_default_constructor x;
-    *x.p = random();
-    vs1.push_back(x);
-  }
-  vec vs2;
-  for (size_t i = 0; i < N/2; ++i) { // TODO: replace N/2 with some parameter
-    has_ptr_allocated_in_default_constructor x;
-    *x.p = random();
-    vs2.push_back(x);
-  }
+  typedef has_ptr_allocated_in_default_constructor ptr_t;
+  typedef vector<ptr_t> vec;
+  vec vs1 = ptr_t::random_container<vec>(N);
+  vec vs2 = ptr_t::random_container<vec>(N/2); // TODO: replace N/2 with some parameter
   {
     ofstream ofs("./tmp");
     binary_oarchive oa(ofs);
