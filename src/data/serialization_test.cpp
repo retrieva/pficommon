@@ -68,6 +68,32 @@ template<typename T> void check(binary_iarchive& ia, T expected) {
   EXPECT_EQ(t,expected);
 }
 
+struct has_ptr_allocated_in_default_constructor {
+  has_ptr_allocated_in_default_constructor() : p(new int) {}
+
+  template <class Archive>
+  void serialize(Archive& ar) {
+    ar & *p;
+  }
+
+  bool operator==(has_ptr_allocated_in_default_constructor const& rhs) const {
+    return *p == *rhs.p;
+  }
+
+  template <class Container>
+  static Container random_container(size_t size) {
+    Container ret;
+    for (size_t i = 0; i < size; ++i) {
+      has_ptr_allocated_in_default_constructor x;
+      *x.p = random();
+      ret.push_back(x);
+    }
+    return ret;
+  }
+
+  pfi::lang::shared_ptr<int> p;
+};
+
 
 TEST(serialization, serial) {
   // TODO: float, double, long double's test
@@ -143,6 +169,26 @@ TEST(serialization, deque) {
   for (deque<int>::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
 }
 
+TEST(serialization, deque_with_ptr) {
+  srandom(time(NULL));
+  typedef has_ptr_allocated_in_default_constructor ptr_t;
+  typedef deque<ptr_t> dq;
+  dq vs1 = ptr_t::random_container<dq>(N);
+  dq vs2 = ptr_t::random_container<dq>(N/2); // TODO: replace N/2 with some parameter
+  {
+    ofstream ofs("./tmp");
+    binary_oarchive oa(ofs);
+    oa<<vs1;
+  }
+  {
+    ifstream ifs("./tmp");
+    binary_iarchive ia(ifs);
+    ia>>vs2;
+  }
+  EXPECT_EQ(vs1.size(),vs2.size());
+  for (dq::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
+}
+
 TEST(serialization, list) {
   srandom(time(NULL));
   list<int> vs1,vs2;
@@ -159,6 +205,26 @@ TEST(serialization, list) {
   }
   EXPECT_EQ(vs1.size(),vs2.size());
   for (list<int>::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
+}
+
+TEST(serialization, list_with_ptr) {
+  srandom(time(NULL));
+  typedef has_ptr_allocated_in_default_constructor ptr_t;
+  typedef list<ptr_t> ls;
+  ls vs1 = ptr_t::random_container<ls>(N);
+  ls vs2 = ptr_t::random_container<ls>(N/2); // TODO: replace N/2 with some parameter
+  {
+    ofstream ofs("./tmp");
+    binary_oarchive oa(ofs);
+    oa<<vs1;
+  }
+  {
+    ifstream ifs("./tmp");
+    binary_iarchive ia(ifs);
+    ia>>vs2;
+  }
+  EXPECT_EQ(vs1.size(),vs2.size());
+  for (ls::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
 }
 
 TEST(serialization, map) {
@@ -344,6 +410,26 @@ TEST(serialization, vector) {
   }
   EXPECT_EQ(vs1.size(),vs2.size());
   for (vector<int>::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);  
+}
+
+TEST(serialization, vector_with_ptr) {
+  srandom(time(NULL));
+  typedef has_ptr_allocated_in_default_constructor ptr_t;
+  typedef vector<ptr_t> vec;
+  vec vs1 = ptr_t::random_container<vec>(N);
+  vec vs2 = ptr_t::random_container<vec>(N/2); // TODO: replace N/2 with some parameter
+  {
+    ofstream ofs("./tmp");
+    binary_oarchive oa(ofs);
+    oa<<vs1;
+  }
+  {
+    ifstream ifs("./tmp");
+    binary_iarchive ia(ifs);
+    ia>>vs2;
+  }
+  EXPECT_EQ(vs1.size(),vs2.size());
+  for (vec::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);
 }
 
 TEST(serialization, reflect) {
