@@ -529,12 +529,21 @@ inline void serialize(json_iarchive_cast_with_default& js, std::vector<T>& v)
 }
 
 template <class T>
+inline void serialize(json_iarchive_cast& js, pfi::data::serialization::named_value<pfi::data::optional<T> >& v)
+{
+  if (js.get().count(v.name))
+    from_json(js.get()[v.name], v.v);
+  else
+    v.v = pfi::data::optional<T>();
+}
+
+template <class T>
 inline void serialize(json_iarchive_cast& js, pfi::data::serialization::named_value<T>& v)
 {
   if (js.get().count(v.name))
     from_json(js.get()[v.name], v.v);
   else
-    from_json(json(), v.v);
+    throw json_bad_cast<pfi::data::serialization::named_value<T> >("\"" + v.name + "\" is not found.");
 }
 
 template <class T>

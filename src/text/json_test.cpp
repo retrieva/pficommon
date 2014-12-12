@@ -1221,3 +1221,13 @@ TEST(json, finite)
       json j(new json_float(0.0 / 0.0)),
       json_bad_cast<json_float>);
 }
+
+TEST(json, not_found_member)
+{
+  json js(new json_object);
+  try {
+    opt1 s = json_cast<opt1>(js);
+    FAIL();
+  } catch(const json_bad_cast<named_value<int> >& e) {
+  }
+}
