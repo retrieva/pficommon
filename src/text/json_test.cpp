@@ -1222,6 +1222,32 @@ TEST(json, finite)
       json_bad_cast<json_float>);
 }
 
+TEST(json, named_optional_value) {
+  pfi::data::optional<int> n;
+  named_value<pfi::data::optional<int> > value("num", n);
+
+  json js(new json_object);
+  js["num"] = to_json(10);
+
+  from_json(js, value);
+
+  EXPECT_TRUE(n);
+  EXPECT_EQ(10, *n);
+}
+
+TEST(json, named_optional_value_null) {
+  pfi::data::optional<int> n;
+  n = 1;
+  named_value<pfi::data::optional<int> > value("num", n);
+
+  json js(new json_object);
+
+  from_json(js, value);
+
+  // n is removed
+  EXPECT_FALSE(n);
+}
+
 TEST(json, not_found_member)
 {
   json js(new json_object);
