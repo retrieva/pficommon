@@ -1225,9 +1225,5 @@ TEST(json, finite)
 TEST(json, not_found_member)
 {
   json js(new json_object);
-  try {
-    opt1 s = json_cast<opt1>(js);
-    FAIL();
-  } catch(const json_bad_cast<named_value<int> >& e) {
-  }
+  EXPECT_THROW(opt1 s = json_cast<opt1>(js), json_bad_cast<named_value<int> >);
 }
