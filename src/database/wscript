@@ -23,11 +23,11 @@ def configure(conf):
   conf.env.BUILD_PGSQL = False
   if not Options.options.disable_database:
     try:
-      incdir = subprocess.check_output(['pg_config', '--includedir-server']).decode()
-      libdir = subprocess.check_output(['pg_config', '--libdir']).decode()
+      incdir = subprocess.check_output(['pg_config', '--includedir-server']).decode().rstrip()
+      libdir = subprocess.check_output(['pg_config', '--libdir']).decode().rstrip()
       if conf.check_cxx(lib = 'pq',
                         header_name = 'postgres.h',
-                        cxxflags = '-I' + incdir,
+                        cxxflags = [ '-I' + incdir ],
                         libpath = libdir,
                         uselib_store = 'PGSQL',
                         mandatory = False):
