@@ -34,6 +34,7 @@
 #include <iomanip>
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
 
 #include "types.h"
 #include "../../lang/cast.h"
