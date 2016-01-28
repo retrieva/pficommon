@@ -217,3 +217,28 @@ TEST(pcbuf, normal)
     }
   }
 }
+
+void notify_func(pcbuf<int>* q)
+{
+  for (size_t i = 0; i < 100; i++) {
+    q->clear();
+    thread::sleep(0.001);
+  }
+}
+
+TEST(pcbuf, pop_timeout_when_another_thread_notify_repeatedly)
+{
+  pcbuf<int> q(1);
+  int value;
+  double timeout = 0.1;
+  clock_time start = get_clock_time();
+
+  thread notify_thread(bind(notify_func, &q));
+  ASSERT_TRUE(notify_thread.start());
+
+  ASSERT_FALSE(q.pop(value, timeout));
+  clock_time end = get_clock_time();
+  EXPECT_LE(timeout, end - start);
+
+  ASSERT_TRUE(notify_thread.join());
+}

@@ -101,8 +101,8 @@ public:
       pfi::concurrent::scoped_lock lock(m);
       if (lock) {
         while (q.size() >= cap) {
-          second -= static_cast<double>(system::time::get_clock_time()) - start;
-          if (second <= 0 || !cond.wait(m, second))
+          double elapsed = static_cast<double>(system::time::get_clock_time()) - start;
+          if (second <= elapsed || !cond.wait(m, second - elapsed))
             return false;
         }
         q.push_back(value);
@@ -131,8 +131,8 @@ public:
       pfi::concurrent::scoped_lock lock(m);
       if (lock) {
         while (q.empty()) {
-          second -= static_cast<double>(system::time::get_clock_time()) - start;
-          if (second <= 0 || !cond.wait(m, second))
+          double elapsed = static_cast<double>(system::time::get_clock_time()) - start;
+          if (second <= elapsed || !cond.wait(m, second - elapsed))
             return false;
         }
         value = q.front();
