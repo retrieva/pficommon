@@ -79,17 +79,21 @@ namespace detail {
 template <class InputIterator1, class InputIterator2>
 uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
 {
-  if (in == end)
-    throw std::invalid_argument("Empty string");
+  if (in == end) {
+    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences are empty");
+  }
 
   if (((*in) & 0x80) == 0) // U+0000 to U+007F
     return *in++;
 
   const unsigned c = *in & 0xFF;
-  if (c < 0xC2)
-    throw std::invalid_argument("Invalid UTF-8");
-  if (c > 0xFD)
-    throw std::invalid_argument("Invalid UTF-8");
+  // It is an invalid byte also when c is 0xC0 or 0xC1.
+  // But it could only be used for an overlong encoding of ASCII characters,
+  // so it will be checked together after.
+  if (c < 0xC0 || c > 0xFD) {
+    throw std::invalid_argument("Invalid UTF-8: UTF-8 single byte character is out of range. "
+				"It must not be in range of [0x80, 0xBF] or [0xFE, 0xFF]");
+  }
 
   static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8 };
   static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07 };
@@ -105,14 +109,19 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
       break;
     }
 
-  if (nbytes == 0)
-    throw std::invalid_argument("Invalid UTF-8");
+  // There is no problem by using (nbytes == 2).
+  // But nbytes(>= 2) is used later, so (nbytes < 2) is used here for readability.
+  if (nbytes < 2) {
+    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have a 5-byte or 6-byte sequence");
+  }
 
   for (int i = 1; i < nbytes; ++i) {
-    if (in == end)
-      throw std::invalid_argument("Too short string");
-    if ((*in & 0xC0) != 0x80)
-      throw std::invalid_argument("Invalid UTF-8");
+    if (in == end) {
+      throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences end with incomplete byte sequence");
+    }
+    if ((*in & 0xC0) != 0x80) {
+      throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have a start byte not followed by enough continuation bytes");
+    }
     ret <<= 6;
     ret |= *in++ & 0x3F;
   }
@@ -120,10 +129,19 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
   static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000 };
   static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF };
 
-  if (ret < mins[nbytes])
-    throw std::invalid_argument("Invalid UTF-8");
-  if (ret > maxs[nbytes])
-    throw std::invalid_argument("Invalid UTF-8");
+  if (ret < mins[nbytes] || ret > maxs[nbytes]) {
+    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have an overlong encoding");
+  }
+
+  if (ret > 0x10FFFF) {
+    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have an invalid 4-byte sequence. "
+				"It decodes to a value greater than U+10FFFF");
+  }
+
+  if (0xD800 <= ret && ret <= 0xDFFF) {
+    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have a surrogate. "
+				"It must not be in range of [0xD800, 0xDFFF]");
+  }
 
   return ret;
 }
