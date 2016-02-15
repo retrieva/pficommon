@@ -79,6 +79,7 @@ def build(bld):
   t('string/algorithm_test.cpp')
   t('string/aho_corasick_test.cpp')
   t('string/ustring_test.cpp')
+  t('string/ustring_utf_8_decode_test.cpp')
   t('string/utility_test.cpp')
   t('sparse_matrix/sparse_matrix_test.cpp')
   t('intern_test.cpp')
