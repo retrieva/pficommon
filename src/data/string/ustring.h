@@ -91,7 +91,7 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
   // But it could only be used for an overlong encoding of ASCII characters,
   // so it will be checked together after.
   if (c < 0xC0 || c > 0xFD) {
-    throw std::invalid_argument("Invalid UTF-8: UTF-8 single byte character is out of range. "
+    throw std::invalid_argument("Invalid UTF-8: UTF-8 first byte of character is out of range. "
 				"It must not be in range of [0x80, 0xBF] or [0xFE, 0xFF]");
   }
 
@@ -109,7 +109,7 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
       break;
     }
 
-  // There is no problem by using (nbytes == 2).
+  // There is no problem by using (nbytes == 0).
   // But nbytes(>= 2) is used later, so (nbytes < 2) is used here for readability.
   if (nbytes < 2) {
     throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have a 5-byte or 6-byte sequence");

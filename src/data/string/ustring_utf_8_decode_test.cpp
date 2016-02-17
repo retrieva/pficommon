@@ -147,11 +147,11 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_an_overlong_encoding)
         << FormatByteSequence(str[i]);
     }
   }
-  { // Maximum overlong sequences
+  { // Minimum overlong sequences (NUL character)
     const char str[3][5] = {
-      {'\xC1', '\xBF', '\x00'},
-      {'\xE0', '\x9F', '\xBF', '\x00'},
-      {'\xF0', '\x8F', '\xBF', '\xBF', '\x00'},
+      {'\xC0', '\x80', '\x00'},
+      {'\xE0', '\x80', '\x80', '\x00'},
+      {'\xF0', '\x80', '\x80', '\x80', '\x00'},
     };
     for (size_t i = 0; i < 3; i++) {
       const char* p=str[i];
@@ -159,11 +159,11 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_an_overlong_encoding)
         << FormatByteSequence(str[i]);
     }
   }
-  { // Minimum overlong sequences (NUL character)
+  { // Maximum overlong sequences
     const char str[3][5] = {
-      {'\xC0', '\x80', '\x00'},
-      {'\xE0', '\x80', '\x80', '\x00'},
-      {'\xF0', '\x80', '\x80', '\x80', '\x00'},
+      {'\xC1', '\xBF', '\x00'},
+      {'\xE0', '\x9F', '\xBF', '\x00'},
+      {'\xF0', '\x8F', '\xBF', '\xBF', '\x00'},
     };
     for (size_t i = 0; i < 3; i++) {
       const char* p=str[i];
