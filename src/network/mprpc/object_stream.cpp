@@ -84,7 +84,8 @@ int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone
       if(rl > 0) break;
       if(rl == 0) { return -1; }
       if(errno == EINTR) { continue; }
-      if(timeout_sec < (double)(get_clock_time() - start)){
+      if(timeout_sec > 0.0 &&
+         timeout_sec < (double)(get_clock_time() - start)){
         throw rpc_timeout_error("timeout");
       }
       if(errno == EAGAIN) { continue; }
@@ -107,7 +108,8 @@ int object_stream::write(const void* data, size_t size, double timeout_sec)
         return -1;
       }
       if(errno == EINTR) { continue; }
-      if(timeout_sec < (double)(get_clock_time() - start)){
+      if(timeout_sec > 0.0 &&
+         timeout_sec < (double)(get_clock_time() - start)){
         throw rpc_timeout_error("timeout");
       }
       if(errno == EAGAIN) { continue; }

@@ -55,8 +55,10 @@ MPRPC_PROC(test_map, map<int,int>(map<int,int>));
 static map<int, int> test_map(const map<int, int>& v){ return v; }
 MPRPC_PROC(test_set, set<int>(set<int> v));
 static set<int> test_set(const set<int>& v){ return v; }
+MPRPC_PROC(test_sleep, int(double v));
+static int test_sleep(double v){ sleep(v); return 0; }
 
-MPRPC_GEN(1, testrpc, test_str, test_pair, test_vec, test_map, test_set);
+MPRPC_GEN(1, testrpc, test_str, test_pair, test_vec, test_map, test_set, test_sleep);
 
 namespace {
 const string kLocalhost = "localhost";
@@ -66,6 +68,7 @@ const int kTestStructRPCPort = 31242;
 const double kServerTimeout = 3.0;
 const double kClientTimeout = 3.0;
 const double kTestTimeout = 0.5;
+const double kTestNoTimeout = 0;
 }
 
 static void server_thread(testrpc_server *ser)
@@ -75,6 +78,7 @@ static void server_thread(testrpc_server *ser)
   ser->set_test_vec(&test_vec);
   ser->set_test_map(&test_map);
   ser->set_test_set(&test_set);
+  ser->set_test_sleep(&test_sleep);
   ser->serv(kTestRPCPort, kServThreads);
 }
 
@@ -226,6 +230,23 @@ TEST(mprpc, mprpc_client_timeout_test)
   }
 
   server_socket.close();
+  t.join();
+}
+
+TEST(mprpc, mprpc_client_no_timeout_test)
+{
+  testrpc_server ser(kServerTimeout);
+  thread t(pfi::lang::bind(&server_thread, &ser));
+  t.start();
+
+  EXPECT_NO_THROW({ testrpc_client cln1(kLocalhost, kTestRPCPort, kTestNoTimeout); });
+
+  {
+    testrpc_client cln(kLocalhost, kTestRPCPort, kTestNoTimeout);
+    EXPECT_NO_THROW({ EXPECT_EQ(0, cln.call_test_sleep(1)); });
+  }
+
+  ser.stop();
   t.join();
 }
 
