@@ -55,7 +55,10 @@ std::string FormatByteSequence(const char* str)
 TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_are_empty)
 {
   const char* p="";
-  EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument);
+  EXPECT_THROW({
+      exception_fallback fb;
+      chars_to_uchar(p, p + strlen(p), fb);
+    }, std::invalid_argument);
 }
 
 TEST(ustring_utf_8_decode_test, utf_8_single_byte_character_is_out_of_range)
@@ -63,14 +66,18 @@ TEST(ustring_utf_8_decode_test, utf_8_single_byte_character_is_out_of_range)
   for (int c = 0x80; c < 0xBF; c++) {
     std::string str(1u, static_cast<char>(c));
     const char* p=str.c_str();
-    EXPECT_THROW({chars_to_uchar(p, p + str.size());}, std::invalid_argument)
-      << FormatByteSequence(str.c_str());
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + str.size(), fb);
+      }, std::invalid_argument) << FormatByteSequence(str.c_str());
   }
   for (int c = 0xFE; c <= 0xFF; c++) {
     std::string str(1u, static_cast<char>(c));
     const char* p=str.c_str();
-    EXPECT_THROW({chars_to_uchar(p, p + str.size());}, std::invalid_argument)
-      << FormatByteSequence(str.c_str());
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + str.size(), fb);
+      }, std::invalid_argument) << FormatByteSequence(str.c_str());
   }
 }
 
@@ -79,14 +86,18 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_a_5_byte_sequence)
   { // min 5-byte sequence
     const char str[] = {'\xF8', '\x80', '\x80', '\x80', '\x80', '\x00'};
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
   { // max 5-byte sequence
     const char str[] = {'\xFB', '\xBF', '\xBF', '\xBF', '\xBF', '\x00'};
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
 }
 
@@ -95,14 +106,18 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_a_6_byte_sequence)
   { // min 6-byte sequence
     const char str[] = {'\xFC', '\x80', '\x80', '\x80', '\x80', '\x00'};
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
   { // max 6-byte sequence
     const char str[] = {'\xFD', '\xBF', '\xBF', '\xBF', '\xBF', '\x00'};
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
 }
 
@@ -111,14 +126,18 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_end_with_imcomplete_byte_se
   {
     const char str[] = {'\xE3', '\x00'}; // 2 bytes are missing
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
   {
     const char str[] = {'\xE3', '\x80', '\x00'}; // 1 byte is missing
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
 }
 
@@ -128,8 +147,10 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_a_start_byte_not_enoug
     const char str[] = {'\xE3', '\x80', // 1 byte is missing here
                         '\xE3', '\x80', '\x81', '\x00'};
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
 }
 
@@ -143,8 +164,10 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_an_overlong_encoding)
     };
     for (size_t i = 0; i < 3; i++) {
       const char* p=str[i];
-      EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-        << FormatByteSequence(str[i]);
+      EXPECT_THROW({
+          exception_fallback fb;
+          chars_to_uchar(p, p + strlen(p), fb);
+        }, std::invalid_argument) << FormatByteSequence(str[i]);
     }
   }
   { // Minimum overlong sequences (NUL character)
@@ -155,8 +178,10 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_an_overlong_encoding)
     };
     for (size_t i = 0; i < 3; i++) {
       const char* p=str[i];
-      EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-        << FormatByteSequence(str[i]);
+      EXPECT_THROW({
+          exception_fallback fb;
+          chars_to_uchar(p, p + strlen(p), fb);
+        }, std::invalid_argument) << FormatByteSequence(str[i]);
     }
   }
   { // Maximum overlong sequences
@@ -167,8 +192,10 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_an_overlong_encoding)
     };
     for (size_t i = 0; i < 3; i++) {
       const char* p=str[i];
-      EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-        << FormatByteSequence(str[i]);
+      EXPECT_THROW({
+          exception_fallback fb;
+          chars_to_uchar(p, p + strlen(p), fb);
+        }, std::invalid_argument) << FormatByteSequence(str[i]);
     }
   }
 }
@@ -178,14 +205,18 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_an_invalid_4_byte_sequ
   {
     const char str[] = {'\xF4', '\x8F', '\x8F', '\x8F', '\x00'}; // U+10FFFF
     const char* p=str;
-    EXPECT_NO_THROW(chars_to_uchar(p, p + strlen(p)))
-      << FormatByteSequence(str);
+    EXPECT_NO_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }) << FormatByteSequence(str);
   }
   {
     const char str[] = {'\xF4', '\x90', '\x80', '\x80', '\x00'}; // U+110000
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
 }
 
@@ -194,13 +225,17 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_a_surrogate)
   {
     const char str[] = {'\xED', '\xA0', '\x80', '\x00'}; // U+D800
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
   {
     const char str[] = {'\xED', '\xBF', '\xBF', '\x00'}; // U+DFFF
     const char* p=str;
-    EXPECT_THROW({chars_to_uchar(p, p + strlen(p));}, std::invalid_argument)
-      << FormatByteSequence(str);
+    EXPECT_THROW({
+        exception_fallback fb;
+        chars_to_uchar(p, p + strlen(p), fb);
+      }, std::invalid_argument) << FormatByteSequence(str);
   }
 }
