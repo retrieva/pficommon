@@ -239,3 +239,160 @@ TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_have_a_surrogate)
       }, std::invalid_argument) << FormatByteSequence(str);
   }
 }
+
+const uchar replace_char = 0xFFFD;
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_are_empty)
+{
+  const char* p="";
+  EXPECT_EQ(0x0000, chars_to_uchar(p, p + strlen(p)));
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_single_byte_character_is_out_of_range)
+{
+  for (int c = 0x80; c <= 0xBF; c++) {
+    std::string str(1u, static_cast<char>(c));
+    const char* p=str.c_str();
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + str.size()));
+    EXPECT_EQ(str.c_str() + str.size(), p);
+  }
+  for (int c = 0xFE; c <= 0xFF; c++) {
+    std::string str(1u, static_cast<char>(c));
+    const char* p=str.c_str();
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + str.size()));
+    EXPECT_EQ(str.c_str() + str.size(), p);
+  }
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_have_a_5_byte_sequence)
+{
+  { // min 5-byte sequence
+    const char str[] = {'\xF8', '\x88', '\x80', '\x80', '\x80', '\x00'};
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+  { // max 5-byte sequence
+    const char str[] = {'\xFB', '\xBF', '\xBF', '\xBF', '\xBF', '\x00'};
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_have_a_6_byte_sequence)
+{
+  { // min 6-byte sequence
+    const char str[] = {'\xFC', '\x84', '\x80', '\x80', '\x80', '\x80', '\x00'};
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+  { // max 6-byte sequence
+    const char str[] = {'\xFD', '\xBF', '\xBF', '\xBF', '\xBF', '\xBF', '\x00'};
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_end_with_incomplete_byte_sequence)
+{
+  {
+    const char str[] = {'\xE3', '\x00'}; // 2 bytes are missing
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+  {
+    const char str[] = {'\xE3', '\x80', '\x00'}; // 1 byte is missing
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_have_a_start_byte_not_enough_continuation_bytes)
+{
+  {
+    const char str[] = {'\xE3', '\x80', // 1 byte is missing here
+                        '\xE3', '\x80', '\x81', '\x00'};
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + 2, p);
+    EXPECT_EQ(0x3001, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_have_an_overlong_encoding)
+{
+  { // Example of an overlong ASCII character('/')
+    const char str[3][5] = {
+      {'\xC0', '\xAF', '\x00'},
+      {'\xE0', '\x80', '\xAF', '\x00'},
+      {'\xF0', '\x80', '\x80', '\xAF', '\x00'},
+    };
+    for (size_t i = 0; i < 3; i++) {
+      const char* p=str[i];
+      EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+      EXPECT_EQ(str[i] + strlen(str[i]), p);
+    }
+  }
+  { // Minimum overlong sequences (NUL character)
+    const char str[3][5] = {
+      {'\xC0', '\x80', '\x00'},
+      {'\xE0', '\x80', '\x80', '\x00'},
+      {'\xF0', '\x80', '\x80', '\x80', '\x00'},
+    };
+    for (size_t i = 0; i < 3; i++) {
+      const char* p=str[i];
+      EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+      EXPECT_EQ(str[i] + strlen(str[i]), p);
+    }
+  }
+  { // Maximum overlong sequences
+    const char str[3][5] = {
+      {'\xC1', '\xBF', '\x00'},
+      {'\xE0', '\x9F', '\xBF', '\x00'},
+      {'\xF0', '\x8F', '\xBF', '\xBF', '\x00'},
+    };
+    for (size_t i = 0; i < 3; i++) {
+      const char* p=str[i];
+      EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+      EXPECT_EQ(str[i] + strlen(str[i]), p);
+    }
+  }
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_have_an_invalid_4_byte_sequence)
+{
+  {
+    const char str[] = {'\xF4', '\x8F', '\xBF', '\xBF', '\x00'}; // U+10FFFF
+    const char* p=str;
+    EXPECT_EQ(0x10FFFF, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+  {
+    const char str[] = {'\xF4', '\x90', '\x80', '\x80', '\x00'}; // U+110000
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+}
+
+TEST(ustring_utf_8_decode_replacement_test, utf_8_byte_sequences_have_a_surrogate)
+{
+  {
+    const char str[] = {'\xED', '\xA0', '\x80', '\x00'}; // U+D800
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+  {
+    const char str[] = {'\xED', '\xBF', '\xBF', '\x00'}; // U+DFFF
+    const char* p=str;
+    EXPECT_EQ(replace_char, chars_to_uchar(p, p + strlen(p)));
+    EXPECT_EQ(str + strlen(str), p);
+  }
+}
