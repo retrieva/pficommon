@@ -141,11 +141,11 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end,
 		       "It must not be in range of [0x80, 0xBF] or [0xFE, 0xFF]");
   }
 
-  static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8 };
-  static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07 };
-  static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0 };
+  static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+  static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07, 0x03, 0x01 };
+  static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
 
-  uchar ret;
+  uchar ret = 0;
   int nbytes = 0;
 
   for (size_t i = 0; i < sizeof(head_masks)/sizeof(head_masks[0]); ++i)
@@ -154,13 +154,6 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end,
       nbytes = i + 2;
       break;
     }
-
-  // There is no problem by using (nbytes == 0).
-  // But nbytes(>= 2) is used later, so (nbytes < 2) is used here for readability.
-  if (nbytes < 2) {
-    return fb.fallback(std::string(begin, in),
-		       "Invalid UTF-8: UTF-8 byte sequences have a 5-byte or 6-byte sequence");
-  }
 
   for (int i = 1; i < nbytes; ++i) {
     if (in == end) {
@@ -173,6 +166,11 @@ uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end,
     }
     ret <<= 6;
     ret |= *in++ & 0x3F;
+  }
+
+  if (nbytes >= 5) {
+    return fb.fallback(std::string(begin, in),
+		       "Invalid UTF-8: UTF-8 byte sequences have a 5-byte or 6-byte sequence");
   }
 
   static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000 };
