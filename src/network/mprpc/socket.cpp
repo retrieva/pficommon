@@ -242,6 +242,9 @@ bool socket::set_timeout_sockopt(int sock, int optname, double sec)
 {
   if(sock < 0) { return false; }
 
+  if (sec < 0) {
+    sec = 0.0;
+  }
   timeval tv;
   tv.tv_sec = std::max(0,(int)sec);
   tv.tv_usec = std::min(999999, std::max(0,(int)((sec-tv.tv_sec)*1e6)));
