@@ -122,7 +122,7 @@ template <class InputIterator1, class InputIterator2>
 uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end,
                           fallback_base& fb)
 {
-  InputIterator1 begin = in;
+  const InputIterator1 begin = in;
   if (in == end) {
     return fb.fallback(std::string(begin, in),
                        "Invalid UTF-8: UTF-8 byte sequences are empty");
