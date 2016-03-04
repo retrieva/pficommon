@@ -36,6 +36,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string>
+#include <algorithm>
 #include <stdint.h>
 #include <stdexcept>
 
@@ -75,72 +76,123 @@ uchar string_to_uchar(const char* p);
 uchar string_to_uchar(const std::string& s);
 std::string uchar_to_string(uchar uc);
 
+class fallback_base {
+public:
+  virtual ~fallback_base() {
+  }
+
+  virtual uchar fallback(const std::string& bytes,
+                         const char* hint) = 0;
+};
+
+class exception_fallback : public fallback_base {
+public:
+  virtual ~exception_fallback() {
+  }
+
+  virtual uchar fallback(const std::string& bytes,
+                         const char* hint) {
+    if (bytes.empty()) {
+      return 0x0000;
+    }
+    throw std::invalid_argument(hint);
+  }
+};
+
+class replacement_fallback : public fallback_base {
+public:
+  replacement_fallback(uchar replace) : replace(replace) {
+  }
+
+  virtual ~replacement_fallback() {
+  }
+
+  virtual uchar fallback(const std::string& bytes,
+                         const char* hint) {
+    if (bytes.empty()) {
+      return 0x0000;
+    }
+    return replace;
+  }
+
+private:
+  uchar replace;
+};
+
 namespace detail {
 template <class InputIterator1, class InputIterator2>
-uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end)
+uchar chars_to_uchar_impl(InputIterator1& in, InputIterator2 end,
+                          fallback_base& fb)
 {
+  const InputIterator1 begin = in;
   if (in == end) {
-    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences are empty");
+    return fb.fallback(std::string(begin, in),
+                       "Invalid UTF-8: UTF-8 byte sequences are empty");
   }
 
   if (((*in) & 0x80) == 0) // U+0000 to U+007F
     return *in++;
 
-  const unsigned c = *in & 0xFF;
+  const unsigned c = *in++ & 0xFF;
   // It is an invalid byte also when c is 0xC0 or 0xC1.
   // But it could only be used for an overlong encoding of ASCII characters,
   // so it will be checked together after.
   if (c < 0xC0 || c > 0xFD) {
-    throw std::invalid_argument("Invalid UTF-8: UTF-8 first byte of character is out of range. "
-				"It must not be in range of [0x80, 0xBF] or [0xFE, 0xFF]");
+    return fb.fallback(std::string(begin, in),
+                       "Invalid UTF-8: UTF-8 first byte of character is out of range. "
+                       "It must not be in range of [0x80, 0xBF] or [0xFE, 0xFF]");
   }
 
-  static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8 };
-  static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07 };
-  static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0 };
+  static const uchar head_masks[] = { 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+  static const uchar tail_masks[] = { 0x1F, 0x0F, 0x07, 0x03, 0x01 };
+  static const uchar flag_bits[] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
 
-  uchar ret;
+  uchar ret = 0;
   int nbytes = 0;
 
   for (size_t i = 0; i < sizeof(head_masks)/sizeof(head_masks[0]); ++i)
-    if ((*in & head_masks[i]) == flag_bits[i]) {
-      ret = *in++ & tail_masks[i];
+    if ((c & head_masks[i]) == flag_bits[i]) {
+      ret = c & tail_masks[i];
       nbytes = i + 2;
       break;
     }
 
-  // There is no problem by using (nbytes == 0).
-  // But nbytes(>= 2) is used later, so (nbytes < 2) is used here for readability.
-  if (nbytes < 2) {
-    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have a 5-byte or 6-byte sequence");
-  }
-
   for (int i = 1; i < nbytes; ++i) {
     if (in == end) {
-      throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences end with incomplete byte sequence");
+      return fb.fallback(std::string(begin, in),
+                         "Invalid UTF-8: UTF-8 byte sequences end with incomplete byte sequence");
     }
     if ((*in & 0xC0) != 0x80) {
-      throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have a start byte not followed by enough continuation bytes");
+      return fb.fallback(std::string(begin, in),
+                         "Invalid UTF-8: UTF-8 byte sequences have a start byte not followed by enough continuation bytes");
     }
     ret <<= 6;
     ret |= *in++ & 0x3F;
+  }
+
+  if (nbytes >= 5) {
+    return fb.fallback(std::string(begin, in),
+                       "Invalid UTF-8: UTF-8 byte sequences have a 5-byte or 6-byte sequence");
   }
 
   static const uchar mins[] = { 0, 0, 0x80, 0x800, 0x10000 };
   static const uchar maxs[] = { 0, 0, 0x7FF, 0xFFFF, 0x1FFFFF };
 
   if (ret < mins[nbytes] || ret > maxs[nbytes]) {
-    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have an overlong encoding");
+    return fb.fallback(std::string(begin, in),
+                       "Invalid UTF-8: UTF-8 byte sequences have an overlong encoding");
   }
 
   if (ret > 0x10FFFF) {
-    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have an invalid 4-byte sequence. "
-				"It decodes to a value greater than U+10FFFF");
+    return fb.fallback(std::string(begin, in),
+                       "Invalid UTF-8: UTF-8 byte sequences have an invalid 4-byte sequence. "
+                       "It decodes to a value greater than U+10FFFF");
   }
 
   if (0xD800 <= ret && ret <= 0xDFFF) {
-    throw std::invalid_argument("Invalid UTF-8: UTF-8 byte sequences have a surrogate. "
-				"It must not be in range of [0xD800, 0xDFFF]");
+    return fb.fallback(std::string(begin, in),
+                       "Invalid UTF-8: UTF-8 byte sequences have a surrogate. "
+                       "It must not be in range of [0xD800, 0xDFFF]");
   }
 
   return ret;
@@ -164,13 +216,21 @@ uchar chars_to_uchar(InputIterator&) __attribute__((deprecated));
 template <class InputIterator>
 uchar chars_to_uchar(InputIterator& in)
 {
-  return detail::chars_to_uchar_impl(in, detail::dummy_end_iterator());
+  replacement_fallback fb(0xFFFD);
+  return detail::chars_to_uchar_impl(in, detail::dummy_end_iterator(), fb);
 }
 
 template <class InputIterator>
 uchar chars_to_uchar(InputIterator& in, InputIterator end)
 {
-  return detail::chars_to_uchar_impl(in, end);
+  replacement_fallback fb(0xFFFD);
+  return detail::chars_to_uchar_impl(in, end, fb);
+}
+
+template <class InputIterator>
+uchar chars_to_uchar(InputIterator& in, InputIterator end, fallback_base& fb)
+{
+  return detail::chars_to_uchar_impl(in, end, fb);
 }
 
 // uchar -> char[] conversion
