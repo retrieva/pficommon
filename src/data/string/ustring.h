@@ -92,6 +92,9 @@ public:
 
   virtual uchar fallback(const std::string& bytes,
                          const char* hint) {
+    if (bytes.empty()) {
+      return 0x0000;
+    }
     throw std::invalid_argument(hint);
     return 0x0000;
   }

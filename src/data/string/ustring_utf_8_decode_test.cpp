@@ -55,10 +55,10 @@ std::string FormatByteSequence(const char* str)
 TEST(ustring_utf_8_decode_test, utf_8_byte_sequences_are_empty)
 {
   const char* p="";
-  EXPECT_THROW({
+  EXPECT_NO_THROW({
       exception_fallback fb;
       chars_to_uchar(p, p + strlen(p), fb);
-    }, std::invalid_argument);
+    });
 }
 
 TEST(ustring_utf_8_decode_test, utf_8_single_byte_character_is_out_of_range)
