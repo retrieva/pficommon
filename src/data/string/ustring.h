@@ -96,7 +96,6 @@ public:
       return 0x0000;
     }
     throw std::invalid_argument(hint);
-    return 0x0000;
   }
 };
 
