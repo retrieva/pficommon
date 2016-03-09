@@ -5,10 +5,8 @@ def configure(conf):
 
   conf.check_cxx(header_name = 'unordered_map', mandatory = False)
   conf.check_cxx(header_name = 'tr1/unordered_map', mandatory = False)
-  conf.check_cxx(header_name = 'ext/hash_map', mandatory = False)
   conf.check_cxx(header_name = 'unordered_set', mandatory = False)
   conf.check_cxx(header_name = 'tr1/unordered_set', mandatory = False)
-  conf.check_cxx(header_name = 'ext/hash_set', mandatory = False)
 
 def build(bld):
   bld.install_files('${HPREFIX}/data', [
