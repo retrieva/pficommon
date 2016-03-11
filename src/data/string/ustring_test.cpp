@@ -56,6 +56,24 @@ TEST(string_test, cast) {
   EXPECT_TRUE(string_to_ustring("el")==xs);
 }
 
+TEST(string_test, string_to_ustring_char_interface) {
+  std::string str("foo\0bar", 7);
+  ustring ustr = string_to_ustring(str.c_str());
+  EXPECT_EQ(3u, ustr.size());  // "foo"
+}
+
+TEST(string_test, string_to_ustring_char_interface_with_len) {
+  std::string str("foo\0bar", 7);
+  ustring ustr = string_to_ustring(str.c_str(), str.size());
+  EXPECT_EQ(7u, ustr.size());  // "foo\0bar"
+}
+
+TEST(string_test, string_to_ustring_std_string_interface) {
+  std::string str("foo\0bar", 7);
+  ustring ustr = string_to_ustring(str);
+  EXPECT_EQ(7u, ustr.size());  // "foo\0bar"
+}
+
 TEST(ustring_test, basic) {
   const char* p="私の名前は中野です。";
   string s=p;

@@ -67,7 +67,8 @@ public:
 };
 
 // string <-> ustring conversion
-ustring string_to_ustring(const char* p);
+ustring string_to_ustring(const char* p);  // assume null-terminated string
+ustring string_to_ustring(const char* p, size_t len);
 ustring string_to_ustring(const std::string& s);
 std::string ustring_to_string(const ustring& us);
 

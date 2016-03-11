@@ -88,14 +88,22 @@ static int take_handakuten_tbl[]={
 };
 
 ustring string_to_ustring(const char* p) {
-  const char* const end = p + strlen(p);
+  return string_to_ustring(p, strlen(p));
+}
+
+ustring string_to_ustring(const char* p, size_t len) {
+  const char* const end = p + len;
   ustring res;
-  while(*p) res+=chars_to_uchar(p, end);
+  while(p != end) res+=chars_to_uchar(p, end);
   return res;
 }
 
 ustring string_to_ustring(const std::string& s) {
-  return string_to_ustring(s.c_str());
+  ustring res;
+  for (std::string::const_iterator it = s.begin(), end = s.end(); it != end; ) {
+    res += chars_to_uchar(it, end);
+  }
+  return res;
 }
 
 std::string ustring_to_string(const ustring& us) {
