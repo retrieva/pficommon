@@ -114,3 +114,17 @@ TEST(ustring_test, basic_latin_to_zenkaku_latin_uchar) {
 TEST(ustring_test, basic_latin_to_zenkaku_latin_ustring) {
   EXPECT_EQ(zenkaku_latin,basic_latin_to_zenkaku_latin(basic_latin));
 }
+
+TEST(check_utf8_test, valid) {
+  EXPECT_TRUE(check_utf8("有効なUTF-8文字列"));
+}
+
+class check_utf8_invalid_test : public testing::TestWithParam<const char*> {
+};
+
+TEST_P(check_utf8_invalid_test, invalids) {
+  EXPECT_FALSE(check_utf8(GetParam()));
+}
+
+INSTANTIATE_TEST_CASE_P(check_utf8_invalid_test_instance, check_utf8_invalid_test,
+                        testing::Values("\xFE""foo", "ba""\xE0\x80\xAF""r", "baz""\xE3\x80"));

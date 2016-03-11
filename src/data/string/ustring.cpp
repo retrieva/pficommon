@@ -174,6 +174,18 @@ int utf8_skip(const std::string& s, size_t p){
 }
 } // namespace
 
+bool check_utf8(const std::string& s) {
+  try {
+    exception_fallback fb;
+    for (std::string::const_iterator it = s.begin(), end = s.end(); it != end; ) {
+      chars_to_uchar(it, end, fb);
+    }
+    return true;
+  } catch (const std::invalid_argument&) {
+    return false;
+  }
+}
+
 std::string sanitize_utf8(const std::string& s){
   std::string ret;
   unsigned char buf[10];

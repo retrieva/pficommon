@@ -272,6 +272,7 @@ bool is_katakana(uchar uc);
 bool is_kanji(uchar uc);
 bool is_hankaku(uchar uc);
 
+bool check_utf8(const std::string& s);
 std::string sanitize_utf8(const std::string& s);
 ustring hankaku_to_zenkaku(const ustring& us);
 ustring zenkaku_latin_to_basic_latin(const ustring& us);
