@@ -28,7 +28,7 @@ def configure(conf):
       if conf.check_cxx(lib = 'pq',
                         header_name = 'postgres.h',
                         cxxflags = [ '-I' + incdir ],
-                        libpath = libdir,
+                        libpath = [ libdir ],
                         uselib_store = 'PGSQL',
                         mandatory = False):
         conf.env.BUILD_PGSQL = True
