@@ -4,10 +4,6 @@
 #include "string/ustring.h"
 #include "string/utility.h"
 #include "optional.h"
-#include "suffix_array/checker.h"
-#include "suffix_array/lcp.h"
-#include "suffix_array/rmq.h"
-#include "suffix_array/invsa.h"
 #include "intern.h"
 #include "lru.h"
 #include <stddef.h>
@@ -63,20 +59,6 @@ template bool operator< <optional<int> >(const optional<optional<int> >&, const 
 template bool operator><optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
 template bool operator<=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
 template bool operator>=<optional<int> >(const optional<optional<int> >&, const optional<optional<int> >&);
-
-namespace suffix_array {
-
-template bool check_sa<std::string*, size_t*>(std::string*, std::string*, size_t*);
-
-template void lcp(std::string*, std::string*, size_t*, std::vector<int>&);
-
-template class rmq<std::vector<int> >;
-template void rmq<std::vector<size_t> >::construct_type<size_t*>(size_t*, size_t*, int);
-template void rmq<std::vector<size_t> >::construct_log_table<size_t*>(size_t*, size_t*);
-
-template void invert_suffix_array<size_t*>(size_t*, size_t*, std::vector<int>&);
-
-} // namespace suffix_array
 
 template class intern<int>;
 template void intern<int>::serialize<serialization::binary_iarchive>(serialization::binary_iarchive&);

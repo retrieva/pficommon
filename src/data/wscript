@@ -39,10 +39,6 @@ def build(bld):
       'string/algorithm.h',
       'string/aho_corasick.h',
       'string/ustring.h',
-      'suffix_array/invsa.h',
-      'suffix_array/lcp.h',
-      'suffix_array/rmq.h',
-      'suffix_array/checker.h',
       'code/code.h',
       'sparse_matrix/sparse_matrix.h',
       'unordered_map.h',
@@ -83,7 +79,6 @@ def build(bld):
   t('string/utility_test.cpp')
   t('sparse_matrix/sparse_matrix_test.cpp')
   t('intern_test.cpp')
-  t('suffix_array/rmq_test.cpp')
   t('lru_test.cpp')
   t('optional_test.cpp')
   t('serialization_test.cpp')
