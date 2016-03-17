@@ -35,25 +35,64 @@
 
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
 #include <unistd.h>
 
 using namespace pfi::system::time;
 using namespace std;
 
-TEST(time_util, causality){
+class time_util : public testing::TestWithParam<const char *> {
+protected:
+  void SetUp() {
+    has_tz_ = false;
+
+    char *tz = getenv("TZ");
+    // NOTE: null != empty
+    if (tz) {
+      has_tz_ = true;
+      original_tz_ = tz;
+    }
+
+    // world tour
+    setenv("TZ", GetParam(), 1);
+  }
+
+  void TearDown() {
+    if (has_tz_) {
+      setenv("TZ", original_tz_.c_str(), 1);
+    } else {
+      unsetenv("TZ");
+    }
+  }
+
+private:
+  bool has_tz_;
+  std::string original_tz_;
+};
+
+INSTANTIATE_TEST_CASE_P(time_util_instance,
+                        time_util,
+                        ::testing::Values("Asia/Tokyo",         // +09:00 / no dst
+                                          "US/Hawaii",          // -10:00 / no dst
+                                          "Europe/London",      // +00:00 / dst
+                                          "PST",                // -08:00 / dst
+                                          "GMT"                 // +00:00 / no dst
+                                          ));
+
+TEST_P(time_util, causality){
   clock_time ct=get_clock_time();
   cout << ct.sec << " : " << ct.usec << endl;
   EXPECT_TRUE(get_clock_time()>=ct);
 }
 
-TEST(time_util, metric){
+TEST_P(time_util, metric){
   double begin=get_clock_time();
   sleep(1);
   double end=get_clock_time();
   EXPECT_TRUE(end-begin>=1-1e-2);
 }
 
-TEST(time_util, calendar){
+TEST_P(time_util, calendar){
   {
     calendar_time ct(2009, 7, 17);
     EXPECT_EQ(197, ct.yday);
@@ -75,5 +114,23 @@ TEST(time_util, calendar){
     EXPECT_EQ(cat1.sec,   cat2.sec);
     EXPECT_EQ(cat1.usec,  cat2.usec);
     EXPECT_EQ(cat1.isdst, cat2.isdst);
+  }
+}
+
+TEST_P(time_util, isdst){
+  calendar_time cal(1987, 7, 16, 17, 55, 0, 0);  // summer day
+  bool tz_use_dst = cal.isdst;
+
+  // force rewrite isdst to check constructor of clock_time
+  cal.isdst=false;
+  clock_time clt1(cal);
+
+  cal.isdst=true;
+  clock_time clt2(cal);
+
+  if (tz_use_dst) {
+    EXPECT_EQ(clt1.sec, clt2.sec + 3600 /* sec */);
+  } else {
+    EXPECT_EQ(clt1.sec, clt2.sec);
   }
 }
