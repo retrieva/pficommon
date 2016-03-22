@@ -109,7 +109,7 @@ public:
   }
 
   virtual uchar fallback(const std::string& bytes,
-                         const char* hint) {
+                         const char* /*hint*/) {
     if (bytes.empty()) {
       return 0x0000;
     }
