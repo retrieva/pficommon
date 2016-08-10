@@ -32,12 +32,9 @@
 #ifndef INCLUDE_GUARD_PFI_MATH_CONSTANT_H_
 #define INCLUDE_GUARD_PFI_MATH_CONSTANT_H_
 
-#include <cmath>
-#include <cstdio>
-
 namespace pfi {
 namespace math {
-const double pi = 4.0 * std::atan(1.0);
+const double pi = 3.14159265358979323846;
 }
 }
 #endif // #ifndef INCLUDE_GUARD_PFI_MATH_CONSTANT_H_
