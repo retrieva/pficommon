@@ -89,6 +89,8 @@ def build(bld):
   ls = ''
   for l in set(libs):
     ls = ls + ' -l' + l
+  if bld.env.BUILD_MPRPC:
+    ls = ls + ' -lmsgpack'
 
   bld(source = 'pficommon.pc.in',
       prefix = bld.env['PREFIX'],
