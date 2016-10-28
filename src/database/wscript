@@ -44,10 +44,11 @@ def build(bld):
       'util.h',
       'exception.h'])
   
-  t = bld.shlib(
+  t = bld(
+    features = bld.env.FEATURES,
     source = '',
     target = 'pficommon_database',
-    vnum = bld.env['VERSION'],
+    install_path = None,
     use = [])
   
   if bld.env.BUILD_MYSQL:

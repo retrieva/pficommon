@@ -13,9 +13,11 @@ def build(bld):
       'reflect.h',
       ])
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'base.cpp',
     target = 'pficommon_network_rpc',
+    install_path = '${PREFIX}/lib',
     includes = '. ..',
     vnum = bld.env['VERSION'],
     use = 'pficommon_network_base pficommon_concurrent pficommon_system')

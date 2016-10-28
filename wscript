@@ -16,7 +16,13 @@ def options(opt):
   opt.load('compiler_cxx')
   opt.load('unittest_gtest')
   opt.load('gnu_dirs')
-  
+
+  opt.add_option('--static',
+                 action='store_true',
+                 default=False,
+                 dest='static',
+                 help='build static library')
+
   opt.recurse(subdirs)
 
 def configure(conf):
@@ -37,6 +43,8 @@ def configure(conf):
   conf.define('PFICOMMON_VERSION', VERSION)
 
   conf.env['VERSION'] = VERSION
+
+  conf.env['FEATURES'] = 'cxx cxxstlib' if Options.options.static else 'cxx cxxshlib'
   
   conf.write_config_header('src/pfi-config.h')
   
@@ -57,6 +65,7 @@ Magick++ impl:           %s
 Package:                 %s
 build (compile on):      %s
 host endian:             %s
+link:                    %s
 Compiler:                %s
 Compiler version:        %s
 CXXFLAGS:                %s
@@ -69,6 +78,7 @@ CXXFLAGS:                %s
        APPNAME + '-' + VERSION,
        conf.env.DEST_CPU + '-' + conf.env.DEST_OS,
        sys.byteorder,
+       Options.options.static and 'static' or 'shared',
        conf.env.COMPILER_CXX,
        '.'.join(conf.env.CC_VERSION),
        ' '.join(conf.env.CXXFLAGS)))
@@ -84,8 +94,11 @@ def build(bld):
     if tasks == []:
       break
     for task in tasks:
-      if isinstance(task.generator, waflib.TaskGen.task_gen) and 'cxxshlib' in task.generator.features:
-        libs.append(task.generator.target)
+      if not isinstance(task.generator, waflib.TaskGen.task_gen):
+        continue
+      g = task.generator
+      if any(f in g.features for f in ['cxxshlib', 'cxxstlib']) and g.install_path is not None:
+        libs.append(g.target)
   ls = ''
   for l in set(libs):
     ls = ls + ' -l' + l

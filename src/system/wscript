@@ -12,7 +12,8 @@ def build(bld):
       'barrier.h',
       ])
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = [
       'endian_util.cpp',
       'time_util.cpp',
@@ -21,6 +22,7 @@ def build(bld):
       'sysstat.cpp',
       'mmapper.cpp'],
     target = 'pficommon_system',
+    install_path = '${PREFIX}/lib',
     vnum = bld.env['VERSION'],
     includes = '.')
 

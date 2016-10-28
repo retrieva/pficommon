@@ -12,9 +12,11 @@ def build(bld):
       'json/serialization.h',
       ], relative_trick = True)
   
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'xhtml.cpp csv.cpp json/parser.cpp',
     target = 'pficommon_text',
+    install_path = '${PREFIX}/lib',
     includes = '. json',
     vnum = bld.env['VERSION'],
     use = 'pficommon_data pficommon_system')

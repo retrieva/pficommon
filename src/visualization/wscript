@@ -24,9 +24,11 @@ def build(bld):
       'color.h',
       ])
   
-  v = bld.shlib(
+  v = bld(
+    features = bld.env.FEATURES,
     source = ['empty.cpp'],
     target = 'pficommon_visualization',
+    install_path = '${PREFIX}/lib',
     vnum = bld.env['VERSION'],
     use =  [])
   
