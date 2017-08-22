@@ -898,6 +898,32 @@ TEST(json, utf8_without_escaping)
   EXPECT_EQ(s, t);
 }
 
+TEST(json, valid_surrogate)
+{
+  string s = "\xf0\x9f\x8d\xa3";  // U+1F363 (U+D83C U+DF63)
+  string js = lexical_cast<string>(to_json(s));
+  EXPECT_EQ(js, "\"\\uD83C\\uDF63\"");
+
+  json j = lexical_cast<json>(js);
+  EXPECT_EQ(s, json_cast<string>(j));
+}
+
+TEST(json, parse_invalid_surrogate)
+{
+  string invalids[] = {
+    "\"\\uD83C\\uD83C\"",   // high + high;
+    "\"\\uD83Cx\"",         // high + non surrogate
+    "\"x\\uDF63\"",         // non surrogate + low
+    "\"\\uDF63x\"",         // begin with low
+    "\"x\\uD83C\"",         // end with high
+    "\"\\uD83C/\\uD83C\"",  // high + non surrogate + low;
+  };
+
+  for (size_t i = 0; i < sizeof(invalids) / sizeof(string); ++i) {
+    EXPECT_THROW(lexical_cast<json>(invalids[i]), pfi::lang::parse_error) << invalids[i];
+  }
+}
+
 TEST(json, with_default)
 {
   {
