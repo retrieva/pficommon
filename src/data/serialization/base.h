@@ -92,7 +92,7 @@ public:
   }
 
   bool bool_test() const {
-    return is;
+    return is.good();
   }
 
 private:
@@ -166,7 +166,7 @@ public:
   }
 
   bool bool_test() const {
-    return os;
+    return os.good();
   }
 
 private:
