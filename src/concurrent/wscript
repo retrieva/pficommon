@@ -15,9 +15,11 @@ def build(bld):
       'qsem.h',
       ])
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'thread.cpp mutex.cpp rwmutex.cpp condition.cpp internal.cpp',
     target = 'pficommon_concurrent',
+    install_path = '${PREFIX}/lib',
     includes = '.',
     vnum = bld.env['VERSION'],
     use = 'pficommon_system PTHREAD')

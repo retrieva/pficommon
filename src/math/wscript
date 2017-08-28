@@ -11,9 +11,11 @@ def build(bld):
       'fft.h',
       ], relative_trick = True)
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'random/mersenne_twister.cpp',
     target = 'pficommon_math',
+    install_path = '${PREFIX}/lib',
     vnum = bld.env['VERSION'],
     includes = '.')
   

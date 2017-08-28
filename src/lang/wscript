@@ -24,8 +24,10 @@ def build(bld):
       'enable_if.h'
       ])
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'empty.cpp',
+    install_path = '${PREFIX}/lib',
     vnum = bld.env['VERSION'],
     target = 'pficommon_lang')
 

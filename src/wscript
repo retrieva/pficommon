@@ -22,9 +22,11 @@ def configure(conf):
   conf.recurse(subdirs)
 
 def build(bld):
-  b = bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'empty.cpp',
     target = 'pficommon',
+    install_path = '${PREFIX}/lib',
     vnum = bld.env['VERSION'],
     use = [
       'pficommon_concurrent',
