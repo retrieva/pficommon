@@ -132,7 +132,8 @@ header::header(const pfi::lang::shared_ptr<stream_socket>& sock)
 
 static bool istream_getline(istream* is, string* str)
 {
-  return static_cast<bool>(getline(*is, *str));
+  getline(*is, *str);
+  return is->good();
 }
 
 header::header(istream& is)
