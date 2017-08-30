@@ -92,7 +92,7 @@ public:
   }
 
   bool bool_test() const {
-    return is;
+    return static_cast<bool>(is);
   }
 
 private:
@@ -166,7 +166,7 @@ public:
   }
 
   bool bool_test() const {
-    return os;
+    return static_cast<bool>(os);
   }
 
 private:
