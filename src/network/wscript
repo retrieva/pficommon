@@ -52,17 +52,20 @@ def build(bld):
       'rpc.h',
       ])
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'socket.cpp ipv4.cpp dns.cpp uri.cpp',
     target = 'pficommon_network_base',
+    install_path = '${PREFIX}/lib',
     includes = '.',
     vnum = bld.env['VERSION'],
     use = 'pficommon_concurrent')
   
-  pfin = bld.shlib(
+  pfin = bld(
+    features = bld.env.FEATURES,
     source = '',
     target = 'pficommon_network',
-    vnum = bld.env['VERSION'],
+    install_path = None,
     use = [
       'pficommon_network_base',
       'pficommon_network_http',

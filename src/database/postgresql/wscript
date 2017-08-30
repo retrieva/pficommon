@@ -3,9 +3,11 @@ def build(bld):
       'connection.h',
       ])
   
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'connection.cpp statement.cpp result.cpp value.cpp',
     target = 'pficommon_database_postgresql',
+    install_path = '${PREFIX}/lib',
     includes = '. ..',
     vnum = bld.env['VERSION'],
     use = 'PGSQL')

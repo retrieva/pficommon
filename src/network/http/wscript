@@ -10,9 +10,11 @@ def build(bld):
       'stream.h',
       ])
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = 'base.cpp',
     target = 'pficommon_network_http',
+    install_path = '${PREFIX}/lib',
     includes = '. ..',
     vnum = bld.env['VERSION'],
     use = 'pficommon_network_base')

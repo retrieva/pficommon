@@ -45,7 +45,8 @@ def build(bld):
       'intern.h'
       ], relative_trick = True)
 
-  bld.shlib(
+  bld(
+    features = bld.env.FEATURES,
     source = [
       'encoding/base64.cpp',
       'digest/md5.cpp',
@@ -56,6 +57,7 @@ def build(bld):
       'sparse_matrix/sparse_matrix.cpp'
       ],
     target = 'pficommon_data',
+    install_path = '${PREFIX}/lib',
     includes = incdirs,
     vnum = bld.env['VERSION'],
     use = 'pficommon_system')
