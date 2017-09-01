@@ -801,6 +801,62 @@ inline std::ostream& operator<<(std::ostream& os, const without_escape_tag<T>& j
   return os;
 }
 
+inline bool equals(const json& lhs, const json& rhs, bool implicit_numeric_conversion = true)
+{
+  if (implicit_numeric_conversion) {
+    if (lhs.type() == json::Integer && rhs.type() == json::Float) {
+      return dynamic_cast<json_integer *>(lhs.get())->get() == dynamic_cast<json_float *>(rhs.get())->get();
+    }
+    if (lhs.type() == json::Float && rhs.type() == json::Integer) {
+      return dynamic_cast<json_float *>(lhs.get())->get() == dynamic_cast<json_integer *>(rhs.get())->get();
+    }
+  }
+  if (lhs.type() != rhs.type()) return false;
+
+  switch (lhs.type()) {
+   case json::Null:
+     return true;
+
+   case json::Integer:
+     return dynamic_cast<json_integer *>(lhs.get())->get() == dynamic_cast<json_integer *>(rhs.get())->get();
+
+   case json::Float:
+     return dynamic_cast<json_float *>(lhs.get())->get() == dynamic_cast<json_float *>(rhs.get())->get();
+
+   case json::Bool:
+     return dynamic_cast<json_bool *>(lhs.get())->get() == dynamic_cast<json_bool *>(rhs.get())->get();
+
+   case json::String:
+     return dynamic_cast<json_string *>(lhs.get())->get() == dynamic_cast<json_string *>(rhs.get())->get();
+
+   case json::Array:
+     if (lhs.size() != rhs.size()) return false;
+     for (size_t i = 0; i < lhs.size(); ++i) {
+       if (!equals(lhs[i], rhs[i], implicit_numeric_conversion)) return false;
+     }
+     return true;
+
+   case json::Object:
+     if (lhs.size() != rhs.size()) return false;
+     for (json::const_iterator it = lhs.begin(); it != lhs.end(); ++it) {
+       if (rhs.count(it->first) == 0) return false;
+       if (!equals(it->second, rhs[it->first], implicit_numeric_conversion)) return false;
+     }
+     return true;
+  }
+  return false;
+}
+
+inline bool operator==(const json& lhs, const json& rhs)
+{
+  return equals(lhs, rhs, true);
+}
+
+inline bool operator!=(const json& lhs, const json& rhs)
+{
+  return !(lhs == rhs);
+}
+
 } // json
 } // text
 } // pfi

@@ -870,6 +870,85 @@ TEST(json, clone)
   }
 }
 
+#define JSON(...) #__VA_ARGS__
+string kSampleComplexJSON = JSON(
+  {
+    "bool": true,
+    "int": 42,
+    "float": 3.14,
+    "string": "hello",
+    "array": [
+      "string in array",
+      {
+        "x": 100,
+        "y": 12.5
+      }
+    ],
+    "object": {
+      "object": {
+        "string": "deeep nest"
+      }
+    }
+  }
+);
+#undef JSON
+
+TEST(json, equals_to_clone) {
+  std::istringstream iss(kSampleComplexJSON);
+  json js1;
+  iss >> js1;
+  json js2 = js1.clone();
+
+  EXPECT_TRUE(equals(js1, js2, true));
+  EXPECT_TRUE(equals(js1, js2, false));
+}
+
+TEST(json, int_equals_to_float_if_not_strict) {
+  std::istringstream iss(kSampleComplexJSON);
+  json js1;
+  iss >> js1;
+  json js2 = js1.clone();
+
+  js2["int"] = new json_float(42.0);
+  EXPECT_FALSE(equals(js1, js2, true));
+  EXPECT_TRUE(equals(js1, js2, false));
+}
+
+TEST(json, equals_diff_str) {
+  std::istringstream iss(kSampleComplexJSON);
+  json js1;
+  iss >> js1;
+  json js2 = js1.clone();
+
+  js2["object"]["object"]["string"] = new json_string("XXXX");
+  EXPECT_FALSE(equals(js1, js2, true));
+  EXPECT_FALSE(equals(js1, js2, false));
+}
+
+TEST(json, equals_diff_int) {
+  std::istringstream iss(kSampleComplexJSON);
+  json js1;
+  iss >> js1;
+  json js2 = js1.clone();
+
+  js2 = js1.clone();
+  js2["array"][1]["x"] = new json_integer(50);
+  EXPECT_FALSE(equals(js1, js2, true));
+  EXPECT_FALSE(equals(js1, js2, false));
+}
+
+TEST(json, equals_diff_type) {
+  std::istringstream iss(kSampleComplexJSON);
+  json js1;
+  iss >> js1;
+  json js2 = js1.clone();
+
+  js2 = js1.clone();
+  js2["string"] = new json_integer(42);
+  EXPECT_FALSE(equals(js1, js2, true));
+  EXPECT_FALSE(equals(js1, js2, false));
+}
+
 TEST(json, utf8)
 {
   string s="波浪ワールド";
