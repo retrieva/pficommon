@@ -353,6 +353,12 @@ void json_parser::parse_string_prim(char*& buf, int& buf_len, int& str_len)
         int d = parse_hex();
         pfi::data::string::uchar u = (a << 12) | (b << 8) | (c << 4) | d;
 
+        if (0xDC00 <= u && u <= 0xDFFF) {  // low surrogate
+          char err_msg[64];
+          snprintf(err_msg, sizeof(err_msg),
+                   "unexpected low surrogate char: (U+%04X)", u);
+          error(err_msg);
+        }
         if (0xD800 <= u && u <= 0xDBFF) {  // high surrogate
           // expect low surrogate
           match('\\');
@@ -369,13 +375,6 @@ void json_parser::parse_string_prim(char*& buf, int& buf_len, int& str_len)
             error(err_msg);
           }
           u = 0x10000 + (u - 0xD800) * 0x400 + (l - 0xDC00);
-        }
-
-        if (0xDC00 <= u && u <= 0xDFFF) {  // low surrogate
-          char err_msg[64];
-          snprintf(err_msg, sizeof(err_msg),
-                   "unexpected low surrogate char: (U+%04X)", u);
-          error(err_msg);
         }
 
         pfi::data::string::uchar_to_chars(u, p);
