@@ -47,6 +47,17 @@ using namespace pfi::lang;
 using namespace pfi::text::json;
 using namespace pfi::data::serialization;
 
+namespace pfi {
+namespace text {
+namespace json {
+// Define PrintTo explicitly not to use the STL-style container version of DefaultPrintTo()
+void PrintTo(const json& js, ::std::ostream* os) {
+  *os << js;
+}
+} // namespace json
+} // namespace text
+} // namespace pfi
+
 struct example1{
   struct img{
     int Width;
@@ -172,6 +183,7 @@ string to_string(const json &j)
   return oss.str();
 }
 
+#define JSON(...) #__VA_ARGS__
 TEST(json, to_json)
 {
   {
@@ -236,8 +248,10 @@ TEST(json, to_json)
 
     ostringstream oss;
     oss<<to_json(mm);
-    
-    EXPECT_EQ("{\"abc\":1.23,\"hoge\":3.14}", oss.str());
+
+    // check stringify output
+    EXPECT_TRUE(oss.str() == JSON({"abc":1.23,"hoge":3.14}) || oss.str() == JSON({"hoge":3.14,"abc":1.23}))
+      << "oss.str() = " << oss.str();
   }
 
   {
@@ -249,9 +263,12 @@ TEST(json, to_json)
     ostringstream oss;
     oss<<to_json(mm);
 
-    EXPECT_EQ("{\"abc\":1.23,\"hoge\":3.14}", oss.str());
+    // check stringify output
+    EXPECT_TRUE(oss.str() == JSON({"abc":1.23,"hoge":3.14}) || oss.str() == JSON({"hoge":3.14,"abc":1.23}))
+      << "oss.str() = " << oss.str();
   }
 }
+#undef JSON
 
 TEST(json, from_json)
 {
@@ -903,15 +920,16 @@ TEST(json, equals_to_clone) {
   EXPECT_TRUE(equals(js1, js2, false));
 }
 
-TEST(json, int_equals_to_float_if_not_strict) {
+TEST(json, implicit_numeric_conversion) {
   std::istringstream iss(kSampleComplexJSON);
   json js1;
   iss >> js1;
   json js2 = js1.clone();
 
   js2["int"] = new json_float(42.0);
-  EXPECT_FALSE(equals(js1, js2, true));
-  EXPECT_TRUE(equals(js1, js2, false));
+  js2["array"][1]["x"] = new json_float(100);
+  EXPECT_TRUE(equals(js1, js2, true));
+  EXPECT_FALSE(equals(js1, js2, false));
 }
 
 TEST(json, equals_diff_str) {
@@ -1117,15 +1135,19 @@ TEST(json, optional)
   {
     opt1 a;
     a.abc=123;
-    ostringstream oss; oss<<to_json(a);
-    EXPECT_EQ(oss.str(), "{\"abc\":123,\"def\":null}");
+    json js(new json_object);
+    js["abc"] = new json_integer(123);
+    js["def"] = new json_null();
+    EXPECT_EQ(js, to_json(a));
   }
   {
     opt1 a;
     a.abc=123;
     a.def=456;
-    ostringstream oss; oss<<to_json(a);
-    EXPECT_EQ(oss.str(), "{\"abc\":123,\"def\":456}");
+    json js(new json_object);
+    js["abc"] = new json_integer(123);
+    js["def"] = new json_integer(456);
+    EXPECT_EQ(js, to_json(a));
   }
 }
 
