@@ -45,6 +45,7 @@ def configure(conf):
   conf.env['VERSION'] = VERSION
 
   conf.env['FEATURES'] = 'cxx cxxstlib' if Options.options.static else 'cxx cxxshlib'
+  conf.env['OBJECTS_CXXFLAGS'] = conf.env.CXXFLAGS_cxxstlib if Options.options.static else conf.env.CXXFLAGS_cxxshlib
   
   conf.write_config_header('src/pfi-config.h')
   
@@ -97,7 +98,7 @@ def build(bld):
       if not isinstance(task.generator, waflib.TaskGen.task_gen):
         continue
       g = task.generator
-      if any(f in g.features for f in ['cxxshlib', 'cxxstlib']) and g.install_path is not None:
+      if any(f in g.features for f in ['cxxshlib', 'cxxstlib']) and getattr(g, 'install_path', None) is not None:
         libs.append(g.target)
   ls = ''
   for l in set(libs):

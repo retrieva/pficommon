@@ -48,7 +48,7 @@ def build(bld):
     features = bld.env.FEATURES,
     source = '',
     target = 'pficommon_database',
-    install_path = None,
+    install_path = '${PREFIX}/lib',
     use = [])
   
   if bld.env.BUILD_MYSQL:

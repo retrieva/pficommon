@@ -3,11 +3,10 @@ def build(bld):
       'connection.h'
       ])
 
-  bld(
-    features = bld.env.FEATURES,
+  bld.objects(
+    cxxflags = bld.env.OBJECTS_CXXFLAGS,
     source = 'connection.cpp statement.cpp value.cpp',
     target = 'pficommon_database_mysql',
-    install_path = '${PREFIX}/lib',
     includes = '. ..',
     vnum = bld.env['VERSION'],
     use = 'pficommon_concurrent MYSQL')

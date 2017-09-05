@@ -52,11 +52,10 @@ def build(bld):
       'rpc.h',
       ])
 
-  bld(
-    features = bld.env.FEATURES,
+  bld.objects(
+    cxxflags = bld.env.OBJECTS_CXXFLAGS,
     source = 'socket.cpp ipv4.cpp dns.cpp uri.cpp',
     target = 'pficommon_network_base',
-    install_path = '${PREFIX}/lib',
     includes = '.',
     vnum = bld.env['VERSION'],
     use = 'pficommon_concurrent')
@@ -65,7 +64,7 @@ def build(bld):
     features = bld.env.FEATURES,
     source = '',
     target = 'pficommon_network',
-    install_path = None,
+    install_path = '${PREFIX}/lib',
     use = [
       'pficommon_network_base',
       'pficommon_network_http',
