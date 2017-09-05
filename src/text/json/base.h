@@ -338,12 +338,17 @@ private:
         return;
       }
       os << c;
-    } else {
+    } else if (u < 0x10000) {
       os << "\\u"
          << tohex((u>>12) & 0xf)
          << tohex((u>>8) & 0xf)
          << tohex((u>>4) & 0xf)
          << tohex((u>>0) & 0xf);
+    } else {  // surrogate
+      pfi::data::string::uchar h = 0xD800 + (u - 0x10000) / 0x400;
+      pfi::data::string::uchar l = 0xDC00 + (u - 0x10000) % 0x400;
+      print_char(os, h);
+      print_char(os, l);
     }
   }
 
