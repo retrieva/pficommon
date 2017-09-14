@@ -12,8 +12,8 @@ def build(bld):
       'socket.h',
       ])
 
-  bld(
-    features = bld.env.FEATURES,
+  bld.objects(
+    cxxflags = bld.env.OBJECTS_CXXFLAGS,
     source = [
       'object_stream.cpp',
       'rpc_client.cpp',
@@ -22,6 +22,5 @@ def build(bld):
       'socket.cpp'
       ],
     target = 'pficommon_network_mprpc',
-    install_path = '${PREFIX}/lib',
     vnum = bld.env['VERSION'],
     use = 'pficommon_concurrent pficommon_network_base MSGPACK')
