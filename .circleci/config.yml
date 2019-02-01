@@ -2,12 +2,16 @@ version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      - image: gcc:5
     steps:
       - checkout
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: test with python2.7
+          command: |
+            ./waf configure
+            ./waf --check
       - run:
-          name: Print the Current Time
-          command: date
+          name: build with python2.7
+          command: |
+            ./waf build
+            ./waf install
