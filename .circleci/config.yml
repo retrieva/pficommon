@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  gcc_5_python27:
     docker:
       - image: gcc:5
     steps:
@@ -8,10 +8,34 @@ jobs:
       - run:
           name: test with python2.7
           command: |
-            ./waf configure
-            ./waf --check
+            python ./waf configure
+            python ./waf --check
       - run:
           name: build with python2.7
           command: |
-            ./waf build
-            ./waf install
+            python ./waf build
+            python ./waf install
+  gcc_5_python34:
+    docker:
+      - image: gcc:5
+    steps:
+      - checkout
+      - run:
+          name: test with python3.4
+          command: |
+            apt update -y
+            apt install -y python3
+            python3 ./waf configure
+            python3 ./waf --check
+      - run:
+          name: build with python3.4
+          command: |
+            python3 ./waf build
+            python3 ./waf install
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - gcc_5_python27
+      - gcc_5_python34
