@@ -46,11 +46,11 @@ jobs:
       - run:
           name: build fcgi
           command: |
-            # apt update -y
-            # apt install git
-            # git clone https://github.com/toshic/libfcgi.git
-            # cd libfcgi && ./configure && make && make install
-            echo muri
+            wget https://github.com/FastCGI-Archives/FastCGI.com/raw/master/original_snapshot/fcgi-2.4.1-SNAP-0910052249.tar.gz
+            tar zxvf fcgi-2.4.1-SNAP-0910052249.tar.gz && cd fcgi-2.4.1-SNAP-0910052249
+            curl https://gist.githubusercontent.com/himkt/fa07b36c9afec57db067c725e8e5e4d8/raw/d5f424a22eba7a2c139324f0b9638b84fe0afafc/fcgi.patch > patch
+            patch -u libfcgi/fcgio.cpp < patch
+            ./configure && make && make install
       - run:
           name: build mysql
           command: |
@@ -64,40 +64,6 @@ jobs:
           name: build pficommon
           command: |
             CPPFLAGS="-I/usr/include/postgresql" ./waf configure --disable-fcgi
-            ./waf build
-            ./waf install
-  gcc5_c++11_full:
-    docker:
-      - image: gcc:5
-    steps:
-      - checkout
-      - run:
-          name: build msgpack
-          command: |
-            wget https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz
-            tar zxvf msgpack-0.5.9.tar.gz && cd msgpack-0.5.9
-            ./configure && make && make install
-      - run:
-          name: build fcgi
-          command: |
-            # apt update -y
-            # apt install git
-            # git clone https://github.com/toshic/libfcgi.git
-            # cd libfcgi && ./configure && make && make install
-            echo muri
-      - run:
-          name: build mysql
-          command: |
-            echo 'noop'
-      - run:
-          name: build postgresql
-          command: |
-            apt update -y
-            apt install -y postgresql postgresql-server-dev-all
-      - run:
-          name: build pficommon
-          command: |
-            CPPFLAGS="-I/usr/include/postgresql -std=c++11" ./waf configure --disable-fcgi
             ./waf build
             ./waf install
 
