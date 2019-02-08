@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  gcc_5_python27:
+  gcc5_python27:
     docker:
       - image: gcc:5
     steps:
@@ -15,7 +15,7 @@ jobs:
           command: |
             python ./waf build
             python ./waf install
-  gcc_5_python34:
+  gcc5_python34:
     docker:
       - image: gcc:5
     steps:
@@ -32,10 +32,44 @@ jobs:
           command: |
             python3 ./waf build
             python3 ./waf install
+  gcc5_full:
+    docker:
+      - image: gcc:5
+    steps:
+      - checkout
+      - run:
+          name: build msgpack
+          command: |
+            wget https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz
+            tar zxvf msgpack-0.5.9.tar.gz && cd msgpack-0.5.9
+            ./configure && make && make install
+      - run:
+          name: build fcgi
+          command: |
+            # apt update -y
+            # apt install git
+            # git clone https://github.com/toshic/libfcgi.git
+            # cd libfcgi && ./configure && make && make install
+            echo muri
+      - run:
+          name: build mysql
+          command: |
+            echo 'noop'
+      - run:
+          name: build postgresql
+          command: |
+            apt update -y
+            apt install -y postgresql postgresql-server-dev-all
+      - run:
+          name: build pficommon
+          command: |
+            CPPFLAGS="-I/usr/include/postgresql" ./waf configure --disable-fcgi
+            ./waf build
+            ./waf install
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - gcc_5_python27
-      - gcc_5_python34
+      - gcc5_python27
+      - gcc5_python34
