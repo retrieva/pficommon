@@ -124,5 +124,6 @@ workflows:
     jobs:
       - gcc5_python27
       - gcc5_python34
+      - gcc5_c++11_python34
       - gcc5_full
       - gcc5_c++11_full
