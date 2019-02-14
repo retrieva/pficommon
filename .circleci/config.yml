@@ -32,6 +32,23 @@ jobs:
           command: |
             python3 ./waf build
             python3 ./waf install
+  gcc5_c++11_python34:
+    docker:
+      - image: gcc:5
+    steps:
+      - checkout
+      - run:
+          name: test with python3.4
+          command: |
+            apt update -y
+            apt install -y python3
+            CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wnodeprecated-declarations" python3 ./waf configure --disable-fcgi
+            python3 ./waf --check
+      - run:
+          name: build with python3.4
+          command: |
+            python3 ./waf build
+            python3 ./waf install
   gcc5_full:
     docker:
       - image: gcc:5
