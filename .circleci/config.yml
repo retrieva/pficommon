@@ -71,7 +71,8 @@ jobs:
       - run:
           name: build mysql
           command: |
-            echo 'noop'
+            apt update -y
+            apt install libmysqlclient-dev libmysqlclient18 mysql-common
       - run:
           name: build postgresql
           command: |
@@ -105,7 +106,8 @@ jobs:
       - run:
           name: build mysql
           command: |
-            echo 'noop'
+            apt update -y
+            apt install libmysqlclient-dev libmysqlclient18 mysql-common
       - run:
           name: build postgresql
           command: |
