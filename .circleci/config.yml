@@ -114,7 +114,7 @@ jobs:
       - run:
           name: build pficommon
           command: |
-            CPPFLAGS="-std=c++11 -I/usr/include/postgresql" ./waf configure --disable-fcgi
+            CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wno-deprecated-declarations" ./waf configure --disable-fcgi
             ./waf build
             ./waf install
 
