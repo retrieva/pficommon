@@ -72,10 +72,10 @@ postgresql_statement::~postgresql_statement()
 {
 }
 
-int postgresql_statement::execute(const vector<shared_ptr<sql_value> > &args)
+int postgresql_statement::execute(const vector<pfi::lang::shared_ptr<sql_value> > &args)
 {
   int n=args.size();
-  vector<shared_ptr<string> > sparams(n);
+  vector<pfi::lang::shared_ptr<string> > sparams(n);
   vector<const char *> params(n);
   vector<int> param_lens(n);
 
@@ -95,8 +95,8 @@ int postgresql_statement::execute(const vector<shared_ptr<sql_value> > &args)
   if (r==NULL)
     throw database_error("PQexecPrepared failed");
 
-  shared_ptr<postgresql_result> rtmp=
-    shared_ptr<postgresql_result>(new postgresql_result(r));
+  pfi::lang::shared_ptr<postgresql_result> rtmp=
+    pfi::lang::shared_ptr<postgresql_result>(new postgresql_result(r));
 
   if (!rtmp->command_ok() &&
       !rtmp->tuple_ok())
@@ -108,7 +108,7 @@ int postgresql_statement::execute(const vector<shared_ptr<sql_value> > &args)
   return 0;
 }
 
-bool postgresql_statement::fetch_row(vector<shared_ptr<sql_value> > &row)
+bool postgresql_statement::fetch_row(vector<pfi::lang::shared_ptr<sql_value> > &row)
 {
   if (!res) return false;
   return res->fetch_row(row);

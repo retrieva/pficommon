@@ -29,13 +29,13 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "value.h"
 
 #include <iomanip>
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
 
+#include "value.h"
 #include "types.h"
 #include "../../lang/cast.h"
 #include "../../system/time_util.h"
@@ -116,36 +116,36 @@ sql_value *make_sql_value(char *p, int len, sql_type t)
   }
 }
 
-shared_ptr<sql_value> str_to_sql(char *p, int len, int is_null, Oid oid)
+pfi::lang::shared_ptr<sql_value> str_to_sql(char *p, int len, int is_null, Oid oid)
 {
-  if (is_null) return shared_ptr<sql_value>();
+  if (is_null) return pfi::lang::shared_ptr<sql_value>();
   sql_type t=oid_to_sql_type(oid);
-  return shared_ptr<sql_value>(make_sql_value(p, len, t));
+  return pfi::lang::shared_ptr<sql_value>(make_sql_value(p, len, t));
 }
 
-shared_ptr<string> sql_to_str(const pfi::lang::shared_ptr<sql_value>& p)
+pfi::lang::shared_ptr<string> sql_to_str(const pfi::lang::shared_ptr<sql_value>& p)
 {
-  if (!p) return shared_ptr<string>();
+  if (!p) return pfi::lang::shared_ptr<string>();
 
   switch(p->type()){
   case SQL_BOOL:{
     static const string t("true");
     static const string f("false");
-    return shared_ptr<string>(new string(dynamic_cast<sql_bool*>(p.get())->get()?t:f));
+    return pfi::lang::shared_ptr<string>(new string(dynamic_cast<sql_bool*>(p.get())->get()?t:f));
   }
   case SQL_STRING:{
-    return shared_ptr<string>(new string(dynamic_cast<sql_string*>(p.get())->get()));
+    return pfi::lang::shared_ptr<string>(new string(dynamic_cast<sql_string*>(p.get())->get()));
   }
   case SQL_INT32:{
-    return shared_ptr<string>(new string(lexical_cast<string>(dynamic_cast<sql_int32*>(p.get())->get())));
+    return pfi::lang::shared_ptr<string>(new string(lexical_cast<string>(dynamic_cast<sql_int32*>(p.get())->get())));
   }
   case SQL_INT64:{
-    return shared_ptr<string>(new string(lexical_cast<string>(dynamic_cast<sql_int64*>(p.get())->get())));
+    return pfi::lang::shared_ptr<string>(new string(lexical_cast<string>(dynamic_cast<sql_int64*>(p.get())->get())));
   }
   case SQL_FLOAT:{
     ostringstream oss;
     oss<<setiosflags(ios::fixed)<<setprecision(10)<<dynamic_cast<sql_float*>(p.get())->get();
-    return shared_ptr<string>(new string(oss.str()));
+    return pfi::lang::shared_ptr<string>(new string(oss.str()));
   }
   case SQL_TIMESTAMP:{
     calendar_time ct(dynamic_cast<sql_timestamp*>(p.get())->get());
@@ -160,10 +160,10 @@ shared_ptr<string> sql_to_str(const pfi::lang::shared_ptr<sql_value>& p)
     strftime(buf, sizeof(buf), "%Y-%m-%d %T.", &t);
     sprintf(ubuf, "%06d", ct.usec);
     strcat(buf, ubuf);
-    return shared_ptr<string>(new string(buf));
+    return pfi::lang::shared_ptr<string>(new string(buf));
   }
   case SQL_UNKNOWN:{
-    return shared_ptr<string>(new string(dynamic_cast<sql_unknown*>(p.get())->get()));
+    return pfi::lang::shared_ptr<string>(new string(dynamic_cast<sql_unknown*>(p.get())->get()));
   }
   default:
     abort();
