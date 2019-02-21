@@ -6,12 +6,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: test with python2.7
+          name: configure and test using python2.7
           command: |
             python ./waf configure
             python ./waf --check
       - run:
-          name: build with python2.7
+          name: build using python2.7
           command: |
             python ./waf build
             python ./waf install
@@ -21,14 +21,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: test with python3.4
+          name: install python3.4
           command: |
             apt update -y
             apt install -y python3
+      - run:
+          name: configure and test using python3.4
+          command: |
             python3 ./waf configure
             python3 ./waf --check
       - run:
-          name: build with python3.4
+          name: build using python3.4
           command: |
             python3 ./waf build
             python3 ./waf install
@@ -38,14 +41,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: test with python3.4
+          name: install python3.4
           command: |
             apt update -y
             apt install -y python3
+      - run:
+          name: configure and test using python3.4 and c++11
+          command: |
             CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wno-deprecated-declarations" python3 ./waf configure --disable-fcgi
             python3 ./waf --check
       - run:
-          name: build with python3.4
+          name: build using python3.4
           command: |
             python3 ./waf build
             python3 ./waf install
@@ -55,13 +61,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: build msgpack
+          name: install msgpack
           command: |
             wget https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz
             tar zxvf msgpack-0.5.9.tar.gz && cd msgpack-0.5.9
             ./configure && make && make install
       - run:
-          name: build fcgi
+          name: install fcgi
           command: |
             wget https://github.com/FastCGI-Archives/FastCGI.com/raw/master/original_snapshot/fcgi-2.4.1-SNAP-0910052249.tar.gz
             tar zxvf fcgi-2.4.1-SNAP-0910052249.tar.gz && cd fcgi-2.4.1-SNAP-0910052249
@@ -69,19 +75,23 @@ jobs:
             patch -u libfcgi/fcgio.cpp < patch
             ./configure && make && make install
       - run:
-          name: build mysql
+          name: install mysql
           command: |
             apt update -y
             apt install libmysqlclient-dev libmysqlclient18 mysql-common
       - run:
-          name: build postgresql
+          name: install postgresql
           command: |
             apt update -y
             apt install -y postgresql postgresql-server-dev-all
       - run:
-          name: build pficommon
+          name: configure and test pficommon with all extensions except to imagemagick
           command: |
             CPPFLAGS="-I/usr/include/postgresql" ./waf configure --disable-fcgi
+            ./waf --check
+      - run:
+          name: build pficommon
+          command: |
             ./waf build
             ./waf install
   gcc5_c++11_full:
@@ -90,13 +100,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: build msgpack
+          name: install msgpack
           command: |
             wget https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz
             tar zxvf msgpack-0.5.9.tar.gz && cd msgpack-0.5.9
             ./configure && make && make install
       - run:
-          name: build fcgi
+          name: install fcgi
           command: |
             wget https://github.com/FastCGI-Archives/FastCGI.com/raw/master/original_snapshot/fcgi-2.4.1-SNAP-0910052249.tar.gz
             tar zxvf fcgi-2.4.1-SNAP-0910052249.tar.gz && cd fcgi-2.4.1-SNAP-0910052249
@@ -104,19 +114,23 @@ jobs:
             patch -u libfcgi/fcgio.cpp < patch
             ./configure && make && make install
       - run:
-          name: build mysql
+          name: install mysql
           command: |
             apt update -y
             apt install libmysqlclient-dev libmysqlclient18 mysql-common
       - run:
-          name: build postgresql
+          name: install postgresql
           command: |
             apt update -y
             apt install -y postgresql postgresql-server-dev-all
       - run:
-          name: build pficommon
+          name: configure and test pficommon with all extensions except to imagemagick
           command: |
             CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wno-deprecated-declarations" ./waf configure --disable-fcgi
+            ./waf --check
+      - run:
+          name: build pficommon
+          command: |
             ./waf build
             ./waf install
 
