@@ -6,15 +6,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: configure and test using python2.7
-          command: |
-            python ./waf configure
-            python ./waf --check
+          name: configure
+          command: ./waf configure
       - run:
-          name: build using python2.7
-          command: |
-            python ./waf build
-            python ./waf install
+          name: build
+          command: ./waf build
+      - run:
+          name: test
+          command: ./waf --check
+      - run:
+          name: install
+          command: ./waf install
   gcc5_python34:
     docker:
       - image: gcc:5
@@ -26,15 +28,17 @@ jobs:
             apt update -y
             apt install -y python3
       - run:
-          name: configure and test using python3.4
-          command: |
-            python3 ./waf configure
-            python3 ./waf --check
+          name: configure using python3.4
+          command: python3 ./waf configure
       - run:
           name: build using python3.4
-          command: |
-            python3 ./waf build
-            python3 ./waf install
+          command: python3 ./waf build
+      - run:
+          name: test using python3.4
+          command: python3 ./waf --check
+      - run:
+          name: install using python3.4
+          command: python3 ./waf install
   gcc5_c++11_python34:
     docker:
       - image: gcc:5
@@ -46,15 +50,18 @@ jobs:
             apt update -y
             apt install -y python3
       - run:
-          name: configure and test using python3.4 and c++11
+          name: configure using python3.4 and c++11
           command: |
             CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wno-deprecated-declarations" python3 ./waf configure --disable-fcgi
-            python3 ./waf --check
       - run:
           name: build using python3.4
-          command: |
-            python3 ./waf build
-            python3 ./waf install
+          command: python3 ./waf build
+      - run:
+          name: test using python3.4 and c++11
+          command: python3 ./waf --check
+      - run:
+          name: install using python3.4 and c++11
+          command: python3 ./waf install
   gcc5_full:
     docker:
       - image: gcc:5
@@ -85,15 +92,18 @@ jobs:
             apt update -y
             apt install -y postgresql postgresql-server-dev-all
       - run:
-          name: configure and test pficommon with all extensions except to imagemagick
+          name: configure with all extensions except to imagemagick
           command: |
             CPPFLAGS="-I/usr/include/postgresql" ./waf configure --disable-fcgi
-            ./waf --check
       - run:
-          name: build pficommon
-          command: |
-            ./waf build
-            ./waf install
+          name: build
+          command: ./waf build
+      - run:
+          name: test
+          command: ./waf --check
+      - run:
+          name: install
+          command: ./waf install
   gcc5_c++11_full:
     docker:
       - image: gcc:5
@@ -124,15 +134,18 @@ jobs:
             apt update -y
             apt install -y postgresql postgresql-server-dev-all
       - run:
-          name: configure and test pficommon with all extensions except to imagemagick
+          name: configure
           command: |
             CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wno-deprecated-declarations" ./waf configure --disable-fcgi
-            ./waf --check
+      - run:
+          name: build
+          command: ./waf build
+      - run:
+          name: test pficommon with all extensions except to imagemagick
+          command: ./waf --check
       - run:
           name: build pficommon
-          command: |
-            ./waf build
-            ./waf install
+          command: ./waf install
 
 workflows:
   version: 2
