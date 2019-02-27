@@ -88,7 +88,7 @@ TEST_P(time_util, causality){
 TEST_P(time_util, metric){
   double begin=get_clock_time();
   double end=get_clock_time();
-  EXPECT_TRUE(end-begin<=1e-2);
+  EXPECT_LE(begin, end);
 }
 
 TEST_P(time_util, calendar){
