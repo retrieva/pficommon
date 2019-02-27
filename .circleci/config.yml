@@ -144,7 +144,7 @@ jobs:
           name: test pficommon with all extensions except to imagemagick
           command: ./waf --check
       - run:
-          name: build pficommon
+          name: install
           command: ./waf install
 
 workflows:
