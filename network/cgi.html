@@ -1,41 +1,41 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3.5.1. pfi::network::cgi &mdash; pficommon v1.3.0 documentation</title>
+    <title>3.5.1. pfi::network::cgi &#8212; pficommon 2.0.0 documentation</title>
+    
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.3.0',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
-    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
-    <link rel="up" title="3.5. pfi::network" href="../network.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.5.2. pfi::network::dns" href="dns.html" />
     <link rel="prev" title="3.5. pfi::network" href="../network.html" /> 
   </head>
-  <body>
-      <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>pficommon v1.3.0 documentation</span></a></h1>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>pficommon 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.5.1. pfi::network::cgi</span></h2>
       </div>
-      <div class="topnav">
+      <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
         «&#160;&#160;<a href="../network.html">3.5. pfi::network</a>
@@ -61,7 +61,7 @@
 <h3>3.5.1.2.1. rawテキストCGI<a class="headerlink" href="#rawcgi" title="Permalink to this headline">¶</a></h3>
 <p>cgiクラスを継承してrunメソッドを実装して、
 それをmainから呼び出す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">class</span> <span class="nc">my_cgi</span> <span class="o">:</span> <span class="k">public</span> <span class="n">cgi</span><span class="p">{</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">my_cgi</span> <span class="o">:</span> <span class="k">public</span> <span class="n">cgi</span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
   <span class="kt">void</span> <span class="n">run</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">){</span>
     <span class="c1">// implementation...</span>
@@ -71,7 +71,7 @@
   <span class="p">}</span>
 <span class="p">};</span>
 
-<span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
   <span class="n">run_cgi</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">()).</span><span class="n">run</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
@@ -86,7 +86,7 @@ HTTPのクエリはqueryに入っている。</p>
 <p>XHTMLを生成したい時に便利なクラスである。
 run()では、HTMLを生成するコードを書く。
 このライブラリではHTMLは次のようなDSLで生成する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">class</span> <span class="nc">my_cgi</span> <span class="o">:</span> <span class="k">public</span> <span class="n">xhtml_cgi</span><span class="p">{</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">my_cgi</span> <span class="o">:</span> <span class="k">public</span> <span class="n">xhtml_cgi</span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
   <span class="kt">void</span> <span class="n">run</span><span class="p">(){</span>
     <span class="n">html__</span><span class="p">{</span>
@@ -106,7 +106,7 @@ run()では、HTMLを生成するコードを書く。
 <span class="p">};</span>
 </pre></div>
 </div>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">tag__</span><span class="p">{</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">tag__</span><span class="p">{</span>
   <span class="p">...</span>
 <span class="p">}</span>
 </pre></div>
@@ -127,11 +127,11 @@ primはされない。</p>
 <p>で任意の名前のタグ、属性が使える。</p>
 <p>tag__の実体は例によってif文なので、
 if文のブロックに使える構文は使える。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">head__</span> <span class="n">title__</span> <span class="n">text__</span> <span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">);</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">head__</span> <span class="n">title__</span> <span class="nf">text__</span> <span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>や、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">hr__</span><span class="p">;</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">hr__</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>はvalidな構文です。</p>
@@ -142,7 +142,7 @@ run()の終了後それがXHTMLとして生成され、CGIの出力になる。<
 <h3>3.5.1.2.3. fcgiとして実行<a class="headerlink" href="#fcgi" title="Permalink to this headline">¶</a></h3>
 <p>fcgiとして実行するのに、my_cgiクラスを変更する必要はない。
 単にrun_cgiの代わりにrun_fcgiを使うとfcgiとして実行されるようになる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
   <span class="n">run_fcgi</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">()).</span><span class="n">run</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
@@ -155,23 +155,24 @@ run()の終了後それがXHTMLとして生成され、CGIの出力になる。<
 <h3>3.5.1.2.4. スタンドアロンHTTPサーバとして実行<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h3>
 <p>run_cgi、run_fcgiの代わりにrun_serverを用いると、
 スタンドアロンHTTPサーバとして実行される。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
-  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">(),</span> <span class="n">port_number</span> <span class="cm">/* = 8080 */</span><span class="p">,</span> <span class="n">thread_num</span> <span class="cm">/* = 1 */</span><span class="p">,</span> <span class="n">timeout</span> <span class="cm">/* = 10 */</span><span class="p">).</span><span class="n">start</span><span class="p">();</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">(),</span> <span class="n">port_number</span> <span class="cm">/* = 8080 */</span><span class="p">,</span> <span class="n">thread_num</span> <span class="cm">/* = 1 */</span><span class="p">,</span> <span class="n">timeout</span> <span class="cm">/* = 10 */</span><span class="p">).</span><span class="n">run</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>コンストラクタで、ポート番号、スレッド数、通信タイムアウト(秒)が指定できる。省略すると適当な値が使われる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
-  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">(),</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">).</span><span class="n">start</span><span class="p">();</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
+  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">(),</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">).</span><span class="n">run</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>argcとargvを渡すコンストラクタを用いると、コマンドライン引数でサーバの設定をすることができる。</p>
-<div class="highlight-c++"><pre>$ ./a.out --help
-usage: ./a.out [-p port] [-t thread-num] [-o timeout] [-h]</pre>
+<div class="highlight-c++"><div class="highlight"><pre><span></span>$ ./a.out --help
+usage: ./a.out [-p port] [-t thread-num] [-o timeout] [-h]
+</pre></div>
 </div>
 <p>なお、スタンドアロンHTTPサーバを用いるときは、スレッドセーフのために、渡されたCGIオブジェクトをスレッド数だけクローンする。ゆえに、渡すCGIオブジェクトがclonableでなければならない。CGIオブジェクトは、デフォルトではclonableではない。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">class</span> <span class="nc">my_cgi</span> <span class="o">:</span> <span class="k">public</span> <span class="n">xhtml_cgi</span><span class="p">,</span> <span class="n">cloner</span><span class="o">&lt;</span><span class="n">my_cgi</span><span class="o">&gt;</span> <span class="p">{</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">my_cgi</span> <span class="o">:</span> <span class="k">public</span> <span class="n">xhtml_cgi</span><span class="p">,</span> <span class="n">cloner</span><span class="o">&lt;</span><span class="n">my_cgi</span><span class="o">&gt;</span> <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
   <span class="kt">void</span> <span class="n">run</span><span class="p">(){</span>
     <span class="n">html__</span><span class="p">{</span>
@@ -181,15 +182,15 @@ usage: ./a.out [-p port] [-t thread-num] [-o timeout] [-h]</pre>
 </div>
 <p>clonableにするには、cgiクラスをclonerと多重継承にする。clonerには実装するクラスの名前を渡す。clonerは、渡されたクラスをコピーコンストラクタでコピーする。clone()動作を変えるにはコピーコンストラクタを実装すれば良い。</p>
 <p>run_serverはコンストラクタでソケットをlistenする。小さい番号のポートのためにrootでポートをlistenしてそれから降格してような場合は、次のように書ける。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">assert</span><span class="p">(</span><span class="n">getuid</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">);</span>    <span class="c1">// rootである</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">assert</span><span class="p">(</span><span class="n">getuid</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">);</span>    <span class="c1">// rootである</span>
 <span class="n">my_cgi</span> <span class="n">c</span><span class="p">;</span>
-<span class="n">run_server</span> <span class="n">serv</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span> <span class="c1">// 80番ポートlisten</span>
+<span class="n">run_server</span> <span class="nf">serv</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span> <span class="c1">// 80番ポートlisten</span>
 <span class="n">setuid</span><span class="p">(...);</span>            <span class="c1">// 降格</span>
 <span class="n">serv</span><span class="p">.</span><span class="n">run</span><span class="p">();</span>             <span class="c1">// サーバ処理開始</span>
 </pre></div>
 </div>
 <p>きめ細かい制御のために、listenするソケットを渡すこともできる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">run_server</span><span class="o">::</span><span class="n">socket_type</span> <span class="n">ssock</span><span class="p">(</span><span class="k">new</span> <span class="n">server_socket</span><span class="p">());</span> <span class="c1">// ソケットを自分で作成</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">run_server</span><span class="o">::</span><span class="n">socket_type</span> <span class="n">ssock</span><span class="p">(</span><span class="k">new</span> <span class="n">server_socket</span><span class="p">());</span> <span class="c1">// ソケットを自分で作成</span>
 <span class="n">ssock</span><span class="o">-&gt;</span><span class="n">create</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
 <span class="n">ssock</span><span class="o">-&gt;</span><span class="n">set_timeout</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">(),</span> <span class="n">ssock</span><span class="p">).</span><span class="n">run</span><span class="p">();</span> <span class="c1">// run_serverに渡す</span>
@@ -197,25 +198,25 @@ usage: ./a.out [-p port] [-t thread-num] [-o timeout] [-h]</pre>
 </div>
 <p>run_server::socket_typeは、server_socketへのスマートポインタの型である（型名が長いのでtypedefしている）。クライアントとの接続のタイムアウトは、サーバーソケットの設定が継承される。</p>
 <p>run_server::run()にfalseを渡すことにより、非同期実行が可能である。次の例は8080、8081の二つのポートでサーバを立てる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
   <span class="n">my_cgi</span> <span class="n">m</span><span class="p">;</span>
   <span class="n">run_server</span> <span class="n">serv1</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">8080</span><span class="p">);</span>
   <span class="n">run_server</span> <span class="n">serv2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">8081</span><span class="p">);</span>
-  <span class="n">serv1</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span> <span class="c1">// サーバを立てた後帰ってくる</span>
-  <span class="n">serv2</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span> <span class="c1">// サーバを立てた後帰ってくる</span>
+  <span class="n">serv1</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span> <span class="c1">// サーバを立てた後帰ってくる</span>
+  <span class="n">serv2</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span> <span class="c1">// サーバを立てた後帰ってくる</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>非同期にサーバを立てた後、run_server::join()を使って明示的に終了を待つことができる(サーバは終了しないので、永遠に待つことになる)。明示的にjoin()しない場合でも、デストラクタでjoin()する。なので、上のコードは正しく動作する。</p>
 <p>なお、デストラクタでjoin()するので、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
-  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">()).</span><span class="n">run</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">()).</span><span class="n">run</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>と、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
-  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">()).</span><span class="n">run</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+  <span class="n">run_server</span><span class="p">(</span><span class="n">my_cgi</span><span class="p">()).</span><span class="n">run</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -226,7 +227,7 @@ usage: ./a.out [-p port] [-t thread-num] [-o timeout] [-h]</pre>
 
 
       </div>
-      <div class="bottomnav">
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
         «&#160;&#160;<a href="../network.html">3.5. pfi::network</a>
@@ -238,9 +239,9 @@ usage: ./a.out [-p port] [-t thread-num] [-o timeout] [-h]</pre>
 
       </div>
 
-    <div class="footer">
-        &copy; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

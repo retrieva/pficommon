@@ -131,7 +131,7 @@ run_cgi、run_fcgiの代わりにrun_serverを用いると、
 .. code-block:: c++
 
   int main(){
-    run_server(my_cgi(), port_number /* = 8080 */, thread_num /* = 1 */, timeout /* = 10 */).start();
+    run_server(my_cgi(), port_number /* = 8080 */, thread_num /* = 1 */, timeout /* = 10 */).run();
   }
 
 コンストラクタで、ポート番号、スレッド数、通信タイムアウト(秒)が指定できる。省略すると適当な値が使われる。
@@ -139,7 +139,7 @@ run_cgi、run_fcgiの代わりにrun_serverを用いると、
 .. code-block:: c++
 
   int main(int argc, char *argv[]){
-    run_server(my_cgi(), argc, argv).start();
+    run_server(my_cgi(), argc, argv).run();
   }
 
 argcとargvを渡すコンストラクタを用いると、コマンドライン引数でサーバの設定をすることができる。

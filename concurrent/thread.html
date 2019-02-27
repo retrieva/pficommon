@@ -1,41 +1,41 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3.1.7. pfi::concurrent::thread &mdash; pficommon v1.3.0 documentation</title>
+    <title>3.1.7. pfi::concurrent::thread &#8212; pficommon 2.0.0 documentation</title>
+    
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.3.0',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
-    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
-    <link rel="up" title="3.1. pfi::concurrent" href="../concurrent.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.2. pfi::data" href="../data.html" />
     <link rel="prev" title="3.1.6. pfi::concurrent::qsem" href="qsem.html" /> 
   </head>
-  <body>
-      <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>pficommon v1.3.0 documentation</span></a></h1>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>pficommon 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.1.7. pfi::concurrent::thread</span></h2>
       </div>
-      <div class="topnav">
+      <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
         «&#160;&#160;<a href="qsem.html">3.1.6. pfi::concurrent::qsem</a>
@@ -57,42 +57,42 @@
 </div>
 <div class="section" id="id2">
 <h2>3.1.7.2. メンバ<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kr">thread</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="p">);</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kr">thread</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>function&lt;void()&gt;にコンパチブルな関数等をコンストラクタに渡す。
 この時点ではまだスレッドは起動しない。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kr">thread</span><span class="o">::~</span><span class="kr">thread</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kr">thread</span><span class="o">::~</span><span class="kr">thread</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>detachしておらず、さらにまだスレッドが動いている場合、
 スレッドをdetachする。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">bool</span> <span class="kr">thread</span><span class="o">::</span><span class="n">start</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="kr">thread</span><span class="o">::</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>startメソッドを呼べばスレッドが起動する。
 失敗するとfalseを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">bool</span> <span class="kr">thread</span><span class="o">::</span><span class="n">join</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="kr">thread</span><span class="o">::</span><span class="n">join</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>スレッドが終わるのを待つ。
 start()してない、detach()済みの場合、あるいは失敗した時はfalseを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">void</span> <span class="kr">thread</span><span class="o">::</span><span class="n">detach</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="kr">thread</span><span class="o">::</span><span class="n">detach</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>スレッドをdetachする。
 detachされたスレッドはjoinする必要がなくなる(joinできなくなる)。</p>
 <div class="section" id="static">
 <h3>3.1.7.2.1. staticメンバ<a class="headerlink" href="#static" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">static</span> <span class="n">tid_t</span> <span class="kr">thread</span><span class="o">::</span><span class="n">id</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">tid_t</span> <span class="kr">thread</span><span class="o">::</span><span class="n">id</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>呼び出したスレッドのスレッドIDを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">static</span> <span class="kt">bool</span> <span class="n">sleep</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">);</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">bool</span> <span class="nf">sleep</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>指定した秒数、自分のスレッドの実行を休止する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">static</span> <span class="kt">void</span> <span class="n">yield</span><span class="p">();</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span> <span class="nf">yield</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>他のスレッドに実行を明け渡す。</p>
@@ -100,12 +100,12 @@ detachされたスレッドはjoinする必要がなくなる(joinできなく�
 </div>
 <div class="section" id="id3">
 <h2>3.1.7.3. サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">void</span> <span class="n">foo</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">()</span>
 <span class="p">{</span>
   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">10000</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;moge&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
   <span class="kr">thread</span> <span class="n">t</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">()){</span> <span class="c1">// スレッドを立てる</span>
@@ -117,7 +117,7 @@ detachされたスレッドはjoinする必要がなくなる(joinできなく�
 </pre></div>
 </div>
 <p>detachスレッドを作りたい場合、次のようにするのが簡単である。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kr">thread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="p">).</span><span class="n">start</span><span class="p">();</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kr">thread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="p">).</span><span class="n">start</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -125,7 +125,7 @@ detachされたスレッドはjoinする必要がなくなる(joinできなく�
 
 
       </div>
-      <div class="bottomnav">
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
         «&#160;&#160;<a href="qsem.html">3.1.6. pfi::concurrent::qsem</a>
@@ -137,9 +137,9 @@ detachされたスレッドはjoinする必要がなくなる(joinできなく�
 
       </div>
 
-    <div class="footer">
-        &copy; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>

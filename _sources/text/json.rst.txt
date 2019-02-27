@@ -33,6 +33,20 @@ jsonデータ型の操作
 
 .. code-block:: c++
 
+  enum json_type_t {
+    Null,
+    Integer,
+    Float,
+    Bool,
+    String,
+    Array,
+    Object,
+  };
+
+それぞれのjsonのデータの型を表すためのタグ。
+
+.. code-block:: c++
+
   class json_value [#j1c13c05]
 
 上の型の基底クラス。
@@ -82,6 +96,14 @@ jsonオブジェクトをハンドルするための型
 
 .. code-block:: c++
 
+  json json::merge(json &js)
+
+保持しているjson_objectに与えられたjson_objectをマージしたjson_objectを返す
+(例外は上と同様)。
+マージは非破壊であるが、シャローコピーであるため返されたjson_objectへの変更が元のjson_objectに影響を与えることがある。
+
+.. code-block:: c++
+
   json::size() const
 
 保持しているjson_arrayのサイズを取得する
@@ -110,6 +132,12 @@ jsonオブジェクトをハンドルするための型
 
 .. code-block:: c++
 
+  json_type_t type() const
+
+保持しているjson_valueの型を示すタグを返す。
+
+.. code-block:: c++
+
   json::print(ostream &os) const
 
 保持しているjson_valueをストリームに書き出す。
@@ -122,6 +150,12 @@ jsonオブジェクトをハンドルするための型
 保持しているjson_valueをストリームに書き出す。
 読みやすい形で出力される。
 
+.. code-block:: c++
+
+  json json::clone() const
+
+保持しているjson_valueをディープコピーし、jsonハンドルを返す。
+
 例
 ---
 
@@ -131,7 +165,7 @@ jsonオブジェクトをハンドルするための型
 
   json js(new json_object());
   js["abc"]=json(new json_integer(123));
-  js["bcd"]=json(new json_flaot(3.14));
+  js["bcd"]=json(new json_float(3.14));
   js["cde"]=json(new json_string("appuppupuepue"));
   js["def"]=json(new json_bool(true));
 
@@ -152,9 +186,9 @@ operator<<およびoperator>>がオーバーライドされているので、
 .. code-block:: c++
 
   json js(new json_array());
-  js.add(new json_integer(1)):
-  js.add(new json_integer(2)):
-  js.add(new json_integer(3)):
+  js.add(new json_integer(1));
+  js.add(new json_integer(2));
+  js.add(new json_integer(3));
   
   stringstream ss;
   ss<<js; // [1,2,3]
@@ -170,9 +204,9 @@ pretty printもできる。
 .. code-block:: c++
 
   json js(new json_array());
-  js.add(new json_integer(1)):
-  js.add(new json_integer(2)):
-  js.add(new json_integer(3)):
+  js.add(new json_integer(1));
+  js.add(new json_integer(2));
+  js.add(new json_integer(3));
   
   cout<<pretty(js);
 
@@ -192,7 +226,7 @@ C++型との相互変換
 jsonオブジェクトとC++の型との間で自動的に相互変換ができる。
 
 * json_integer <=> int
-* json_float <=> double
+* json_float <=> double,float
 * json_string <=> string
 * json_bool <=> bool
 * json_object <=> map<string, T>
@@ -224,9 +258,9 @@ jsが型Tに合わないオブジェクトを含む場合、bad_cast例外が投
 .. code-block:: c++
 
   json js(new json_array());
-  js.add(new json_integer(1)):
-  js.add(new json_integer(2)):
-  js.add(new json_integer(3)):
+  js.add(new json_integer(1));
+  js.add(new json_integer(2));
+  js.add(new json_integer(3));
   
   vector<int> v;
   from_json(js, v); // {1, 2, 3}
@@ -263,7 +297,7 @@ jsが型Tに合わないオブジェクトを含む場合、bad_cast例外が投
     foo f;
     f.a=123;
     f.b="hoge";
-    f.c.x.push_back(1.4142):
+    f.c.x.push_back(1.4142);
     f.c.x.push_back(3.1415);
   
     cout<<to_json(f)<<endl; // {"a":123,"b":"hoge","c":{"x":[1.4142,3.1415]}}

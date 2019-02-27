@@ -1,41 +1,41 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3.4.2. pfi::math::random &mdash; pficommon v1.3.0 documentation</title>
+    <title>3.4.2. pfi::math::random &#8212; pficommon 2.0.0 documentation</title>
+    
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.3.0',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
-    <link rel="top" title="pficommon v1.3.0 documentation" href="../index.html" />
-    <link rel="up" title="3.4. pfi::math" href="../math.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.5. pfi::network" href="../network.html" />
     <link rel="prev" title="3.4.1. pfi::math::fft" href="fft.html" /> 
   </head>
-  <body>
-      <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>pficommon v1.3.0 documentation</span></a></h1>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>pficommon 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.4.2. pfi::math::random</span></h2>
       </div>
-      <div class="topnav">
+      <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
         «&#160;&#160;<a href="fft.html">3.4.1. pfi::math::fft</a>
@@ -57,55 +57,55 @@
 </div>
 <div class="section" id="id2">
 <h2>3.4.2.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">class</span> <span class="nc">random</span><span class="o">&lt;</span><span class="n">Gen</span><span class="o">&gt;</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">random</span><span class="o">&lt;</span><span class="n">Gen</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>ランダムクラス。Genに乱数生成器を指定する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">random</span><span class="o">::</span><span class="n">random</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">random</span><span class="o">::</span><span class="n">random</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>デフォルトコンストラクタ。
 時刻をseedに乱数生成器を初期化。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">random</span><span class="o">::</span><span class="n">random</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">seed</span><span class="p">)</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">random</span><span class="o">::</span><span class="n">random</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">seed</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>seedを指定して初期化。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">uint32_t</span> <span class="n">random</span><span class="o">::</span><span class="n">next_int</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">random</span><span class="o">::</span><span class="n">next_int</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>[0,0xffffffff]の範囲の整数を生成。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">uint32_t</span> <span class="n">random</span><span class="o">::</span><span class="n">next_int</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">a</span><span class="p">)</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">random</span><span class="o">::</span><span class="n">next_int</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>[0,a)の範囲の整数を生成。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">uint32_t</span> <span class="n">random</span><span class="o">::</span><span class="n">next_int</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">a</span><span class="p">,</span> <span class="n">uint</span> <span class="n">b</span><span class="p">)</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">random</span><span class="o">::</span><span class="n">next_int</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">a</span><span class="p">,</span> <span class="n">uint</span> <span class="n">b</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>[a,b)の範囲の整数を生成。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">double</span> <span class="n">next_double</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">next_double</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>[0,1)の範囲の浮動小数を生成。
 53ビットの解像度がある。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">double</span> <span class="n">next_gaussian</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">next_gaussian</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>平均0、分散1の正規分布で浮動小数を生成。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">double</span> <span class="n">next_gaussian</span><span class="p">(</span><span class="kt">double</span> <span class="n">mean</span><span class="p">,</span> <span class="kt">double</span> <span class="n">deviation</span><span class="p">)</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">next_gaussian</span><span class="p">(</span><span class="kt">double</span> <span class="n">mean</span><span class="p">,</span> <span class="kt">double</span> <span class="n">deviation</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>平均と分散を指定して生成。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">uint32_t</span> <span class="k">operator</span><span class="p">()()</span>
-<span class="n">uint32_t</span> <span class="k">operator</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">a</span><span class="p">)()</span>
-<span class="n">uint32_t</span> <span class="k">operator</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">a</span><span class="p">,</span> <span class="n">uint32_t</span> <span class="n">b</span><span class="p">)()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="k">operator</span><span class="p">()()</span>
+<span class="kt">uint32_t</span> <span class="k">operator</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">a</span><span class="p">)()</span>
+<span class="kt">uint32_t</span> <span class="k">operator</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">a</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">b</span><span class="p">)()</span>
 </pre></div>
 </div>
 <p>next_int()のそれぞれに対応。
 random_shuffle()などに使いやすいように。</p>
 <div class="section" id="id3">
 <h3>3.4.2.2.1. ジェネレータ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">gen</span><span class="o">::</span><span class="n">gen</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">seed</span><span class="p">)</span>
-<span class="n">uint32_t</span> <span class="n">gen</span><span class="o">::</span><span class="n">next</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">gen</span><span class="o">::</span><span class="n">gen</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">seed</span><span class="p">)</span>
+<span class="kt">uint32_t</span> <span class="n">gen</span><span class="o">::</span><span class="n">next</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>uint32_tのseedを引数にとり、
@@ -113,7 +113,7 @@ uint32_tで範囲[0,0xffffffff]の乱数を返すクラス。</p>
 <p>メルセンヌツイスタ実装が
 pfi::math::random::mersenne_twisterに用意されている。
 さらに</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="k">typedef</span> <span class="n">random</span><span class="o">&lt;</span><span class="n">mersenne_twister</span><span class="o">&gt;</span> <span class="n">mtrand</span><span class="p">;</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="n">random</span><span class="o">&lt;</span><span class="n">mersenne_twister</span><span class="o">&gt;</span> <span class="n">mtrand</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>が定義されているので、手軽に使える。</p>
@@ -121,7 +121,7 @@ pfi::math::random::mersenne_twisterに用意されている。
 </div>
 <div class="section" id="id4">
 <h2>3.4.2.3. サンプルコード<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
   <span class="n">mtrand</span> <span class="n">r</span><span class="p">(</span><span class="mi">777</span><span class="p">);</span>
 
@@ -140,7 +140,7 @@ pfi::math::random::mersenne_twisterに用意されている。
 
 
       </div>
-      <div class="bottomnav">
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
         «&#160;&#160;<a href="fft.html">3.4.1. pfi::math::fft</a>
@@ -152,9 +152,9 @@ pfi::math::random::mersenne_twisterに用意されている。
 
       </div>
 
-    <div class="footer">
-        &copy; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>
