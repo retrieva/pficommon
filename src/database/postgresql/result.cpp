@@ -73,7 +73,7 @@ bool postgresql_result::tuple_ok()
   return PQresultStatus(res)==PGRES_TUPLES_OK;
 }
 
-bool postgresql_result::fetch_row(vector<shared_ptr<sql_value> > &row)
+bool postgresql_result::fetch_row(vector<pfi::lang::shared_ptr<sql_value> > &row)
 {
   if (cur_row>=row_num)
     return false;

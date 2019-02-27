@@ -108,9 +108,9 @@ void postgresql_connection::rollback()
   (void)connection::run("ROLLBACK");
 }
 
-int postgresql_connection::run(const string &sql, const vector<shared_ptr<sql_value> > &args)
+int postgresql_connection::run(const string &sql, const vector<pfi::lang::shared_ptr<sql_value> > &args)
 {
-  shared_ptr<statement> stat(prepare(sql));
+  pfi::lang::shared_ptr<statement> stat(prepare(sql));
   return stat->execute(args);
 }
 
