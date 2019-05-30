@@ -66,6 +66,8 @@ public:
 
   bool serv(uint16_t port, int nthreads);
 
+  uint16_t port() const;
+
 private:
   void add(const std::string &name,
            const pfi::lang::shared_ptr<invoker_base>& invoker);
@@ -73,6 +75,8 @@ private:
   void process(const pfi::lang::shared_ptr<server_socket>& sock);
 
   std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
+
+  uint16_t port_num;
 
   const int version;
 };
