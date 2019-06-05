@@ -172,3 +172,44 @@ TEST(rpc, test_struct)
   EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
   EXPECT_EQ(t1.i, t2.i);
 }
+
+
+// test rpc::server when port number is 0
+struct sserver_args_struct
+{
+  testrpc_server sv;
+  uint16_t arg_port;
+};
+
+static void server_thread_for_port_0( sserver_args_struct *sas )
+{
+  sas->sv.serv(sas->arg_port, 1);
+}
+
+TEST(rpc, test_server_port_0)
+{
+  sserver_args_struct sas;
+  sas.sv.set_test_str(&test_str);
+  sas.arg_port = 0;
+
+  pfi::lang::function<void(void)> f = bind(server_thread_for_port_0, &sas);
+  thread t(f);
+  t.start();
+  t.detach();
+  sleep(1);
+
+  uint16_t p0 = sas.sv.port();
+  EXPECT_NE(0,p0);
+
+  testrpc_client cln("localhost", p0);
+  {
+    string v;
+    for (int i=0;i<10;i++)
+      v+='0'+(rand()%10);
+    string r;
+    EXPECT_NO_THROW({ r = cln.call_test_str(v); });
+    EXPECT_EQ(r.size(), 10U);
+    for (int i=0;i<10;i++)
+      EXPECT_EQ(r[i], v[i]);
+  }
+}
