@@ -483,14 +483,18 @@ bool server_socket::create(uint16_t port_num, int backlog)
     return false;
   }
 
-  socklen_t len = sizeof(saddr);
-  NO_INTR(res, ::getsockname(sock, (sockaddr*)&saddr, &len));
-  if (FAILED(res)){
-    NO_INTR(res, ::close(sock));
-    return false;
+  if (port_num != 0) {
+    this->port_num=port_num;
   }
-
-  this->port_num=ntohs(saddr.sin_port);
+  else {
+    socklen_t len = sizeof(saddr);
+    NO_INTR(res, ::getsockname(sock, (sockaddr*)&saddr, &len));
+    if (FAILED(res)){
+      NO_INTR(res, ::close(sock));
+      return false;
+    }
+    this->port_num=ntohs(saddr.sin_port);
+  }
   connected=true;
   return true;
 }

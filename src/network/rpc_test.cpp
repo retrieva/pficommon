@@ -199,7 +199,7 @@ TEST(rpc, test_server_port_0)
   sleep(1);
 
   uint16_t p0 = sas.sv.port();
-  EXPECT_NE(0,p0);
+  EXPECT_NE(0, p0);
 
   testrpc_client cln("localhost", p0);
   {
