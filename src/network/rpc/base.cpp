@@ -53,6 +53,7 @@ static const char *PONG_MSG = "<<<PONG>>>";
 rpc_server::rpc_server(int version)
   :version(version)
 {
+  port_num = 0;
 }
 
 rpc_server::~rpc_server()
@@ -70,6 +71,8 @@ bool rpc_server::serv(uint16_t port, int nthreads)
   if (!ssock->create(port))
     return false;
 
+  port_num = ssock->port();
+
   vector<pfi::lang::shared_ptr<thread> > ths(nthreads);
   for (int i=0; i<nthreads; i++){
       ths[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&rpc_server::process, this, ssock)));
@@ -78,6 +81,11 @@ bool rpc_server::serv(uint16_t port, int nthreads)
   for (int i=0; i<nthreads; i++)
     ths[i]->join();
   return true;
+}
+
+uint16_t rpc_server::port() const
+{
+  return port_num;
 }
 
 void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
