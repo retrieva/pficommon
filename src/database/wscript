@@ -49,6 +49,7 @@ def build(bld):
     source = '',
     target = 'pficommon_database',
     install_path = '${PREFIX}/lib',
+    vnum = bld.env['VERSION'],
     use = [])
   
   if bld.env.BUILD_MYSQL:
