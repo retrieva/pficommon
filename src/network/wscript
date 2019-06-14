@@ -65,6 +65,7 @@ def build(bld):
     source = '',
     target = 'pficommon_network',
     install_path = '${PREFIX}/lib',
+    vnum = bld.env['VERSION'],
     use = [
       'pficommon_network_base',
       'pficommon_network_http',
