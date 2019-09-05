@@ -63,6 +63,9 @@
   base##_server()							\
   :rpc_server(ver){							\
   }									\
+  base##_server(double timeout_sec)             \
+  :rpc_server(timeout_sec, ver){             \
+  }                 \
   };									\
   }									\
   typedef _server_impl::base##_server base##_server;			\
