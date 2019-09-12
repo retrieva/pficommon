@@ -62,8 +62,6 @@ rpc_server::rpc_server(double timeout_sec, int version)
   port_num = 0;
 }
 
-
-
 rpc_server::~rpc_server()
 {
 }
@@ -102,8 +100,8 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
     pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());
     if (!sock) continue;
     sock->set_nodelay(true);
-    if(timeout_sec > 0.0) {
-      if (! sock->set_timeout(timeout_sec)) {
+    if (timeout_sec > 0.0) {
+      if (!sock->set_timeout(timeout_sec)) {
         continue;
       }
     }
