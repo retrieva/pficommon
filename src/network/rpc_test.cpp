@@ -218,8 +218,8 @@ TEST(rpc, test_server_port_0)
 // test rpc::server timeout
 static void server_thread_for_timeout()
 {
-  double test_timeput_sec = 1.0;
-  test_struct_rpc_server ser(test_timeput_sec);
+  double test_timeout_sec = 1.0;
+  test_struct_rpc_server ser(test_timeout_sec);
   ser.set_test_struct(&f_test_struct);
   ser.serv(31233, 1);
 }
