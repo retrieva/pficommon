@@ -57,7 +57,7 @@ namespace rpc{
 class rpc_server{
 public:
   rpc_server(int version=0);
-  rpc_server(double timeout_sec, int version=0 );
+  rpc_server(double timeout_sec, int version=0);
   ~rpc_server();
 
   template <class T>
