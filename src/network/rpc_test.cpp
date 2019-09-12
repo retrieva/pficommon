@@ -214,7 +214,6 @@ TEST(rpc, test_server_port_0)
   }
 }
 
-
 // test rpc::server timeout
 static void server_thread_for_timeout()
 {
@@ -228,15 +227,14 @@ static void dummy_client_for_timeout()
 {
   pfi::network::stream_socket s0;
   s0.connect("localhost", 31233);
-  sleep(60);
+  sleep(10);
 }
 
-uint64_t get_clocktime_micro_sec() {
+uint64_t get_monotonic_time_micro_sec() {
   timespec tt;
   clock_gettime(CLOCK_MONOTONIC, &tt);
   return ( tt.tv_sec*1000000 + tt.tv_nsec/1000 );
 }
-
 
 TEST(rpc, test_rpc_server_timeout)
 {
@@ -245,11 +243,12 @@ TEST(rpc, test_rpc_server_timeout)
 
   sleep(1);
 
-  uint64_t time0 = get_clocktime_micro_sec();
+  uint64_t time0 = get_monotonic_time_micro_sec();
   thread dummy_client(&dummy_client_for_timeout);
   dummy_client.start();
+  dummy_client.detach();
 
-  sleep(2);
+  sleep(1);
 
   tstruct t1;
   t1.i = 9;
@@ -260,8 +259,9 @@ TEST(rpc, test_rpc_server_timeout)
   EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
   EXPECT_EQ(t1.i, t2.i);
 
-  // 10 秒未満なら timeout 設定が効いているとする。 timeout が効いてなければ 60秒程度待たされる。
-  uint64_t time1 = get_clocktime_micro_sec();
-  EXPECT_LE((time1-time0), 10*1000*1000);
+//  If it is less than 7 seconds, the timeout is considered to be working effectively.
+//  If the timeout setting does not work, it will wait for more than 10 seconds.
+  uint64_t time1 = get_monotonic_time_micro_sec();
+  EXPECT_LE((time1-time0), 7*1000*1000);
 }
 
