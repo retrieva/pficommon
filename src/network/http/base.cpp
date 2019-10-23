@@ -487,7 +487,7 @@ void request::send(const pfi::lang::shared_ptr<stream_socket>& sock)
     "HTTP/" + lexical_cast<string>(version_.first) + "." + lexical_cast<string>(version_.second) + "\r\n";
 
   if (!sock->puts(req_line))
-    throw http_exception("cannot send reqest-line");
+    throw http_exception("cannot send request-line");
 
   if (!header_.has_key("Content-Length") && dat.length() > 0)
     header_["Content-Length"] = lexical_cast<string>(dat.length());
