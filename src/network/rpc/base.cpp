@@ -49,14 +49,7 @@ static const char *PING_MSG = "<<<PING>>>";
 static const char *PONG_MSG = "<<<PONG>>>";
 
 // server
-
-rpc_server::rpc_server(int version)
-  :version(version), timeout_sec(0.0)
-{
-  port_num = 0;
-}
-
-rpc_server::rpc_server(double timeout_sec, int version)
+rpc_server::rpc_server(int version, double timeout_sec)
   : version(version), timeout_sec(timeout_sec)
 {
   port_num = 0;
