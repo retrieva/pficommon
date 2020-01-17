@@ -49,9 +49,8 @@ static const char *PING_MSG = "<<<PING>>>";
 static const char *PONG_MSG = "<<<PONG>>>";
 
 // server
-
-rpc_server::rpc_server(int version)
-  :version(version)
+rpc_server::rpc_server(int version, double timeout_sec)
+  : version(version), timeout_sec(timeout_sec)
 {
   port_num = 0;
 }
@@ -94,6 +93,11 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
     pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());
     if (!sock) continue;
     sock->set_nodelay(true);
+    if (timeout_sec > 0.0) {
+      if (!sock->set_timeout(timeout_sec)) {
+        continue;
+      }
+    }
 
     socketstream ss(sock);
     binary_iarchive ia(ss);

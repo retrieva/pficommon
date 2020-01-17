@@ -56,7 +56,7 @@ namespace rpc{
 
 class rpc_server{
 public:
-  rpc_server(int version=0);
+  rpc_server(int version=0, double timeout_sec=0.0);
   ~rpc_server();
 
   template <class T>
@@ -79,6 +79,7 @@ private:
   uint16_t port_num;
 
   const int version;
+  const double timeout_sec;
 };
 
 class rpc_client{

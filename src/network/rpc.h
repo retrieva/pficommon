@@ -60,8 +60,8 @@
   namespace _server_impl{						\
   struct base##_server : __VA_ARGS__ {					\
   public:								\
-  base##_server()							\
-  :rpc_server(ver){							\
+  base##_server(double timeout_sec=0.0)					\
+  :rpc_server(ver, timeout_sec){					\
   }									\
   };									\
   }									\

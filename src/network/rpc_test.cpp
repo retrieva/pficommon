@@ -28,7 +28,7 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+#include <time.h>
 #include <gtest/gtest.h>
 
 #include "rpc.h"
@@ -213,3 +213,55 @@ TEST(rpc, test_server_port_0)
       EXPECT_EQ(r[i], v[i]);
   }
 }
+
+// test rpc::server timeout
+static void server_thread_for_timeout()
+{
+  double test_timeout_sec = 1.0;
+  test_struct_rpc_server ser(test_timeout_sec);
+  ser.set_test_struct(&f_test_struct);
+  ser.serv(31233, 1);
+}
+
+static void dummy_client_for_timeout()
+{
+  pfi::network::stream_socket s0;
+  s0.connect("localhost", 31233);
+  sleep(10);
+}
+
+uint64_t get_monotonic_time_micro_sec() {
+  timespec tt;
+  clock_gettime(CLOCK_MONOTONIC, &tt);
+  return ( tt.tv_sec*1000000 + tt.tv_nsec/1000 );
+}
+
+TEST(rpc, test_rpc_server_timeout)
+{
+  thread server_thread(&server_thread_for_timeout);
+  server_thread.start();
+
+  sleep(1);
+
+  uint64_t time0 = get_monotonic_time_micro_sec();
+  thread dummy_client(&dummy_client_for_timeout);
+  dummy_client.start();
+  dummy_client.detach();
+
+  sleep(1);
+
+  tstruct t1;
+  t1.i = 9;
+  EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31233); });
+  test_struct_rpc_client cln("localhost", 31233);
+
+  tstruct t2;
+  EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
+  EXPECT_EQ(t1.i, t2.i);
+
+//  If it is less than 7 seconds, the timeout is considered to be working effectively.
+//  If the timeout setting does not work, it will wait for more than 10 seconds.
+  uint64_t time1 = get_monotonic_time_micro_sec();
+  EXPECT_LE((time1-time0), 7*1000*1000);
+}
+
