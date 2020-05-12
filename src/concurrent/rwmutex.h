@@ -122,24 +122,24 @@ private:
   double sec;
 };
 
-inline std::auto_ptr<lockable> rlock(rw_mutex &m)
+inline std::unique_ptr<lockable> rlock(rw_mutex &m)
 {
-  return std::auto_ptr<lockable>(new rlocker(m));
+  return std::unique_ptr<lockable>(new rlocker(m));
 }
 
-inline std::auto_ptr<lockable> rlock(rw_mutex &m, double sec)
+inline std::unique_ptr<lockable> rlock(rw_mutex &m, double sec)
 {
-  return std::auto_ptr<lockable>(new rlocker(m,sec));
+  return std::unique_ptr<lockable>(new rlocker(m,sec));
 }
 
-inline std::auto_ptr<lockable> wlock(rw_mutex &m)
+inline std::unique_ptr<lockable> wlock(rw_mutex &m)
 {
-  return std::auto_ptr<lockable>(new wlocker(m));
+  return std::unique_ptr<lockable>(new wlocker(m));
 }
 
-inline std::auto_ptr<lockable> wlock(rw_mutex &m, double sec)
+inline std::unique_ptr<lockable> wlock(rw_mutex &m, double sec)
 {
-  return std::auto_ptr<lockable>(new wlocker(m,sec));
+  return std::unique_ptr<lockable>(new wlocker(m,sec));
 }
 
 // for spped optimization

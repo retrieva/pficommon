@@ -211,7 +211,7 @@ public:
 
 private:
   json_value* clone() const {
-    std::auto_ptr<json_array> arr(new json_array);
+    std::unique_ptr<json_array> arr(new json_array);
     for (size_t i = 0; i < dat.size(); ++i)
       arr->add(dat[i].clone());
     return arr.release();
@@ -414,7 +414,7 @@ public:
 
   template <class F>
   json_object* merge_with(json_object* obj, F f) const {
-    std::auto_ptr<json_object> ret(new json_object);
+    std::unique_ptr<json_object> ret(new json_object);
     for (const_iterator it = this->begin(); it != this->end(); ++it) {
       ret->add(it->first,it->second);
     }
@@ -495,7 +495,7 @@ public:
 
 private:
   json_value* clone() const {
-    std::auto_ptr<json_object> obj(new json_object);
+    std::unique_ptr<json_object> obj(new json_object);
     for (const_iterator it = member.begin(), end = member.end(); it != end; ++it)
       obj->add(it->first, it->second.clone());
     return obj.release();
