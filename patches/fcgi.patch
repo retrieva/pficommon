@@ -1,0 +1,10 @@
+--- libfcgi/fcgio.cpp	2020-05-13 12:36:17.587650250 +0900
++++ libfcgi/fcgio.cpp.bak	2020-05-13 12:36:05.675524618 +0900
+@@ -23,6 +23,7 @@
+ #endif
+ 
+ #include <limits.h>
++#include <stdio.h>
+ #include "fcgio.h"
+ 
+ using std::streambuf;
