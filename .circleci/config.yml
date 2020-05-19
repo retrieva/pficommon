@@ -52,7 +52,7 @@ jobs:
       - run:
           name: configure using python3.4 and c++11
           command: |
-            CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wno-deprecated-declarations" python3 ./waf configure --disable-fcgi
+            CXXFLAGS="-std=c++11 -Wno-deprecated-declarations" python3 ./waf configure --disable-fcgi
       - run:
           name: build using python3.4
           command: python3 ./waf build
@@ -134,7 +134,7 @@ jobs:
       - run:
           name: configure
           command: |
-            CPPFLAGS="-std=c++11 -I/usr/include/postgresql -Wno-deprecated-declarations" ./waf configure --disable-fcgi
+            CXXFLAGS="-std=c++11 -Wno-deprecated-declarations" CPPFLAGS="-I/usr/include/postgresql" ./waf configure --disable-fcgi
       - run:
           name: build
           command: ./waf build
