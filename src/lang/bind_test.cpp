@@ -95,76 +95,76 @@ public:
 
 TEST(bind, bind_test)
 {
-  ASSERT_EQ(246, bind(&foo1, _1)(123));
-  ASSERT_EQ(246, bind(&foo1, 123)());
-  ASSERT_EQ(246, bind(&foo1, _1)(123, 456, 789, 123, 456, 789));
-  ASSERT_EQ(579, bind(&foo2, _1, _2)(123, 456));
-  ASSERT_EQ(579, bind(&foo2, 123, _2)(123, 456));
-  ASSERT_EQ(579, bind(&foo2, _1, 456)(123));
-  ASSERT_EQ(246, bind(&foo2, _1, _1)(123));
-  ASSERT_EQ(912, bind(&foo2, _2, _2)(123, 456));
-  ASSERT_EQ("hogehoge", bind(&foo3, _1)("hoge"));
+  ASSERT_EQ(246, pfi::lang::bind(&foo1, _1)(123));
+  ASSERT_EQ(246, pfi::lang::bind(&foo1, 123)());
+  ASSERT_EQ(246, pfi::lang::bind(&foo1, _1)(123, 456, 789, 123, 456, 789));
+  ASSERT_EQ(579, pfi::lang::bind(&foo2, _1, _2)(123, 456));
+  ASSERT_EQ(579, pfi::lang::bind(&foo2, 123, _2)(123, 456));
+  ASSERT_EQ(579, pfi::lang::bind(&foo2, _1, 456)(123));
+  ASSERT_EQ(246, pfi::lang::bind(&foo2, _1, _1)(123));
+  ASSERT_EQ(912, pfi::lang::bind(&foo2, _2, _2)(123, 456));
+  ASSERT_EQ("hogehoge", pfi::lang::bind(&foo3, _1)("hoge"));
   {
     string tmp="hello";
-    bind(&foo4, _1)(tmp);
+    pfi::lang::bind(&foo4, _1)(tmp);
     ASSERT_EQ("hello, world", tmp);
   }
-  ASSERT_EQ(45, bind(&foo5, _1, _2, _3, _4, _5, _6, _7, _8, _9)(1, 2, 3, 4, 5, 6, 7, 8, 9));
+  ASSERT_EQ(45, pfi::lang::bind(&foo5, _1, _2, _3, _4, _5, _6, _7, _8, _9)(1, 2, 3, 4, 5, 6, 7, 8, 9));
   {
     string tmp="hello";
-    bind(&foo6, _1, _2)(tmp, ", world");
+    pfi::lang::bind(&foo6, _1, _2)(tmp, ", world");
     ASSERT_EQ("hello, world", tmp);
   }
 
-  ASSERT_EQ(369, bind(&bar1::foo, bar1(), _1)(123));
+  ASSERT_EQ(369, pfi::lang::bind(&bar1::foo, bar1(), _1)(123));
   {
     bar2 b(100);
-    bind(&bar2::foo, _1, _2)(b, 1);
+    pfi::lang::bind(&bar2::foo, _1, _2)(b, 1);
     ASSERT_EQ(101, b.n);
   }
   {
     bar2 b(100);
-    bind(&bar2::foo, ref(b), _1)(1);
+    pfi::lang::bind(&bar2::foo, pfi::lang::ref(b), _1)(1);
     ASSERT_EQ(101, b.n);
   }
   {
     bar2 b(100);
-    bind(&bar2::foo, _1, _2)(&b, 1);
+    pfi::lang::bind(&bar2::foo, _1, _2)(&b, 1);
     ASSERT_EQ(101, b.n);
   }
   {
     bar2 b(100);
-    bind(&bar2::foo, &b, _1)(1);
+    pfi::lang::bind(&bar2::foo, &b, _1)(1);
     ASSERT_EQ(101, b.n);
   }
   {
     bar21 b(100);
-    bind(&bar2::foo, &b, _1)(1);
+    pfi::lang::bind(&bar2::foo, &b, _1)(1);
     ASSERT_EQ(101, b.n);
   }
   {
     bar21 b(100);
-    bind(&bar2::foo, ref(b), _1)(1);
+    bind(&bar2::foo, pfi::lang::ref(b), _1)(1);
     ASSERT_EQ(101, b.n);
   }
   {
     bar3 b("Hello");
     string w=", world!";
-    ASSERT_EQ("Hello, world!", bind(&bar3::foo, &b, _1)(w));
+    ASSERT_EQ("Hello, world!", pfi::lang::bind(&bar3::foo, &b, _1)(w));
   }
   {
     bar3 b("Hello");
     string w=", world!";
-    ASSERT_EQ("Hello, world!", bind(&bar3::foo, ref(b), _1)(w));
+    ASSERT_EQ("Hello, world!", pfi::lang::bind(&bar3::foo, pfi::lang::ref(b), _1)(w));
   }
   {
     bar3 b("Hello");
     string w=", world!";
-    ASSERT_EQ("Hello, world!", bind(&bar3::foo2, &b, _1)(w));
+    ASSERT_EQ("Hello, world!", pfi::lang::bind(&bar3::foo2, &b, _1)(w));
   }
   {
     bar3 b("Hello");
     string w=", world!";
-    ASSERT_EQ("Hello, world!",  bind(&bar3::foo2, ref(b), _1)(w));
+    ASSERT_EQ("Hello, world!",  pfi::lang::bind(&bar3::foo2, pfi::lang::ref(b), _1)(w));
   }
 }

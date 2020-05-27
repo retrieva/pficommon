@@ -46,16 +46,16 @@ struct rpc_message {
 public:
   rpc_message() { }
 
-  rpc_message(msgpack::object obj, std::auto_ptr<msgpack::zone> z) :
-    zone(z)
+  rpc_message(msgpack::object obj, std::unique_ptr<msgpack::zone> z) :
+    zone(std::move(z))
   {
     obj.convert(&tuple);
   }
 
-  void reset(msgpack::object obj, std::auto_ptr<msgpack::zone> z)
+  void reset(msgpack::object obj, std::unique_ptr<msgpack::zone> z)
   {
     obj.convert(&tuple);
-    zone = z;
+    zone = std::move(z);
   }
 
   bool is_request()   { return tuple.a0 == 0; }
@@ -66,7 +66,7 @@ public:
   msgpack::type::tuple<uint8_t, uint32_t,
     msgpack::object, msgpack::object> tuple;
 
-  std::auto_ptr<msgpack::zone> zone;
+  std::unique_ptr<msgpack::zone> zone;
 };
 
 
@@ -84,7 +84,7 @@ struct rpc_request {
     msgid  = msg.tuple.a1;
              msg.tuple.a2.convert(&method);
     param  = msg.tuple.a3;
-    zone   = msg.zone;
+    zone   = std::move(msg.zone);
   }
 
   template <typename ObjectWritable, typename P>
@@ -107,7 +107,7 @@ struct rpc_request {
   uint32_t msgid;
   std::string method;
   msgpack::object param;
-  std::auto_ptr<msgpack::zone> zone;
+  std::unique_ptr<msgpack::zone> zone;
 };
 
 
@@ -125,7 +125,7 @@ struct rpc_response {
     msgid  = msg.tuple.a1;
              msg.tuple.a2.convert(&error);
              msg.tuple.a3.convert(&result);
-    zone   = msg.zone;
+    zone   = std::move(msg.zone);
   }
 
   template <typename ObjectWritable, typename R, typename E>
@@ -180,7 +180,7 @@ struct rpc_response {
   uint32_t msgid;
   msgpack::object error;
   msgpack::object result;
-  std::auto_ptr<msgpack::zone> zone;
+  std::unique_ptr<msgpack::zone> zone;
 
 private:
   static std::string object_to_string(msgpack::object o)

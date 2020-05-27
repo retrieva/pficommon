@@ -39,29 +39,6 @@ jobs:
       - run:
           name: install using python3.4
           command: python3 ./waf install
-  gcc5_c++11_python34:
-    docker:
-      - image: gcc:5
-    steps:
-      - checkout
-      - run:
-          name: install python3.4
-          command: |
-            apt update -y
-            apt install -y python3
-      - run:
-          name: configure using python3.4 and c++11
-          command: |
-            CXXFLAGS="-std=c++11 -Wno-deprecated-declarations" python3 ./waf configure --disable-fcgi
-      - run:
-          name: build using python3.4
-          command: python3 ./waf build
-      - run:
-          name: test using python3.4 and c++11
-          command: python3 ./waf --check
-      - run:
-          name: install using python3.4 and c++11
-          command: python3 ./waf install
   gcc5_full:
     docker:
       - image: gcc:5
@@ -103,54 +80,10 @@ jobs:
       - run:
           name: install
           command: ./waf install
-  gcc5_c++11_full:
-    docker:
-      - image: gcc:5
-    steps:
-      - checkout
-      - run:
-          name: install msgpack
-          command: |
-            wget https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz
-            tar zxvf msgpack-0.5.9.tar.gz && cd msgpack-0.5.9
-            ./configure && make && make install
-      - run:
-          name: install fcgi
-          command: |
-            wget https://github.com/FastCGI-Archives/FastCGI.com/raw/master/original_snapshot/fcgi-2.4.1-SNAP-0910052249.tar.gz
-            tar zxvf fcgi-2.4.1-SNAP-0910052249.tar.gz && cd fcgi-2.4.1-SNAP-0910052249
-            patch -u libfcgi/fcgio.cpp < ../patches/fcgi.patch
-            ./configure && make && make install
-      - run:
-          name: install mysql
-          command: |
-            apt update -y
-            apt install libmysqlclient-dev libmysqlclient18 mysql-common
-      - run:
-          name: install postgresql
-          command: |
-            apt update -y
-            apt install -y postgresql postgresql-server-dev-all
-      - run:
-          name: configure
-          command: |
-            CXXFLAGS="-std=c++11 -Wno-deprecated-declarations" CPPFLAGS="-I/usr/include/postgresql" ./waf configure --disable-fcgi
-      - run:
-          name: build
-          command: ./waf build
-      - run:
-          name: test pficommon with all extensions except to imagemagick
-          command: ./waf --check
-      - run:
-          name: install
-          command: ./waf install
-
 workflows:
   version: 2
   build_and_test:
     jobs:
       - gcc5_python27
       - gcc5_python34
-      - gcc5_c++11_python34
       - gcc5_full
-      - gcc5_c++11_full

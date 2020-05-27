@@ -31,7 +31,7 @@ def configure(conf):
   conf.load('gnu_dirs')
 
   env = conf.env
-  env.append_unique('CXXFLAGS', ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer'])
+  env.append_unique('CXXFLAGS', ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer', '-std=c++11', '-Wno-deprecated-declarations'])
   ver = env.CC_VERSION
   if env.COMPILER_CXX != 'g++' or int(ver[0]) < 4 or (int(ver[0]) == 4 and int(ver[1]) < 6):
     env.append_unique('CXXFLAGS', '-D_FORTIFY_SOURCE=1')

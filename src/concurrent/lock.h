@@ -59,9 +59,9 @@ public:
       need_unlock=true;
   }
 
-  explicit scoped_lock(std::auto_ptr<lockable> p)
+  explicit scoped_lock(std::unique_ptr<lockable> p)
     : l(NULL)
-    , lp(p)
+    , lp(std::move(p))
     , need_unlock(false){
     if (lp->lock())
       need_unlock=true;
@@ -82,7 +82,7 @@ public:
 
 private:
   lockable *l;
-  mutable std::auto_ptr<lockable> lp;
+  mutable std::unique_ptr<lockable> lp;
   mutable bool need_unlock;
 };
 
