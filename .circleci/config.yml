@@ -1,82 +1,102 @@
 version: 2
 jobs:
-  gcc5_python27:
+  gcc5:
     docker:
-      - image: gcc:5
+      - image: docker.retrieva.jp/pficommon_ci:gcc5.2007
+        auth:
+          username: $DOCKER_REPO_USER
+          password: $DOCKER_REPO_PASSWORD
     steps:
       - checkout
       - run:
           name: configure
-          command: ./waf configure
+          command: CPPFLAGS="-I/usr/include/postgresql" ./waf configure
       - run:
           name: build
-          command: ./waf build
+          command: ./waf build -j4
       - run:
           name: test
-          command: ./waf --check
+          command: LD_LIBRARY_PATH="/usr/local/lib" ./waf --check -j4
       - run:
           name: install
           command: ./waf install
-  gcc5_python34:
+  gcc6:
     docker:
-      - image: gcc:5
+      - image: docker.retrieva.jp/pficommon_ci:gcc6.2007
+        auth:
+          username: $DOCKER_REPO_USER
+          password: $DOCKER_REPO_PASSWORD
     steps:
       - checkout
       - run:
-          name: install python3.4
-          command: |
-            apt update -y
-            apt install -y python3
-      - run:
-          name: configure using python3.4
-          command: python3 ./waf configure
-      - run:
-          name: build using python3.4
-          command: python3 ./waf build
-      - run:
-          name: test using python3.4
-          command: python3 ./waf --check
-      - run:
-          name: install using python3.4
-          command: python3 ./waf install
-  gcc5_full:
-    docker:
-      - image: gcc:5
-    steps:
-      - checkout
-      - run:
-          name: install msgpack
-          command: |
-            wget https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz
-            tar zxvf msgpack-0.5.9.tar.gz && cd msgpack-0.5.9
-            ./configure && make && make install
-      - run:
-          name: install fcgi
-          command: |
-            wget https://github.com/FastCGI-Archives/FastCGI.com/raw/master/original_snapshot/fcgi-2.4.1-SNAP-0910052249.tar.gz
-            tar zxvf fcgi-2.4.1-SNAP-0910052249.tar.gz && cd fcgi-2.4.1-SNAP-0910052249
-            patch -u libfcgi/fcgio.cpp < ../patches/fcgi.patch
-            ./configure && make && make install
-      - run:
-          name: install mysql
-          command: |
-            apt update -y
-            apt install libmysqlclient-dev libmysqlclient18 mysql-common
-      - run:
-          name: install postgresql
-          command: |
-            apt update -y
-            apt install -y postgresql postgresql-server-dev-all
-      - run:
-          name: configure with all extensions except to imagemagick
-          command: |
-            CPPFLAGS="-I/usr/include/postgresql" ./waf configure --disable-fcgi
+          name: configure
+          command: CPPFLAGS="-I/usr/include/postgresql" ./waf configure
       - run:
           name: build
-          command: ./waf build
+          command: ./waf build -j4
       - run:
           name: test
-          command: ./waf --check
+          command: LD_LIBRARY_PATH="/usr/local/lib" ./waf --check -j4
+      - run:
+          name: install
+          command: ./waf install
+  gcc7:
+    docker:
+      - image: docker.retrieva.jp/pficommon_ci:gcc7.2007
+        auth:
+          username: $DOCKER_REPO_USER
+          password: $DOCKER_REPO_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: configure
+          command: CPPFLAGS="-I/usr/include/postgresql" ./waf configure
+      - run:
+          name: build
+          command: ./waf build -j4
+      - run:
+          name: test
+          command: LD_LIBRARY_PATH="/usr/local/lib" ./waf --check -j4
+      - run:
+          name: install
+          command: ./waf install
+  gcc8:
+    docker:
+      - image: docker.retrieva.jp/pficommon_ci:gcc8.2007
+        auth:
+          username: $DOCKER_REPO_USER
+          password: $DOCKER_REPO_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: configure
+          command: CPPFLAGS="-I/usr/include/postgresql" ./waf configure
+      - run:
+          name: build
+          command: ./waf build -j4
+      - run:
+          name: test
+          command: LD_LIBRARY_PATH="/usr/local/lib" ./waf --check -j4
+      - run:
+          name: install
+          command: ./waf install
+  gcc9:
+    docker:
+      - image: docker.retrieva.jp/pficommon_ci:gcc9.2007
+        auth:
+          username: $DOCKER_REPO_USER
+          password: $DOCKER_REPO_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: configure
+          command: CPPFLAGS="-I/usr/include/postgresql" ./waf configure
+      - run:
+          name: build
+          command: ./waf build -j4
+      - run:
+          name: test
+          command: LD_LIBRARY_PATH="/usr/local/lib" ./waf --check -j4
       - run:
           name: install
           command: ./waf install
@@ -84,6 +104,8 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - gcc5_python27
-      - gcc5_python34
-      - gcc5_full
+      - gcc5
+      - gcc6
+      - gcc7
+      - gcc8
+      - gcc9
