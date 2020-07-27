@@ -10,13 +10,13 @@ jobs:
       - checkout
       - run:
           name: configure
-          command: CPPFLAGS="-I/usr/include/postgresql" ./waf configure
+          command: ./waf configure
       - run:
           name: build
           command: ./waf build -j4
       - run:
           name: test
-          command: LD_LIBRARY_PATH="/usr/local/lib" ./waf --check -j4
+          command: ./waf --check -j4
       - run:
           name: install
           command: ./waf install

@@ -1,6 +1,10 @@
 ARG image_tag
 FROM gcc:${image_tag}
 
+ENV C_INCLUDE_PATH=/usr/include/postgresql:$C_INCLUDE_PATH
+ENV CPLUS_INCLUDE_PATH=/usr/include/postgresql:$CPLUS_INCLUDE_PATH
+ENV LIBRARY_PATH=/usr/local/lib64:/usr/local/lib:$LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib:$LD_LIBRARY_PATH
 ENV MSGPACK_VERSION 0.5.9
 
 RUN apt update \
