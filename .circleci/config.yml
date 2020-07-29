@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  gcc5:
+  gcc4.9:
     docker:
-      - image: docker.retrieva.jp/pficommon_ci:gcc5.2007
+      - image: docker.retrieva.jp/pficommon_ci:gcc4.9.2007
         auth: &auth
           username: $DOCKER_REPO_USER
           password: $DOCKER_REPO_PASSWORD
@@ -20,6 +20,11 @@ jobs:
       - run:
           name: install
           command: ./waf install
+  gcc5:
+    docker:
+      - image: docker.retrieva.jp/pficommon_ci:gcc5.2007
+        auth: *auth
+    steps: *steps
   gcc6:
     docker:
       - image: docker.retrieva.jp/pficommon_ci:gcc6.2007
@@ -44,6 +49,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - gcc4.9
       - gcc5
       - gcc6
       - gcc7
