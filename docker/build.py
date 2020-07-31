@@ -6,6 +6,7 @@ import subprocess
 IMAGE_BASENAME = 'docker.retrieva.jp/pficommon_ci'
 base_images_and_tags = {
     'gcc': [
+        '4.9',
         '5',
         '6',
         '7',
