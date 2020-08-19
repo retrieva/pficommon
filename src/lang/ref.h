@@ -32,14 +32,14 @@
 #ifndef INCLUDE_GUARD_PFI_LANG_REF_H_
 #define INCLUDE_GUARD_PFI_LANG_REF_H_
 
-#include <tr1/functional>
+#include <functional>
 
 namespace pfi {
 namespace lang {
 
 template <class T>
-class reference_wrapper : public std::tr1::reference_wrapper<T> {
-  typedef std::tr1::reference_wrapper<T> base;
+class reference_wrapper : public std::reference_wrapper<T> {
+  typedef std::reference_wrapper<T> base;
 
 public:
   explicit reference_wrapper(T& x) : base(x) {}

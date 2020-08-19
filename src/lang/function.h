@@ -32,26 +32,13 @@
 #ifndef INCLUDE_GUARD_PFI_LANG_FUNCTION_H_
 #define INCLUDE_GUARD_PFI_LANG_FUNCTION_H_
 
-#include <tr1/functional>
+#include <functional>
 
 namespace pfi {
 namespace lang {
 
 template <class F>
-class function : public std::tr1::function<F> {
-  typedef std::tr1::function<F> base;
-
-public:
-  function() {}
-  template <class Fn>
-  function (const Fn& f) : base(f) {}
-
-  template <class Fn>
-  function& operator=(const Fn& f) {
-    base::operator=(f);
-    return *this;
-  }
-};
+using function = std::function<F>;
 
 } // lang
 } // pfi
