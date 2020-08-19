@@ -44,7 +44,7 @@ namespace data {
  * @brief Key to ID dictionary class
  */
 template<typename Key,
-         class Hash = hash<Key>,
+         class Hash = std::hash<Key>,
          class EqualKey = std::equal_to<Key>,
          class Alloc = std::allocator<std::pair<const Key, int> > >
 class intern {

@@ -35,18 +35,16 @@
 #include <cmath>
 #include <unordered_map>
 
-#include "functional_hash.h"
-
 namespace pfi{
 namespace data{
 
 template <class Key, class Tp,
-          class Hash = hash<Key>,
+          class Hash = std::hash<Key>,
           class EqualKey = std::equal_to<Key>,
           class Alloc = std::allocator<std::pair<const Key, Tp> > >
 class unordered_map :
-    public unordered_namespace::unordered_map<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef unordered_namespace::unordered_map<Key, Tp, Hash, EqualKey, Alloc> Base;
+    public std::unordered_map<Key, Tp, Hash, EqualKey, Alloc> {
+  typedef std::unordered_map<Key, Tp, Hash, EqualKey, Alloc> Base;
 
 public:
   explicit
@@ -66,12 +64,12 @@ public:
 };
 
 template <class Key, class Tp,
-          class Hash = hash<Key>,
+          class Hash = std::hash<Key>,
           class EqualKey = std::equal_to<Key>,
           class Alloc = std::allocator<std::pair<const Key, Tp> > >
 class unordered_multimap :
-    public unordered_namespace::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef unordered_namespace::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> Base;
+    public std::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> {
+  typedef std::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> Base;
 
 public:
   explicit
