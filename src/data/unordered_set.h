@@ -32,17 +32,8 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_UNORDERED_SET_H_
 #define INCLUDE_GUARD_PFI_DATA_UNORDERED_SET_H_
 
-#include "../pfi-config.h"
-
 #include <cmath>
-
-#if HAVE_UNORDERED_SET
 #include <unordered_set>
-#elif HAVE_TR1_UNORDERED_SET
-#include <tr1/unordered_set>
-#else
-#error "There is no unordered set implementation."
-#endif
 
 #include "functional_hash.h"
 
@@ -72,12 +63,6 @@ public:
                 const typename Base::key_equal &eql = typename Base::key_equal(),
                 const typename Base::allocator_type &a = typename Base::allocator_type())
     : Base(f, l, n, hf, eql, a) {}
-
-#if HAVE_TR1_UNORDERED_SET
-  void reserve(typename Base::size_type n) {
-    this->rehash(std::ceil(n / this->max_load_factor()));
-  }
-#endif
 };
 
 template <class Value,
@@ -103,12 +88,6 @@ public:
                      const typename Base::key_equal &eql = typename Base::key_equal(),
                      const typename Base::allocator_type &a = typename Base::allocator_type())
     : Base(f, l, n, hf, eql, a) {}
-
-#if HAVE_TR1_UNORDERED_SET
-  void reserve(typename Base::size_type n) {
-    this->rehash(std::ceil(n / this->max_load_factor()));
-  }
-#endif
 };
 
 } // data
