@@ -38,16 +38,6 @@
 
 #include "./serialization.h"
 
-#include "../pfi-config.h"
-
-#if HAVE_TR1_UNORDERED_MAP
-#include "./serialization/tr1_unordered_map.h"
-#endif
-
-#if HAVE_TR1_UNORDERED_SET
-#include "./serialization/tr1_unordered_set.h"
-#endif
-
 #include "./unordered_map.h"
 #include "./serialization/unordered_map.h"
 
@@ -304,31 +294,6 @@ TEST(serialization, string) {
   for (string::iterator it=vs1.begin(),jt=vs2.begin();it!=vs1.end();++it,++jt) EXPECT_EQ(*it,*jt);  
 }
 
-#if HAVE_TR1_UNORDERED_MAP
-
-TEST(serialization, tr1_unordered_map) {
-  srandom(time(NULL));
-  std::tr1::unordered_map<int,int> vs1,vs2;
-  for (size_t i=0;i<N;++i) vs1.insert(make_pair(random(),random()));
-  {
-    ofstream ofs("./tmp");
-    binary_oarchive oa(ofs);
-    oa<<vs1;
-  }
-  {
-    ifstream ifs("./tmp");
-    binary_iarchive ia(ifs);
-    ia>>vs2;
-  }
-  EXPECT_EQ(vs1.size(),vs2.size());
-  for (std::tr1::unordered_map<int,int>::iterator it=vs1.begin();it!=vs1.end();++it) {
-    EXPECT_TRUE(vs2.count(it->first));
-    EXPECT_EQ(it->second,vs2[it->first]);
-  }
-}
-
-#endif
-
 TEST(serialization, pficommon_unordered_map){
   srandom(time(NULL));
   pfi::data::unordered_map<int,int> vs1,vs2;
@@ -349,30 +314,6 @@ TEST(serialization, pficommon_unordered_map){
     EXPECT_EQ(it->second,vs2[it->first]);
   }
 }
-
-#if HAVE_TR1_UNORDERED_SET
-
-TEST(serialization, tr1_unordered_set) {
-  srandom(time(NULL));
-  std::tr1::unordered_set<int> vs1,vs2;
-  for (size_t i=0;i<N;++i) vs1.insert(random());
-  {
-    ofstream ofs("./tmp");
-    binary_oarchive oa(ofs);
-    oa<<vs1;
-  }
-  {
-    ifstream ifs("./tmp");
-    binary_iarchive ia(ifs);
-    ia>>vs2;
-  }
-  EXPECT_EQ(vs1.size(),vs2.size());
-  for (std::tr1::unordered_set<int>::iterator it=vs1.begin();it!=vs1.end();++it) {
-    EXPECT_TRUE(vs2.count(*it));
-  }
-}
-
-#endif
 
 TEST(serialization, pficommon_unordered_set) {
   srandom(time(NULL));
