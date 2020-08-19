@@ -42,51 +42,13 @@ template <class Key, class Tp,
           class Hash = std::hash<Key>,
           class EqualKey = std::equal_to<Key>,
           class Alloc = std::allocator<std::pair<const Key, Tp> > >
-class unordered_map :
-    public std::unordered_map<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef std::unordered_map<Key, Tp, Hash, EqualKey, Alloc> Base;
-
-public:
-  explicit
-  unordered_map(typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_map(InputIterator f, InputIterator l,
-                typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-};
+using unordered_map = std::unordered_map<Key, Tp, Hash, EqualKey, Alloc>;
 
 template <class Key, class Tp,
           class Hash = std::hash<Key>,
           class EqualKey = std::equal_to<Key>,
           class Alloc = std::allocator<std::pair<const Key, Tp> > >
-class unordered_multimap :
-    public std::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef std::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> Base;
-
-public:
-  explicit
-  unordered_multimap(typename Base::size_type n = 10,
-                     const typename Base::hasher &hf = typename Base::hasher(),
-                     const typename Base::key_equal &eql = typename Base::key_equal(),
-                     const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_multimap(InputIterator f, InputIterator l,
-                     typename Base::size_type n = 10,
-                     const typename Base::hasher &hf = typename Base::hasher(),
-                     const typename Base::key_equal &eql = typename Base::key_equal(),
-                     const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-};
+using unordered_multimap = std::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc>;
 
 } // data
 } // pfi
