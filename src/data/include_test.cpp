@@ -8,6 +8,7 @@
 #include "code/code.h"
 #include "optional.h"
 #include "intern.h"
+#include "functional_hash.h"
 #include "encoding/base64.h"
 #include "serialization.h"
 #include "unordered_map.h"

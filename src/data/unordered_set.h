@@ -35,17 +35,19 @@
 #include <cmath>
 #include <unordered_set>
 
+#include "functional_hash.h"
+
 namespace pfi{
 namespace data{
 
 template <class Value,
-          class Hash = std::hash<Value>,
+          class Hash = hash<Value>,
           class Pred = std::equal_to<Value>,
           class Alloc = std::allocator<Value> >
 using unordered_set = std::unordered_set<Value, Hash, Pred, Alloc>;
 
 template <class Value,
-          class Hash = std::hash<Value>,
+          class Hash = hash<Value>,
           class Pred = std::equal_to<Value>,
           class Alloc = std::allocator<Value> >
 using unordered_multiset = std::unordered_multiset<Value, Hash, Pred, Alloc>;

@@ -29,29 +29,19 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef INCLUDE_GUARD_PFI_DATA_UNORDERED_MAP_H_
-#define INCLUDE_GUARD_PFI_DATA_UNORDERED_MAP_H_
+#ifndef INCLUDE_GUARD_PFI_DATA_FUNCTIONAL_HASH_H_
+#define INCLUDE_GUARD_PFI_DATA_FUNCTIONAL_HASH_H_
 
-#include <cmath>
-#include <unordered_map>
-
-#include "functional_hash.h"
+#include <functional>
 
 namespace pfi{
 namespace data{
 
-template <class Key, class Tp,
-          class Hash = hash<Key>,
-          class EqualKey = std::equal_to<Key>,
-          class Alloc = std::allocator<std::pair<const Key, Tp> > >
-using unordered_map = std::unordered_map<Key, Tp, Hash, EqualKey, Alloc>;
+namespace unordered_namespace = ::std;
 
-template <class Key, class Tp,
-          class Hash = hash<Key>,
-          class EqualKey = std::equal_to<Key>,
-          class Alloc = std::allocator<std::pair<const Key, Tp> > >
-using unordered_multimap = std::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc>;
+template <class T>
+class hash : public unordered_namespace::hash<T> {};
 
 } // data
 } // pfi
-#endif // #ifndef INCLUDE_GUARD_PFI_DATA_UNORDERED_MAP_H_
+#endif // #ifndef INCLUDE_GUARD_PFI_DATA_FUNCTIONAL_HASH_H_

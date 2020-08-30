@@ -34,6 +34,7 @@ def build(bld):
       'sparse_matrix/sparse_matrix.h',
       'unordered_map.h',
       'unordered_set.h',
+      'functional_hash.h',
       'intern.h'
       ], relative_trick = True)
 
