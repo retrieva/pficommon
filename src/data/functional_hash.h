@@ -37,10 +37,8 @@
 namespace pfi{
 namespace data{
 
-namespace unordered_namespace = ::std;
-
 template <class T>
-class hash : public unordered_namespace::hash<T> {};
+using hash = std::hash<T>;
 
 } // data
 } // pfi
