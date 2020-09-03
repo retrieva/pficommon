@@ -33,15 +33,14 @@
 #define INCLUDE_GUARD_PFI_LANG_ENABLE_SHARED_FROM_THIS_H_
 
 #include <memory>
-#include <tr1/memory>
 #include "shared_ptr.h"
 
 namespace pfi {
 namespace lang {
 
 template <class T>
-class enable_shared_from_this : public std::tr1::enable_shared_from_this<T> {
-  typedef std::tr1::enable_shared_from_this<T> base;
+class enable_shared_from_this : public std::enable_shared_from_this<T> {
+  typedef std::enable_shared_from_this<T> base;
 
 protected:
   enable_shared_from_this() {}
@@ -56,14 +55,14 @@ public:
   shared_ptr<T> shared_from_this() {
     try {
       return shared_ptr<T>(base::shared_from_this());
-    } catch (std::tr1::bad_weak_ptr&) {
+    } catch (std::bad_weak_ptr&) {
       throw pfi::lang::bad_weak_ptr();
     }
   }
   shared_ptr<const T> shared_from_this() const {
     try {
       return shared_ptr<const T>(base::shared_from_this());
-    } catch (std::tr1::bad_weak_ptr&) {
+    } catch (std::bad_weak_ptr&) {
       throw pfi::lang::bad_weak_ptr();
     }
   }
