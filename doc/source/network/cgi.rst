@@ -144,7 +144,7 @@ run_cgi、run_fcgiの代わりにrun_serverを用いると、
 
 argcとargvを渡すコンストラクタを用いると、コマンドライン引数でサーバの設定をすることができる。
 
-.. code-block:: c++
+.. code-block:: bash
 
   $ ./a.out --help
   usage: ./a.out [-p port] [-t thread-num] [-o timeout] [-h]
