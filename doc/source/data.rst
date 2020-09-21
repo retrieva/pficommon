@@ -10,4 +10,5 @@ pfi::data
   data/digest
   data/encoding
   data/unordered_map
+  data/unordered_set
   data/serialization
