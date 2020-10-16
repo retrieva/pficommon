@@ -47,7 +47,18 @@ public:
   typedef const char* const_iterator;
 
   mmapper() : ptr(NULL), length(0), fd(-1) {}
+  mmapper(mmapper&& rhs) : ptr(std::move(rhs.ptr)), length(std::move(rhs.length)), fd(std::move(rhs.fd)) {
+    rhs.ptr = nullptr;
+  }
   ~mmapper() { close(); }
+
+  mmapper& operator=(mmapper&& rhs) {
+    delete ptr;
+    ptr = std::move(rhs.ptr);
+    length = std::move(rhs.length);
+    fd = std::move(rhs.fd);
+    return *this;
+  }
 
   char& operator[](size_t n) { return *(ptr + n); }
   const char& operator[](size_t n) const { return *(ptr + n); }
