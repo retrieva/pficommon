@@ -59,9 +59,6 @@ Database module:         %s
   have PostgreSQL lib:     %s
 MessagePack RPC module:  %s
 
-[Visualization]
-Magick++ impl:           %s
-
 [Build information]
 Package:                 %s
 build (compile on):      %s
@@ -75,7 +72,6 @@ CXXFLAGS:                %s
        conf.env.BUILD_MYSQL and 'yes' or 'no',
        conf.env.BUILD_PGSQL and 'yes' or 'no',
        conf.env.BUILD_MPRPC and 'yes' or 'no',
-       conf.env.BUILD_MAGICKPP and 'yes' or 'no',
        APPNAME + '-' + VERSION,
        conf.env.DEST_CPU + '-' + conf.env.DEST_OS,
        sys.byteorder,
