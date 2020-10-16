@@ -45,7 +45,7 @@ typedef pfi::lang::function<pfi::lang::shared_ptr<socketstream>()> getter;
 typedef pfi::lang::function<void(pfi::lang::shared_ptr<socketstream>)> returner;
 typedef pfi::lang::function<int()> versioner;
 
-static void gen_exception(const std::string &str)
+static inline void gen_exception(const std::string &str)
 {
   std::istringstream iss(str);
   std::string code;
