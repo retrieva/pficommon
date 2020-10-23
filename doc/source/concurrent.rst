@@ -14,4 +14,3 @@ pfi::concurrent
   concurrent/pcbuf
   concurrent/qsem
   concurrent/thread
-  concurrent/threading_model
