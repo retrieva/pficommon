@@ -38,43 +38,10 @@ namespace pfi {
 namespace lang {
 
 template <class T>
-class reference_wrapper : public std::reference_wrapper<T> {
-  typedef std::reference_wrapper<T> base;
+using reference_wrapper = std::reference_wrapper<T>;
 
-public:
-  explicit reference_wrapper(T& x) : base(x) {}
-  T* get_pointer() const { return &this->get(); }
-};
-
-template <class T>
-inline reference_wrapper<T> ref(T& r)
-{
-  return reference_wrapper<T>(r);
-}
-
-template <class T>
-inline reference_wrapper<T> ref(reference_wrapper<T> r)
-{
-  return r;
-}
-
-template <class T>
-inline reference_wrapper<const T> cref(const T& r)
-{
-  return reference_wrapper<const T>(r);
-}
-
-template <class T>
-inline reference_wrapper<const T> cref(reference_wrapper<T> r)
-{
-  return reference_wrapper<const T>(r);
-}
-
-template <class T>
-T* get_pointer(const reference_wrapper<T>& r)
-{
-  return r.get_pointer();
-}
+using std::ref;
+using std::cref;
 
 } // lang
 } // pfi
