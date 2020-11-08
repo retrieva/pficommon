@@ -41,6 +41,32 @@
 using namespace std;
 using namespace pfi::system::mmapper;
 
+TEST(mmapper_test, move_constructor)
+{
+  const std::string filename = "test.txt";
+  const std::string data = "0123456789";
+  const size_t size = data.size();
+  {
+    std::ofstream fs(filename, std::ios::out | std::ios::trunc);
+    fs << data;
+  }
+  {
+    mmapper rhs;
+    EXPECT_EQ(0, rhs.open(filename));
+    EXPECT_TRUE(rhs.is_open());
+    EXPECT_EQ(size, rhs.size());
+
+    mmapper lhs(std::move(rhs));
+    EXPECT_TRUE(lhs.is_open());
+    EXPECT_EQ(size, lhs.size());
+    EXPECT_FALSE(rhs.is_open());
+    EXPECT_EQ(0u, rhs.size());
+  }
+  {
+    unlink(filename.c_str());
+  }
+}
+
 TEST(mmapper_test, open_close_empty)
 {
   {

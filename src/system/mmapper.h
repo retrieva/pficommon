@@ -49,6 +49,8 @@ public:
   mmapper() : ptr(NULL), length(0), fd(-1) {}
   mmapper(mmapper&& rhs) : ptr(std::move(rhs.ptr)), length(std::move(rhs.length)), fd(std::move(rhs.fd)) {
     rhs.ptr = nullptr;
+    rhs.length = 0;
+    rhs.fd = -1;
   }
   ~mmapper() { close(); }
 
