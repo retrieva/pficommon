@@ -41,6 +41,93 @@
 using namespace std;
 using namespace pfi::system::mmapper;
 
+TEST(mmapper_test, move_constructor)
+{
+  const std::string filename = "test.txt";
+  const std::string data = "0123456789";
+  const size_t size = data.size();
+  {
+    std::ofstream fs(filename, std::ios::out | std::ios::trunc);
+    fs << data;
+  }
+  {
+    mmapper rhs;
+    EXPECT_EQ(0, rhs.open(filename));
+    EXPECT_TRUE(rhs.is_open());
+    EXPECT_EQ(size, rhs.size());
+
+    mmapper lhs(std::move(rhs));
+    EXPECT_TRUE(lhs.is_open());
+    EXPECT_EQ(size, lhs.size());
+    EXPECT_FALSE(rhs.is_open());
+    EXPECT_EQ(0u, rhs.size());
+  }
+  {
+    unlink(filename.c_str());
+  }
+}
+
+TEST(mmapper_test, move_assignment_operator)
+{
+  const std::string filename = "test.txt";
+  const std::string data = "0123456789";
+  const size_t size = data.size();
+  {
+    std::ofstream fs(filename, std::ios::out | std::ios::trunc);
+    fs << data;
+  }
+  {
+    mmapper rhs;
+    int r = rhs.open(filename);
+    EXPECT_EQ(r, 0);
+    EXPECT_TRUE(rhs.is_open());
+    EXPECT_EQ(size, rhs.size());
+
+    mmapper lhs = std::move(rhs);
+    EXPECT_TRUE(lhs.is_open());
+    EXPECT_EQ(size, lhs.size());
+    EXPECT_FALSE(rhs.is_open());
+    EXPECT_EQ(0u, rhs.size());
+  }
+  {
+    unlink(filename.c_str());
+  }
+}
+
+TEST(mmapper_test, move_assignment_operator_when_rhs_is_open)
+{
+  const std::string filename1 = "test1.txt", filename2 = "test2.txt";
+  const std::string data1 = "0123456789", data2 = "01234";
+  const size_t size1 = data1.size(), size2 = data2.size();
+  {
+    std::ofstream fs1(filename1, std::ios::out | std::ios::trunc);
+    fs1 << data1;
+    std::ofstream fs2(filename2, std::ios::out | std::ios::trunc);
+    fs2 << data2;
+  }
+  {
+    mmapper rhs;
+    EXPECT_EQ(0, rhs.open(filename2));
+    EXPECT_TRUE(rhs.is_open());
+    EXPECT_EQ(size2, rhs.size());
+
+    mmapper lhs;
+    EXPECT_EQ(0, lhs.open(filename1));
+    EXPECT_TRUE(lhs.is_open());
+    EXPECT_EQ(size1, lhs.size());
+
+    lhs = std::move(rhs);
+    EXPECT_TRUE(lhs.is_open());
+    EXPECT_EQ(size2, lhs.size());
+    EXPECT_FALSE(rhs.is_open());
+    EXPECT_EQ(0u, rhs.size());
+  }
+  {
+    unlink(filename1.c_str());
+    unlink(filename2.c_str());
+  }
+}
+
 TEST(mmapper_test, open_close_empty)
 {
   {
