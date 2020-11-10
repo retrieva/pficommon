@@ -93,7 +93,7 @@ TEST(function, comparison_with_null_pointer)
   EXPECT_FALSE(f != 0);
   EXPECT_FALSE(0 != f);
 
-  f = printf;
+  f = function<int (const char*)>(printf);
   EXPECT_FALSE(f == 0);
   EXPECT_FALSE(0 == f);
   EXPECT_TRUE(f != 0);
