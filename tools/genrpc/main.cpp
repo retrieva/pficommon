@@ -1,4 +1,5 @@
 #include <vector>
+#include <fstream>
 #include <sstream>
 #include <stdexcept>
 #include <cctype>
