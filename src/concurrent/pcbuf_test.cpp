@@ -43,7 +43,6 @@
 #include "../lang/shared_ptr.h"
 #include "../lang/bind.h"
 
-using namespace std;
 using namespace pfi::concurrent;
 using namespace pfi::lang;
 using namespace pfi::system::time;
@@ -103,13 +102,13 @@ private:
 };
 
 void producer_func(pcbuf<int>* q_ptr, int min, int max,
-                   map<int, int>* histgram_ptr, mutex* histgram_mutex_ptr)
+                   std::map<int, int>* histgram_ptr, mutex* histgram_mutex_ptr)
 {
   pcbuf<int>& q = *q_ptr;
-  map<int, int>& histgram = *histgram_ptr;
+  std::map<int, int>& histgram = *histgram_ptr;
   mutex& histgram_mutex = *histgram_mutex_ptr;
 
-  map<int, int> local_histgram;
+  std::map<int, int> local_histgram;
   for (int i = min; i <= max; i++) {
     q.push(i);
     local_histgram[i]++;
@@ -117,7 +116,7 @@ void producer_func(pcbuf<int>* q_ptr, int min, int max,
 
   pfi::concurrent::scoped_lock lock(histgram_mutex);
   if (lock) {
-    for (map<int, int>::const_iterator
+    for (std::map<int, int>::const_iterator
            it = local_histgram.begin(), end = local_histgram.end();
          it != end; ++it) {
       histgram[it->first] += it->second;
@@ -126,15 +125,15 @@ void producer_func(pcbuf<int>* q_ptr, int min, int max,
 }
 
 void consumer_func(pcbuf<int>* q_ptr, flag* shutdown_flag_ptr,
-                   map<int, int>* histgram_ptr, mutex* histgram_mutex_ptr)
+                   std::map<int, int>* histgram_ptr, mutex* histgram_mutex_ptr)
 {
   pcbuf<int>& q = *q_ptr;
   flag& shutdown_flag = *shutdown_flag_ptr;
-  map<int, int>& histgram = *histgram_ptr;
+  std::map<int, int>& histgram = *histgram_ptr;
   mutex& histgram_mutex = *histgram_mutex_ptr;
 
   int value = 0;
-  map<int, int> local_histgram;
+  std::map<int, int> local_histgram;
   while (!(shutdown_flag && q.empty())) {
     if (q.pop(value, 0.1)) {
       local_histgram[value]++;
@@ -143,7 +142,7 @@ void consumer_func(pcbuf<int>* q_ptr, flag* shutdown_flag_ptr,
 
   pfi::concurrent::scoped_lock lock(histgram_mutex);
   if (lock) {
-    for (map<int, int>::const_iterator
+    for (std::map<int, int>::const_iterator
            it = local_histgram.begin(), end = local_histgram.end();
          it != end; ++it) {
       histgram[it->first] += it->second;
@@ -162,11 +161,11 @@ TEST(pcbuf, normal)
 
   flag shutdown_flag;
   pcbuf<int> q(pcbuf_capacity);
-  map<int, int> producer_histgram, consumer_histgram;
+  std::map<int, int> producer_histgram, consumer_histgram;
   mutex producer_histgram_mutex, consumer_histgram_mutex;
 
   // start consumers
-  vector<pfi::lang::shared_ptr<thread> > consumers(consumer_num);
+  std::vector<pfi::lang::shared_ptr<thread> > consumers(consumer_num);
   for (size_t i = 0; i < consumers.size(); i++) {
     pfi::lang::function<void(void)> f = bind(consumer_func,
                                              &q,
@@ -178,7 +177,7 @@ TEST(pcbuf, normal)
   }
 
   // start producers
-  vector<pfi::lang::shared_ptr<thread> > producers(producer_num);
+  std::vector<pfi::lang::shared_ptr<thread> > producers(producer_num);
   for (size_t i = 0; i < producers.size(); i++) {
     pfi::lang::function<void(void)> f = bind(producer_func,
                                              &q,
@@ -209,7 +208,7 @@ TEST(pcbuf, normal)
     pfi::concurrent::scoped_lock lock_consumer(consumer_histgram_mutex);
     if (lock_consumer) {
       ASSERT_EQ(producer_histgram.size(), consumer_histgram.size());
-      for (map<int, int>::const_iterator
+      for (std::map<int, int>::const_iterator
              it = producer_histgram.begin(), end = producer_histgram.end();
            it != end; ++it) {
         EXPECT_EQ(it->second, consumer_histgram[it->first]);
