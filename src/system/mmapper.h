@@ -53,13 +53,8 @@ public:
   ~mmapper() { close(); }
 
   mmapper& operator=(mmapper&& rhs) {
-    close();
-    ptr = std::move(rhs.ptr);
-    length = std::move(rhs.length);
-    fd = std::move(rhs.fd);
-    rhs.ptr = nullptr;
-    rhs.length = 0;
-    rhs.fd = -1;
+    mmapper tmp(std::move(rhs));
+    swap(tmp);
     return *this;
   }
 
