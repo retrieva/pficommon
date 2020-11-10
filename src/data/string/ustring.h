@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <string>
 #include <algorithm>
+#include <iostream>
 #include <stdint.h>
 #include <stdexcept>
 
