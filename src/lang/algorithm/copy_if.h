@@ -1,23 +1,13 @@
 #ifndef INCLUDE_GUARD_PFI_LANG_ALGORITHM_COPY_IF_H_
 #define INCLUDE_GUARD_PFI_LANG_ALGORITHM_COPY_IF_H_
 
+#include <algorithm>
+
 namespace pfi {
 namespace lang {
 namespace algorithm {
 
-template <class InputIterator, class OutputIterator, class Predicate>
-OutputIterator
-copy_if(InputIterator first, InputIterator last, OutputIterator result, Predicate pred)
-{
-    while (first != last) {
-        if (pred(*first)) {
-            *result = *first;
-            ++result;
-        }
-        ++first;
-    }
-    return result;
-}
+using std::copy_if;
 
 } // namespace algorithm
 } // namespace lang
