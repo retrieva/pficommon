@@ -33,6 +33,7 @@
 #define INCLUDE_GUARD_PFI_DATA_STRING_KMP_H_
 
 #include <iterator>
+#include <string>
 #include <vector>
 
 namespace pfi{
