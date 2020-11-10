@@ -55,6 +55,13 @@ jobs:
       - image: docker.retrieva.jp/pficommon_ci:centos8.2008
         auth: *auth
     steps: *steps
+  clang7_on_gcc9_image:
+    docker:
+      - image: docker.retrieva.jp/pficommon_ci:gcc9.2007
+        auth: *auth
+    environment:
+      CXX: clang++-7
+    steps: *steps
 workflows:
   version: 2
   build_and_test:
@@ -67,3 +74,4 @@ workflows:
       - gcc9
       - centos7
       - centos8
+      - clang7_on_gcc9_image
