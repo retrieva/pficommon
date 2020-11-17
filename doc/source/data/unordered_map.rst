@@ -7,7 +7,10 @@ pfi::data::unordered_map
 
 C++11のstd::unordered_mapと同一のインターフェースを提供するコンテナ。
 
-後方互換性の維持のために残しているものの、std::unordered_mapの利用を推奨する。
+.. deprecated:: 4.0
+
+  この機能はC++11からSTLで提供されるようになったため、
+  後方互換性の維持のために残しているものの、 :code:`std::unordered_map` の利用を推奨する。
 
 使い方
 ======
