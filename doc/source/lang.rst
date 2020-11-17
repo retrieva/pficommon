@@ -7,6 +7,7 @@ C++を書きやすくする類のライブラリ。 ほぼBoostの再実装。
 .. toctree::
   :maxdepth: 2
 
+  lang/algorithm/copy_if
   lang/bind
   lang/cast
   lang/function
