@@ -126,17 +126,6 @@ TEST(ref, get)
   EXPECT_EQ(&n, &cr.get());
 }
 
-TEST(ref, get_pointer)
-{
-  int n = 2;
-
-  reference_wrapper<int> r(n);
-  EXPECT_EQ(&n, r.get_pointer());
-
-  reference_wrapper<const int> cr(n);
-  EXPECT_EQ(&n, cr.get_pointer());
-}
-
 namespace {
 int plus1(int n) { return n + 1; }
 }

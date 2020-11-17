@@ -32,40 +32,12 @@
 #ifndef INCLUDE_GUARD_PFI_LANG_MEM_FN_H_
 #define INCLUDE_GUARD_PFI_LANG_MEM_FN_H_
 
-#include "ref.h"
+#include <functional>
 
 namespace pfi{
 namespace lang{
 
-namespace _mfi{
-
-template <class T>
-T *get_pointer(T *p)
-{
-  return p;
-}
-
-#define INSIDE_MEM_FN
-
-#define MF_NAME(x) x
-#define MF_CC
-#include "mem_fn_def.h"
-#undef MF_CC
-#undef MF_NAME
-
-#undef INSIDE_MEM_FN
-
-} // _mfi
-
-#define INSIDE_MEM_FN
-
-#define MF_NAME(x) x
-#define MF_CC
-#include "mem_fn_cc.h"
-#undef MF_CC
-#undef MF_NAME
-
-#undef INSIDE_MEM_FN
+using std::mem_fn;
 
 } // lang
 } // pfi

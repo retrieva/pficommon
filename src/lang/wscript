@@ -6,9 +6,9 @@ def configure(conf):
 def build(bld):
   bld.install_files('${HPREFIX}/lang', [
       'cast.h',
-      'bind.h', 'bind_mf.h', 'bind_template.h',
+      'bind.h',
       'demangle.h',
-      'mem_fn.h', 'mem_fn_def.h', 'mem_fn_cc.h', 'mem_fn_tmpl.h',
+      'mem_fn.h',
       'function.h',
       'noncopyable.h',
       'ref.h',

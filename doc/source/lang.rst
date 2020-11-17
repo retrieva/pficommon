@@ -13,6 +13,7 @@ C++を書きやすくする類のライブラリ。 ほぼBoostの再実装。
   lang/function
   lang/mem_fn
   lang/noncopyable
+  lang/ref
   lang/safe_bool
   lang/scoped_ptr
   lang/shared_ptr
