@@ -97,9 +97,8 @@ template <class C, class T = std::char_traits<C> >
 class basic_httpstream : public std::basic_istream<C, T> {
 public:
   explicit basic_httpstream(const std::string& url)
-    : buf(url)
+      : std::basic_istream<C, T>(&buf), buf(url)
   {
-    this->init(&buf);
   }
 
   header& head() {

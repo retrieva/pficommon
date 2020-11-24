@@ -43,7 +43,7 @@
       T3 c=G3();							\
       if(!EXPECT_EQ(a OP12 (b OP23 c),(a OP12 b) OP23 c)){		\
         std::cerr << "associativity broken for"				\
-                  << a << #OP12 << b << #OP23 << c << endl;		\
+                  << a << #OP12 << b << #OP23 << c << std::endl;        \
       }									\
     }									\
   }
@@ -54,14 +54,14 @@
 #define TEST_IDENTITY(CAPTION,N,T,G,ID,OP,EXPECT_EQ)		\
   TEST(CAPTION,identity){						\
     for(int i=0;i<N;++i){						\
-      T a=G();							\
+      T a=G();                                                          \
       if(!EXPECT_EQ(a OP ID,a)){					\
         std::cerr << ID << " is not right identity in"			\
-                  << a << #OP << ID << endl;				\
+                  << a << #OP << ID << std::endl;                       \
       }									\
       if(!EXPECT_EQ(ID OP a,a)){					\
         std::cerr << ID << " is not left identity in"			\
-                  << ID << #OP << a << endl;				\
+                  << ID << #OP << a << std::endl;                       \
       }									\
     }									\
   }
@@ -72,11 +72,11 @@
       TYPE a=GEN();							\
       if(!EXPECT_EQ(a OPI a,ID)){					\
         std::cerr << #OPI << " is not inverse operator in"		\
-                  << a << #OPI << a << endl;				\
+                  << a << #OPI << a << std::endl;                       \
       }									\
       if(!EXPECT_EQ(a OP (ID OPI a),ID)){				\
         std::cerr << #OPI << " is not inverse operator because "	\
-                  << ID << #OPI << a << " is not " << a << endl;	\
+                  << ID << #OPI << a << " is not " << a << std::endl;	\
       }									\
     }									\
   }
@@ -90,7 +90,7 @@
       T2 b=G2();							\
       if(!EXPECT_EQ(a OP b,b OP a)){					\
         std::cerr << "commutativity broken for"				\
-                  << a << #OP << b << endl;				\
+                  << a << #OP << b << std::endl;                        \
       }									\
     }									\
   }
@@ -108,21 +108,21 @@
       T2 c=G2();							\
       T3 lhs=a MUL c ADD b MUL c,rhs=(a ADD b) MUL c;			\
       if(!EXPECT_EQ(lhs,rhs)){						\
-        std::cerr << "distributivity broken for " << endl;		\
-        std::cerr << "a=" << a << endl;					\
-        std::cerr << "b=" << b << endl;					\
-        std::cerr << "c=" << c << endl;					\
+        std::cerr << "distributivity broken for " << std::endl;		\
+        std::cerr << "a=" << a << std::endl;                            \
+        std::cerr << "b=" << b << std::endl;                            \
+        std::cerr << "c=" << c << std::endl;                            \
         std::cerr << "a" #MUL "c" #ADD "b" #MUL "c=" << lhs << " ; "	\
-                  << "(a" #ADD "b)" #MUL "c=" << rhs << endl;		\
+                  << "(a" #ADD "b)" #MUL "c=" << rhs << std::endl;      \
       }									\
       T3 lhs2=c MUL a ADD c MUL b,rhs2=c MUL (a ADD b);			\
-      if(!EXPECT_EQ(lhs2,rhs2)){						\
-        std::cerr << "distributivity broken for " << endl;		\
-        std::cerr << "a=" << a << endl;					\
-        std::cerr << "b=" << b << endl;					\
-        std::cerr << "c=" << c << endl;					\
+      if(!EXPECT_EQ(lhs2,rhs2)){                                        \
+        std::cerr << "distributivity broken for " << std::endl;		\
+        std::cerr << "a=" << a << std::endl;                            \
+        std::cerr << "b=" << b << std::endl;                            \
+        std::cerr << "c=" << c << std::endl;                            \
         std::cerr << "c" #MUL "a" #ADD "c" #MUL "b=" << lhs << " ; "	\
-                  << "c" #MUL "(a" #ADD "b)=" << rhs << endl;		\
+                  << "c" #MUL "(a" #ADD "b)=" << rhs << std::endl;      \
       }									\
     }									\
   }

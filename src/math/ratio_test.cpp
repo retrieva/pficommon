@@ -40,7 +40,6 @@
 #include "./random.h"
 #include "algebra_tester.h"
 
-using namespace std;
 using namespace pfi::lang;
 using namespace pfi::math::random;
 using namespace pfi::math::ratio;
@@ -57,13 +56,13 @@ ratio<int> gen_ratio(){
 
 bool expect_eq(const ratio<int> &a, const ratio<int> &b){
   bool ret=a==b; 
-  ostringstream oss; oss << a << "!=" << b << endl;
+  std::ostringstream oss; oss << a << "!=" << b << std::endl;
   EXPECT_TRUE(ret) << oss.str();
   return ret;
 }
 
 TEST(ratio,printing){
-  std::cerr << ratio<int>(1341,398) << endl;
+  std::cerr << ratio<int>(1341,398) << std::endl;
 }
 
 ratio<int> zero(0);
