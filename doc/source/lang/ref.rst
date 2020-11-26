@@ -7,7 +7,7 @@ pfi::lang::ref
 
 参照をラップする :code:`reference_wrapper` 、
 非const参照の変数をラップして :code:`reference_wrapper` オブジェクトを生成する :code:`ref` と
-const参照をラップして同ブジェクトを生成する :code:`cref` を提供する。
+const参照をラップして同オブジェクトを生成する :code:`cref` を提供する。
 
 .. deprecated:: 4.0
 
