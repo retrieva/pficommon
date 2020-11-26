@@ -31,39 +31,16 @@
 
 #include "enable_if.h"
 
-template <bool Value>
-struct bool_ {
-  typedef bool_ type;
-  static const bool value = Value;
-};
-
-typedef bool_<false> false_;
-typedef bool_<true> true_;
-
-
-template <class _>
-struct is_floating_point : false_ {};
-
-template <>
-struct is_floating_point<float> : true_ {};
-
-template <>
-struct is_floating_point<double> : true_ {};
-
-template <>
-struct is_floating_point<long double> : true_ {};
-
-
 #include <string>
 
 template <class T>
-std::string is_floating_point_(const T&, typename pfi::lang::enable_if<is_floating_point<T> >::type* = 0)
+std::string is_floating_point_(const T&, typename pfi::lang::enable_if<std::is_floating_point<T>::value>::type* = 0)
 {
   return "floating point";
 }
 
 template <class T>
-std::string is_floating_point_(const T&, typename pfi::lang::disable_if<is_floating_point<T> >::type* = 0)
+std::string is_floating_point_(const T&, typename pfi::lang::disable_if<std::is_floating_point<T>::value>::type* = 0)
 {
   return "not floating point";
 }

@@ -10,6 +10,7 @@ C++を書きやすくする類のライブラリ。 ほぼBoostの再実装。
   lang/algorithm/copy_if
   lang/bind
   lang/cast
+  lang/enable_if
   lang/function
   lang/mem_fn
   lang/noncopyable
