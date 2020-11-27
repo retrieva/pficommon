@@ -1,68 +1,56 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.2.2. pfi::data::encoding &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.2.2. pfi::data::encoding &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.2.3. pfi::data::unordered_map" href="unordered_map.html" />
     <link rel="prev" title="3.2.1. pfi::data::digest" href="digest.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.2.2. pfi::data::encoding</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="digest.html">3.2.1. pfi::data::digest</a>
+        «&#160;&#160;<a href="digest.html"><span class="section-number">3.2.1. </span>pfi::data::digest</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="unordered_map.html">3.2.3. pfi::data::unordered_map</a>&#160;&#160;»
+        <a href="unordered_map.html"><span class="section-number">3.2.3. </span>pfi::data::unordered_map</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-data-encoding">
-<h1>3.2.2. pfi::data::encoding<a class="headerlink" href="#pfi-data-encoding" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.2.2. </span>pfi::data::encoding<a class="headerlink" href="#pfi-data-encoding" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.2.2.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.2.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>いろいろなエンコード。
 現在のところbase64の実装がある。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.2.2.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">base64_encode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span>
+<h2><span class="section-number">3.2.2.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">base64_encode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>与えられた文字列をbase64エンコードした文字列を返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">base64_decode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">base64str</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">base64_decode</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">base64str</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>与えられたbase64文字列をデコードした文字列を返す。
@@ -70,8 +58,8 @@
 invalid_argumen例外が投げられる。</p>
 </div>
 <div class="section" id="id3">
-<h2>3.2.2.3. サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="n">base64_encode</span><span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">);</span>
+<h2><span class="section-number">3.2.2.3. </span>サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="n">base64_encode</span><span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">);</span>
 <span class="n">string</span> <span class="n">t</span> <span class="o">=</span> <span class="n">base64_decode</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 <span class="n">assert</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="n">t</span><span class="p">);</span>
 </pre></div>
@@ -84,18 +72,18 @@ invalid_argumen例外が投げられる。</p>
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="digest.html">3.2.1. pfi::data::digest</a>
+        «&#160;&#160;<a href="digest.html"><span class="section-number">3.2.1. </span>pfi::data::digest</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="unordered_map.html">3.2.3. pfi::data::unordered_map</a>&#160;&#160;»
+        <a href="unordered_map.html"><span class="section-number">3.2.3. </span>pfi::data::unordered_map</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

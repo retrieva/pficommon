@@ -1,38 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>1. pficommonについて &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. pficommonについて &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="#" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="2. インストール" href="install.html" />
     <link rel="prev" title="pficommonのドキュメントにようこそ！" href="index.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>1. pficommonについて</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -42,36 +30,36 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="install.html">2. インストール</a>&#160;&#160;»
+        <a href="install.html"><span class="section-number">2. </span>インストール</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pficommon">
-<h1>1. pficommonについて<a class="headerlink" href="#pficommon" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">1. </span>pficommonについて<a class="headerlink" href="#pficommon" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>1.1. これは何か？<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.1. </span>これは何か？<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>これはPreferred Infrastructure (以下PFI)で開発された
 C++の汎用ライブラリである。</p>
 <p>これには以下のものが含まれる。</p>
 <ul class="simple">
-<li>Boostおよびtr1に含まれる十分有用であると確認された準標準的ライブラリの内、特に利用の推進が望まれるもの。利用することによりC++のコードの質が飛躍的に改善されると思われるもの、の再実装。</li>
-<li>利用しやすいネットワークライブラリ</li>
-<li>利用しやすいスレッドライブラリ</li>
-<li>データ構造及びアルゴリズムの実装</li>
-<li>http、msgpack-rpcなどのネットワークプロトコルのサポート</li>
-<li>html、json、csvなど、テキストフォーマットのサポート</li>
+<li><p>Boostおよびtr1に含まれる十分有用であると確認された準標準的ライブラリの内、特に利用の推進が望まれるもの。利用することによりC++のコードの質が飛躍的に改善されると思われるもの、の再実装。</p></li>
+<li><p>利用しやすいネットワークライブラリ</p></li>
+<li><p>利用しやすいスレッドライブラリ</p></li>
+<li><p>データ構造及びアルゴリズムの実装</p></li>
+<li><p>http、msgpack-rpcなどのネットワークプロトコルのサポート</p></li>
+<li><p>html、json、csvなど、テキストフォーマットのサポート</p></li>
 </ul>
 <p>主として、C++でネットワークサーバを書く際に便利なものが揃っている。</p>
 </div>
 <div class="section" id="boost">
-<h2>1.2. なぜBoostの再実装が含まれるのか<a class="headerlink" href="#boost" title="Permalink to this headline">¶</a></h2>
-<p>このライブラリはBoostと共に使われることを想定していない。というのも、ソフトウェアのインストールとメンテナンスを容易にするために、ソフトウェアパッケージにBoostを同梱したくないという動機が先にあるからである。また、C++0xおよび新しめのコンパイラが利用できない環境も想定している。それ故に、tr1やBoostに含まれるいくつかのライブラリの再実装が含まれている。</p>
+<h2><span class="section-number">1.2. </span>なぜBoostの再実装が含まれるのか<a class="headerlink" href="#boost" title="Permalink to this headline">¶</a></h2>
+<p>このライブラリはBoostと共に使われることを想定していない。というのも、ソフトウェアのインストールとメンテナンスを容易にするために、ソフトウェアパッケージにBoostを同梱したくないという動機が先にあるからである。それ故に、Boostに含まれるいくつかのライブラリの再実装が含まれている。</p>
 </div>
 <div class="section" id="id2">
-<h2>1.3. ライセンス<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.3. </span>ライセンス<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>本ライブラリは <a class="reference external" href="http://www.opensource.org/licenses/bsd-license.php">New BSD License</a> に基づき頒布される。</p>
 </div>
 </div>
@@ -85,14 +73,14 @@ C++の汎用ライブラリである。</p>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="install.html">2. インストール</a>&#160;&#160;»
+        <a href="install.html"><span class="section-number">2. </span>インストール</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

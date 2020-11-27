@@ -1,75 +1,63 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.5.6. pfi::network::rpc &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.5.6. pfi::network::rpc &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.5.7. pfi::network::socket" href="socket.html" />
     <link rel="prev" title="3.5.5. pfi::network::ipv4" href="ipv4.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.5.6. pfi::network::rpc</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="ipv4.html">3.5.5. pfi::network::ipv4</a>
+        «&#160;&#160;<a href="ipv4.html"><span class="section-number">3.5.5. </span>pfi::network::ipv4</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="socket.html">3.5.7. pfi::network::socket</a>&#160;&#160;»
+        <a href="socket.html"><span class="section-number">3.5.7. </span>pfi::network::socket</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-network-rpc">
-<h1>3.5.6. pfi::network::rpc<a class="headerlink" href="#pfi-network-rpc" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.5.6. </span>pfi::network::rpc<a class="headerlink" href="#pfi-network-rpc" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.5.6.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.6.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>C++間で簡単にRPCをするためのライブラリ。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.5.6.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.6.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id3">
-<h3>3.5.6.2.1. シグニチャの定義<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.5.6.2.1. </span>シグニチャの定義<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>RPC_PROCというマクロで関数を定義して、
 RPC_GENというマクロでサーバとクライアントのクラスを生成する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span>RPC_PROC(&lt;関数名&gt;, &lt;シグニチャ&gt;)
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">RPC_PROC</span><span class="p">(</span><span class="o">&lt;</span><span class="n">func</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">signature</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>二つ整数をとって整数を返す、足し算のような関数を定義するなら、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">RPC_PROC</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">))</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">RPC_PROC</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>のようになる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span>RPC_GEN(&lt;バージョン&gt;, &lt;プリフィックス&gt;, &lt;関数&gt;, ...)
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">RPC_GEN</span><span class="p">(</span><span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">prefix</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">func</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">...)</span>
 </pre></div>
 </div>
 <p>バージョンには適当な整数を指定する
@@ -77,17 +65,17 @@ RPC_GENというマクロでサーバとクライアントのクラスを生成�
 プリフィックスには、サーバとクライアントのクラス名のプリフィックスを指定する。
 hoge と指定すると、hoge_server、hoge_clientがそれぞれサーバとクライアントのクラス名になる。
 3引数目以降には関数のリストを指定する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">RPC_GEN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">hoge</span><span class="p">,</span> <span class="n">add</span><span class="p">,</span> <span class="n">mul</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">RPC_GEN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">hoge</span><span class="p">,</span> <span class="n">add</span><span class="p">,</span> <span class="n">mul</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>などが記述の一例である。</p>
 </div>
 <div class="section" id="id4">
-<h3>3.5.6.2.2. サーバのコード<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.5.6.2.2. </span>サーバのコード<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>hoge_serverクラスのインスタンスを生成し、
 set_xxx()関数によって、実際に処理をさせる関数をセットし、
 serv()関数でサーバを開始する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span> <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span> <span class="p">}</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span> <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span> <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
   <span class="n">hoge_server</span> <span class="n">serv</span><span class="p">;</span>
@@ -98,43 +86,43 @@ serv()関数でサーバを開始する。</p>
 </div>
 </div>
 <div class="section" id="id5">
-<h3>3.5.6.2.3. クライアントのコード<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.5.6.2.3. </span>クライアントのコード<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>hoge_clientクラスのインスタンスを生成し、
 call_xxx()で呼び出せる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">hoge_client</span> <span class="nf">cli</span><span class="p">(</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">12345</span><span class="p">);</span> <span class="c1">// ホスト、ポート番号</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">hoge_client</span> <span class="nf">cli</span><span class="p">(</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">12345</span><span class="p">);</span> <span class="c1">// ホスト、ポート番号</span>
 <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">cli</span><span class="p">.</span><span class="n">call_add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 3が返ってくるはず</span>
 </pre></div>
 </div>
 <p>呼び出しに失敗したりすると、call_xxx()はpfi::network::rpc::rpc_errorもしくはそれを継承した例外を投げる。</p>
 <ul class="simple">
-<li>cannot_get_connection 接続できなかった</li>
-<li>method_not_found サーバに要求したメソッドがなかった</li>
-<li>version_mismatch クライアントの要求したバージョンがサーバのバージョンと異なった</li>
+<li><p>cannot_get_connection 接続できなかった</p></li>
+<li><p>method_not_found サーバに要求したメソッドがなかった</p></li>
+<li><p>version_mismatch クライアントの要求したバージョンがサーバのバージョンと異なった</p></li>
 </ul>
 </div>
 <div class="section" id="id6">
-<h3>3.5.6.2.4. ストリームの受け渡し<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.5.6.2.4. </span>ストリームの受け渡し<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>大きなファイルをメモリを使わずに転送したい場合などに、
 ストリーム経由での引数の受け渡しが使える。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">RPC_PROC</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="kt">void</span><span class="p">(</span><span class="n">pfi</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">serialization</span><span class="o">::</span><span class="n">stream</span><span class="p">))</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">RPC_PROC</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="kt">void</span><span class="p">(</span><span class="n">pfi</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">serialization</span><span class="o">::</span><span class="n">stream</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>と、引数をpfi::<a class="reference external" href="data::serialization">data::serialization</a>::streamにすると、
 クライアント側は、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">fstream</span> <span class="nf">fs</span><span class="p">(</span><span class="s">&quot;hoge.txt&quot;</span><span class="p">,</span> <span class="n">ios</span><span class="o">::</span><span class="n">in</span><span class="p">);</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">fstream</span> <span class="nf">fs</span><span class="p">(</span><span class="s">&quot;hoge.txt&quot;</span><span class="p">,</span> <span class="n">ios</span><span class="o">::</span><span class="n">in</span><span class="p">);</span>
 <span class="n">cli</span><span class="p">.</span><span class="n">call_foo</span><span class="p">(</span><span class="n">stream</span><span class="p">(</span><span class="n">f</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>のように、iostream(istreamやostreamではだめなので注意)をstreamでくるんで送ることができる。</p>
 <p>サーバ側は</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="n">stream</span> <span class="n">s</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="n">stream</span> <span class="n">s</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>の s に適当なiostreamが作られて呼び出される
 (具体的には/tmp/以下に受信したデータを含むファイルが作られ、それがopenされ、sにbindされて呼び出される)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="n">stream</span> <span class="n">s</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="n">stream</span> <span class="n">s</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">istream</span> <span class="o">&amp;</span><span class="n">is</span><span class="o">=</span><span class="n">s</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
   <span class="c1">// isをつかうコード</span>
@@ -145,7 +133,7 @@ call_xxx()で呼び出せる。</p>
 </div>
 </div>
 <div class="section" id="id7">
-<h2>3.5.6.3. 注意<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.6.3. </span>注意<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <p>RPCの引数、返り値はpficommonのシリアライズライブラリによって
 シリアライズ可能な型である必要がある。
 シリアライザに関しての詳細はそちらを参照のこと。
@@ -164,18 +152,18 @@ stlのiteratableなコンテナはすべてデフォルトでシリアライズ�
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="ipv4.html">3.5.5. pfi::network::ipv4</a>
+        «&#160;&#160;<a href="ipv4.html"><span class="section-number">3.5.5. </span>pfi::network::ipv4</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="socket.html">3.5.7. pfi::network::socket</a>&#160;&#160;»
+        <a href="socket.html"><span class="section-number">3.5.7. </span>pfi::network::socket</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

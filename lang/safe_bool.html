@@ -1,74 +1,62 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.3.6. pfi::lang::safe_bool &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.3.9. pfi::lang::safe_bool &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.3.7. pfi::lang::scoped_ptr" href="scoped_ptr.html" />
-    <link rel="prev" title="3.3.5. pfi::lang::noncopyable" href="noncopyable.html" /> 
-  </head>
-  <body role="document">
+    <link rel="next" title="3.3.10. pfi::lang::scoped_ptr" href="scoped_ptr.html" />
+    <link rel="prev" title="3.3.8. pfi::lang::ref" href="ref.html" /> 
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
-        <h2 class="heading"><span>3.3.6. pfi::lang::safe_bool</span></h2>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.9. pfi::lang::safe_bool</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="noncopyable.html">3.3.5. pfi::lang::noncopyable</a>
+        «&#160;&#160;<a href="ref.html"><span class="section-number">3.3.8. </span>pfi::lang::ref</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="scoped_ptr.html">3.3.7. pfi::lang::scoped_ptr</a>&#160;&#160;»
+        <a href="scoped_ptr.html"><span class="section-number">3.3.10. </span>pfi::lang::scoped_ptr</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-lang-safe-bool">
-<h1>3.3.6. pfi::lang::safe_bool<a class="headerlink" href="#pfi-lang-safe-bool" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.3.9. </span>pfi::lang::safe_bool<a class="headerlink" href="#pfi-lang-safe-bool" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.3.6.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.9.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>boolとして評価したいクラスを作りたいときに使う。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.3.6.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="k">public</span> <span class="n">safe_bool</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">{</span>
+<h2><span class="section-number">3.3.9.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="k">public</span> <span class="n">safe_bool</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
   <span class="kt">bool</span> <span class="n">bool_test</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="p">...;</span> <span class="p">}</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>safe_bool&lt;A&gt;から&#8221;public&#8221;継承させる。
+<p>safe_bool&lt;A&gt;から”public”継承させる。
 safe_boolのパラメータには自分を渡す
 (このような手法はCRTPなどと呼ばれる)。</p>
 <p>それから、publicメンバ関数として、bool bool_test() constな関数を実装する。
 これでAをboolとして評価できるようになる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span> <span class="c1">// ok!</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="o">&lt;</span><span class="n">b</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span> <span class="c1">// compile error!</span>
 <span class="n">hoge</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="c1">// compile error!</span>
@@ -76,13 +64,13 @@ safe_boolのパラメータには自分を渡す
 </div>
 </div>
 <div class="section" id="operator-bool">
-<h2>3.3.6.3. operator bool() では駄目な理由<a class="headerlink" href="#operator-bool" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.9.3. </span>operator bool() では駄目な理由<a class="headerlink" href="#operator-bool" title="Permalink to this headline">¶</a></h2>
 <p>キャスト演算子を定義すると、その型への暗黙の変換が生じる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span><span class="p">{</span> <span class="k">public</span><span class="o">:</span> <span class="k">operator</span> <span class="kt">bool</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="p">...</span> <span class="p">}</span> <span class="p">};</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span><span class="p">{</span> <span class="k">public</span><span class="o">:</span> <span class="k">operator</span> <span class="kt">bool</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="p">...</span> <span class="p">}</span> <span class="p">};</span>
 </pre></div>
 </div>
 <p>このようなクラスがあると、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="o">&lt;</span><span class="n">b</span><span class="p">){</span> <span class="c1">// compile OK!</span>
   <span class="p">...</span>
 </pre></div>
@@ -91,7 +79,7 @@ safe_boolのパラメータには自分を渡す
 boolへの変換を定義しても、
 この様なコードが通るのはプログラマの意図に反するものである可能性が高い。
 また、intを受け取る関数にも渡せるようになってしまう。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">hoge</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">hoge</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
   <span class="n">A</span> <span class="n">a</span><span class="p">;</span>
@@ -110,18 +98,18 @@ boolへの変換を定義しても、
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="noncopyable.html">3.3.5. pfi::lang::noncopyable</a>
+        «&#160;&#160;<a href="ref.html"><span class="section-number">3.3.8. </span>pfi::lang::ref</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="scoped_ptr.html">3.3.7. pfi::lang::scoped_ptr</a>&#160;&#160;»
+        <a href="scoped_ptr.html"><span class="section-number">3.3.10. </span>pfi::lang::scoped_ptr</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

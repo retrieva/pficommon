@@ -1,55 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.6.2. pfi::text::json &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.6.2. pfi::text::json &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="3.6.1. pfi::text::csv" href="csv.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.6.2. pfi::text::json</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="csv.html">3.6.1. pfi::text::csv</a>
+        «&#160;&#160;<a href="csv.html"><span class="section-number">3.6.1. </span>pfi::text::csv</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-text-json">
-<h1>3.6.2. pfi::text::json<a class="headerlink" href="#pfi-text-json" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.6.2. </span>pfi::text::json<a class="headerlink" href="#pfi-text-json" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.6.2.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.6.2.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>JSON(JavaScript Object Notation)を扱うためのライブラリである。
 JSONのオブジェクトの操作、文字列への変換、パーザ、pretty printer、
 C++ネイティブ型への相互自動変換などを備えている。</p>
@@ -57,10 +45,10 @@ C++ネイティブ型への相互自動変換などを備えている。</p>
 <p><a class="reference external" href="http://www.ietf.org/rfc/rfc4627.txt">http://www.ietf.org/rfc/rfc4627.txt</a></p>
 </div>
 <div class="section" id="id2">
-<h2>3.6.2.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.6.2.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="json">
-<h3>3.6.2.2.1. jsonデータ型の操作<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">json_object</span>
+<h3><span class="section-number">3.6.2.2.1. </span>jsonデータ型の操作<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">json_object</span>
 <span class="k">class</span> <span class="nc">json_array</span>
 <span class="k">class</span> <span class="nc">json_integer</span>
 <span class="k">class</span> <span class="nc">json_float</span>
@@ -70,7 +58,7 @@ C++ネイティブ型への相互自動変換などを備えている。</p>
 </div>
 <p>それぞれjsonのデータ型を表す
 (これらを直接扱うことはあまりない)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">json_type_t</span> <span class="p">{</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">json_type_t</span> <span class="p">{</span>
   <span class="n">Null</span><span class="p">,</span>
   <span class="n">Integer</span><span class="p">,</span>
   <span class="n">Float</span><span class="p">,</span>
@@ -82,92 +70,92 @@ C++ネイティブ型への相互自動変換などを備えている。</p>
 </pre></div>
 </div>
 <p>それぞれのjsonのデータの型を表すためのタグ。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span>class json_value [#j1c13c05]
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">json_value</span>
 </pre></div>
 </div>
 <p>上の型の基底クラス。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">json</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">json</span>
 </pre></div>
 </div>
 <p>jsonオブジェクトをハンドルするための型
 （実際には、これはスマートポインタのような働きをする）。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">json</span><span class="p">(</span><span class="n">json_value</span> <span class="o">*</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">json</span><span class="p">(</span><span class="n">json_value</span> <span class="o">*</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>ハンドルにオブジェクトをセットする。
 セットしたポインタはjsonクラスが管理するようになるので、
 外では使用したり、解放したりしてはいけない。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>保持しているjson_objectのメンバを参照する。
 保持しているものがjson_objectでなければ、bad_cast例外が投げられる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">ix</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="kt">size_t</span> <span class="n">ix</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>保持しているjson_arrayのメンバを参照する。
 保持しているものがjson_arrayでなければ、bad_cast例外が投げられる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="n">json</span> <span class="o">&amp;</span><span class="n">js</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="n">json</span> <span class="o">&amp;</span><span class="n">js</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>保持しているjson_objectに要素を追加する
 (例外は上と同様)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">json</span> <span class="o">&amp;</span><span class="n">js</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="k">const</span> <span class="n">json</span> <span class="o">&amp;</span><span class="n">js</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>保持しているjson_arrayに要素を追加する
 (例外は上と同様)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="n">json</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">json</span> <span class="o">&amp;</span><span class="n">js</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="n">json</span><span class="o">::</span><span class="n">merge</span><span class="p">(</span><span class="n">json</span> <span class="o">&amp;</span><span class="n">js</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>保持しているjson_objectに与えられたjson_objectをマージしたjson_objectを返す
 (例外は上と同様)。
 マージは非破壊であるが、シャローコピーであるため返されたjson_objectへの変更が元のjson_objectに影響を与えることがある。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>保持しているjson_arrayのサイズを取得する
 (例外は上と同様)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="n">json</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="n">json</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>保持しているjson_objectの要素の開始イテレータを取得する。
 要素の型はpair&lt;string, json&gt;である
 (例外は同様)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="n">json</span><span class="o">::</span><span class="n">end</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="n">json</span><span class="o">::</span><span class="n">end</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>保持しているjson_objectの要素の終端イテレータを取得する
 (例外は同様)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json_value</span> <span class="o">*</span><span class="n">json</span><span class="o">::</span><span class="n">get</span><span class="p">()</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json_value</span> <span class="o">*</span><span class="n">json</span><span class="o">::</span><span class="n">get</span><span class="p">()</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>保持しているjson_valueのポインタを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json_type_t</span> <span class="n">type</span><span class="p">()</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json_type_t</span> <span class="n">type</span><span class="p">()</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>保持しているjson_valueの型を示すタグを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">)</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">)</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>保持しているjson_valueをストリームに書き出す。
 文字数が最小になるように書き出す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">pretty</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">)</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span><span class="o">::</span><span class="n">pretty</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">)</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>保持しているjson_valueをストリームに書き出す。
 読みやすい形で出力される。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="n">json</span><span class="o">::</span><span class="n">clone</span><span class="p">()</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="n">json</span><span class="o">::</span><span class="n">clone</span><span class="p">()</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>保持しているjson_valueをディープコピーし、jsonハンドルを返す。</p>
 </div>
 <div class="section" id="id3">
-<h3>3.6.2.2.2. 例<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.2. </span>例<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>オブジェクトを組み立てる。</li>
+<li><p>オブジェクトを組み立てる。</p></li>
 </ul>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_object</span><span class="p">());</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_object</span><span class="p">());</span>
 <span class="n">js</span><span class="p">[</span><span class="s">&quot;abc&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">json</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">123</span><span class="p">));</span>
 <span class="n">js</span><span class="p">[</span><span class="s">&quot;bcd&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">json</span><span class="p">(</span><span class="k">new</span> <span class="n">json_float</span><span class="p">(</span><span class="mf">3.14</span><span class="p">));</span>
 <span class="n">js</span><span class="p">[</span><span class="s">&quot;cde&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">json</span><span class="p">(</span><span class="k">new</span> <span class="n">json_string</span><span class="p">(</span><span class="s">&quot;appuppupuepue&quot;</span><span class="p">));</span>
@@ -175,19 +163,19 @@ C++ネイティブ型への相互自動変換などを備えている。</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li>配列を組み立てる。</li>
+<li><p>配列を組み立てる。</p></li>
 </ul>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">json</span><span class="p">(</span><span class="k">new</span> <span class="n">json_string</span><span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">)));</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">json</span><span class="p">(</span><span class="k">new</span> <span class="n">json_bool</span><span class="p">(</span><span class="nb">false</span><span class="p">)));</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="id4">
-<h3>3.6.2.2.3. 文字列との相互変換<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.3. </span>文字列との相互変換<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>operator&lt;&lt;およびoperator&gt;&gt;がオーバーライドされているので、
 それで文字列への相互変換が行える。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
@@ -202,7 +190,7 @@ C++ネイティブ型への相互自動変換などを備えている。</p>
 <p>読み込みに失敗するとpfi::lang::parse_errorが投げられる。
 istreamは読まれた分だけ消費されるので注意すること。</p>
 <p>pretty printもできる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
@@ -211,7 +199,7 @@ istreamは読まれた分だけ消費されるので注意すること。</p>
 </pre></div>
 </div>
 <p>次のように表示される。</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">[</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
   <span class="mi">1</span><span class="p">,</span>
   <span class="mi">2</span><span class="p">,</span>
   <span class="mi">3</span>
@@ -220,22 +208,22 @@ istreamは読まれた分だけ消費されるので注意すること。</p>
 </div>
 </div>
 <div class="section" id="c">
-<h3>3.6.2.2.4. C++型との相互変換<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.4. </span>C++型との相互変換<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h3>
 <p>jsonオブジェクトとC++の型との間で自動的に相互変換ができる。</p>
 <ul class="simple">
-<li>json_integer &lt;=&gt; int</li>
-<li>json_float &lt;=&gt; double,float</li>
-<li>json_string &lt;=&gt; string</li>
-<li>json_bool &lt;=&gt; bool</li>
-<li>json_object &lt;=&gt; map&lt;string, T&gt;</li>
-<li>json_array &lt;=&gt; vector&lt;T&gt;</li>
+<li><p>json_integer &lt;=&gt; int</p></li>
+<li><p>json_float &lt;=&gt; double,float</p></li>
+<li><p>json_string &lt;=&gt; string</p></li>
+<li><p>json_bool &lt;=&gt; bool</p></li>
+<li><p>json_object &lt;=&gt; map&lt;string, T&gt;</p></li>
+<li><p>json_array &lt;=&gt; vector&lt;T&gt;</p></li>
 </ul>
 <p>ユーザ定義型との相互変換もできる(後述)。</p>
 </div>
 <div class="section" id="template-class-t-json-to-json-const-t-v">
-<h3>3.6.2.2.5. template &lt;class T&gt; json to_json(const T &amp;v)<a class="headerlink" href="#template-class-t-json-to-json-const-t-v" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.5. </span>template &lt;class T&gt; json to_json(const T &amp;v)<a class="headerlink" href="#template-class-t-json-to-json-const-t-v" title="Permalink to this headline">¶</a></h3>
 <p>jsonへ変換可能な型をjsonに変換する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
 <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
@@ -246,10 +234,10 @@ istreamは読まれた分だけ消費されるので注意すること。</p>
 </div>
 </div>
 <div class="section" id="template-class-t-void-from-json-const-json-js-t-v">
-<h3>3.6.2.2.6. template &lt;class T&gt; void from_json(const json &amp;js, T &amp;v)<a class="headerlink" href="#template-class-t-void-from-json-const-json-js-t-v" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.6. </span>template &lt;class T&gt; void from_json(const json &amp;js, T &amp;v)<a class="headerlink" href="#template-class-t-void-from-json-const-json-js-t-v" title="Permalink to this headline">¶</a></h3>
 <p>jsonからjsonに変換可能な型に変換する。
 jsが型Tに合わないオブジェクトを含む場合、bad_cast例外が投げられる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_array</span><span class="p">());</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
 <span class="n">js</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
@@ -260,12 +248,12 @@ jsが型Tに合わないオブジェクトを含む場合、bad_cast例外が投
 </div>
 </div>
 <div class="section" id="id5">
-<h3>3.6.2.2.7. ユーザ定義型との相互変換<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.7. </span>ユーザ定義型との相互変換<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>ユーザ定義型とjson_objectとを相互変換させることができる。
 相互変換できるようにするには、そのクラスをserializableにする必要がある。
 ただし、メンバのシリアライズに必ずMEMBERマクロを用いて、
 シリアライザにメンバの名前を教えてやる必要がある。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">foo</span><span class="p">{</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">foo</span><span class="p">{</span>
   <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
   <span class="n">string</span> <span class="n">b</span><span class="p">;</span>
   <span class="k">struct</span> <span class="n">bar</span><span class="p">{</span>
@@ -296,18 +284,18 @@ jsが型Tに合わないオブジェクトを含む場合、bad_cast例外が投
 </div>
 </div>
 <div class="section" id="template-class-t-t-json-cast-t-const-json-js">
-<h3>3.6.2.2.8. template &lt;class T&gt; T json_cast&lt;T&gt;(const json &amp;js)<a class="headerlink" href="#template-class-t-t-json-cast-t-const-json-js" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.8. </span>template &lt;class T&gt; T json_cast&lt;T&gt;(const json &amp;js)<a class="headerlink" href="#template-class-t-t-json-cast-t-const-json-js" title="Permalink to this headline">¶</a></h3>
 <p>jsをそれと変換可能な型Tに変換する。
 jsが型に合わない場合はbad_cast例外が投げられる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">123</span><span class="p">));</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">json</span> <span class="nf">js</span><span class="p">(</span><span class="k">new</span> <span class="n">json_integer</span><span class="p">(</span><span class="mi">123</span><span class="p">));</span>
 <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">json_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">js</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 123</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="via-json">
-<h3>3.6.2.2.9. via_json<a class="headerlink" href="#via-json" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.6.2.2.9. </span>via_json<a class="headerlink" href="#via-json" title="Permalink to this headline">¶</a></h3>
 <p>streamからjsonで記述された型Tのオブジェクトをダイレクトに取り出す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="n">f</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="n">f</span><span class="p">;</span>
 <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">via_json</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -320,7 +308,7 @@ jsが型に合わない場合はbad_cast例外が投げられる。</p>
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="csv.html">3.6.1. pfi::text::csv</a>
+        «&#160;&#160;<a href="csv.html"><span class="section-number">3.6.1. </span>pfi::text::csv</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         </p>
@@ -329,7 +317,7 @@ jsが型に合わない場合はbad_cast例外が投げられる。</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

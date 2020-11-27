@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.3.4. pfi::lang::enable_if &#8212; pficommon 4.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.3.5. pfi::lang::function" href="function.html" />
+    <link rel="prev" title="3.3.3. pfi::lang::cast" href="cast.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>pficommon 4.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.4. pfi::lang::enable_if</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="cast.html"><span class="section-number">3.3.3. </span>pfi::lang::cast</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="function.html"><span class="section-number">3.3.5. </span>pfi::lang::function</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <div class="section" id="pfi-lang-enable-if">
+<h1><span class="section-number">3.3.4. </span>pfi::lang::enable_if<a class="headerlink" href="#pfi-lang-enable-if" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">3.3.4.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="n">B_</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T</span> <span class="o">=</span> <span class="kt">void</span><span class="o">&gt;</span>
+<span class="k">using</span> <span class="n">enable_if</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span><span class="n">B_</span><span class="p">,</span> <span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="n">B_</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T</span> <span class="o">=</span> <span class="kt">void</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">disable_if</span> <span class="p">:</span> <span class="n">enable_if</span><span class="o">&lt;!</span><span class="n">B_</span><span class="p">,</span> <span class="n">T</span><span class="o">&gt;</span> <span class="p">{};</span>
+</pre></div>
+</div>
+<p>コンパイル時、 <code class="code docutils literal notranslate"><span class="pre">B_</span></code> がtrueであれば <code class="code docutils literal notranslate"><span class="pre">type</span></code> メンバを持つ <code class="code docutils literal notranslate"><span class="pre">enable_if</span></code> 、 falseであれば <code class="code docutils literal notranslate"><span class="pre">type</span></code> メンバを持つ <code class="code docutils literal notranslate"><span class="pre">disable_if</span></code> を提供する。</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">3.3.4.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">auto</span> <span class="n">f</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">typename</span> <span class="n">pfi</span><span class="o">::</span><span class="n">lang</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">&gt;::</span><span class="n">type</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>関数の引数や戻り値、テンプレート引数のデフォルト値などで <code class="code docutils literal notranslate"><span class="pre">enable_if</span></code> や <code class="code docutils literal notranslate"><span class="pre">diable_if</span></code> の <code class="code docutils literal notranslate"><span class="pre">type</span></code> メンバを使用すると、 SFINAEにより <code class="code docutils literal notranslate"><span class="pre">type</span></code> メンバが存在しない場合はその関数はオーバーロード解決の対象から除外される。</p>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">3.3.4.3. </span>サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">auto</span> <span class="n">f</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">typename</span> <span class="n">pfi</span><span class="o">::</span><span class="n">lang</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">&gt;::</span><span class="n">type</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Tは整数型&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">auto</span> <span class="n">f</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">typename</span> <span class="n">pfi</span><span class="o">::</span><span class="n">lang</span><span class="o">::</span><span class="n">disable_if</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">&gt;::</span><span class="n">type</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Tは整数型以外&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">f</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>  <span class="c1">// Tは整数型</span>
+<span class="n">f</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span>  <span class="c1">// Tは整数型以外</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="cast.html"><span class="section-number">3.3.3. </span>pfi::lang::cast</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="function.html"><span class="section-number">3.3.5. </span>pfi::lang::function</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011, Preferred Infrastructure Inc..
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

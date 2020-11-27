@@ -1,79 +1,62 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.3.8. pfi::lang::shared_ptr &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.3.11. pfi::lang::shared_ptr &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.4. pfi::math" href="../math.html" />
-    <link rel="prev" title="3.3.7. pfi::lang::scoped_ptr" href="scoped_ptr.html" /> 
-  </head>
-  <body role="document">
+    <link rel="prev" title="3.3.10. pfi::lang::scoped_ptr" href="scoped_ptr.html" /> 
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
-        <h2 class="heading"><span>3.3.8. pfi::lang::shared_ptr</span></h2>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.11. pfi::lang::shared_ptr</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="scoped_ptr.html">3.3.7. pfi::lang::scoped_ptr</a>
+        «&#160;&#160;<a href="scoped_ptr.html"><span class="section-number">3.3.10. </span>pfi::lang::scoped_ptr</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../math.html">3.4. pfi::math</a>&#160;&#160;»
+        <a href="../math.html"><span class="section-number">3.4. </span>pfi::math</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-lang-shared-ptr">
-<h1>3.3.8. pfi::lang::shared_ptr<a class="headerlink" href="#pfi-lang-shared-ptr" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.3.11. </span>pfi::lang::shared_ptr<a class="headerlink" href="#pfi-lang-shared-ptr" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.3.8.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.11.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>スマートポインタ。
-boostのshared_ptr + スレッドポリシー - deleter 相当の機能を持つ。</p>
+C++11のshared_ptr - deleter 相当の機能を持つ。</p>
 <p>（deleterは将来的に実装する予定）</p>
 </div>
 <div class="section" id="id2">
-<h2>3.3.8.2. 基本的な使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.11.2. </span>基本的な使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="shared-ptr-t-tm">
-<h3>3.3.8.2.1. shared_ptr&lt;T, TM&gt;<a class="headerlink" href="#shared-ptr-t-tm" title="Permalink to this headline">¶</a></h3>
-<p>T型へのポインタを表す。
-TMにはスレッディングモデルを指定する。
+<h3><span class="section-number">3.3.11.2.1. </span>shared_ptr&lt;T, TM&gt;<a class="headerlink" href="#shared-ptr-t-tm" title="Permalink to this headline">¶</a></h3>
+<p>T型へのポインタを表す。</p>
+<p>TMにはスレッディングモデルを指定するが、これは後方互換性維持のために残されているだけで、
 デフォルトではpfi::concurrent::threading_model::single_threadが指定される。
-pfi::concurrent::threading_mode::multi_threadを指定すると、
-マルチスレッドでも正常に動作するようになる。
-しかし、共有できるのは、参照先のオブジェクトのみで、
-スマートポインタ自体はスレッド間で共有できない。
-これはスピードとのトレードオフである。
-また、スレッディングモデルの異なるshared_ptr間の変換はできない。</p>
+そのためユーザーが明示的にテンプレート引数を渡す必要は無い。</p>
 <p>shared_ptrは普通のコピーセマンティクスを持つので、
 普通のポインタとして用いることのできるところならどこでも使える
 (vectorの要素にしたりなど)。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">(</span><span class="k">new</span> <span class="n">T</span><span class="p">());</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">(</span><span class="k">new</span> <span class="n">T</span><span class="p">());</span>
 </pre></div>
 </div>
 <p>shared_ptrのコンストラクタにポインタを渡すと、
@@ -82,43 +65,43 @@ auto_ptrなどと違い、一度shared_ptrに入れられると、
 そのポインタはshared_ptrによる管理から外すことはできない。
 これはshared_ptrが普通のコピーセマンティクスを持つことによる制限である。</p>
 <p>非参照</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">p</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">p</span>
 </pre></div>
 </div>
 <p>ポインタの取得</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>ポインタ風のメンバへのアクセス</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">hoge</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">hoge</span>
 </pre></div>
 </div>
 <p>NULLをアサインする。
 持っていたポインタは必要に応じて解放される。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">.</span><span class="n">reset</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">.</span><span class="n">reset</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>ポインタ風にboolテストができる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="id3">
-<h3>3.3.8.2.2. その他のメンバ関数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.3.11.2.2. </span>その他のメンバ関数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>大体boost互換である。</p>
 </div>
 <div class="section" id="id4">
-<h3>3.3.8.2.3. 注意<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.3.11.2.3. </span>注意<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>参照カウント方式なので、循環参照されていると解放できない。
 現在のところ、weak_ptrなどは提供していないため、
 回避するにはデストラクタで明示的に参照を外してやるなどの処理が必要である。</p>
 </div>
 <div class="section" id="id5">
-<h3>3.3.8.2.4. なぜこれが重要なのか<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.3.11.2.4. </span>なぜこれが重要なのか<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>リソースをその取得と同時にリソース管理オブジェクトに渡すリソース管理方法はRAIIと呼ばれる。
 RAIIが重要な理由は次のような理由がある。</p>
 <ul class="simple">
-<li>リークしないという保証を得るため</li>
+<li><p>リークしないという保証を得るため</p></li>
 </ul>
 <p>手でdeleteするプログラムは、当然ながらdeleteを忘れるとメモリリークする。
 shared_ptrを使っていれば、イージーミスによるメモリリークは起こり得ない。
@@ -129,7 +112,7 @@ shared_ptrを使っていれば、イージーミスによるメモリリーク�
 そういう場合、コードはgotoとif文が乱れ飛ぶ難解なものになりがちである。
 shared_ptrで管理すれば、何も考える必要はない。</p>
 <ul class="simple">
-<li>例外安全なコードをシンプルに書くため</li>
+<li><p>例外安全なコードをシンプルに書くため</p></li>
 </ul>
 <p>例外がどこで飛ぶか分からない状況では(例えば、任意の型を取るテンプレート関数など)、
 RAIIを用いずに例外安全なコードを書くのは大変困難である。
@@ -145,18 +128,18 @@ RAIIであれば、何も考えずともデストラクタが宜しくやって�
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="scoped_ptr.html">3.3.7. pfi::lang::scoped_ptr</a>
+        «&#160;&#160;<a href="scoped_ptr.html"><span class="section-number">3.3.10. </span>pfi::lang::scoped_ptr</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../math.html">3.4. pfi::math</a>&#160;&#160;»
+        <a href="../math.html"><span class="section-number">3.4. </span>pfi::math</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

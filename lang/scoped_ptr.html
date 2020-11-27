@@ -1,58 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.3.7. pfi::lang::scoped_ptr &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.3.10. pfi::lang::scoped_ptr &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.3.8. pfi::lang::shared_ptr" href="shared_ptr.html" />
-    <link rel="prev" title="3.3.6. pfi::lang::safe_bool" href="safe_bool.html" /> 
-  </head>
-  <body role="document">
+    <link rel="next" title="3.3.11. pfi::lang::shared_ptr" href="shared_ptr.html" />
+    <link rel="prev" title="3.3.9. pfi::lang::safe_bool" href="safe_bool.html" /> 
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
-        <h2 class="heading"><span>3.3.7. pfi::lang::scoped_ptr</span></h2>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.10. pfi::lang::scoped_ptr</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="safe_bool.html">3.3.6. pfi::lang::safe_bool</a>
+        «&#160;&#160;<a href="safe_bool.html"><span class="section-number">3.3.9. </span>pfi::lang::safe_bool</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="shared_ptr.html">3.3.8. pfi::lang::shared_ptr</a>&#160;&#160;»
+        <a href="shared_ptr.html"><span class="section-number">3.3.11. </span>pfi::lang::shared_ptr</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-lang-scoped-ptr">
-<h1>3.3.7. pfi::lang::scoped_ptr<a class="headerlink" href="#pfi-lang-scoped-ptr" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.3.10. </span>pfi::lang::scoped_ptr<a class="headerlink" href="#pfi-lang-scoped-ptr" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.3.7.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.10.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>コピーできないauto_ptrのようなもの。</p>
 <p>shared_ptrのコピーセマンティクスが必要ない場面ではscoped_ptrを使うべきである。
 scoped_ptrは空間のオーバーヘッドは0で利用でき、
@@ -61,9 +49,9 @@ shared_ptrは、ポインタ一つにつきポインタ一つ分のオーバー�
 さらに、非参照オブジェクト1つにつきポインタ一つ分のオーバーヘッドがかかる。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.3.7.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.10.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>変数として使ったり、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">(){</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">(){</span>
   <span class="n">scoped_ptr</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">));</span>
   <span class="p">...</span>
   <span class="c1">// 解放される</span>
@@ -71,7 +59,7 @@ shared_ptrは、ポインタ一つにつきポインタ一つ分のオーバー�
 </pre></div>
 </div>
 <p>クラスのメンバとして使ったり</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hoge</span><span class="p">{</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hoge</span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
    <span class="n">Hoge</span><span class="p">()</span><span class="o">:</span> <span class="n">p</span><span class="p">(</span><span class="k">new</span> <span class="n">string</span><span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">))</span> <span class="p">{}</span>
 <span class="k">private</span><span class="o">:</span>
@@ -80,19 +68,19 @@ shared_ptrは、ポインタ一つにつきポインタ一つ分のオーバー�
 </pre></div>
 </div>
 <p>参照を取得</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">p</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">p</span>
 </pre></div>
 </div>
 <p>ポインタを取得</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>ポインタ風にメンバにアクセス</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">hoge</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">hoge</span>
 </pre></div>
 </div>
 <p>boolへの暗黙の変換は持たない。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">p</span><span class="p">)</span> <span class="c1">// compile error!</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">p</span><span class="p">)</span> <span class="c1">// compile error!</span>
 </pre></div>
 </div>
 <p>というのも、scoped_ptrにNULLを入れることは許されていないので、
@@ -105,18 +93,18 @@ shared_ptrは、ポインタ一つにつきポインタ一つ分のオーバー�
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="safe_bool.html">3.3.6. pfi::lang::safe_bool</a>
+        «&#160;&#160;<a href="safe_bool.html"><span class="section-number">3.3.9. </span>pfi::lang::safe_bool</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="shared_ptr.html">3.3.8. pfi::lang::shared_ptr</a>&#160;&#160;»
+        <a href="shared_ptr.html"><span class="section-number">3.3.11. </span>pfi::lang::shared_ptr</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

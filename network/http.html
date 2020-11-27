@@ -1,90 +1,78 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.5.3. pfi::network::http &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.5.3. pfi::network::http &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.5.4. pfi::network::iostream" href="iostream.html" />
     <link rel="prev" title="3.5.2. pfi::network::dns" href="dns.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.5.3. pfi::network::http</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="dns.html">3.5.2. pfi::network::dns</a>
+        «&#160;&#160;<a href="dns.html"><span class="section-number">3.5.2. </span>pfi::network::dns</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="iostream.html">3.5.4. pfi::network::iostream</a>&#160;&#160;»
+        <a href="iostream.html"><span class="section-number">3.5.4. </span>pfi::network::iostream</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-network-http">
-<h1>3.5.3. pfi::network::http<a class="headerlink" href="#pfi-network-http" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.5.3. </span>pfi::network::http<a class="headerlink" href="#pfi-network-http" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.5.3.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.3.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>HTTPを扱うライブラリ。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.5.3.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.3.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>リクエスト、レスポンスを直接扱う、ローレベルなライブラリと、
 ストリーム形式のハイレベルなライブラリが用意されている。</p>
 </div>
 <div class="section" id="id3">
-<h2>3.5.3.3. ローレベルライブラリ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.3.3. </span>ローレベルライブラリ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="request">
-<h3>3.5.3.3.1. requestクラス<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">::</span><span class="n">request</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">method</span><span class="p">,</span> <span class="k">const</span> <span class="n">uri</span> <span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="kt">int</span> <span class="n">major_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minor_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<h3><span class="section-number">3.5.3.3.1. </span>requestクラス<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">::</span><span class="n">request</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">method</span><span class="p">,</span> <span class="k">const</span> <span class="n">uri</span> <span class="o">&amp;</span><span class="n">u</span><span class="p">,</span> <span class="kt">int</span> <span class="n">major_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minor_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>requestを作る。
 メソッド、URI、HTTPのバージョンが指定できる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">::</span><span class="n">request</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socekt</span><span class="o">&gt;</span> <span class="n">sock</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">::</span><span class="n">request</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socekt</span><span class="o">&gt;</span> <span class="n">sock</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>ソケットからリクエストを読む。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">request</span><span class="o">::</span><span class="n">method</span><span class="p">()</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">request</span><span class="o">::</span><span class="n">method</span><span class="p">()</span> <span class="k">const</span>
 <span class="k">const</span> <span class="n">uri</span> <span class="o">&amp;</span><span class="n">request</span><span class="o">::</span><span class="n">path</span><span class="p">()</span> <span class="k">const</span>
 <span class="k">const</span> <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">request</span><span class="o">::</span><span class="n">version</span><span class="p">()</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>アクセッサ</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">header</span> <span class="o">&amp;</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">header</span> <span class="o">&amp;</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>ヘッダ用アクセッサ。
 設定したり取得したり。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">iostream</span> <span class="o">&amp;</span><span class="n">body</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">iostream</span> <span class="o">&amp;</span><span class="n">body</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>bodyを表すiostreamを返す。
@@ -98,80 +86,80 @@ bodyに何も書き込まずにsend()した場合、bodyの実態がソケット
 一度send()したら破棄しなければならない。
 socketから読み込んだrequestの場合はソケットになるので、
 メモリは消費しない。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socket</span><span class="o">&gt;</span> <span class="n">sock</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socket</span><span class="o">&gt;</span> <span class="n">sock</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>sockにHTTPリクエストを送信する。</p>
 </div>
 <div class="section" id="response">
-<h3>3.5.3.3.2. responseクラス<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">response</span><span class="o">::</span><span class="n">response</span><span class="p">(</span><span class="kt">int</span> <span class="n">code</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">reason</span><span class="p">,</span> <span class="kt">int</span> <span class="n">major_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minor_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<h3><span class="section-number">3.5.3.3.2. </span>responseクラス<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">response</span><span class="o">::</span><span class="n">response</span><span class="p">(</span><span class="kt">int</span> <span class="n">code</span><span class="p">,</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">reason</span><span class="p">,</span> <span class="kt">int</span> <span class="n">major_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">minor_ver</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>レスポンスクラスを作る。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">response</span><span class="o">::</span><span class="n">response</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socket</span><span class="o">&gt;</span> <span class="n">sock</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">response</span><span class="o">::</span><span class="n">response</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socket</span><span class="o">&gt;</span> <span class="n">sock</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>ソケットからレスポンスを読み込む。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">response</span><span class="o">::</span><span class="n">version</span><span class="p">()</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">response</span><span class="o">::</span><span class="n">version</span><span class="p">()</span> <span class="k">const</span>
 <span class="kt">int</span> <span class="n">response</span><span class="o">::</span><span class="n">code</span><span class="p">()</span> <span class="n">cosnt</span>
 <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">response</span><span class="o">::</span><span class="n">reason</span><span class="p">()</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>アクセッサ</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">header</span> <span class="o">&amp;</span><span class="n">response</span><span class="o">::</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">header</span> <span class="o">&amp;</span><span class="n">response</span><span class="o">::</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>ヘッダ</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">iostream</span> <span class="o">&amp;</span><span class="n">response</span><span class="o">::</span><span class="n">body</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">iostream</span> <span class="o">&amp;</span><span class="n">response</span><span class="o">::</span><span class="n">body</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>bodyを表すiostream。
 実体は、大体requestのそれと同じ。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">response</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socket</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">response</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">stream_socket</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>ソケットにresponseの内容を送信。</p>
 </div>
 <div class="section" id="header">
-<h3>3.5.3.3.3. headerクラス<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.5.3.3.3. </span>headerクラス<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
 <p>HTTPのヘッダを表すクラス。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="o">&amp;</span><span class="n">header</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="o">&amp;</span><span class="n">header</span><span class="o">::</span><span class="k">operator</span><span class="p">[](</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>ヘッダの要素にアクセス。
 keyの大文字と小文字は区別しないが、
 挿入した際の大文字・小文字は保存される。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="p">[</span><span class="s">&quot;Content-Type&quot;</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;hoge&quot;</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">hd</span><span class="p">[</span><span class="s">&quot;Content-Type&quot;</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;hoge&quot;</span><span class="p">;</span>
 <span class="n">hd</span><span class="p">[</span><span class="s">&quot;content-type&quot;</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;moge&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>と書くと、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">Content</span><span class="o">-</span><span class="nl">Type</span><span class="p">:</span> <span class="n">moge</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Content</span><span class="o">-</span><span class="nl">Type</span><span class="p">:</span> <span class="n">moge</span>
 </pre></div>
 </div>
 <p>というヘッダが送信される。
 取得する時も同様に、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">resp</span><span class="p">.</span><span class="n">head</span><span class="p">()[</span><span class="s">&quot;Content-Type&quot;</span><span class="p">]</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">resp</span><span class="p">.</span><span class="n">head</span><span class="p">()[</span><span class="s">&quot;Content-Type&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>とアクセスすると、実際に受信したContent-Typeの大文字小文字によらず
 要素が取得できる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="n">header</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="n">header</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span>
 <span class="n">iterator</span> <span class="n">header</span><span class="o">::</span><span class="n">end</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>要素のイテレートもできる。
 iteratorはpair&lt;string,string&gt;を要素としてもつものとしてアクセスできる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">header</span><span class="o">::</span><span class="n">has_key</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">)</span> <span class="k">const</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">header</span><span class="o">::</span><span class="n">has_key</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">)</span> <span class="k">const</span>
 </pre></div>
 </div>
 <p>ヘッダがkeyを持っているかどうか、内容を変更せずにチェックできる。
 keyの大文字小文字は無視する。</p>
 </div>
 <div class="section" id="id4">
-<h3>3.5.3.3.4. サンプルコード<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<h3><span class="section-number">3.5.3.3.4. </span>サンプルコード<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;pficommon/lang/shared_ptr.h&gt;</span><span class="cp"></span>
@@ -200,13 +188,13 @@ keyの大文字小文字は無視する。</p>
 </div>
 </div>
 <div class="section" id="id5">
-<h2>3.5.3.4. ハイレベルライブラリ<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.3.4. </span>ハイレベルライブラリ<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>httpstreamというistream互換のクラスが用意されている。
 これを用いるとGETリクエストを簡単に送ることができる。</p>
 <p>なおこのクラスは、失敗したときに pfi::network::http::http_exception を投げる。</p>
 <div class="section" id="id6">
-<h3>3.5.3.4.1. サンプルコード<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">httpstream</span> <span class="nf">hs</span><span class="p">(</span><span class="s">&quot;http://kzk9.net/blog/&quot;</span><span class="p">);</span>
+<h3><span class="section-number">3.5.3.4.1. </span>サンプルコード<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">httpstream</span> <span class="nf">hs</span><span class="p">(</span><span class="s">&quot;http://kzk9.net/blog/&quot;</span><span class="p">);</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">line</span><span class="p">;</span> <span class="n">getline</span><span class="p">(</span><span class="n">hs</span><span class="p">,</span> <span class="n">line</span><span class="p">);</span> <span class="p">)</span>
   <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">line</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
@@ -220,18 +208,18 @@ keyの大文字小文字は無視する。</p>
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="dns.html">3.5.2. pfi::network::dns</a>
+        «&#160;&#160;<a href="dns.html"><span class="section-number">3.5.2. </span>pfi::network::dns</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="iostream.html">3.5.4. pfi::network::iostream</a>&#160;&#160;»
+        <a href="iostream.html"><span class="section-number">3.5.4. </span>pfi::network::iostream</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

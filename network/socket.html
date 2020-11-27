@@ -1,63 +1,51 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.5.7. pfi::network::socket &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.5.7. pfi::network::socket &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.6. pfi::text" href="../text.html" />
     <link rel="prev" title="3.5.6. pfi::network::rpc" href="rpc.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>3.5.7. pfi::network::socket</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="rpc.html">3.5.6. pfi::network::rpc</a>
+        «&#160;&#160;<a href="rpc.html"><span class="section-number">3.5.6. </span>pfi::network::rpc</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../text.html">3.6. pfi::text</a>&#160;&#160;»
+        <a href="../text.html"><span class="section-number">3.6. </span>pfi::text</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-network-socket">
-<h1>3.5.7. pfi::network::socket<a class="headerlink" href="#pfi-network-socket" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.5.7. </span>pfi::network::socket<a class="headerlink" href="#pfi-network-socket" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.5.7.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5.7.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>ストリームソケット(TCP/IPソケット)を扱うためのライブラリ。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.5.7.2. 大体の使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">stream_socekt</span> <span class="n">sock</span><span class="p">;</span>
+<h2><span class="section-number">3.5.7.2. </span>大体の使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">stream_socekt</span> <span class="n">sock</span><span class="p">;</span>
 <span class="n">sock</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;d.hatena.ne.jp&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">);</span>
 <span class="n">sock</span><span class="p">.</span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;GET /tanakh/ HTTP/1.0</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="n">sock</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
@@ -67,84 +55,84 @@
 </div>
 </div>
 <div class="section" id="id3">
-<h2>3.5.7.3. 細かい使い方<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">stream_socket</span>
+<h2><span class="section-number">3.5.7.3. </span>細かい使い方<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">stream_socket</span>
 </pre></div>
 </div>
 <p>TCP/IPのソケット。
 入出力のバッファリング機能を有する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">host</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">port_num</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">host</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">port_num</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>指定したホスト、ポートに接続する。
 hostの解決はset_dns_resolver()で設定されたものを使う。
 デフォルトではnormal_dns_resolverクラスが用いられる。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">shutdown</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">shutdown</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>接続を切る。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">is_connected</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">is_connected</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>接続されているかどうかを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">ipv4_address</span> <span class="o">&amp;</span><span class="n">stream_socket</span><span class="o">::</span><span class="n">remote_addr</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="n">ipv4_address</span> <span class="o">&amp;</span><span class="n">stream_socket</span><span class="o">::</span><span class="n">remote_addr</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>接続先のIPアドレスを取得する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">uint16_t</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">remote_port</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">uint16_t</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">remote_port</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>接続先のポート番号を取得する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dat</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dat</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>sizeバイト読み込む。
 返り値は実際に読み込んだバイト数。
 sizeより小さい数が返るのは、途中でEOFになったときのみである。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">dat</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">dat</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>sizeバイト書き込む。
 返り値は実際に書き込んだバイト数。
 sizeより小さい値が返るのは、途中で接続が切れたときのみである。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">flush</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">flush</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>書き込みバッファをフラッシュする。
 返り値はその時ソケットに書き込んだバイト数。
 失敗したら負の値が返る。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">getc</span><span class="p">()</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">getc</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>一文字読み込む。
 EOFに達していれば、EOFを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">,</span> <span class="kt">int</span> <span class="n">limit</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">,</span> <span class="kt">int</span> <span class="n">limit</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>一行読み込む。
 最大でlimit文字読み込む。
 limit&lt;0の時は無制限。
 失敗したらfalseを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">puts</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">puts</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>文字列を書き込む。
 後ろに改行は付けない。
 フラッシュもしない。
 失敗したらfalseを返す。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_timeout</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_timeout</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>読み書きのタイムアウトを設定する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_recv_timeout</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_recv_timeout</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>読み込みのタイムアウトを設定する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_send_timeout</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_send_timeout</span><span class="p">(</span><span class="kt">double</span> <span class="n">sec</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>書き込みのタイムアウトを設定する。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_nodelay</span><span class="p">(</span><span class="kt">bool</span> <span class="n">on</span><span class="p">)</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">stream_socket</span><span class="o">::</span><span class="n">set_nodelay</span><span class="p">(</span><span class="kt">bool</span> <span class="n">on</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>neagleアルゴリズムを無効にする(on=trueで無効)。</p>
@@ -156,18 +144,18 @@ limit&lt;0の時は無制限。
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="rpc.html">3.5.6. pfi::network::rpc</a>
+        «&#160;&#160;<a href="rpc.html"><span class="section-number">3.5.6. </span>pfi::network::rpc</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../text.html">3.6. pfi::text</a>&#160;&#160;»
+        <a href="../text.html"><span class="section-number">3.6. </span>pfi::text</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

@@ -47,7 +47,7 @@ jsonデータ型の操作
 
 .. code-block:: c++
 
-  class json_value [#j1c13c05]
+  class json_value
 
 上の型の基底クラス。
 

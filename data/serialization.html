@@ -1,70 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.2.4. pfi::data::serialization &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.2.5. pfi::data::serialization &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.3. pfi::lang" href="../lang.html" />
-    <link rel="prev" title="3.2.3. pfi::data::unordered_map" href="unordered_map.html" /> 
-  </head>
-  <body role="document">
+    <link rel="prev" title="3.2.4. pfi::data::unordered_set" href="unordered_set.html" /> 
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
-        <h2 class="heading"><span>3.2.4. pfi::data::serialization</span></h2>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.2.5. pfi::data::serialization</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="unordered_map.html">3.2.3. pfi::data::unordered_map</a>
+        «&#160;&#160;<a href="unordered_set.html"><span class="section-number">3.2.4. </span>pfi::data::unordered_set</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../lang.html">3.3. pfi::lang</a>&#160;&#160;»
+        <a href="../lang.html"><span class="section-number">3.3. </span>pfi::lang</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-data-serialization">
-<h1>3.2.4. pfi::data::serialization<a class="headerlink" href="#pfi-data-serialization" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.2.5. </span>pfi::data::serialization<a class="headerlink" href="#pfi-data-serialization" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.2.4.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.5.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>C++のデータ型をバイト列にシリアライズしたりデシリアライズするためのライブラリ。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.2.4.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2.5.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>基本的にBoostのSerializationの模倣である。</p>
 <p>データに対して、シリアライズ関数を定義して、
 ストリームを用意して、
 アーカイバにくっつけて、
 アーカイバにデータを送ることができる。</p>
 <div class="section" id="id3">
-<h3>3.2.4.2.1. シリアライズ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">binary_oarchive</span> <span class="nf">oa</span><span class="p">(</span><span class="n">cout</span><span class="p">);</span> <span class="c1">// ostreamを指定してbinary_oarchiveを作る</span>
+<h3><span class="section-number">3.2.5.2.1. </span>シリアライズ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">binary_oarchive</span> <span class="nf">oa</span><span class="p">(</span><span class="n">cout</span><span class="p">);</span> <span class="c1">// ostreamを指定してbinary_oarchiveを作る</span>
 <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
 <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
 <span class="n">oa</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">;</span> <span class="c1">// ostream的な</span>
@@ -72,8 +60,8 @@
 </div>
 </div>
 <div class="section" id="id4">
-<h3>3.2.4.2.2. デシリアライズ<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">binary_iarchive</span> <span class="nf">ia</span><span class="p">(</span><span class="n">cin</span><span class="p">);</span> <span class="c1">// istreamを指定してbinary_iarchiveを作る</span>
+<h3><span class="section-number">3.2.5.2.2. </span>デシリアライズ<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">binary_iarchive</span> <span class="nf">ia</span><span class="p">(</span><span class="n">cin</span><span class="p">);</span> <span class="c1">// istreamを指定してbinary_iarchiveを作る</span>
 <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
 <span class="n">string</span> <span class="n">s</span><span class="p">;</span>
 <span class="n">ia</span> <span class="o">&gt;&gt;</span> <span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="n">s</span><span class="p">;</span> <span class="c1">// istream的な</span>
@@ -83,13 +71,13 @@
 やりとりすることができる。</p>
 </div>
 <div class="section" id="id5">
-<h3>3.2.4.2.3. シリアライズできるデータ<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.2.5.2.3. </span>シリアライズできるデータ<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>STLのiteratableなコンテナはすべてデフォルトでサポートしている。
 ユーザ定義型のシリアライズは次項。</p>
 </div>
 <div class="section" id="id6">
-<h3>3.2.4.2.4. ユーザ定義型のシリアライズ(侵入型)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">hoge</span><span class="p">{</span>
+<h3><span class="section-number">3.2.5.2.4. </span>ユーザ定義型のシリアライズ(侵入型)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">hoge</span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
   <span class="n">hoge</span><span class="p">(){}</span>
 <span class="k">private</span><span class="o">:</span>
@@ -107,14 +95,14 @@
 アーカイバに投入できるようになる。</p>
 <p>serializeメソッドはprivateにすること。
 その際、シリアライザがserializeメソッドにアクセスできるようにするために、</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">friend</span> <span class="k">class</span> <span class="nc">pfi</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">serialization</span><span class="o">::</span><span class="n">access</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">friend</span> <span class="k">class</span> <span class="nc">pfi</span><span class="o">::</span><span class="n">data</span><span class="o">::</span><span class="n">serialization</span><span class="o">::</span><span class="n">access</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>にてfriend classを定義する。</p>
 </div>
 <div class="section" id="id7">
-<h3>3.2.4.2.5. ユーザ定義型のシリアライズ(非侵入型)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">hoge</span><span class="p">{</span>
+<h3><span class="section-number">3.2.5.2.5. </span>ユーザ定義型のシリアライズ(非侵入型)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">hoge</span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
   <span class="n">hoge</span><span class="p">(){}</span>
 
@@ -139,8 +127,8 @@
 詳しくは、pficommonのSTLのコンテナのシリアライズのコードを参照のこと。</p>
 </div>
 <div class="section" id="id8">
-<h3>3.2.4.2.6. シリアライズとデシリアライズでコードを分けたい<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ar</span><span class="o">&gt;</span>
+<h3><span class="section-number">3.2.5.2.6. </span>シリアライズとデシリアライズでコードを分けたい<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Ar</span><span class="o">&gt;</span>
 <span class="kt">void</span> <span class="n">serialize</span><span class="p">(</span><span class="n">Ar</span> <span class="o">&amp;</span><span class="n">ar</span><span class="p">,</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">){</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">ar</span><span class="p">.</span><span class="n">is_read</span><span class="p">){</span>
     <span class="c1">// デシリアライズ</span>
@@ -162,18 +150,18 @@ Boostとは違うので注意。</p>
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="unordered_map.html">3.2.3. pfi::data::unordered_map</a>
+        «&#160;&#160;<a href="unordered_set.html"><span class="section-number">3.2.4. </span>pfi::data::unordered_set</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="../lang.html">3.3. pfi::lang</a>&#160;&#160;»
+        <a href="../lang.html"><span class="section-number">3.3. </span>pfi::lang</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

@@ -1,70 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.3.5. pfi::lang::noncopyable &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.3.7. pfi::lang::noncopyable &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.3.6. pfi::lang::safe_bool" href="safe_bool.html" />
-    <link rel="prev" title="3.3.4. pfi::lang::mem_fn" href="mem_fn.html" /> 
-  </head>
-  <body role="document">
+    <link rel="next" title="3.3.8. pfi::lang::ref" href="ref.html" />
+    <link rel="prev" title="3.3.6. pfi::lang::mem_fn" href="mem_fn.html" /> 
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
-        <h2 class="heading"><span>3.3.5. pfi::lang::noncopyable</span></h2>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.7. pfi::lang::noncopyable</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="mem_fn.html">3.3.4. pfi::lang::mem_fn</a>
+        «&#160;&#160;<a href="mem_fn.html"><span class="section-number">3.3.6. </span>pfi::lang::mem_fn</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="safe_bool.html">3.3.6. pfi::lang::safe_bool</a>&#160;&#160;»
+        <a href="ref.html"><span class="section-number">3.3.8. </span>pfi::lang::ref</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-lang-noncopyable">
-<h1>3.3.5. pfi::lang::noncopyable<a class="headerlink" href="#pfi-lang-noncopyable" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.3.7. </span>pfi::lang::noncopyable<a class="headerlink" href="#pfi-lang-noncopyable" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.3.5.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.7.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>コピー不可なクラスを作るシンプルな方法を提供する。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.3.5.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">noncopyable</span>
+<h2><span class="section-number">3.3.7.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">noncopyable</span>
 </pre></div>
 </div>
 <p>このクラスを、private継承してクラスを作る。</p>
 </div>
 <div class="section" id="id3">
-<h2>3.3.5.3. サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="n">noncopyable</span><span class="p">{</span> <span class="c1">// private継承させる</span>
+<h2><span class="section-number">3.3.7.3. </span>サンプルコード<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="n">noncopyable</span><span class="p">{</span> <span class="c1">// private継承させる</span>
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
@@ -82,18 +70,18 @@
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="mem_fn.html">3.3.4. pfi::lang::mem_fn</a>
+        «&#160;&#160;<a href="mem_fn.html"><span class="section-number">3.3.6. </span>pfi::lang::mem_fn</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="safe_bool.html">3.3.6. pfi::lang::safe_bool</a>&#160;&#160;»
+        <a href="ref.html"><span class="section-number">3.3.8. </span>pfi::lang::ref</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>

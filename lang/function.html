@@ -1,69 +1,61 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>3.3.3. pfi::lang::function &#8212; pficommon 2.0.0 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.3.5. pfi::lang::function &#8212; pficommon 4.0.0 documentation</title>
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '2.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.3.4. pfi::lang::mem_fn" href="mem_fn.html" />
-    <link rel="prev" title="3.3.2. pfi::lang::cast" href="cast.html" /> 
-  </head>
-  <body role="document">
+    <link rel="next" title="3.3.6. pfi::lang::mem_fn" href="mem_fn.html" />
+    <link rel="prev" title="3.3.4. pfi::lang::enable_if" href="enable_if.html" /> 
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>pficommon 2.0.0 documentation</span></a></h1>
-        <h2 class="heading"><span>3.3.3. pfi::lang::function</span></h2>
+          <span>pficommon 4.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>3.3.5. pfi::lang::function</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="cast.html">3.3.2. pfi::lang::cast</a>
+        «&#160;&#160;<a href="enable_if.html"><span class="section-number">3.3.4. </span>pfi::lang::enable_if</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="mem_fn.html">3.3.4. pfi::lang::mem_fn</a>&#160;&#160;»
+        <a href="mem_fn.html"><span class="section-number">3.3.6. </span>pfi::lang::mem_fn</a>&#160;&#160;»
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="pfi-lang-function">
-<h1>3.3.3. pfi::lang::function<a class="headerlink" href="#pfi-lang-function" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">3.3.5. </span>pfi::lang::function<a class="headerlink" href="#pfi-lang-function" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>3.3.3.1. 概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3.5.1. </span>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>いろいろな関数のような振る舞いをするものを一まとめに扱うためのクラス。</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 4.0: </span>この機能はC++11からSTLで提供されるようになったため、
+後方互換性の維持のために残しているものの、 <code class="code docutils literal notranslate"><span class="pre">std::function</span></code> の利用を推奨する。</p>
+</div>
 </div>
 <div class="section" id="id2">
-<h2>3.3.3.2. 使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">){</span> <span class="k">return</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">;</span> <span class="p">}</span>
+<h2><span class="section-number">3.3.5.2. </span>使い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">){</span> <span class="k">return</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">;</span> <span class="p">}</span>
 <span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">=&amp;</span><span class="n">add</span><span class="p">;</span>
 <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 3</span>
 </pre></div>
 </div>
 <p>普通の関数も。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">add</span><span class="p">{</span> <span class="k">public</span><span class="o">:</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">add</span><span class="p">{</span> <span class="k">public</span><span class="o">:</span>
   <span class="kt">int</span> <span class="k">operator</span><span class="p">()(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="k">const</span><span class="p">{</span> <span class="k">return</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">};</span>
 <span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">=</span><span class="n">add</span><span class="p">();</span>
@@ -71,7 +63,7 @@
 </pre></div>
 </div>
 <p>関数オブジェクトも。</p>
-<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">=</span><span class="n">bind1st</span><span class="p">(</span><span class="o">&amp;</span><span class="n">add</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">function</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">=</span><span class="n">bind1st</span><span class="p">(</span><span class="o">&amp;</span><span class="n">add</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 3</span>
 </pre></div>
 </div>
@@ -84,18 +76,18 @@
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="cast.html">3.3.2. pfi::lang::cast</a>
+        «&#160;&#160;<a href="enable_if.html"><span class="section-number">3.3.4. </span>pfi::lang::enable_if</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="mem_fn.html">3.3.4. pfi::lang::mem_fn</a>&#160;&#160;»
+        <a href="mem_fn.html"><span class="section-number">3.3.6. </span>pfi::lang::mem_fn</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2011, Preferred Infrastructure Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>
