@@ -12,6 +12,11 @@ const_mem_fun、const_mem_fun_ref、const_mem_fun1、const_mem_fun1_ref
 があるが、煩雑極まりないのと、2引数以上のメンバ関数を扱えるようにするために、
 これをまとめて、さらに一般化したものがmem_fnである。
 
+.. deprecated:: 4.0
+
+  この機能はC++11からSTLで提供されるようになったため、
+  後方互換性の維持のために残しているものの、 :code:`std::mem_fn` の利用を推奨する。
+
 使い方
 ======
 

@@ -48,7 +48,7 @@ namespace mprpc {
 
 typedef pfi::lang::function<pfi::lang::shared_ptr<rpc_stream>()> stream_getter;
 
-static void gen_exception(const rpc_response& res)
+static inline void gen_exception(const rpc_response& res)
 {
   switch(res.error_code()) {
   case METHOD_NOT_FOUND:

@@ -32,17 +32,8 @@
 #ifndef INCLUDE_GUARD_PFI_DATA_UNORDERED_MAP_H_
 #define INCLUDE_GUARD_PFI_DATA_UNORDERED_MAP_H_
 
-#include "../pfi-config.h"
-
 #include <cmath>
-
-#if HAVE_UNORDERED_MAP
 #include <unordered_map>
-#elif HAVE_TR1_UNORDERED_MAP
-#include <tr1/unordered_map>
-#else
-#error "There is no unordered map implementation."
-#endif
 
 #include "functional_hash.h"
 
@@ -53,63 +44,13 @@ template <class Key, class Tp,
           class Hash = hash<Key>,
           class EqualKey = std::equal_to<Key>,
           class Alloc = std::allocator<std::pair<const Key, Tp> > >
-class unordered_map :
-    public unordered_namespace::unordered_map<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef unordered_namespace::unordered_map<Key, Tp, Hash, EqualKey, Alloc> Base;
-
-public:
-  explicit
-  unordered_map(typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_map(InputIterator f, InputIterator l,
-                typename Base::size_type n = 10,
-                const typename Base::hasher &hf = typename Base::hasher(),
-                const typename Base::key_equal &eql = typename Base::key_equal(),
-                const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-
-#if HAVE_TR1_UNORDERED_SET
-  void reserve(typename Base::size_type n) {
-    this->rehash(std::ceil(n / this->max_load_factor()));
-  }
-#endif
-};
+using unordered_map = std::unordered_map<Key, Tp, Hash, EqualKey, Alloc>;
 
 template <class Key, class Tp,
           class Hash = hash<Key>,
           class EqualKey = std::equal_to<Key>,
           class Alloc = std::allocator<std::pair<const Key, Tp> > >
-class unordered_multimap :
-    public unordered_namespace::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> {
-  typedef unordered_namespace::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc> Base;
-
-public:
-  explicit
-  unordered_multimap(typename Base::size_type n = 10,
-                     const typename Base::hasher &hf = typename Base::hasher(),
-                     const typename Base::key_equal &eql = typename Base::key_equal(),
-                     const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(n, hf, eql, a) {}
-
-  template <class InputIterator>
-  unordered_multimap(InputIterator f, InputIterator l,
-                     typename Base::size_type n = 10,
-                     const typename Base::hasher &hf = typename Base::hasher(),
-                     const typename Base::key_equal &eql = typename Base::key_equal(),
-                     const typename Base::allocator_type &a = typename Base::allocator_type())
-    : Base(f, l, n, hf, eql, a) {}
-
-#if HAVE_TR1_UNORDERED_SET
-  void reserve(typename Base::size_type n) {
-    this->rehash(std::ceil(n / this->max_load_factor()));
-  }
-#endif
-};
+using unordered_multimap = std::unordered_multimap<Key, Tp, Hash, EqualKey, Alloc>;
 
 } // data
 } // pfi

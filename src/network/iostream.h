@@ -139,20 +139,17 @@ template <class C, class T = std::char_traits<C> >
 class basic_socketstream : public std::basic_iostream<C,T>{
 public:
   basic_socketstream()
-    : std::basic_iostream<C,T>(){
-    this->init(&sockbuf);
+    : std::basic_iostream<C,T>(&sockbuf){
   }
 
   basic_socketstream(const std::string &host, uint16_t port)
-    : std::basic_iostream<C,T>(){
-    this->init(&sockbuf);
+    : std::basic_iostream<C,T>(&sockbuf){
     connect(host, port);
   }
 
   template <class PSOCK>
   basic_socketstream(PSOCK sock)
-    : std::basic_iostream<C,T>(){
-    this->init(&sockbuf);
+    : std::basic_iostream<C,T>(&sockbuf){
     setsock(sock);
   }
 

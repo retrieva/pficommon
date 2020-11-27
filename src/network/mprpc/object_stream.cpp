@@ -64,7 +64,7 @@ object_stream::~object_stream()
   ::close(iofd);
 }
 
-int object_stream::read(msgpack::object* obj, std::auto_ptr<msgpack::zone>* zone,
+int object_stream::read(msgpack::object* obj, std::unique_ptr<msgpack::zone>* zone,
     double timeout_sec)
 {
   clock_time start = get_clock_time();

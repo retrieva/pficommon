@@ -34,7 +34,6 @@
 
 #include <exception>
 #include <memory>
-#include <tr1/memory>
 
 namespace pfi {
 namespace concurrent {
@@ -61,8 +60,8 @@ template <class T>
 class enable_shared_from_this;
 
 template <class T, class /* dummy for compatibility */ = pfi::concurrent::threading_model::single_thread>
-class shared_ptr : public std::tr1::shared_ptr<T> {
-  typedef std::tr1::shared_ptr<T> base;
+class shared_ptr : public std::shared_ptr<T> {
+  typedef std::shared_ptr<T> base;
 
   template <class U>
   friend class enable_shared_from_this;
@@ -93,16 +92,13 @@ public:
   explicit shared_ptr(const weak_ptr<U>& p)
   try : base(p) {
 
-  } catch (std::tr1::bad_weak_ptr&) {
+  } catch (std::bad_weak_ptr&) {
     throw bad_weak_ptr();
   }
 
-  template <class U>
-  explicit shared_ptr(std::auto_ptr<U>& p) : base(p) {}
-
 private:
   template <class U>
-  explicit shared_ptr(const std::tr1::shared_ptr<U>& p) : base(p) {}
+  explicit shared_ptr(const std::shared_ptr<U>& p) : base(p) {}
 
 public:
   template <class U, class UM>
@@ -110,35 +106,30 @@ public:
     base::operator=(r);
     return *this;
   }
-
-  template <class U>
-  shared_ptr& operator=(std::auto_ptr<U>& p) {
-    return *this = shared_ptr<U>(p);
-  }
 };
 
 template <class T, class U, class TM>
 shared_ptr<T> static_pointer_cast(const shared_ptr<U, TM>& p)
 {
-  return shared_ptr<T>(std::tr1::static_pointer_cast<T>(p));
+  return shared_ptr<T>(std::static_pointer_cast<T>(p));
 }
 
 template <class T, class U, class TM>
 shared_ptr<T> dynamic_pointer_cast(const shared_ptr<U, TM>& p)
 {
-  return shared_ptr<T>(std::tr1::dynamic_pointer_cast<T>(p));
+  return shared_ptr<T>(std::dynamic_pointer_cast<T>(p));
 }
 
 template <class T, class U, class TM>
 shared_ptr<T> const_pointer_cast(const shared_ptr<U, TM>& p)
 {
-  return shared_ptr<T>(std::tr1::const_pointer_cast<T>(p));
+  return shared_ptr<T>(std::const_pointer_cast<T>(p));
 }
 
 template <class Deleter, class T, class TM>
 Deleter* get_deleter(const shared_ptr<T, TM>& p)
 {
-  return std::tr1::get_deleter<Deleter>(p);
+  return std::get_deleter<Deleter>(p);
 }
 
 } // lang

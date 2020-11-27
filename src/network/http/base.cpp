@@ -370,9 +370,8 @@ template <class C, class T = char_traits<C> >
 class basic_httpbody_chunked_stream : public basic_iostream<C, T> {
 public:
   explicit basic_httpbody_chunked_stream(const pfi::lang::shared_ptr<stream_socket>& sock)
-    : basic_iostream<C,T>(), buf(sock)
+    : basic_iostream<C,T>(&buf), buf(sock)
   {
-    this->init(&buf);
   }
 
 private:
@@ -383,10 +382,9 @@ template <class C, class T = char_traits<C> >
 class basic_httpbody_stream : public basic_iostream<C, T> {
 public:
   basic_httpbody_stream(const pfi::lang::shared_ptr<stream_socket>& sock, int64_t len)
-    : basic_iostream<C,T>(),
+    : basic_iostream<C,T>(&buf),
       buf(sock, len)
   {
-    this->init(&buf);
   }
 private:
   basic_httpbody_streambuf<C, T> buf;

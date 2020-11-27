@@ -44,7 +44,7 @@ rpc_stream::~rpc_stream() { }
 int rpc_stream::try_receive(rpc_message* msg)
 {
   msgpack::object obj;
-  std::auto_ptr<msgpack::zone> zone;
+  std::unique_ptr<msgpack::zone> zone;
 
   int ret = os.read(&obj, &zone, timeout_sec);
   if(ret <= 0) {
@@ -52,7 +52,7 @@ int rpc_stream::try_receive(rpc_message* msg)
   }
 
   try {
-    msg->reset(obj, zone);
+    msg->reset(obj, std::move(zone));
   } catch (msgpack::type_error&) {
     return -1;
   }

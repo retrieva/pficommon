@@ -9,6 +9,11 @@ stlには、bind1st, bind2ndという、2引数関数の1つめ、2つめを固�
 不便なのと、2引数以外に使えないのは良くないので、
 これを任意の数の引き数、さらには引数の順番も任意にして超一般化したものがbindである。
 
+.. deprecated:: 4.0
+
+  この機能はC++11からSTLで提供されるようになったため、
+  後方互換性の維持のために残しているものの、 :code:`std::bind` の利用を推奨する。
+
 使い方
 ======
 
@@ -22,18 +27,18 @@ stlには、bind1st, bind2ndという、2引数関数の1つめ、2つめを固�
 .. code-block:: c++
 
   int sub(int a, int b){ return a-b; }
-  
+
   int main()
   {
-    function<int(int)> f=bind(&cmp, 10, _2); // 1引数目を10に固定
+    function<int(int)> f=bind(&sub, 10, _2); // 1引数目を10に固定
     cout<<f(20)<<endl; // -10
-  
-    function<int(int)> g=bind(&cmp, _1, 10); // 2引数目を10に固定
+
+    function<int(int)> g=bind(&sub, _1, 10); // 2引数目を10に固定
     cout<<g(20)<<endl; // 10
-  
-    function<int(int, int)> h=bind(&cmp, _2, _1); // 引数の順番を入れ替え
+
+    function<int(int, int)> h=bind(&sub, _2, _1); // 引数の順番を入れ替え
     cout<<h(10, 20)<<endl; // 10
-  
-    function<int(int)> i=bind(&cmp, _1, _1); // 両方に第一引数を渡す
+
+    function<int(int)> i=bind(&sub, _1, _1); // 両方に第一引数を渡す
     cout<<i(10)<<endl; // 0
   }

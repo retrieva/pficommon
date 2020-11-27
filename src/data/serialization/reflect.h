@@ -60,10 +60,6 @@ public:
   void print(std::ostream &os){
     os<<"bool";
   }
-
-private:
-  bool sign;
-  int size;
 };
 
 class int_type : public type_rep {

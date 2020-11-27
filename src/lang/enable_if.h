@@ -32,26 +32,16 @@
 #ifndef INCLUDE_GUARD_PFI_LANG_ENABLE_IF_H_
 #define INCLUDE_GUARD_PFI_LANG_ENABLE_IF_H_
 
+#include <type_traits>
+
 namespace pfi {
 namespace lang {
 
-template <bool, class T = void>
-struct enable_if_c {};
+template <bool B_, class T = void>
+using enable_if = std::enable_if<B_, T>;
 
-template <class T>
-struct enable_if_c<true, T> {
-  typedef T type;
-};
-
-template <bool B, class T = void>
-struct disable_if_c : enable_if_c<!B, T> {};
-
-
-template <class B_, class T = void>
-struct enable_if : enable_if_c<B_::value, T> {};
-
-template <class B_, class T = void>
-struct disable_if : disable_if_c<B_::value, T> {};
+template <bool B_, class T = void>
+struct disable_if : enable_if<!B_, T> {};
 
 } // namespace lang
 } // namespace pfi

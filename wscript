@@ -1,5 +1,5 @@
 APPNAME = 'pficommon'
-VERSION = '3.0.1'
+VERSION = '4.0.0'
 
 top = '.'
 out = 'build'
@@ -31,7 +31,7 @@ def configure(conf):
   conf.load('gnu_dirs')
 
   env = conf.env
-  env.append_unique('CXXFLAGS', ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer'])
+  env.append_unique('CXXFLAGS', ['-O2', '-Wall', '-g', '-pipe', '-D_REENTRANT', '-fno-omit-frame-pointer', '-std=c++11', '-Wno-deprecated-declarations'])
   ver = env.CC_VERSION
   if env.COMPILER_CXX != 'g++' or int(ver[0]) < 4 or (int(ver[0]) == 4 and int(ver[1]) < 6):
     env.append_unique('CXXFLAGS', '-D_FORTIFY_SOURCE=1')
@@ -59,9 +59,6 @@ Database module:         %s
   have PostgreSQL lib:     %s
 MessagePack RPC module:  %s
 
-[Visualization]
-Magick++ impl:           %s
-
 [Build information]
 Package:                 %s
 build (compile on):      %s
@@ -75,7 +72,6 @@ CXXFLAGS:                %s
        conf.env.BUILD_MYSQL and 'yes' or 'no',
        conf.env.BUILD_PGSQL and 'yes' or 'no',
        conf.env.BUILD_MPRPC and 'yes' or 'no',
-       conf.env.BUILD_MAGICKPP and 'yes' or 'no',
        APPNAME + '-' + VERSION,
        conf.env.DEST_CPU + '-' + conf.env.DEST_OS,
        sys.byteorder,

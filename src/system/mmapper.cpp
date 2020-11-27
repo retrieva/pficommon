@@ -59,7 +59,7 @@ int mmapper::open(const std::string& filename)
 
   const int prot = PROT_WRITE | PROT_READ;
   void* p;
-  NO_INTR(p, mmap(NULL, tmp.length, prot, MAP_SHARED, tmp.fd, 0));
+  p = mmap(NULL, tmp.length, prot, MAP_SHARED, tmp.fd, 0);
   if (p == MAP_FAILED)
     return -1;
   tmp.ptr = static_cast<char*>(p);

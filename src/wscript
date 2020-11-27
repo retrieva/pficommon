@@ -8,13 +8,11 @@ subdirs = [
   'database',
   'math',
   'text',
-  'visualization',
   ]
 
 def options(opt):
   opt.recurse('database')
   opt.recurse('network')
-  opt.recurse('visualization')
 
 def configure(conf):
   conf.check_cxx(lib = 'pthread')
@@ -37,7 +35,6 @@ def build(bld):
       'pficommon_network',
       'pficommon_system',
       'pficommon_text',
-      'pficommon_visualization',
       ])
 
   bld.recurse(subdirs)
