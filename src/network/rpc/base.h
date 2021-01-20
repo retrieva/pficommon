@@ -32,9 +32,12 @@
 #ifndef INCLUDE_GUARD_PFI_NETWORK_RPC_BASE_H_
 #define INCLUDE_GUARD_PFI_NETWORK_RPC_BASE_H_
 
+#include <condition_variable>
 #include <map>
+#include <mutex>
 #include <string>
 #include <stdexcept>
+#include <vector>
 
 #include "../../lang/bind.h"
 #include "../../lang/function.h"
@@ -54,6 +57,12 @@ namespace pfi{
 namespace network{
 namespace rpc{
 
+enum class server_state {
+  RUNNING,
+  STOPPING,
+  STOPPED
+};
+
 class rpc_server{
 public:
   rpc_server(int version=0, double timeout_sec=0.0);
@@ -65,6 +74,13 @@ public:
   }
 
   bool serv(uint16_t port, int nthreads);
+  bool start(uint16_t port, int nthreads);
+  void stop();
+  void wait_until_stopped();
+
+  bool is_running() const;
+  bool is_stopping() const;
+  bool is_stopped() const;
 
   uint16_t port() const;
 
@@ -74,12 +90,25 @@ private:
 
   void process(const pfi::lang::shared_ptr<server_socket>& sock);
 
+  bool exist_running_threads() const;
+
+  void set_state(const server_state& next_state);
+
   std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
 
+  pfi::lang::shared_ptr<pfi::network::server_socket> socket;
   uint16_t port_num;
 
   const int version;
   const double timeout_sec;
+
+  mutable std::mutex threads_mutex;
+  int num_running_threads;
+  std::vector<pfi::lang::shared_ptr<pfi::concurrent::thread>> threads;
+
+  mutable std::mutex state_mutex;
+  server_state state;
+  std::condition_variable_any stop_condition;
 };
 
 class rpc_client{

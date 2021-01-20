@@ -47,16 +47,29 @@ namespace rpc{
 
 static const char *PING_MSG = "<<<PING>>>";
 static const char *PONG_MSG = "<<<PONG>>>";
+static const char *EXIT_MSG = "<<<EXIT>>>";
 
-// server
-rpc_server::rpc_server(int version, double timeout_sec)
-  : version(version), timeout_sec(timeout_sec)
-{
+// TODO: catch exception which std::mutex::mutex() throws
+rpc_server::rpc_server(int version, double timeout_sec) : version(version),
+                                                          timeout_sec(timeout_sec),
+                                                          threads_mutex(),
+                                                          num_running_threads(0),
+                                                          threads(),
+                                                          state_mutex(),
+                                                          state(server_state::STOPPED),
+                                                          stop_condition() {
   port_num = 0;
 }
 
 rpc_server::~rpc_server()
 {
+  for (size_t i = 0; i < threads.size(); ++i) {
+    threads[i]->join();
+  }
+  if (socket) {
+    socket->close();
+    socket.reset();
+  }
 }
 
 void rpc_server::add(const string &name, const pfi::lang::shared_ptr<invoker_base>& invoker)
@@ -66,20 +79,77 @@ void rpc_server::add(const string &name, const pfi::lang::shared_ptr<invoker_bas
 
 bool rpc_server::serv(uint16_t port, int nthreads)
 {
-  pfi::lang::shared_ptr<server_socket> ssock(new server_socket());
-  if (!ssock->create(port))
+  if (!start(port, nthreads)) {
+    return false;
+  }
+  wait_until_stopped();
+  return true;
+}
+
+bool rpc_server::start(uint16_t port, int nthreads)
+{
+  socket = pfi::lang::shared_ptr<server_socket>(new server_socket());
+  if (!socket->create(port))
     return false;
 
-  port_num = ssock->port();
+  port_num = socket->port();
 
-  vector<pfi::lang::shared_ptr<thread> > ths(nthreads);
-  for (int i=0; i<nthreads; i++){
-      ths[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&rpc_server::process, this, ssock)));
-    if (!ths[i]->start()) return false;
+  // NOTE: state should be set as `running` before starting threads
+  //       because each thread runs while the state is `running`.
+  set_state(server_state::RUNNING);
+  {
+    std::lock_guard<std::mutex> lock(threads_mutex);
+    threads = vector<pfi::lang::shared_ptr<thread>>(nthreads);
+    for (int i=0; i<nthreads; i++){
+      threads[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&rpc_server::process, this, socket)));
+      if (!threads[i]->start()) return false;
+      ++num_running_threads;
+    }
   }
-  for (int i=0; i<nthreads; i++)
-    ths[i]->join();
   return true;
+}
+
+void rpc_server::stop()
+{
+  if (!is_running()) {
+    return;
+  }
+  set_state(server_state::STOPPING);
+  if (socket) {
+    socket->close();
+    for (size_t i = 0; i < threads.size(); ++i) {
+      rpc_client client("localhost", port());
+      auto request_termination = client.call<bool()>(EXIT_MSG);
+      request_termination();
+    }
+  }
+}
+
+void rpc_server::wait_until_stopped()
+{
+  if (is_stopped()) {
+    return;
+  }
+  std::unique_lock<std::mutex> lock(state_mutex);
+  stop_condition.wait(lock, [this]() { return state == server_state::STOPPED; });
+}
+
+bool rpc_server::is_running() const
+{
+  std::lock_guard<std::mutex> lock(state_mutex);
+  return state == server_state::RUNNING;
+}
+
+bool rpc_server::is_stopping() const
+{
+  std::lock_guard<std::mutex> lock(state_mutex);
+  return state == server_state::STOPPING;
+}
+
+bool rpc_server::is_stopped() const
+{
+  std::lock_guard<std::mutex> lock(state_mutex);
+  return state == server_state::STOPPED;
 }
 
 uint16_t rpc_server::port() const
@@ -89,7 +159,7 @@ uint16_t rpc_server::port() const
 
 void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
 {
-  for (;;){
+  while (is_running()){
     pfi::lang::shared_ptr<stream_socket> sock(ssock->accept());
     if (!sock) continue;
     sock->set_nodelay(true);
@@ -114,6 +184,14 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
         oa<<t;
         oa.flush();
         continue;
+      } else if (name==EXIT_MSG) {
+        string result_code("OK");
+        oa<<result_code;
+        oa.flush();
+        string ret("1");
+        oa<<ret;
+        oa.flush();
+        break;
       }
 
       if (funcs.count(name)==0){
@@ -138,6 +216,25 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
       }
     }
   }
+  {
+    std::lock_guard<std::mutex> lock(threads_mutex);
+    --num_running_threads;
+  }
+  if (!exist_running_threads()) {
+    set_state(server_state::STOPPED);
+    stop_condition.notify_one();
+  }
+}
+
+bool rpc_server::exist_running_threads() const
+{
+  std::lock_guard<std::mutex> lock(threads_mutex);
+  return num_running_threads > 0;
+}
+
+void rpc_server::set_state(const server_state& next_state) {
+  std::lock_guard<std::mutex> lock(state_mutex);
+  state = next_state;
 }
 
 rpc_client::rpc_client(const string &host, uint16_t port, int version)
