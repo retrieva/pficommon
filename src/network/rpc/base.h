@@ -90,6 +90,10 @@ private:
 
   void process(const pfi::lang::shared_ptr<server_socket>& sock);
 
+  bool is_running_unsafe() const;
+  bool is_stopping_unsafe() const;
+  bool is_stopped_unsafe() const;
+
   bool exist_running_threads() const;
 
   void set_state(const server_state& next_state);

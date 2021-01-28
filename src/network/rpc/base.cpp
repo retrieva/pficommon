@@ -137,19 +137,19 @@ void rpc_server::wait_until_stopped()
 bool rpc_server::is_running() const
 {
   std::lock_guard<std::mutex> lock(state_mutex);
-  return state == server_state::RUNNING;
+  return is_running_unsafe();
 }
 
 bool rpc_server::is_stopping() const
 {
   std::lock_guard<std::mutex> lock(state_mutex);
-  return state == server_state::STOPPING;
+  return is_stopping_unsafe();
 }
 
 bool rpc_server::is_stopped() const
 {
   std::lock_guard<std::mutex> lock(state_mutex);
-  return state == server_state::STOPPED;
+  return is_stopped_unsafe();
 }
 
 uint16_t rpc_server::port() const
@@ -224,6 +224,21 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
     set_state(server_state::STOPPED);
     stop_condition.notify_one();
   }
+}
+
+bool rpc_server::is_running_unsafe() const
+{
+  return state == server_state::RUNNING;
+}
+
+bool rpc_server::is_stopping_unsafe() const
+{
+  return state == server_state::STOPPING;
+}
+
+bool rpc_server::is_stopped_unsafe() const
+{
+  return state == server_state::STOPPED;
 }
 
 bool rpc_server::exist_running_threads() const
