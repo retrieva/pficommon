@@ -106,13 +106,12 @@ private:
   const int version;
   const double timeout_sec;
 
-  mutable std::mutex threads_mutex;
+  // state_mutex also guards variables for threads
+  mutable std::mutex state_mutex;
+  std::condition_variable_any stop_condition;
+  server_state state;
   int num_running_threads;
   std::vector<pfi::lang::shared_ptr<pfi::concurrent::thread>> threads;
-
-  mutable std::mutex state_mutex;
-  server_state state;
-  std::condition_variable_any stop_condition;
 };
 
 class rpc_client{

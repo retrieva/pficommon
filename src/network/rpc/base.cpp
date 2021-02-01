@@ -52,12 +52,11 @@ static const char *EXIT_MSG = "<<<EXIT>>>";
 // TODO: catch exception which std::mutex::mutex() throws
 rpc_server::rpc_server(int version, double timeout_sec) : version(version),
                                                           timeout_sec(timeout_sec),
-                                                          threads_mutex(),
-                                                          num_running_threads(0),
-                                                          threads(),
                                                           state_mutex(),
+                                                          stop_condition(),
                                                           state(server_state::STOPPED),
-                                                          stop_condition() {
+                                                          num_running_threads(0),
+                                                          threads() {
   port_num = 0;
 }
 
@@ -98,7 +97,7 @@ bool rpc_server::start(uint16_t port, int nthreads)
   //       because each thread runs while the state is `running`.
   set_state(server_state::RUNNING);
   {
-    std::lock_guard<std::mutex> lock(threads_mutex);
+    std::lock_guard<std::mutex> lock(state_mutex);
     threads = vector<pfi::lang::shared_ptr<thread>>(nthreads);
     for (int i=0; i<nthreads; i++){
       threads[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&rpc_server::process, this, socket)));
@@ -217,7 +216,7 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
     }
   }
   {
-    std::lock_guard<std::mutex> lock(threads_mutex);
+    std::lock_guard<std::mutex> lock(state_mutex);
     --num_running_threads;
   }
   if (!exist_running_threads()) {
@@ -243,7 +242,7 @@ bool rpc_server::is_stopped_unsafe() const
 
 bool rpc_server::exist_running_threads() const
 {
-  std::lock_guard<std::mutex> lock(threads_mutex);
+  std::lock_guard<std::mutex> lock(state_mutex);
   return num_running_threads > 0;
 }
 
