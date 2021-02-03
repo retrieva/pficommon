@@ -94,7 +94,7 @@ private:
   bool is_stopping_unsafe() const;
   bool is_stopped_unsafe() const;
 
-  bool exist_running_threads() const;
+  void notify_if_this_is_the_last_running_threads();
 
   void set_state(const server_state& next_state);
 

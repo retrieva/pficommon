@@ -216,14 +216,7 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
       }
     }
   }
-  {
-    std::lock_guard<std::mutex> lock(state_mutex);
-    --num_running_threads;
-  }
-  if (!exist_running_threads()) {
-    set_state(server_state::STOPPED);
-    stop_condition.notify_one();
-  }
+  notify_if_this_is_the_last_running_threads();
 }
 
 bool rpc_server::is_running_unsafe() const
@@ -241,10 +234,16 @@ bool rpc_server::is_stopped_unsafe() const
   return state == server_state::STOPPED;
 }
 
-bool rpc_server::exist_running_threads() const
+void rpc_server::notify_if_this_is_the_last_running_threads()
 {
-  std::lock_guard<std::mutex> lock(state_mutex);
-  return num_running_threads > 0;
+  {
+    std::lock_guard<std::mutex> lock(state_mutex);
+    if (--num_running_threads > 0) {
+      return;
+    }
+    state = server_state::STOPPED;
+  }
+  stop_condition.notify_one();
 }
 
 void rpc_server::set_state(const server_state& next_state) {
