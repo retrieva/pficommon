@@ -37,6 +37,7 @@
 #include <map>
 
 #include "../lang/bind.h"
+#include "../lang/ref.h"
 #include "../concurrent/thread.h"
 
 using namespace std;
@@ -56,9 +57,12 @@ static set<int> test_set(const set<int>& v){ return v; }
 
 RPC_GEN(1, testrpc, test_str, test_pair, test_vec, test_map, test_set);
 
-static void server_thread()
+void wait_until_server_can_accept_next_connection() {
+  sleep(0.1);
+}
+
+static void server_thread(testrpc_server& ser)
 {
-  testrpc_server ser;
   ser.set_test_str(&test_str);
   ser.set_test_pair(&test_pair);
   ser.set_test_vec(&test_vec);
@@ -69,69 +73,79 @@ static void server_thread()
 
 TEST(rpc, rpc_test)
 {
-  thread t(&server_thread);
+  testrpc_server ser;
+  EXPECT_TRUE(ser.is_stopped());
+  thread t(pfi::lang::bind(&server_thread, pfi::lang::ref(ser)));
   t.start();
 
   sleep(1);
+  EXPECT_TRUE(ser.is_running());
 
-  int times = 100;
   EXPECT_NO_THROW({ testrpc_client cln1("localhost", 31231); });
-  testrpc_client cln("localhost", 31231);
-  for (int t=0;t<times;t++) {
-    {
-      string v;
-      for (int i=0;i<10;i++)
-        v+='0'+(rand()%10);
-      string r;
-      EXPECT_NO_THROW({ r = cln.call_test_str(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++)
-        EXPECT_EQ(r[i], v[i]);
-    }
-    {
-      string vs;
-      for (int i=0;i<10;i++)
-        vs+='0'+(rand()%10);
-      pair<int, string> v = make_pair(rand(), vs);
-      pair<int, string> r;
-      EXPECT_NO_THROW({ r = cln.call_test_pair(v); });
-      EXPECT_EQ(r.first, v.first);
-      EXPECT_EQ(r.second, v.second);
-    }
-    {
-      vector<int> v;
-      for (int i=0;i<10;i++)
-        v.push_back(rand());
-      vector<int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_vec(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++)
-        EXPECT_EQ(r[i], v[i]);
-    }
-    {
-      map<int, int> v;
-      for (int i=0;i<10;i++)
-        v[i]=rand();
-      map<int, int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_map(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++){
-        EXPECT_EQ(r[i], v[i]);
+  {
+    testrpc_client cln("localhost", 31231);
+    int times = 100;
+    for (int t=0;t<times;t++) {
+      {
+        string v;
+        for (int i=0;i<10;i++)
+          v+='0'+(rand()%10);
+        string r;
+        EXPECT_NO_THROW({ r = cln.call_test_str(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++)
+          EXPECT_EQ(r[i], v[i]);
       }
-    }
-    {
-      set<int> v;
-      for (int i=0;i<10;i++)
-        v.insert(i*100);
-      set<int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_set(v); });
-      EXPECT_EQ(r.size(), 10U);
-      int cnt = 0;
-      for (set<int>::iterator it=v.begin();it!=v.end();++it){
-        EXPECT_EQ(*it, cnt++ * 100);
+      {
+        string vs;
+        for (int i=0;i<10;i++)
+          vs+='0'+(rand()%10);
+        pair<int, string> v = make_pair(rand(), vs);
+        pair<int, string> r;
+        EXPECT_NO_THROW({ r = cln.call_test_pair(v); });
+        EXPECT_EQ(r.first, v.first);
+        EXPECT_EQ(r.second, v.second);
+      }
+      {
+        vector<int> v;
+        for (int i=0;i<10;i++)
+          v.push_back(rand());
+        vector<int> r;
+        EXPECT_NO_THROW({ r = cln.call_test_vec(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++)
+          EXPECT_EQ(r[i], v[i]);
+      }
+      {
+        map<int, int> v;
+        for (int i=0;i<10;i++)
+          v[i]=rand();
+        map<int, int> r;
+        EXPECT_NO_THROW({ r = cln.call_test_map(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++){
+          EXPECT_EQ(r[i], v[i]);
+        }
+      }
+      {
+        set<int> v;
+        for (int i=0;i<10;i++)
+          v.insert(i*100);
+        set<int> r;
+        EXPECT_NO_THROW({ r = cln.call_test_set(v); });
+        EXPECT_EQ(r.size(), 10U);
+        int cnt = 0;
+        for (set<int>::iterator it=v.begin();it!=v.end();++it){
+          EXPECT_EQ(*it, cnt++ * 100);
+        }
       }
     }
   }
+  wait_until_server_can_accept_next_connection();
+
+  ser.stop();
+  t.join();
+  EXPECT_TRUE(ser.is_stopped());
 }
 
 // test for struct and empty vector
@@ -150,27 +164,35 @@ private:
 RPC_PROC(test_struct, tstruct(tstruct));
 RPC_GEN(1, test_struct_rpc, test_struct);
 static tstruct f_test_struct(tstruct t) { return t; }
-static void struct_server_thread()
+static void struct_server_thread(test_struct_rpc_server& ser)
 {
-  test_struct_rpc_server ser;
   ser.set_test_struct(&f_test_struct);
   ser.serv(31232, 10);
 }
 TEST(rpc, test_struct)
 {
-  thread t(&struct_server_thread);
+  test_struct_rpc_server ser;
+  EXPECT_TRUE(ser.is_stopped());
+  thread t(pfi::lang::bind(&struct_server_thread, pfi::lang::ref(ser)));
   t.start();
 
   sleep(1);
+  EXPECT_TRUE(ser.is_running());
 
-  tstruct t1;
-  t1.i = 9;
   EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31232); });
-  test_struct_rpc_client cln("localhost", 31232);
+  {
+    test_struct_rpc_client cln("localhost", 31232);
+    tstruct t1;
+    t1.i = 9;
+    tstruct t2;
+    EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
+    EXPECT_EQ(t1.i, t2.i);
+  }
+  wait_until_server_can_accept_next_connection();
 
-  tstruct t2;
-  EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
-  EXPECT_EQ(t1.i, t2.i);
+  ser.stop();
+  t.join();
+  EXPECT_TRUE(ser.is_stopped());
 }
 
 
@@ -191,18 +213,19 @@ TEST(rpc, test_server_port_0)
   sserver_args_struct sas;
   sas.sv.set_test_str(&test_str);
   sas.arg_port = 0;
+  EXPECT_TRUE(sas.sv.is_stopped());
 
   pfi::lang::function<void(void)> f = bind(server_thread_for_port_0, &sas);
   thread t(f);
   t.start();
-  t.detach();
   sleep(1);
+  EXPECT_TRUE(sas.sv.is_running());
 
   uint16_t p0 = sas.sv.port();
   EXPECT_NE(0, p0);
 
-  testrpc_client cln("localhost", p0);
   {
+    testrpc_client cln("localhost", p0);
     string v;
     for (int i=0;i<10;i++)
       v+='0'+(rand()%10);
@@ -212,13 +235,16 @@ TEST(rpc, test_server_port_0)
     for (int i=0;i<10;i++)
       EXPECT_EQ(r[i], v[i]);
   }
+  wait_until_server_can_accept_next_connection();
+
+  sas.sv.stop();
+  t.join();
+  EXPECT_TRUE(sas.sv.is_stopped());
 }
 
 // test rpc::server timeout
-static void server_thread_for_timeout()
+static void server_thread_for_timeout(test_struct_rpc_server& ser)
 {
-  double test_timeout_sec = 1.0;
-  test_struct_rpc_server ser(test_timeout_sec);
   ser.set_test_struct(&f_test_struct);
   ser.serv(31233, 1);
 }
@@ -238,10 +264,14 @@ uint64_t get_monotonic_time_micro_sec() {
 
 TEST(rpc, test_rpc_server_timeout)
 {
-  thread server_thread(&server_thread_for_timeout);
-  server_thread.start();
+  double test_timeout_sec = 1.0;
+  test_struct_rpc_server ser(test_timeout_sec);
+  EXPECT_TRUE(ser.is_stopped());
+  thread t(pfi::lang::bind(&server_thread_for_timeout, pfi::lang::ref(ser)));
+  t.start();
 
   sleep(1);
+  EXPECT_TRUE(ser.is_running());
 
   uint64_t time0 = get_monotonic_time_micro_sec();
   thread dummy_client(&dummy_client_for_timeout);
@@ -250,18 +280,23 @@ TEST(rpc, test_rpc_server_timeout)
 
   sleep(1);
 
-  tstruct t1;
-  t1.i = 9;
   EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31233); });
-  test_struct_rpc_client cln("localhost", 31233);
-
-  tstruct t2;
-  EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
-  EXPECT_EQ(t1.i, t2.i);
+  {
+    test_struct_rpc_client cln("localhost", 31233);
+    tstruct t1;
+    t1.i = 9;
+    tstruct t2;
+    EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
+    EXPECT_EQ(t1.i, t2.i);
+  }
+  wait_until_server_can_accept_next_connection();
 
 //  If it is less than 7 seconds, the timeout is considered to be working effectively.
 //  If the timeout setting does not work, it will wait for more than 10 seconds.
   uint64_t time1 = get_monotonic_time_micro_sec();
   EXPECT_LE((time1-time0), 7*1000*1000);
-}
 
+  ser.stop();
+  t.join();
+  EXPECT_TRUE(ser.is_stopped());
+}
