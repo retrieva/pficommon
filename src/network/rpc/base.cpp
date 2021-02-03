@@ -93,11 +93,11 @@ bool rpc_server::start(uint16_t port, int nthreads)
 
   port_num = socket->port();
 
-  // NOTE: state should be set as `running` before starting threads
-  //       because each thread runs while the state is `running`.
-  set_state(server_state::RUNNING);
   {
     std::lock_guard<std::mutex> lock(state_mutex);
+    // NOTE: state should be set as `running` before starting threads
+    //       because each thread runs while the state is `running`.
+    state = server_state::RUNNING;
     threads = vector<pfi::lang::shared_ptr<thread>>(nthreads);
     for (int i=0; i<nthreads; i++){
       threads[i]=pfi::lang::shared_ptr<thread>(new thread(bind(&rpc_server::process, this, socket)));
@@ -244,11 +244,6 @@ void rpc_server::notify_if_this_is_the_last_running_threads()
     state = server_state::STOPPED;
   }
   stop_condition.notify_one();
-}
-
-void rpc_server::set_state(const server_state& next_state) {
-  std::lock_guard<std::mutex> lock(state_mutex);
-  state = next_state;
 }
 
 rpc_client::rpc_client(const string &host, uint16_t port, int version)

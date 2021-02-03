@@ -96,8 +96,6 @@ private:
 
   void notify_if_this_is_the_last_running_threads();
 
-  void set_state(const server_state& next_state);
-
   std::map<std::string, pfi::lang::shared_ptr<invoker_base> > funcs;
 
   pfi::lang::shared_ptr<pfi::network::server_socket> socket;
