@@ -110,10 +110,11 @@ bool rpc_server::start(uint16_t port, int nthreads)
 
 void rpc_server::stop()
 {
-  if (!is_running()) {
+  std::lock_guard<std::mutex> lock(state_mutex);
+  if (!is_running_unsafe()) {
     return;
   }
-  set_state(server_state::STOPPING);
+  state = server_state::STOPPING;
   if (socket) {
     socket->close();
     for (size_t i = 0; i < threads.size(); ++i) {
