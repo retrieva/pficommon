@@ -127,10 +127,10 @@ void rpc_server::stop()
 
 void rpc_server::wait_until_stopped()
 {
-  if (is_stopped()) {
+  std::unique_lock<std::mutex> lock(state_mutex);
+  if (is_stopped_unsafe()) {
     return;
   }
-  std::unique_lock<std::mutex> lock(state_mutex);
   stop_condition.wait(lock, [this]() { return state == server_state::STOPPED; });
 }
 
