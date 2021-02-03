@@ -58,9 +58,9 @@ namespace network{
 namespace rpc{
 
 enum class server_state {
+  STOPPED,
   RUNNING,
   STOPPING,
-  STOPPED
 };
 
 class rpc_server{
