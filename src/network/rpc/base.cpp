@@ -120,7 +120,12 @@ void rpc_server::stop()
     for (size_t i = 0; i < threads.size(); ++i) {
       rpc_client client("localhost", port());
       auto request_termination = client.call<bool()>(EXIT_MSG);
-      request_termination();
+      // NOTE: Now that socket is closed,
+      //       when there is no server thread which waits at `server::socket::accept()`
+      //       this RPC call will throw `cannot_get_connection` exception.
+      try {
+        request_termination();
+      } catch (const cannot_get_connection&) {}
     }
   }
 }
