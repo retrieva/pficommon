@@ -53,29 +53,32 @@ static std::set<int> test_set(const std::set<int>& v){ return v; }
 
 RPC_GEN(1, testrpc, test_str, test_pair, test_vec, test_map, test_set);
 
-static void server_thread(testrpc_server& server)
+static void server_thread(testrpc_server& server, uint16_t port, int num_threads)
 {
   server.set_test_str(&test_str);
   server.set_test_pair(&test_pair);
   server.set_test_vec(&test_vec);
   server.set_test_map(&test_map);
   server.set_test_set(&test_set);
-  server.serv(31231, 10);
+  server.serv(port, num_threads);
 }
 
 TEST(rpc, rpc_test)
 {
+  uint16_t port = 31231;
+  int num_threads = 10;
+
   testrpc_server server;
   EXPECT_TRUE(server.is_stopped());
-  pfi::concurrent::thread t(pfi::lang::bind(&server_thread, pfi::lang::ref(server)));
+  pfi::concurrent::thread t(pfi::lang::bind(&server_thread, pfi::lang::ref(server), port, num_threads));
   t.start();
 
   sleep(1);
   EXPECT_TRUE(server.is_running());
 
-  EXPECT_NO_THROW({ testrpc_client client1("localhost", 31231); });
+  EXPECT_NO_THROW({ testrpc_client client1("localhost", port); });
   {
-    testrpc_client client("localhost", 31231);
+    testrpc_client client("localhost", port);
     int times = 100;
     for (int t=0;t<times;t++) {
       {
@@ -188,34 +191,23 @@ TEST(rpc, test_struct)
   EXPECT_TRUE(server.is_stopped());
 }
 
-
 // test rpc::server when port number is 0
-struct sserver_args_struct
-{
-  testrpc_server server;
-  uint16_t arg_port;
-};
-
-static void server_thread_for_port_0( sserver_args_struct *sas )
-{
-  sas->server.serv(sas->arg_port, 1);
-}
-
 TEST(rpc, test_server_port_0)
 {
-  sserver_args_struct sas;
-  sas.server.set_test_str(&test_str);
-  sas.arg_port = 0;
-  EXPECT_TRUE(sas.server.is_stopped());
+  uint16_t port = 0;
+  int num_threads = 1;
 
-  pfi::lang::function<void(void)> f = pfi::lang::bind(server_thread_for_port_0, &sas);
+  testrpc_server server;
+  EXPECT_TRUE(server.is_stopped());
+
+  pfi::lang::function<void(void)> f = pfi::lang::bind(server_thread, pfi::lang::ref(server), port, num_threads);
   pfi::concurrent::thread t(f);
   t.start();
   sleep(1);
-  EXPECT_TRUE(sas.server.is_running());
+  EXPECT_TRUE(server.is_running());
 
-  uint16_t p0 = sas.server.port();
-  EXPECT_NE(0, p0);
+  uint16_t p0 = server.port();
+  EXPECT_NE(port, p0);
 
   {
     testrpc_client client("localhost", p0);
@@ -229,9 +221,9 @@ TEST(rpc, test_server_port_0)
       EXPECT_EQ(r[i], v[i]);
   }
 
-  sas.server.stop();
+  server.stop();
   t.join();
-  EXPECT_TRUE(sas.server.is_stopped());
+  EXPECT_TRUE(server.is_stopped());
 }
 
 // test rpc::server timeout
