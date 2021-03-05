@@ -21,7 +21,7 @@ jobs:
     - name: configure
       run: ./waf configure
     - name: build
-      run: ./waf build -4
+      run: ./waf build -j4
     - name: test
       run: ./waf --check -j4
     - name: install
