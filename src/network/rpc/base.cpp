@@ -81,6 +81,7 @@ void rpc_server::add(const string &name, const pfi::lang::shared_ptr<invoker_bas
 bool rpc_server::serv(uint16_t port, int nthreads)
 {
   if (!start(port, nthreads)) {
+    stop();
     return false;
   }
   wait_until_stopped();
