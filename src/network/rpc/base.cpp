@@ -63,7 +63,9 @@ rpc_server::rpc_server(int version, double timeout_sec) : version(version),
 rpc_server::~rpc_server()
 {
   for (size_t i = 0; i < threads.size(); ++i) {
-    threads[i]->join();
+    if (threads[i]) {
+      threads[i]->join();
+    }
   }
   if (socket) {
     socket->close();
