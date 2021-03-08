@@ -181,7 +181,7 @@ void rpc_server::process(const pfi::lang::shared_ptr<server_socket>& ssock)
       string name;
       ia>>name;
 
-      // NOTE: When a connection ends (e.g. by destuctor of the connected client being called),
+      // NOTE: When a connection ends (e.g. by destructor of the connected client being called),
       //       the server thread gets empty string from `binary_archive`
       //       and exits this for loop here.
       if (!ss)
