@@ -88,12 +88,14 @@ def build(bld):
     
     pfin.use.append('pficommon_network_mprpc')
     
+    """
     bld.program(
       features = 'gtest',
       source = 'mprpc_test.cpp',
       target = 'mprpc_test',
       includes = '. mprpc',
       use = 'pficommon_network pficommon_system pficommon_data MSGPACK')
+    """
 
     bld.program(
       features = 'gtest',
