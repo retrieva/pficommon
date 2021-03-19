@@ -19,6 +19,6 @@ jobs:
     - name: build
       run: ./waf build -j4
     - name: test
-      run: ./waf --check -j4
+      run: ./waf --check -vvv
     - name: install
       run: ./waf install
