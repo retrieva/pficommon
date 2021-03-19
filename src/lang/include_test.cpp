@@ -12,5 +12,6 @@
 #include "scoped_ptr.h"
 #include "shared_ptr.h"
 #include "singleton.h"
+#include "type_traits.h"
 #include "util.h"
 #include "weak_ptr.h"
