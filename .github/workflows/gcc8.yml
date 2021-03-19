@@ -1,0 +1,24 @@
+name: gcc8
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: docker.retrieva.jp/pficommon_ci:gcc8.2007
+      credentials:
+        username: github-actions
+        password: ${{ secrets.RETRIEVA_DOCKER_REPOSITORY_PASSWORD }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: ./waf configure
+    - name: build
+      run: ./waf build -j4
+    - name: test
+      run: ./waf --check -j4
+    - name: install
+      run: ./waf install
