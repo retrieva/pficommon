@@ -37,107 +37,115 @@
 #include <map>
 
 #include "../lang/bind.h"
+#include "../lang/ref.h"
 #include "../concurrent/thread.h"
 
-using namespace std;
-using namespace pfi::lang;
-using namespace pfi::concurrent;
-
-RPC_PROC(test_str, string(string));
-static string test_str(const string& v){ return v; }
-RPC_PROC(test_pair, pair<int,string>(pair<int,string>));
-static pair<int,string> test_pair(const pair<int,string>& v){ return v; }
-RPC_PROC(test_vec, vector<int>(vector<int>));
-static vector<int> test_vec(const vector<int>& v){ return v; }
-RPC_PROC(test_map, map<int,int>(map<int,int>));
-static map<int, int> test_map(const map<int, int>& v){ return v; }
-RPC_PROC(test_set, set<int>(set<int> v));
-static set<int> test_set(const set<int>& v){ return v; }
+RPC_PROC(test_str, std::string(std::string));
+static std::string test_str(const std::string& v){ return v; }
+RPC_PROC(test_pair, std::pair<int,std::string>(std::pair<int,std::string>));
+static std::pair<int,std::string> test_pair(const std::pair<int,std::string>& v){ return v; }
+RPC_PROC(test_vec, std::vector<int>(std::vector<int>));
+static std::vector<int> test_vec(const std::vector<int>& v){ return v; }
+RPC_PROC(test_map, std::map<int,int>(std::map<int,int>));
+static std::map<int, int> test_map(const std::map<int, int>& v){ return v; }
+RPC_PROC(test_set, std::set<int>(std::set<int> v));
+static std::set<int> test_set(const std::set<int>& v){ return v; }
 
 RPC_GEN(1, testrpc, test_str, test_pair, test_vec, test_map, test_set);
 
-static void server_thread()
+static void server_thread(testrpc_server& server, uint16_t port, int num_threads)
 {
-  testrpc_server ser;
-  ser.set_test_str(&test_str);
-  ser.set_test_pair(&test_pair);
-  ser.set_test_vec(&test_vec);
-  ser.set_test_map(&test_map);
-  ser.set_test_set(&test_set);
-  ser.serv(31231, 10);
+  server.set_test_str(&test_str);
+  server.set_test_pair(&test_pair);
+  server.set_test_vec(&test_vec);
+  server.set_test_map(&test_map);
+  server.set_test_set(&test_set);
+  server.serv(port, num_threads);
 }
 
 TEST(rpc, rpc_test)
 {
-  thread t(&server_thread);
+  uint16_t port = 31231;
+  int num_threads = 10;
+
+  testrpc_server server;
+  EXPECT_TRUE(server.is_stopped());
+  pfi::concurrent::thread t(pfi::lang::bind(&server_thread, pfi::lang::ref(server), port, num_threads));
   t.start();
 
   sleep(1);
+  EXPECT_TRUE(server.is_running());
 
-  int times = 100;
-  EXPECT_NO_THROW({ testrpc_client cln1("localhost", 31231); });
-  testrpc_client cln("localhost", 31231);
-  for (int t=0;t<times;t++) {
-    {
-      string v;
-      for (int i=0;i<10;i++)
-        v+='0'+(rand()%10);
-      string r;
-      EXPECT_NO_THROW({ r = cln.call_test_str(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++)
-        EXPECT_EQ(r[i], v[i]);
-    }
-    {
-      string vs;
-      for (int i=0;i<10;i++)
-        vs+='0'+(rand()%10);
-      pair<int, string> v = make_pair(rand(), vs);
-      pair<int, string> r;
-      EXPECT_NO_THROW({ r = cln.call_test_pair(v); });
-      EXPECT_EQ(r.first, v.first);
-      EXPECT_EQ(r.second, v.second);
-    }
-    {
-      vector<int> v;
-      for (int i=0;i<10;i++)
-        v.push_back(rand());
-      vector<int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_vec(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++)
-        EXPECT_EQ(r[i], v[i]);
-    }
-    {
-      map<int, int> v;
-      for (int i=0;i<10;i++)
-        v[i]=rand();
-      map<int, int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_map(v); });
-      EXPECT_EQ(r.size(), 10U);
-      for (int i=0;i<10;i++){
-        EXPECT_EQ(r[i], v[i]);
+  EXPECT_NO_THROW({ testrpc_client client1("localhost", port); });
+  {
+    testrpc_client client("localhost", port);
+    int times = 100;
+    for (int t=0;t<times;t++) {
+      {
+        std::string v;
+        for (int i=0;i<10;i++)
+          v+='0'+(rand()%10);
+        std::string r;
+        EXPECT_NO_THROW({ r = client.call_test_str(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++)
+          EXPECT_EQ(r[i], v[i]);
       }
-    }
-    {
-      set<int> v;
-      for (int i=0;i<10;i++)
-        v.insert(i*100);
-      set<int> r;
-      EXPECT_NO_THROW({ r = cln.call_test_set(v); });
-      EXPECT_EQ(r.size(), 10U);
-      int cnt = 0;
-      for (set<int>::iterator it=v.begin();it!=v.end();++it){
-        EXPECT_EQ(*it, cnt++ * 100);
+      {
+        std::string vs;
+        for (int i=0;i<10;i++)
+          vs+='0'+(rand()%10);
+        std::pair<int, std::string> v = make_pair(rand(), vs);
+        std::pair<int, std::string> r;
+        EXPECT_NO_THROW({ r = client.call_test_pair(v); });
+        EXPECT_EQ(r.first, v.first);
+        EXPECT_EQ(r.second, v.second);
+      }
+      {
+        std::vector<int> v;
+        for (int i=0;i<10;i++)
+          v.push_back(rand());
+        std::vector<int> r;
+        EXPECT_NO_THROW({ r = client.call_test_vec(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++)
+          EXPECT_EQ(r[i], v[i]);
+      }
+      {
+        std::map<int, int> v;
+        for (int i=0;i<10;i++)
+          v[i]=rand();
+        std::map<int, int> r;
+        EXPECT_NO_THROW({ r = client.call_test_map(v); });
+        EXPECT_EQ(r.size(), 10U);
+        for (int i=0;i<10;i++){
+          EXPECT_EQ(r[i], v[i]);
+        }
+      }
+      {
+        std::set<int> v;
+        for (int i=0;i<10;i++)
+          v.insert(i*100);
+        std::set<int> r;
+        EXPECT_NO_THROW({ r = client.call_test_set(v); });
+        EXPECT_EQ(r.size(), 10U);
+        int cnt = 0;
+        for (std::set<int>::iterator it=v.begin();it!=v.end();++it){
+          EXPECT_EQ(*it, cnt++ * 100);
+        }
       }
     }
   }
+
+  server.stop();
+  t.join();
+  EXPECT_TRUE(server.is_stopped());
 }
 
 // test for struct and empty vector
 struct tstruct {
   int i;
-  vector<unsigned char> v;
+  std::vector<unsigned char> v;
   
 private:
   friend class pfi::data::serialization::access;
@@ -150,77 +158,79 @@ private:
 RPC_PROC(test_struct, tstruct(tstruct));
 RPC_GEN(1, test_struct_rpc, test_struct);
 static tstruct f_test_struct(tstruct t) { return t; }
-static void struct_server_thread()
+static void struct_server_thread(test_struct_rpc_server& server, uint16_t port, int num_threads)
 {
-  test_struct_rpc_server ser;
-  ser.set_test_struct(&f_test_struct);
-  ser.serv(31232, 10);
+  server.set_test_struct(&f_test_struct);
+  server.serv(port, num_threads);
 }
 TEST(rpc, test_struct)
 {
-  thread t(&struct_server_thread);
+  uint16_t port = 31232;
+  int num_threads = 10;
+
+  test_struct_rpc_server server;
+  EXPECT_TRUE(server.is_stopped());
+  pfi::concurrent::thread t(pfi::lang::bind(&struct_server_thread, pfi::lang::ref(server), port, num_threads));
   t.start();
 
   sleep(1);
+  EXPECT_TRUE(server.is_running());
 
-  tstruct t1;
-  t1.i = 9;
-  EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31232); });
-  test_struct_rpc_client cln("localhost", 31232);
+  EXPECT_NO_THROW({ test_struct_rpc_client client1("localhost", port); });
+  {
+    test_struct_rpc_client client("localhost", port);
+    tstruct t1;
+    t1.i = 9;
+    tstruct t2;
+    EXPECT_NO_THROW({ t2 = client.call_test_struct(t1); });
+    EXPECT_EQ(t1.i, t2.i);
+  }
 
-  tstruct t2;
-  EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
-  EXPECT_EQ(t1.i, t2.i);
+  server.stop();
+  t.join();
+  EXPECT_TRUE(server.is_stopped());
 }
-
 
 // test rpc::server when port number is 0
-struct sserver_args_struct
-{
-  testrpc_server sv;
-  uint16_t arg_port;
-};
-
-static void server_thread_for_port_0( sserver_args_struct *sas )
-{
-  sas->sv.serv(sas->arg_port, 1);
-}
-
 TEST(rpc, test_server_port_0)
 {
-  sserver_args_struct sas;
-  sas.sv.set_test_str(&test_str);
-  sas.arg_port = 0;
+  uint16_t port = 0;
+  int num_threads = 1;
 
-  pfi::lang::function<void(void)> f = bind(server_thread_for_port_0, &sas);
-  thread t(f);
+  testrpc_server server;
+  EXPECT_TRUE(server.is_stopped());
+
+  pfi::lang::function<void(void)> f = pfi::lang::bind(server_thread, pfi::lang::ref(server), port, num_threads);
+  pfi::concurrent::thread t(f);
   t.start();
-  t.detach();
   sleep(1);
+  EXPECT_TRUE(server.is_running());
 
-  uint16_t p0 = sas.sv.port();
-  EXPECT_NE(0, p0);
+  uint16_t p0 = server.port();
+  EXPECT_NE(port, p0);
 
-  testrpc_client cln("localhost", p0);
   {
-    string v;
+    testrpc_client client("localhost", p0);
+    std::string v;
     for (int i=0;i<10;i++)
       v+='0'+(rand()%10);
-    string r;
-    EXPECT_NO_THROW({ r = cln.call_test_str(v); });
+    std::string r;
+    EXPECT_NO_THROW({ r = client.call_test_str(v); });
     EXPECT_EQ(r.size(), 10U);
     for (int i=0;i<10;i++)
       EXPECT_EQ(r[i], v[i]);
   }
+
+  server.stop();
+  t.join();
+  EXPECT_TRUE(server.is_stopped());
 }
 
 // test rpc::server timeout
-static void server_thread_for_timeout()
+static void server_thread_for_timeout(test_struct_rpc_server& server)
 {
-  double test_timeout_sec = 1.0;
-  test_struct_rpc_server ser(test_timeout_sec);
-  ser.set_test_struct(&f_test_struct);
-  ser.serv(31233, 1);
+  server.set_test_struct(&f_test_struct);
+  server.serv(31233, 1);
 }
 
 static void dummy_client_for_timeout()
@@ -238,30 +248,69 @@ uint64_t get_monotonic_time_micro_sec() {
 
 TEST(rpc, test_rpc_server_timeout)
 {
-  thread server_thread(&server_thread_for_timeout);
-  server_thread.start();
+  double test_timeout_sec = 1.0;
+  test_struct_rpc_server server(test_timeout_sec);
+  EXPECT_TRUE(server.is_stopped());
+  pfi::concurrent::thread t(pfi::lang::bind(&server_thread_for_timeout, pfi::lang::ref(server)));
+  t.start();
 
   sleep(1);
+  EXPECT_TRUE(server.is_running());
 
   uint64_t time0 = get_monotonic_time_micro_sec();
-  thread dummy_client(&dummy_client_for_timeout);
+  pfi::concurrent::thread dummy_client(&dummy_client_for_timeout);
   dummy_client.start();
   dummy_client.detach();
 
   sleep(1);
 
-  tstruct t1;
-  t1.i = 9;
-  EXPECT_NO_THROW({ test_struct_rpc_client cln1("localhost", 31233); });
-  test_struct_rpc_client cln("localhost", 31233);
-
-  tstruct t2;
-  EXPECT_NO_THROW({ t2 = cln.call_test_struct(t1); });
-  EXPECT_EQ(t1.i, t2.i);
+  EXPECT_NO_THROW({ test_struct_rpc_client client1("localhost", 31233); });
+  {
+    test_struct_rpc_client client("localhost", 31233);
+    tstruct t1;
+    t1.i = 9;
+    tstruct t2;
+    EXPECT_NO_THROW({ t2 = client.call_test_struct(t1); });
+    EXPECT_EQ(t1.i, t2.i);
+  }
 
 //  If it is less than 7 seconds, the timeout is considered to be working effectively.
 //  If the timeout setting does not work, it will wait for more than 10 seconds.
   uint64_t time1 = get_monotonic_time_micro_sec();
   EXPECT_LE((time1-time0), 7*1000*1000);
+
+  server.stop();
+  t.join();
+  EXPECT_TRUE(server.is_stopped());
 }
 
+static void long_running_client_thread(uint16_t port)
+{
+  test_struct_rpc_client client("localhost", port);
+  tstruct t1;
+  t1.i = 0;
+  EXPECT_NO_THROW({ client.call_test_struct(t1); });
+  sleep(3);
+}
+
+TEST(rpc, test_server_termination_after_long_running_client_ends)
+{
+  uint16_t port = 31234;
+  int num_threads = 10;
+
+  test_struct_rpc_server server;
+  EXPECT_TRUE(server.is_stopped());
+  pfi::concurrent::thread server_thread(pfi::lang::bind(&struct_server_thread, pfi::lang::ref(server), port, num_threads));
+  server_thread.start();
+  sleep(1);
+  EXPECT_TRUE(server.is_running());
+
+  pfi::concurrent::thread client_thread(pfi::lang::bind(&long_running_client_thread, port));
+  client_thread.start();
+  client_thread.detach();
+  sleep(1);
+
+  server.stop();
+  server_thread.join();
+  EXPECT_TRUE(server.is_stopped());
+}
