@@ -65,9 +65,9 @@ public:
   const ipv4_address &remote_addr() const;
   uint16_t remote_port() const;
 
-  int read(void *dat, int size);
-  int write(const void *dat, int size);
-  int flush();
+  ssize_t read(void *dat, size_t size);
+  ssize_t write(const void *dat, size_t size);
+  ssize_t flush();
 
   int getc();
   bool getline(std::string &str, int limit=-1);
@@ -88,9 +88,9 @@ private:
   bool open();
   bool close();
 
-  int recv(void *dat, int size);
-  int send(const void *dat, int size);
-  int send_all(const void *dat, int size);
+  ssize_t recv(void *dat, size_t size);
+  ssize_t send(const void *dat, size_t size);
+  ssize_t send_all(const void *dat, size_t size);
 
   bool bind_socket(int sock);
   bool bind_socket(int sock, const ipv4_address &addr, uint16_t port);
@@ -103,13 +103,13 @@ private:
 
   void fill_buf();
   int inc_buf();
-  int buf_elem();
+  size_t buf_elem();
 
   std::vector<unsigned char> rdbuf;
-  int rdbuf_p, rdbuf_end;
+  ssize_t rdbuf_p, rdbuf_end;
 
   std::vector<unsigned char> wrbuf;
-  int wrbuf_size;
+  ssize_t wrbuf_size;
 
   static pfi::lang::shared_ptr<dns_resolver> resolver;
   static pfi::concurrent::r_mutex resolver_m;
