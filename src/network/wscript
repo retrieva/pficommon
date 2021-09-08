@@ -115,6 +115,13 @@ def build(bld):
 
   bld.program(
     features = 'gtest',
+    source = 'socket_test.cpp',
+    target = 'socket_test',
+    includes = '.',
+    use = 'pficommon_network')
+
+  bld.program(
+    features = 'gtest',
     source = 'uri_test.cpp',
     target = 'uri_test',
     includes = '.',
