@@ -51,7 +51,7 @@ using namespace pfi::lang;
 using namespace pfi::concurrent;
 using namespace pfi::system::syscall;
 
-const int buf_size=8*1024;
+const ssize_t buf_size=8*1024;
 
 #include <iostream>
 
@@ -212,7 +212,7 @@ uint16_t stream_socket::remote_port() const
   return rport;
 }
 
-int stream_socket::read(void *dat, int size)
+ssize_t stream_socket::read(void *dat, size_t size)
 {
   char *p=(char*)dat, *q=p+size;
 
@@ -230,7 +230,7 @@ int stream_socket::read(void *dat, int size)
   }
 
   while(p<q){
-    int readsize=recv(p,q-p);
+    ssize_t readsize=recv(p,q-p);
     if (readsize<=0) break;
     p+=readsize;
   }
@@ -238,9 +238,9 @@ int stream_socket::read(void *dat, int size)
   return p-(char*)dat;
 }
 
-int stream_socket::write(const void *dat, int size)
+ssize_t stream_socket::write(const void *dat, size_t size)
 {
-  int init_size=wrbuf_size;
+  ssize_t init_size=wrbuf_size;
   const unsigned char *st=static_cast<const unsigned char*>(dat);
   const unsigned char *p=st, *q=p+size;
 
@@ -250,9 +250,9 @@ int stream_socket::write(const void *dat, int size)
 
   // if buffer is full, flush buffer.
   if (wrbuf_size==buf_size){
-    int res=flush();
+    ssize_t res=flush();
     if (res>=0){
-      return max(0, res-init_size);
+      return max(0l, res-init_size);
     }
   }
 
@@ -269,11 +269,11 @@ int stream_socket::write(const void *dat, int size)
 
 // if succeeded, returns negative value,
 // otherwise, returns number of sent bytes
-int stream_socket::flush()
+ssize_t stream_socket::flush()
 {
   if (wrbuf_size>0){
-    int ssize=send_all(&wrbuf[0], wrbuf_size);
-    bool ok=ssize==wrbuf_size;
+    ssize_t ssize=send_all(&wrbuf[0], wrbuf_size);
+    bool ok=(ssize==wrbuf_size);
     wrbuf_size=0;
     return ok?-1:ssize;
   }
@@ -313,8 +313,8 @@ bool stream_socket::getline(string &str, int limit)
 
 bool stream_socket::puts(const string &str)
 {
-  int writesize=write(str.c_str(), str.length());
-  return writesize==(int)str.length();
+  ssize_t writesize=write(str.c_str(), str.length());
+  return (unsigned)writesize==str.length();
 }
 
 bool stream_socket::set_timeout(double sec)
@@ -364,11 +364,11 @@ bool stream_socket::set_nodelay(bool on)
 #endif
 }
 
-int stream_socket::recv(void *dat, int size)
+ssize_t stream_socket::recv(void *dat, size_t size)
 {
   if (!connected) return 0;
 
-  int readsize;
+  ssize_t readsize;
   NO_INTR(readsize, ::recv(sock, dat, size, 0));
 
   if (readsize<=0){
@@ -379,11 +379,11 @@ int stream_socket::recv(void *dat, int size)
   return readsize;
 }
 
-int stream_socket::send(const void *dat, int size)
+ssize_t stream_socket::send(const void *dat, size_t size)
 {
   if (!connected) return 0;
 
-  int writesize;
+  ssize_t writesize;
   NO_INTR(writesize, ::send(sock, dat, size, 0));
 
   if (writesize<=0){
@@ -394,12 +394,12 @@ int stream_socket::send(const void *dat, int size)
   return writesize;
 }
 
-int stream_socket::send_all(const void *dat, int size)
+ssize_t stream_socket::send_all(const void *dat, size_t size)
 {
   const char *p=(const char *)dat, *q=p+size;
   
   while(p<q){
-    int writesize=send(p,q-p);
+    ssize_t writesize=send(p,q-p);
     if (writesize<=0) break;
     p+=writesize;
   }
@@ -411,9 +411,9 @@ void stream_socket::fill_buf()
 {
   if (buf_elem()!=0) return;
 
-  int size=recv(&rdbuf[0], buf_size);
+  ssize_t size=recv(&rdbuf[0], buf_size);
   rdbuf_p=0;
-  rdbuf_end=max(0, size);
+  rdbuf_end=max(0l, size);
 }
 
 int stream_socket::inc_buf()
@@ -421,7 +421,7 @@ int stream_socket::inc_buf()
   return (unsigned char)rdbuf[rdbuf_p++];
 }
 
-int stream_socket::buf_elem()
+size_t stream_socket::buf_elem()
 {
   return rdbuf_end-rdbuf_p;
 }
